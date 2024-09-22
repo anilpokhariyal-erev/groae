@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Password as ResetPassword;
+
+class NewPasswordController extends Controller
+{
+    /**
+     * Display the password reset view.
+     */
+    public function create(Request $request): View
+    {
+        $tokenData = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+
+        if (!$tokenData || Carbon::parse($tokenData->created_at)->addMinutes(config('auth.passwords.users.expire'))->isPast()) {
+            // Token is invalid or expired
+            $error = 'The password reset link is invalid or has expired.';
+            return view('auth.custom-error', compact('error'));
+        }
+
+        // Hash the provided token and compare it with the hashed token in the database
+        if (!Hash::check($request->route('token'), $tokenData->token)) {
+            // Token doesn't match
+            $error = 'The password reset link is invalid or has expired.';
+            return view('auth.custom-error', compact('error'));
+        }
+
+        return view('auth.reset-password', ['request' => $request]);
+    }
+
+    /**
+     * Handle an incoming new password request.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', Password::min(6)->mixedCase()->letters()->numbers()],
+        ]);
+
+        $user = User::select('password')->where('email', $request->email)->first();
+
+        if($user){
+            if(Hash::check($request->password, $user->password)){
+                throw ValidationException::withMessages([
+                    'password' => 'The password must not match the previous password.',
+                ]);
+            }
+        }
+
+        // Here we will attempt to reset the user's password. If it is successful we
+        // will update the password on an actual user model and persist it to the
+        // database. Otherwise we will parse the error and return the response.
+        $status = ResetPassword::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password' => Hash::make($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        // If the password was successfully reset, we will redirect the user back to
+        // the application's home authenticated view. If there is an error we can
+        // redirect them back to where they came from with their error message.
+        return $status == ResetPassword::PASSWORD_RESET
+                    ? redirect()->route('login')->with('status', __($status))
+                    : back()->withInput($request->only('email'))
+                            ->withErrors(['email' => __($status)]);
+    }
+}

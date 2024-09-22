@@ -1,0 +1,111 @@
+<x-admin-layout>
+
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div class="ba_flex justify-between">
+                <div class="ba_flex align_items_center">
+                    <h5 class="card-heading">Edit Freezone Page</h5>
+                </div>
+
+                <div class="ba_flex align_items_center">
+                    <a href="{{route('freezone-page.index')}}" class="btn btn-primary">Back</a>
+                </div>
+            </div>
+            &nbsp;
+
+            <form method="post" action="{{ route('freezone-page.update',$freezone_page->id) }}" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="freezone">Freezone <span class="text-danger">*</span></label>
+                            <select name="freezone" class="custom-select">
+                                <option value="">Select Freezone</option>
+                                @if($freezone)
+                                    @foreach($freezone as $freezone_val)
+                                        <option @if(old('freezone',$freezone_page->freezone_id) == $freezone_val->id) selected='selected' @endif value="{{$freezone_val->id}}">{{ucwords($freezone_val->name)}}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="title">Title <span class="text-danger">*</span></label>
+                            <input type="text" name="title" id="title" value="{{old('title',$freezone_page->title)}}"  class="form-control">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('title')" />
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="title">Content <span class="text-danger">*</span></label>
+                            <textarea name="content" id="ckeditor_description" class="form-control">{{ old('content',$freezone_page->content) }}</textarea>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('content')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="status">Status <span class="text-danger">*</span></label>
+                            <select name="status" class="form-control">
+                                <option @if($freezone_page->status == 1) selected='selected' @endif value="1">Active</option>
+                                <option @if($freezone_page->status == 0) selected='selected' @endif value="0">Inactive</option>
+                            </select>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" @if($freezone_page->slug == 'customer-guides') style="display:block" @else style="display:none" @endif>
+                        <div class="position-relative form-group">
+                            <label for="file">File </label>
+                            <input name="file" id="file" type="file" class="form-control">
+                            @if($freezone_page->file && $freezone_page->slug == 'customer-guides')
+                            <div>
+                                <a href="{{ Storage::url($freezone_page->file) }}" target="_blank">
+                                    <img src="{{ asset('images/pdf_image.png') }}" alt="" />
+                                    <h6>Download Now</h6>
+                                </a>
+                            </div>
+                            @endif
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('file')" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="ba_flex align_items_center">
+                    <button class="mt-1 btn btn-primary">Save</button>
+                    @if (session('success'))
+                    <div class="text-success ml-2" id="successMessage">{{session('success')}}</div>
+                    @endif
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    @if (session('error'))
+        <div class="modal fade show" id="errorModal" style="display: block;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-red">Error</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0 text-red">{{ session('error') }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="close-errorModal" class="btn btn-secondary">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+</x-admin-layout>

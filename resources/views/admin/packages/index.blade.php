@@ -1,0 +1,82 @@
+<x-admin-layout>
+    <div class="text-right">
+        <a href="{{ route('package.create') }}" class="mb-2 mr-2 btn btn-primary text-white">Add Package</a>
+    </div>
+
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <form method="GET" action="{{url()->current()}}">
+                <div class="ba_flex justify-content-end align_items_center">
+                    <div class="ba_flex align_items_center mr-1 ml-1">
+                        <div class="white-space-nowrap mr-1 ml-1">Title:</div>
+                        <input type="text" id="title" value="{{request('title')}}" name="title" class="form-control">
+                    </div>
+
+                    <div class="ba_flex align_items_center mr-1 ml-1">
+                        <div class="white-space-nowrap mr-1 ml-1">Start Date:</div>
+                        <input type="date" id="start-date" value="{{request('start_date')}}" name="start_date" class="form-control">
+                    </div>
+
+                    <div class="ba_flex align_items_center mr-1 ml-1">
+                        <div class="white-space-nowrap mr-1 ml-1">End Date:</div>
+                        <input type="date" id="end-date" value="{{request('end_date')}}" name="end_date" class="form-control">
+                    </div>
+
+                    <button id="filter-button" class="btn btn-primary mr-1 ml-1">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="main-card mb-3 card mt-2">
+        <div class="card-body">
+            <h5 class="card-title">Package List</h5>
+            @if (session('success'))
+                <div class="text-success" id="successMessage">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="text-danger">{{ session('error') }}</div>
+            @endif
+            <div class="table-responsive">
+                <table class="mb-0 table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Freezone</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $i = 1; @endphp
+                        @foreach($packages as $package)
+                            <tr>
+                                <th scope="row">{{ $i++ }}</th>
+                                <td>{{ $package->title }}</td>
+                                <td>{{ $package->freezone->name }}</td>
+                                <td>{{ $package->price }}</td>
+                                <td>@if($package->status == 1) Active @else Inactive @endif</td>
+                                <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>
+                                <td>
+                                    <a href="{{ route('package.edit', $package->id) }}" class="ml-1 mr-1">Edit</a>
+                                    <a href="#" class="ml-1 mr-1 text-red" onclick="confirmDelete('{{ route('package.destroy', $package->id) }}'); return false;">Delete</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</x-admin-layout>
+
+<script>
+    function confirmDelete(url) {
+        if (confirm('Are you sure you want to delete this package?')) {
+            document.location.href = url;
+        }
+    }
+</script>

@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AttributeOption extends Model
+{
+    // Fields that can be mass-assigned
+    protected $fillable = [
+        'attribute_id',
+        'value',
+        'status'
+    ];
+
+    // Relationship: AttributeOption belongs to an Attribute
+    public function attribute()
+    {
+        return $this->belongsTo(Attribute::class, 'attribute_id');
+    }
+}
