@@ -120,6 +120,13 @@
                 </a>
             </li>
 
+            <li class="{{ $has_role_or_permission('manage-currencies', 'ba_display_none') }}">
+                    <a href="{{route('currency.view')}}" class="{{ Route::is('currency.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-users"></i>
+                        Currency
+                    </a>
+                </li>
+
 
             <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
                 <a href="{{route('setting.view')}}" class="{{ Route::is('setting-view.*') ? 'mm-active' : '' }}">

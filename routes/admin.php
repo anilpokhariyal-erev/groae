@@ -47,6 +47,7 @@ use App\Http\Controllers\Admin\CustomerDocumentController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\AttributeOptionController;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\CurrencyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -255,5 +256,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('packages/{package}/edit', [PackageController::class, 'edit'])->name('package.edit');
     Route::put('packages/{package}', [PackageController::class, 'update'])->name('package.update');
     Route::delete('packages/{package}', [PackageController::class, 'destroy'])->name('package.destroy');
+
+    // currency Manager
+    Route::get('currencies', [CurrencyController::class, 'index'])->name('currency.view');
+    Route::get('currencies/create', [CurrencyController::class, 'create'])->name('currency.create');
+    Route::post('currencies', [CurrencyController::class, 'store'])->name('currency.store');
+    Route::get('currencies/{currency}/edit', [CurrencyController::class, 'edit'])->name('currency.edit');
+    Route::put('currencies/{currency}', [CurrencyController::class, 'update'])->name('currency.update');
+    Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currency.destroy');
 
 });
