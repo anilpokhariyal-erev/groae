@@ -32,5 +32,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CountriesTableSeeder::class);
         $this->call(StatesTableSeeder::class);
         $this->call(CategoriesTableSeeder::class);
+        $this->call(SettingsTableSeeder::class);
     }
 }
