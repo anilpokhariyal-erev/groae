@@ -62,7 +62,9 @@
                                 <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>
                                 <td>
                                     <a href="{{ route('package.edit', $package->id) }}" class="ml-1 mr-1">Edit</a>
-                                    <a href="#" class="ml-1 mr-1 text-red" onclick="confirmDelete('{{ route('package.destroy', $package->id) }}'); return false;">Delete</a>
+                                    @if($package->status == 1)<a href="{{ route('package.disabled', $package->id) }}" class="ml-1 mr-1 text-red">Disabled</a>@else<a href="{{ route('package.disabled', $package->id) }}" class="ml-1 mr-1 text-info">Enabled</a> @endif
+
+{{--                                    <a href="#" class="ml-1 mr-1 text-red" onclick="confirmDelete('{{ route('package.destroy', $package->id) }}'); return false;">Delete</a>--}}
                                 </td>
                             </tr>
                         @endforeach

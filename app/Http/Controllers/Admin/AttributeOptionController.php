@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Attribute;
 use App\Models\AttributeOption;
+use App\Models\PackageLine;
 use Illuminate\Http\Request;
 
 class AttributeOptionController extends Controller
@@ -47,6 +48,11 @@ class AttributeOptionController extends Controller
             'value' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
+        if (AttributeOption::where('attribute_id', $validatedData['attribute_id'])
+            ->where('value', $validatedData['value'])
+            ->exists()) {
+            return redirect()->back()->withErrors(['value' => 'The combination of name and value already exists.'])->withInput();
+        }
 
         AttributeOption::create($validatedData);
 
@@ -74,6 +80,16 @@ class AttributeOptionController extends Controller
             'value' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
+        $lines = PackageLine::where('attribute_option_id', $id)->count();
+        if ($lines > 0) {
+            return redirect()->back()->withErrors(['status' => 'The attribute option is already use in package.'])->withInput();
+        }
+        if (AttributeOption::where('attribute_id', $validatedData['attribute_id'])
+            ->where('value', $validatedData['value'])
+            ->where('status', $validatedData['status'])
+            ->exists()) {
+            return redirect()->back()->withErrors(['value' => 'The combination of attribute name and value already exists.'])->withInput();
+        }
 
         $attributeOption = AttributeOption::findOrFail($id);
         $attributeOption->update($validatedData);
@@ -103,4 +119,29 @@ class AttributeOptionController extends Controller
  
          return response()->json(['options' => $options]);
      }
+
+    public function getSuggestions(Request $request)
+    {
+        $query = $request->query('query');
+
+        $suggestions = AttributeOption::where('value', 'like', '%' . $query . '%')
+            ->pluck('value')
+            ->take(5); // Limit to 5 suggestions
+
+        return response()->json($suggestions);
+    }
+
+    public function disabled($id)
+    {
+        $attribute = AttributeOption::findOrFail($id);
+        $lines = PackageLine::where('attribute_option_id', $id)->count();
+        if ($lines > 0) {
+            return redirect()->back()->withErrors(['name' => 'The attribute option is already use in package.'])->withInput();
+        }
+        $attribute->status = 0;
+        $attribute->save();
+
+        return redirect()->route('admin.attribute-options.index')->with('success', 'Attribute disabled successfully.');
+    }
+
 }

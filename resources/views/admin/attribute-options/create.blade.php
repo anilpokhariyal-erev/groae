@@ -30,7 +30,8 @@
 
                         <div class="position-relative form-group">
                             <label for="value">Value <span class="text-danger">*</span></label>
-                            <input name="value" id="value" type="text" value="{{ old('value') }}" class="form-control">
+                            <input name="value" id="value" type="text" value="{{ old('value') }}" class="form-control" onkeyup="checkInput(this)">
+                            <ul id="suggestions" class="list-group" style="display: none; max-height: 150px; overflow-y: auto;"></ul>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('value')" />
                         </div>
                     </div>
@@ -55,5 +56,47 @@
 
         </div>
     </div>
+
+    <script>
+        function checkInput(input) {
+            const value = input.value;
+            const regex = /^[a-zA-Z0-9-]*$/; // Allow letters, numbers, and hyphens only
+
+            if (!regex.test(value)) {
+                input.setCustomValidity("Only hyphens, letters, and numbers are allowed.");
+            } else {
+                input.setCustomValidity("");
+                fetchSuggestions(value);
+            }
+        }
+
+        function fetchSuggestions(query) {
+            if (query.length > 1) {
+                fetch(`/admin/attribute-options/suggestions?query=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const suggestionsBox = document.getElementById('suggestions');
+                        suggestionsBox.innerHTML = data.map(item =>
+                            `<div class="suggestion" onclick="selectSuggestion('${item}')">${item}</div>`
+                        ).join('');
+                        suggestionsBox.style.display = data.length ? 'block' : 'none';
+                    });
+            } else {
+                document.getElementById('suggestions').style.display = 'none';
+            }
+        }
+
+        document.getElementById('value').addEventListener('keyup', function () {
+            checkInput(this);
+        });
+
+        function selectSuggestion(value) {
+            const input = document.getElementById('value');
+            input.value = value;
+            const suggestionsBox = document.getElementById('suggestions');
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+        }
+    </script>
 
 </x-admin-layout>
