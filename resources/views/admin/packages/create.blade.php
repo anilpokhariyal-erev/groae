@@ -71,48 +71,48 @@
 
                     <!-- Package Lines (Attributes and Attribute Options) -->
                     <div class="col-md-12">
-                    <div class="position-relative form-group">
-                        <label for="package_lines">Package Add-ons</label>
-                        <div id="package-lines-container">
-                            <div class="row package-line-item">
-                                <!-- Attribute -->
-                                <div class="col-md-4">
-                                    <div class="position-relative form-group">
-                                        <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                                        <select name="package_lines[0][attribute_id]" class="custom-select attribute-select" data-line="0">
-                                            <option value="">Select Attribute</option>
-                                            @foreach($attributes as $attribute)
-                                                <option value="{{$attribute->id}}">{{$attribute->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.attribute_id')" />
+                        <div class="position-relative form-group">
+                            <label for="package_lines">Package Add-ons</label>
+                            <div id="package-lines-container">
+                                <div class="row package-line-item">
+                                    <!-- Attribute -->
+                                    <div class="col-md-4">
+                                        <div class="position-relative form-group">
+                                            <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
+                                            <select name="package_lines[0][attribute_id]" class="custom-select attribute-select" data-line="0">
+                                                <option value="">Select Attribute</option>
+                                                @foreach($attributes as $attribute)
+                                                    <option value="{{$attribute->id}}">{{$attribute->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.attribute_id')" />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Attribute Option -->
-                                <div class="col-md-4">
-                                    <div class="position-relative form-group">
-                                        <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                                        <select name="package_lines[0][attribute_option_id]" class="custom-select option-select" id="option-select-0">
-                                            <option value="">Select Option</option>
-                                        </select>
-                                        <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.attribute_option_id')" />
+                                    <!-- Attribute Option -->
+                                    <div class="col-md-4">
+                                        <div class="position-relative form-group">
+                                            <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
+                                            <select name="package_lines[0][attribute_option_id]" class="custom-select option-select" id="option-select-0">
+                                                <option value="">Select Option</option>
+                                            </select>
+                                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.attribute_option_id')" />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Add-on Cost -->
-                                <div class="col-md-4">
-                                    <div class="position-relative form-group">
-                                        <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                                        <input name="package_lines[0][addon_cost]" type="number" class="form-control" min="0">
-                                        <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.addon_cost')" />
+                                    <!-- Add-on Cost -->
+                                    <div class="col-md-4">
+                                        <div class="position-relative form-group">
+                                            <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
+                                            <input name="package_lines[0][addon_cost]" type="number" class="form-control" min="0">
+                                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.addon_cost')" />
+                                        </div>
                                     </div>
                                 </div>
+                                <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
                             </div>
                         </div>
-                        <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
                     </div>
-                </div>
 
                 </div>
 
@@ -144,10 +144,13 @@
             </div>
         </div>
     @endif
+
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
     <script>
-        let lineIndex = 1;
+        let lineIndex = 0;
+
         document.getElementById('add-package-line').addEventListener('click', function() {
+            lineIndex++;
             let container = document.getElementById('package-lines-container');
             let newRow = document.createElement('div');
             newRow.classList.add('row', 'package-line-item');
@@ -155,23 +158,20 @@
                 <div class="col-md-4">
                     <div class="position-relative form-group">
                         <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                        <select name="package_lines[${lineIndex}][attribute_id]" class="custom-select">
+                        <select name="package_lines[${lineIndex}][attribute_id]" class="custom-select attribute-select" data-line="${lineIndex}">
                             <option value="">Select Attribute</option>
                             @foreach($attributes as $attribute)
-                                <option value="{{$attribute->id}}">{{$attribute->name}}</option>
+            <option value="{{$attribute->id}}">{{$attribute->name}}</option>
                             @endforeach
-                        </select>
-                        <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.attribute_id')" />
+            </select>
+            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.attribute_id')" />
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="position-relative form-group">
                         <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                        <select name="package_lines[${lineIndex}][attribute_option_id]" class="custom-select">
+                        <select name="package_lines[${lineIndex}][attribute_option_id]" class="custom-select option-select" id="option-select-${lineIndex}">
                             <option value="">Select Option</option>
-                            @foreach($attributeOptions as $option)
-                                <option value="{{$option->id}}">{{$option->value}}</option>
-                            @endforeach
                         </select>
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.attribute_option_id')" />
                     </div>
@@ -183,79 +183,39 @@
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.addon_cost')" />
                     </div>
                 </div>
+                <div class="col-md-12 d-flex justify-content-end">
+                    <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+                </div>
             `;
             container.appendChild(newRow);
-            lineIndex++;
+        });
+
+        $(document).on('click', '.remove-package-line', function() {
+            $(this).closest('.package-line-item').remove();
         });
 
         $(document).ready(function() {
-            // When an attribute is selected, load the corresponding options
             $(document).on('change', '.attribute-select', function() {
                 var attributeId = $(this).val();
-                var line = $(this).data('line'); // Get line number for the specific package line
-                var $optionSelect = $('#option-select-' + line); // Select the option dropdown for this package line
+                var line = $(this).data('line');
+                var $optionSelect = $('#option-select-' + line);
 
                 if (attributeId) {
                     $.ajax({
-                        url: '/admin/get-attribute-options/' + attributeId, // Update this to your actual route
+                        url: '/admin/get-attribute-options/' + attributeId,
                         type: 'GET',
                         success: function(data) {
-                            $optionSelect.empty(); // Clear previous options
-                            $optionSelect.append('<option value="">Select Option</option>'); // Add placeholder option
-
-                            // Append the fetched options
+                            $optionSelect.empty();
+                            $optionSelect.append('<option value="">Select Option</option>');
                             $.each(data.options, function(key, value) {
                                 $optionSelect.append('<option value="'+ value.id +'">'+ value.value +'</option>');
                             });
                         }
                     });
                 } else {
-                    // Clear the options if no attribute is selected
                     $optionSelect.empty().append('<option value="">Select Option</option>');
                 }
             });
-
-            // Add more package lines functionality (you can add your logic here)
-            var lineCounter = 1;
-            $('#add-package-line').click(function() {
-                var newLine = `
-                <div class="row package-line-item">
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                            <select name="package_lines[${lineCounter}][attribute_id]" class="custom-select attribute-select" data-line="${lineCounter}">
-                                <option value="">Select Attribute</option>
-                                @foreach($attributes as $attribute)
-                                    <option value="{{$attribute->id}}">{{$attribute->name}}</option>
-                                @endforeach
-                            </select>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineCounter}.attribute_id')" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                            <select name="package_lines[${lineCounter}][attribute_option_id]" class="custom-select option-select" id="option-select-${lineCounter}">
-                                <option value="">Select Option</option>
-                            </select>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineCounter}.attribute_option_id')" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                            <input name="package_lines[${lineCounter}][addon_cost]" type="number" class="form-control" min="0">
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineCounter}.addon_cost')" />
-                        </div>
-                    </div>
-                </div>
-                `;
-                $('#package-lines-container').append(newLine);
-                lineCounter++;
-            });
         });
-
     </script>
 </x-admin-layout>

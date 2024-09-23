@@ -133,6 +133,33 @@
         <script src="{{ asset('js/select2.min.js') }}" crossorigin="anonymous"></script>
         <script src="{{ asset('js/ckeditor.js') }}" crossorigin="anonymous"></script>
         <script src="{{ asset('js/script.js') }}?v=0.4" crossorigin="anonymous"></script>
+        @push('scripts')
+            <!-- DataTables CSS -->
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+            <!-- DataTables JS -->
+            <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
+            <script>
+                $(document).ready(function() {
+                    $('.table').DataTable({
+                        "paging": true, // Enable pagination
+                        "searching": true, // Enable search
+                        "ordering": true, // Enable sorting
+                        "order": [[ 0, "desc" ]], // Default order by ID descending
+                        "pageLength": 10 // Number of entries to show per page
+                    });
+                });
+                setTimeout(function() {
+                    $('.custom-alert').fadeOut('slow');
+                }, 5000);
+                setTimeout(function() {
+                    $('.custom-red-alert').fadeOut('slow');
+                }, 5000);
+            </script>
+        @endpush
+        @stack('scripts')
 
     </body>
 </html>

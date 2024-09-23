@@ -239,7 +239,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('attributes/{attribute}/edit', [AttributeController::class, 'edit'])->name('attributes.edit');
     Route::put('attributes/{attribute}', [AttributeController::class, 'update'])->name('attributes.update');
     Route::delete('attributes/{attribute}', [AttributeController::class, 'destroy'])->name('attributes.destroy');
-    
+    Route::get('attributes/suggestions', [AttributeController::class, 'getSuggestions'])->name('attributes.suggestions');
+    Route::get('attributes/{id}/disabled', [AttributeController::class, 'disabled'])->name('attributes.disabled');
+
+
+
+
+
     // Attributes Options Management
     Route::get('attribute-options', [AttributeOptionController::class, 'index'])->name('admin.attribute-options.index');
     Route::get('attribute-options/create', [AttributeOptionController::class, 'create'])->name('admin.attribute-options.create');
@@ -248,6 +254,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('attribute-options/{attributeOption}', [AttributeOptionController::class, 'update'])->name('admin.attribute-options.update');
     Route::delete('attribute-options/{attributeOption}', [AttributeOptionController::class, 'destroy'])->name('admin.attribute-options.destroy');
     Route::get('/get-attribute-options/{id}', [AttributeOptionController::class, 'getAttributeOptions']);
+    Route::get('attribute-options/suggestions', [AttributeOptionController::class, 'getSuggestions']);
+    Route::get('attribute-options/{id}/disabled', [AttributeOptionController::class, 'disabled'])->name('admin.attribute-options.disabled');
 
     // Packages Manager
     Route::get('packages', [PackageController::class, 'index'])->name('package.index');
@@ -256,6 +264,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('packages/{package}/edit', [PackageController::class, 'edit'])->name('package.edit');
     Route::put('packages/{package}', [PackageController::class, 'update'])->name('package.update');
     Route::delete('packages/{package}', [PackageController::class, 'destroy'])->name('package.destroy');
+    Route::get('packages/{package}/disabled', [PackageController::class, 'disabled'])->name('package.disabled');
+    Route::get('packages/{package}/enabled', [PackageController::class, 'enabled'])->name('package.enabled');
+
 
     // currency Manager
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currency.view');
