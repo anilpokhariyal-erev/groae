@@ -265,6 +265,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('packages/{package}', [PackageController::class, 'update'])->name('package.update');
     Route::delete('packages/{package}', [PackageController::class, 'destroy'])->name('package.destroy');
     Route::get('packages/{package}/disabled', [PackageController::class, 'disabled'])->name('package.disabled');
+    Route::get('packages/{package}/enabled', [PackageController::class, 'enabled'])->name('package.enabled');
+
 
     // currency Manager
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currency.view');

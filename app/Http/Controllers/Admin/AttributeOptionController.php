@@ -75,27 +75,37 @@ class AttributeOptionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validate the request
         $validatedData = $request->validate([
             'attribute_id' => 'required|exists:attributes,id',
             'value' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
-        $lines = PackageLine::where('attribute_option_id', $id)->count();
-        if ($lines > 0) {
-            return redirect()->back()->withErrors(['status' => 'The attribute option is already use in package.'])->withInput();
+
+        $attributeOption = AttributeOption::findOrFail($id);
+
+        // Check if the attribute option is used in any packages
+        if ($attributeOption->countInPackage()) {
+            return redirect()->back()->withErrors(['status' => 'The attribute option is already used in a package.'])->withInput();
         }
-        if (AttributeOption::where('attribute_id', $validatedData['attribute_id'])
+
+        // Check for duplicate attribute option with the same value and status
+        $duplicate = AttributeOption::where('attribute_id', $validatedData['attribute_id'])
             ->where('value', $validatedData['value'])
             ->where('status', $validatedData['status'])
-            ->exists()) {
+            ->where('id', '!=', $id) // Exclude current record
+            ->exists();
+
+        if ($duplicate) {
             return redirect()->back()->withErrors(['value' => 'The combination of attribute name and value already exists.'])->withInput();
         }
 
-        $attributeOption = AttributeOption::findOrFail($id);
+        // Update the attribute option
         $attributeOption->update($validatedData);
 
         return redirect()->route('admin.attribute-options.index')->with('success', 'Attribute Option updated successfully.');
     }
+
 
     /**
      * Remove the specified attribute option from storage.
@@ -134,9 +144,8 @@ class AttributeOptionController extends Controller
     public function disabled($id)
     {
         $attribute = AttributeOption::findOrFail($id);
-        $lines = PackageLine::where('attribute_option_id', $id)->count();
-        if ($lines > 0) {
-            return redirect()->back()->withErrors(['name' => 'The attribute option is already use in package.'])->withInput();
+        if ($attribute->countInPackage()) {
+            return redirect()->back()->withErrors(['name' => 'The attribute option is already used in a package.'])->withInput();
         }
         $attribute->status = 0;
         $attribute->save();

@@ -79,15 +79,13 @@ class AttributeController extends Controller
             ->where('id', $id)
             ->where('status', $validatedData['status'])
             ->exists()) {
-            return redirect()->back()->withErrors(['name' => 'The combination of name and label already exists.'])->withInput();
-        }
-
-        $lines = PackageLine::where('attribute_id', $id)->count();
-        if ($lines > 0) {
-            return redirect()->back()->withErrors(['name' => 'The attribute is already use in package.'])->withInput();
+            return redirect()->back()->withErrors(['status' => 'The combination of name and label already exists.'])->withInput();
         }
 
         $attribute = Attribute::findOrFail($id);
+        if ($attribute->countInPackage()) {
+            return redirect()->back()->withErrors(['name' => 'The attribute is already use in package.'])->withInput();
+        }
         $attribute->update($validatedData);
 
         return redirect()->route('attributes.index')->with('success', 'Attribute updated successfully.');
@@ -121,9 +119,8 @@ class AttributeController extends Controller
     public function disabled($id)
     {
         $attribute = Attribute::findOrFail($id);
-        $lines = PackageLine::where('attribute_id', $id)->count();
-        if ($lines > 0) {
-            return redirect()->back()->withErrors(['name' => 'The attribute is already use in package.'])->withInput();
+        if ($attribute->countInPackage()) {
+            return redirect()->back()->withErrors(['status' => 'The attribute is already use in package.'])->withInput();
         }
         $attribute->status = 0;
         $attribute->save();

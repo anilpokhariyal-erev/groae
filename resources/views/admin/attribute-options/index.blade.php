@@ -58,11 +58,6 @@
                         <td>
                             <a href="{{ route('admin.attribute-options.edit', $option->id) }}" class="btn btn-warning">Edit</a>
                             <a href="{{ route('admin.attribute-options.disabled', $option->id) }}" class="btn btn-secondary btn-sm">Disabled</a>
-{{--                            <form action="{{ route('admin.attribute-options.destroy', $option->id) }}" method="POST" style="display:inline;">--}}
-{{--                                @csrf--}}
-{{--                                @method('DELETE')--}}
-{{--                                <button type="submit" class="btn btn-danger">Delete</button>--}}
-{{--                            </form>--}}
                         </td>
                     </tr>
                 @endforeach

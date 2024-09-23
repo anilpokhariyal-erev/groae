@@ -18,4 +18,9 @@ class AttributeOption extends Model
     {
         return $this->belongsTo(Attribute::class, 'attribute_id');
     }
+
+    public function countInPackage()
+    {
+        return PackageLine::where('attribute_option_id', $this->id)->count();
+    }
 }

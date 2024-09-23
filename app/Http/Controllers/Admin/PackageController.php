@@ -23,8 +23,8 @@ class PackageController extends Controller
     public function create()
     {
         $freezones = Freezone::all();
-        $attributes = Attribute::where('status','=',1)->get(); // Fetch attributes
-        $attributeOptions = AttributeOption::where('status','=',1)->get(); // Fetch attribute options
+        $attributes = Attribute::where('status',1)->get(); // Fetch attributes
+        $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
     
         return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions'));
     }
@@ -77,8 +77,8 @@ class PackageController extends Controller
         $package = PackageHeader::with('packageLines')->findOrFail($id);
 
         // Fetch all attributes and their options
-        $attributes = Attribute::where('status','=',1)->get(); // Fetch attributes
-        $attributeOptions = AttributeOption::where('status','=',1)->get(); // Fetch attribute options
+        $attributes = Attribute::where('status',1)->get(); // Fetch attributes
+        $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
 
         // Fetch freezones if required
         $freezones = Freezone::all();
@@ -141,14 +141,18 @@ class PackageController extends Controller
     public function disabled($id)
     {
         $package = PackageHeader::findOrFail($id);
-        if ($package->status == 0) {
-            $package->status = 1;
-        }else{
-            $package->status = 0;
-        }
+        $package->status = 0;
         $package->save();
 
-        return redirect()->route('package.index')->with('success', 'Package Updated successfully!');
+        return redirect()->route('package.index')->with('success', 'Package disabled successfully!');
+    }
+    public function enabled($id)
+    {
+        $package = PackageHeader::findOrFail($id);
+        $package->status = 1;
+        $package->save();
+
+        return redirect()->route('package.index')->with('success', 'Package enabled successfully!');
     }
 
 }

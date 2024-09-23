@@ -31,11 +31,27 @@
     <div class="main-card mb-3 card mt-2">
         <div class="card-body">
             <h5 class="card-title">Package List</h5>
-            @if (session('success'))
-                <div class="text-success" id="successMessage">{{ session('success') }}</div>
+            @if(session('success'))
+                <div class="main-card">
+                    <div class="card-body">
+                        <div class="custom-alert" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
             @endif
-            @if (session('error'))
-                <div class="text-danger">{{ session('error') }}</div>
+            @if ($errors->any())
+                <div class="main-card">
+                    <div class="card-body">
+                        <div class="custom-red-alert" role="alert">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             @endif
             <div class="table-responsive">
                 <table class="mb-0 table">
@@ -62,9 +78,7 @@
                                 <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>
                                 <td>
                                     <a href="{{ route('package.edit', $package->id) }}" class="ml-1 mr-1">Edit</a>
-                                    @if($package->status == 1)<a href="{{ route('package.disabled', $package->id) }}" class="ml-1 mr-1 text-red">Disabled</a>@else<a href="{{ route('package.disabled', $package->id) }}" class="ml-1 mr-1 text-info">Enabled</a> @endif
-
-{{--                                    <a href="#" class="ml-1 mr-1 text-red" onclick="confirmDelete('{{ route('package.destroy', $package->id) }}'); return false;">Delete</a>--}}
+                                    @if($package->status == 1)<a href="{{ route('package.disabled', $package->id) }}" class="ml-1 mr-1 text-red">Disabled</a>@else<a href="{{ route('package.enabled', $package->id) }}" class="ml-1 mr-1 text-info">Enabled</a> @endif
                                 </td>
                             </tr>
                         @endforeach

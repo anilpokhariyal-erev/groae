@@ -18,4 +18,9 @@ class Attribute extends Model
     {
         return $this->hasMany(AttributeOption::class, 'attribute_id');
     }
+
+    public function countInPackage()
+    {
+        return PackageLine::where('attribute_id', $this->id)->count();
+    }
 }
