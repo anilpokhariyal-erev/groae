@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\Attribute;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class AttributeController extends Controller
@@ -84,6 +85,59 @@ class AttributeController extends Controller
         $attribute->delete();
         return redirect()->route('attributes.index')->with('success', 'Attribute deleted successfully.');
     }
+
+
+    /**
+     * AI Search Filter Manager
+     */
+    public function aiSearchFilters()
+    {    
+        $attributes = Attribute::where('status', 1)->get();
+
+        $selectedAttributes = Attribute::where('is_ai_search_enabled', 1)
+                                    ->orderBy('ai_filter_display_order') // Order by the new column
+                                    ->pluck('id')
+                                    ->toArray();
+
+        $minSetting = Setting::where('section_key', 'manage_ai_fields_limit')->where('title', 'min')->first();
+        $maxSetting = Setting::where('section_key', 'manage_ai_fields_limit')->where('title', 'max')->first();
+
+        $minValue = $minSetting ? $minSetting->value : 0;
+        $maxValue = $maxSetting ? $maxSetting->value : 10;
+
+        return view('admin.attributes.ai_search_filters', compact('attributes', 'minValue', 'maxValue', 'selectedAttributes'));
+    }
+
+    
+
+    /**
+     * AI store the attributes to be displayed on front end
+     */
+    public function storeAiSearchFilters(Request $request)
+    {
+        $request->validate([
+            'attributes' => 'required|array',
+            'attributes.*' => 'exists:attributes,id',
+        ]);
+    
+        try {
+            // Remove all selected search filters
+            Attribute::where('status', 1)->update(['is_ai_search_enabled' => 0]);
+    
+            // Store the filters selected in the database with their order
+            foreach ($request->get("attributes") as $index => $attributeId) {
+                Attribute::where('id', $attributeId)->update([
+                    'is_ai_search_enabled' => 1,
+                    'ai_filter_display_order' => $index + 1 // Store the order (1-based index)
+                ]);
+            }
+            
+            return redirect()->back()->with('success', 'AI Search Filters saved successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+    
 
     
 }

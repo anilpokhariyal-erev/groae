@@ -218,7 +218,16 @@
                     </a>
                 </li>
             @endif
-            
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-attribute-options'))
+                <li>
+                    <a href="{{ route('admin.ai_search_filters') }}" class="{{ Route::is('admin.ai_search_filters') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-filter"></i>
+                        AI Tool Search Filters
+                    </a>
+                </li>
+            @endif
+
             @if(
                 auth()->user()->hasRole('superadmin') || 
                 auth()->user()->can('view-subadmins') ||

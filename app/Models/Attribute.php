@@ -10,7 +10,8 @@ class Attribute extends Model
     protected $fillable = [
         'name',
         'label',
-        'status'
+        'status',
+        'is_ai_search_enabled'
     ];
 
     // Relationship: Attribute has many AttributeOptions

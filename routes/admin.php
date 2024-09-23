@@ -240,6 +240,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('attributes/{attribute}', [AttributeController::class, 'update'])->name('attributes.update');
     Route::delete('attributes/{attribute}', [AttributeController::class, 'destroy'])->name('attributes.destroy');
     
+    // AI Search Filters
+    Route::get('/attributes/ai-tool-search-filters', [AttributeController::class, 'aiSearchFilters'])->name('admin.ai_search_filters');  
+    Route::post('/attributes/ai-tool-search-filters/store', [AttributeController::class, 'storeAiSearchFilters'])->name('admin.ai_search_filters.store');
+    
     // Attributes Options Management
     Route::get('attribute-options', [AttributeOptionController::class, 'index'])->name('admin.attribute-options.index');
     Route::get('attribute-options/create', [AttributeOptionController::class, 'create'])->name('admin.attribute-options.create');
