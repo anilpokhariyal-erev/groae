@@ -45,6 +45,11 @@ class AttributeController extends Controller
             'status' => 'required|boolean',
         ]);
 
+        if (Attribute::where('name', $validatedData['name'])
+            ->exists()) {
+            return redirect()->back()->withErrors(['name' => 'The combination of name and label already exists.'])->withInput();
+        }
+
         Attribute::create($validatedData);
 
         return redirect()->route('attributes.index')->with('success', 'Attribute created successfully.');
@@ -70,8 +75,17 @@ class AttributeController extends Controller
             'label' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
+        if (Attribute::where('name', $validatedData['name'])
+            ->where('id', $id)
+            ->where('status', $validatedData['status'])
+            ->exists()) {
+            return redirect()->back()->withErrors(['status' => 'The combination of name and label already exists.'])->withInput();
+        }
 
         $attribute = Attribute::findOrFail($id);
+        if ($attribute->countInPackage()) {
+            return redirect()->back()->withErrors(['name' => 'The attribute is already use in package.'])->withInput();
+        }
         $attribute->update($validatedData);
 
         return redirect()->route('attributes.index')->with('success', 'Attribute updated successfully.');
@@ -139,5 +153,33 @@ class AttributeController extends Controller
     }
     
 
-    
+    public function getSuggestions(Request $request)
+    {
+        $query = $request->input('query');
+        $type = $request->input('type');
+
+        if ($type === 'name') {
+            $attributes = Attribute::where('name', 'LIKE', "%$query%")->pluck('name')->toArray();
+            return response()->json($attributes);
+        } elseif ($type === 'label') {
+            $attributes = Attribute::where('label', 'LIKE', "%$query%")->pluck('label')->toArray();
+            return response()->json($attributes);
+        }
+
+        return response()->json([]);
+    }
+
+    public function disabled($id)
+    {
+        $attribute = Attribute::findOrFail($id);
+        if ($attribute->countInPackage()) {
+            return redirect()->back()->withErrors(['status' => 'The attribute is already use in package.'])->withInput();
+        }
+        $attribute->status = 0;
+        $attribute->save();
+
+        return redirect()->route('attributes.index')->with('success', 'Attribute disabled successfully.');
+    }
+
+
 }

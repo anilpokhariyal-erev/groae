@@ -23,8 +23,8 @@ class PackageController extends Controller
     public function create()
     {
         $freezones = Freezone::all();
-        $attributes = Attribute::all(); // Fetch attributes
-        $attributeOptions = AttributeOption::all(); // Fetch attribute options
+        $attributes = Attribute::where('status',1)->get(); // Fetch attributes
+        $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
     
         return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions'));
     }
@@ -77,8 +77,8 @@ class PackageController extends Controller
         $package = PackageHeader::with('packageLines')->findOrFail($id);
 
         // Fetch all attributes and their options
-        $attributes = Attribute::all();
-        $attributeOptions = AttributeOption::all();
+        $attributes = Attribute::where('status',1)->get(); // Fetch attributes
+        $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
 
         // Fetch freezones if required
         $freezones = Freezone::all();
@@ -90,23 +90,41 @@ class PackageController extends Controller
     // Update the specified package in the database
     public function update(Request $request, PackageHeader $package)
     {
+        // Validate input
         $request->validate([
-            'freezone' => 'required|exists:freezones,id',
-            'name' => 'required|string|max:255',
+            'freezone_id' => 'required|exists:freezones,id',
+            'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'package_lines' => 'array',
+            'package_lines.*.attribute_id' => 'required|exists:attributes,id',
+            'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
+            'package_lines.*.addon_cost' => 'required|numeric|min:0',
         ]);
 
+        // Update the package
         $package->update([
-            'title' => $request->name,
+            'title' => $request->title,
             'description' => $request->description,
-            'freezone_id' => $request->freezone,
+            'freezone_id' => $request->freezone_id,
             'price' => $request->price,
             'updated_by' => auth()->id(),
         ]);
 
+        // Update package lines
+        $package->packageLines()->delete(); // Clear existing lines if necessary
+
+        foreach ($request->package_lines as $line) {
+            $package->packageLines()->create([
+                'attribute_id' => $line['attribute_id'],
+                'attribute_option_id' => $line['attribute_option_id'],
+                'addon_cost' => $line['addon_cost'],
+            ]);
+        }
+
         return redirect()->route('package.index')->with('success', 'Package updated successfully!');
     }
+
 
     // Delete the specified package from the database
     public function destroy(PackageHeader $package)
@@ -119,4 +137,22 @@ class PackageController extends Controller
     
         return redirect()->route('package.index')->with('success', 'Package and associated package attributes deleted successfully!');
     }
+
+    public function disabled($id)
+    {
+        $package = PackageHeader::findOrFail($id);
+        $package->status = 0;
+        $package->save();
+
+        return redirect()->route('package.index')->with('success', 'Package disabled successfully!');
+    }
+    public function enabled($id)
+    {
+        $package = PackageHeader::findOrFail($id);
+        $package->status = 1;
+        $package->save();
+
+        return redirect()->route('package.index')->with('success', 'Package enabled successfully!');
+    }
+
 }
