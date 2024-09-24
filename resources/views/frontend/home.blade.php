@@ -19,41 +19,7 @@
                     <img src="{{ asset('images/bot1.png') }}" alt="">
                     <h3>AI search to help you find the best Freezone.</h3>
                 </div>
-                <div class="searchFields">
-                    <form class="searchingForm" id="searchForm">
-                        <div class="formContainer">
-                            <select name="license">
-                                <option value="" selected disabled>Choose License</option>
-                                @foreach ($licenses as $item)
-                                    <option>{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="formContainer">
-                            <select name="office">
-                                <option value="" selected disabled>Choose Office</option>
-                                @foreach ($offices as $item)
-                                    <option>{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="formContainer">
-                            <select name="visa_type">
-                                <option value="" selected disabled>Choose Visa Type</option>
-                                @foreach ($visa_types as $item)
-                                    <option>{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="formContainer" id="searchBtn">
-                            <a class="searchAnchor"> <input type="button" class="searchInput" value=""><img
-                                    class="seatcIcon" src="{{ asset('images/seatc.png') }}" alt=""></a>
-                        </div>
-                        <div class="formContainer" id="clearSearchBtn">
-                            <img class="cursor" src="{{ asset('images/cross-icon.png') }}" alt="">
-                        </div>
-                    </form>
-                </div>
+                @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
             </div>
         </div>
 

@@ -10,6 +10,7 @@ use App\Models\Setting;
 use App\Models\Freezone;
 use App\Models\VisaType;
 use App\Models\StaticPage;
+use App\Models\Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,14 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
+    public function ai_filter_options(){
+        // Fetch attributes where is_ai_search_enabled is 1 and order by ai_filter_display_order
+        return Attribute::where('is_ai_search_enabled', 1)
+        ->orderBy('ai_filter_display_order', 'ASC')
+        ->with('options') // Assuming you have a relationship called 'options' to fetch the attribute options
+        ->get();
+    }
+
     public function home()
     {
         $freezones = Freezone::select('id', 'name', 'logo', 'about', 'slug', 'created_at')->orderBy('freezone_views_count', 'DESC')->skip(0)->take(3)->get();
@@ -27,13 +36,17 @@ class HomeController extends Controller
         $offer = Offer::select('id', 'title', 'discount', 'image', 'freezone_id')->with('freezone')->take(3)->get();
         $blogs = Blog::select('id', 'title', 'short_description', 'image', 'slug', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(3)->get();
         $groae_number = Setting::where('section_key', 'groae_number')->get();
-        return view('frontend.home', compact('blogs', 'freezones', 'licenses', 'offices', 'visa_types', 'offer', 'groae_number'));
+        $attributes = $this->ai_filter_options();
+
+        return view('frontend.home', compact('blogs', 'freezones', 'licenses', 'offices', 'visa_types', 'offer', 'groae_number', 'attributes'));
     }
+    
     public function trending_freezone()
     {
         $freezones = Freezone::select('id', 'name', 'logo', 'about', 'slug', 'created_at', 'freezone_views_count')->orderBy('freezone_views_count', 'DESC')->get();
         return view('frontend.trending_freezone', compact('freezones'));
     }
+
     public function explore_freezone(Request $request, $id = null)
     {
         $selected = null;
@@ -62,8 +75,8 @@ class HomeController extends Controller
         });
 
         $freezones = $freezones->orderBy('id', 'DESC')->get();
-
-        return view('frontend.explore_freezone', compact('freezones', 'licenses', 'offices', 'visa_types', 'selected'));
+        $attributes = $this->ai_filter_options();
+        return view('frontend.explore_freezone', compact('freezones', 'licenses', 'offices', 'visa_types', 'selected', 'attributes'));
     }
     public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
     {

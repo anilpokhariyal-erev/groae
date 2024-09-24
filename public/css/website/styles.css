@@ -1026,7 +1026,7 @@ select {
 .seatcIcon {
   position: absolute;
   left: 18px;
-  bottom: 25px;
+  bottom: 2px;
   cursor: pointer;
 }
 

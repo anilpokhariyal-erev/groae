@@ -18,11 +18,13 @@ class HomeController extends Controller
         $blogs = Blog::select('id', 'title', 'short_description', 'image', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(3)->get();
         return view('page.home', compact('blogs', 'freezones'));
     }
+
     public function freezones()
     {
         $freezones = Freezone::select('id', 'name', 'logo', 'about', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(6)->get();
         return view('front.freezone.freezones', compact('freezones'));
     }
+
     public function explore_freezone(Request $request)
     {
         Paginator::useBootstrap();
@@ -38,6 +40,7 @@ class HomeController extends Controller
 
         return view('front.freezone.explore_freezone', compact('freezones', 'trending_freezone'));
     }
+
     public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
     {
         $freezone_detail = Freezone::with('freezone_pages')->whereHas('freezone_pages', function ($query) {
@@ -62,6 +65,7 @@ class HomeController extends Controller
         }
         return view('front.freezone.freezone_detail', compact('freezone_detail', 'freezone_page'));
     }
+    
     public function get_freezone(Request $request)
     {
         $freezone_id = $request->freezone_id;

@@ -8,49 +8,7 @@
                 {{ $selected }}
             </span>
             <div class="filterItemContainer">
-                <div class="searchFields">
-                    <form action="{{ route('explore-freezone') }}" id="searchForm" class="searchingForm">
-                        <div class="formContainer">
-                            <select name="license" class="selctBg">
-                                <option value="" selected disabled>Choose License</option>
-                                @foreach ($licenses as $item)
-                                    <option {{ request('license') == $item ? 'selected' : '' }}>{{ $item }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="formContainer">
-                            <select name="office" class="selctBg">
-                                <option value="" selected disabled>Choose Office</option>
-                                @foreach ($offices as $item)
-                                    <option {{ request('office') == $item ? 'selected' : '' }}>{{ $item }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="formContainer">
-                            <select name="visa_type" class="selctBg">
-                                <option value="" selected disabled>Choose Visa Type</option>
-                                @foreach ($visa_types as $item)
-                                    <option {{ request('visa_type') == $item ? 'selected' : '' }}>{{ $item }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="formContainer">
-                            <a class="searchAnchor" href="#"
-                                onclick="event.preventDefault(); $('#searchForm').submit();"> <input type="submit"
-                                    class="searchInput" value=""><img class="seatcIcon"
-                                    src="{{ asset('images/seatc.png') }}" alt=""></a>
-                        </div>
-                        <div class="formContainer">
-                            <img class="cursor" id="clearSearchBtn"
-                                style="border-radius: 15px; background: rgba(99, 140, 192, 0.16);"
-                                src="{{ asset('images/cross-icon.png') }}" alt="">
-                        </div>
-                    </form>
-                </div>
-
+            @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
             </div>
 
         </section>
