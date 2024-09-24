@@ -5,7 +5,9 @@
                 <select class="ai_filter_options" name="attribute_{{ $attribute->id }}">
                     <option value="" selected disabled>Choose {{ $attribute->name }}</option>
                     @foreach ($attribute->options as $option)
-                        <option value="{{ $option->id }}">{{ $option->value }}</option>
+                        <option value="{{ $option->id }}" 
+                        {{ isset($selectedAttributes[$attribute->id]) && $selectedAttributes[$attribute->id] == $option->id ? 'selected' : '' }}>
+                            {{ $option->value }}</option>
                     @endforeach
                 </select>
             </div>

@@ -11,6 +11,8 @@ use App\Models\Freezone;
 use App\Models\VisaType;
 use App\Models\StaticPage;
 use App\Models\Attribute;
+use App\Models\PackageHeader;
+use App\Models\PackageLine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -52,33 +54,55 @@ class HomeController extends Controller
         $selected = null;
         if ($id) {
             $data = Cache::get($id);
-            if (!$data)
+            if (!$data) {
                 return redirect()->route('explore-freezone');
+            }
             $decoded_data = json_decode($data);
             $selected = $decoded_data->uuid;
         }
 
-        $freezones = Freezone::select('id', 'uuid', 'name', 'logo', 'about', 'slug', 'min_price')->where('status', 1);
+        // Initialize package query
+        $packages = PackageHeader::where('status', 1);
 
-        $licenses = License::where('status', 1)->distinct()->pluck('name');
-        $offices = Package::where('status', 1)->distinct()->pluck('office');
-        $visa_types = VisaType::where('status', 1)->distinct()->pluck('name');
+        // Process attribute parameters
+        $attributeConditions = [];
+        $selectedAttributes = [];
 
-        if ($request->license) $freezones->whereHas('licenses', function ($query) use ($request) {
-            $query->where('name', $request->license);
-        });
-        if ($request->office) $freezones->whereHas('packages', function ($query) use ($request) {
-            $query->where('office', $request->office);
-        });
-        if ($request->visa_type) $freezones->whereHas('visa_types', function ($query) use ($request) {
-            $query->where('name', $request->visa_type);
-        });
+        foreach ($request->all() as $key => $value) {
+            if (preg_match('/^attribute_(\d+)$/', $key, $matches)) {
+                $attributeConditions[$matches[1]] = $value; // Extracting the attribute number
+                $selectedAttributes[$matches[1]] = $value;
+            }
+        }
 
-        $freezones = $freezones->orderBy('id', 'DESC')->get();
+        // Filter packages based on attributes if provided
+        if (!empty($attributeConditions)) {
+            $packages = $packages->whereExists(function ($query) use ($attributeConditions) {
+                $query->select(DB::raw(1))
+                    ->from('package_lines')
+                    ->whereColumn('package_lines.package_id', 'package_headers.id') // Use package_id as foreign key
+                    ->where(function ($subQuery) use ($attributeConditions) {
+                        foreach ($attributeConditions as $attributeNumber => $attributeValue) {
+                            $subQuery->orWhere(function ($q) use ($attributeNumber, $attributeValue) {
+                                $q->where('attribute_id', $attributeNumber)
+                                ->where('attribute_option_id', $attributeValue);
+                            });
+                        }
+                    });
+            })->with('packageLines','freezone')->orderBy('id', 'DESC')->get();
+        } else {
+            $packages = collect(); // Empty collection if no attributes provided
+        }
+
+        // Retrieve attributes for filter options
         $attributes = $this->ai_filter_options();
-        return view('frontend.explore_freezone', compact('freezones', 'licenses', 'offices', 'visa_types', 'selected', 'attributes'));
+
+        // Pass only packages to the view
+        return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
     }
-    public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
+
+
+    public function package_detail(Request $request, $package_id)
     {
         $freezone_detail = Freezone::with('freezone_pages')->whereHas('freezone_pages', function ($query) {
             return $query->where('status', 1);
@@ -93,18 +117,12 @@ class HomeController extends Controller
             return abort(404);
         }
 
-        // $trending_freezone_count = $freezone_detail->trending_freezone()->first();
-        // $freezone_count = (!empty($trending_freezone_count) ? $trending_freezone_count->freezone_views_count + 1 : 1);
-        // if (!$trending_freezone_count) {
-        //     $freezone_detail->trending_freezone()->create(['freezone_views_count' => $freezone_count]);
-        // } else {
-        //     $freezone_detail->trending_freezone()->update(['freezone_views_count' => $freezone_count]);
-        // }
-
         $freezone_detail->increment('freezone_views_count');
 
         return view('frontend.freezone_detail', compact('freezone_detail', 'freezone_page'));
     }
+
+
     public function get_freezone(Request $request)
     {
         $freezone_id = $request->freezone_id;
