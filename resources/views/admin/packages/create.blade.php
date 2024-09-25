@@ -69,6 +69,14 @@
                         </div>
                     </div>
 
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="trending">Trending</label>
+                            <input type="checkbox" name="trending" id="trending" value="1" {{ old('trending') ? 'checked' : '' }}>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('trending')" />
+                        </div>
+                    </div>
+
                     <!-- Package Lines (Attributes and Attribute Options) -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
@@ -109,6 +117,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
                             </div>
                         </div>

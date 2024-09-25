@@ -38,7 +38,7 @@
             <table class="mb-0 table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>#</th>
                     <th>Attribute</th>
                     <th>Value</th>
                     <th>Status</th>
@@ -46,9 +46,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($attributeOptions as $option)
+                @foreach ($attributeOptions as $index => $option)
                     <tr>
-                        <td>{{ $option->id }}</td>
+                        <td>{{ $index + 1 }}</td> <!-- Serial number starts from 1 -->
                         <td>{{ $option->attribute->name }}</td>
                         <td>{{ $option->value }}</td>
                         <td>

@@ -123,17 +123,9 @@
             <li class="{{ $has_role_or_permission('manage-currencies', 'ba_display_none') }}">
                     <a href="{{route('currency.view')}}" class="{{ Route::is('currency.*') ? 'mm-active' : '' }}">
                         <i class="metismenu-icon fa-solid fa-users"></i>
-                        Currency
+                        Manage Currency
                     </a>
                 </li>
-
-
-            <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
-                <a href="{{route('setting.view')}}" class="{{ Route::is('setting-view.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Setting
-                </a>
-            </li>
 
             @if(
                 auth()->user()->hasRole('superadmin') || 
@@ -252,6 +244,24 @@
                         Roles
                     </a>
                 </li>
+            @endif
+            @if(auth()->user()->hasRole('superadmin'))
+            <li class="app-sidebar__heading">System Setup </li>
+
+            <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
+                <a href="{{route('numbers.view')}}" class="{{ Route::is('numbers.view.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon fa-solid fa-users"></i>
+                    Manage Numbers
+                </a>
+            </li>
+
+
+            <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
+                <a href="{{route('setting.view')}}" class="{{ Route::is('setting-view.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon fa-solid fa-users"></i>
+                    Setting
+                </a>
+            </li>
             @endif
 
         </ul>

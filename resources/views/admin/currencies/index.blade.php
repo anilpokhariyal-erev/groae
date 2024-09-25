@@ -37,11 +37,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('currency.edit', $currency->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                <form action="{{ route('currency.destroy', $currency->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this currency?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
+
                             </td>
                         </tr>
                         @endforeach
