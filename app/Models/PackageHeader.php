@@ -18,7 +18,8 @@ class PackageHeader extends Model
         'renewable_price',
         'currency',
         'status',
-        'updated_by'
+        'updated_by',
+        'trending'
     ];
 
     // Relationship: PackageHeader belongs to a Freezone

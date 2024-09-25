@@ -35,13 +35,11 @@
                 </div>
             @endif
 
-
-
             <div class="table-responsive">
                 <table class="mb-0 table table-striped">
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#</th> <!-- Serial number column -->
                         <th>Name</th>
                         <th>Label</th>
                         <th>Status</th>
@@ -49,9 +47,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($attributes as $attribute)
+                    @foreach($attributes as $index => $attribute)
                         <tr>
-                            <td>{{ $attribute->id }}</td>
+                            <td>{{ $index + 1 }}</td> <!-- Display serial number -->
                             <td>{{ $attribute->name }}</td>
                             <td>{{ $attribute->label }}</td>
                             <td>

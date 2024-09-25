@@ -54,12 +54,13 @@
     </div>
 
     <script>
+
         function checkInput(input, type = 'name') {
             const value = input.value;
-            const regex = /^[a-zA-Z0-9-]*$/; // Allow letters, numbers, and hyphens only
+            const regex = /^[a-zA-Z0-9-_]*$/; // Allow letters, numbers, and underscore only
 
             if (!regex.test(value)) {
-                input.setCustomValidity("Only hyphens, letters, and numbers are allowed.");
+                input.setCustomValidity("Only underscore, letters, and numbers are allowed.");
             } else {
                 input.setCustomValidity("");
                 fetchSuggestions(value, type);

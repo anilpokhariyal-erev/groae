@@ -1,5 +1,17 @@
 <x-admin-layout>
-
+    @if ($errors->any())
+        <div class="main-card">
+            <div class="card-body">
+                <div class="custom-red-alert" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="main-card mb-3 card">
         <div class="card-body">
             <h5 class="card-title">Edit Package</h5>
@@ -72,6 +84,13 @@
                             <label for="description">Description <span class="text-danger">*</span></label>
                             <textarea name="description" id="description" class="form-control">{{ old('description', $package->description) }}</textarea>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('description')" />
+                        </div>
+                    </div>
+                    <!-- Trending Checkbox -->
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="trending">Trending</label>
+                            <input type="checkbox" name="trending" id="trending" value="1" {{ old('trending', $package->trending) ? 'checked' : '' }}>
                         </div>
                     </div>
 
