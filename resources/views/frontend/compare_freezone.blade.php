@@ -7,28 +7,21 @@
             <div class="compareContainer">
                 <div class="compareInnrWrapper">
                     <div class="compareTableColumn-1">
-                        <ul>
-                            <h3 class="detailheadingTxt">Features</h3>
+                    <ul>
+                        <h3 class="detailheadingTxt">Features</h3>
+                        @if($attributes->isNotEmpty())
+                            @foreach($attributes as $attribute)
+                                <li class="subHeadingTitle">
+                                    <p class="subTxt">{{ $attribute->label }}</p> <!-- Assuming 'label' is the field for attribute name -->
+                                </li>
+                            @endforeach
+                        @else
+                            <li class="subHeadingTitle">
+                                <p class="subTxt">No features available</p>
+                            </li>
+                        @endif
+                    </ul>
 
-                            <li class="subHeadingTitle">
-                                <p class="subTxt">Type of licenses </p>
-                            </li>
-                            <li class="subHeadingTitle">
-                                <p class="subTxt">Type of Office</p>
-                            </li>
-                            <li class="subHeadingTitle">
-                                <p class="subTxt">Type of Package </p>
-                            </li>
-                            <li class="subHeadingTitle">
-                                <p class="subTxt">Activities </p>
-                            </li>
-                            <li class="subHeadingTitle">
-                                <p class="subTxt">Visa Types </p>
-                            </li>
-                            <li class="subHeadingTitle">
-                                <p class="subTxt">Visa Add-ons </p>
-                            </li>
-                        </ul>
                     </div>
                     <div class="compareTableColumn-2">
                         <div class="compTb1">

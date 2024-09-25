@@ -49,16 +49,10 @@ const compareNow = () => {
       : '';
 
     open(
-      `${origin}/compare-freezone?freezones=${selectedExploreCompareItems
+      `${origin}/compare-packages?packages=${selectedExploreCompareItems
         .map(item => item.split('|')[0])
         .toString()}${freezone_scompare_id}`
     );
-
-    // $('input[type=checkbox]').attr('checked', false);
-    // window.location.href = `${origin}/compare-freezone?freezones=${selectedExploreCompareItems
-    //   .map(item => item.split('|')[0])
-    //   .toString()}${freezone_scompare_id}`;
-    // clearSelection();
   } else {
     toastr.error('Please choose one more freezone to compare');
   }

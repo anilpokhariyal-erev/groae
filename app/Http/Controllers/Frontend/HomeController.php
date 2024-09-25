@@ -149,141 +149,29 @@ class HomeController extends Controller
         return $response;
     }
 
-    // public function compare_freezone_old(Request $request)
-    // {
+    public function compare_packages(Request $request)
+    {
+        $data = explode(',', $request->packages);
+        $count = count($data);
 
-    //     $data = explode(',', $request->freezones);
-    //     $count = count($data);
+        if (!(1 < $count && $count < 5))
+            return redirect()->route('explore-freezone');
+        
 
-    //     if (!(1 < $count && $count < 5))
-    //         return redirect()->route('explore-freezone');
+        // Fetch attributes dynamically from the database
+        $attributes = Attribute::where('status', 1)->get();
 
-    //     $decoded_data = collect();
-    //     $freezone_compare_data = null;
-    //     if ($request->has('freezone_compare_id')) {
-    //         return view('frontend.under_development');
+        $packages = PackageHeader::whereIn('id', explode(',', $request->packages))
+        ->with(['freezone']) // Assuming 'freezone' is a relationship
+        ->with(['packageLines' => function($query) {
+            $query->rightJoin('attributes', function($join) {
+                $join->on('package_lines.attribute_id', '=', 'attributes.id');
+            })->select('package_lines.*', 'attributes.label as attribute_label');
+        }])
+        ->get();
 
-    //         // $freezone_compare_id = $request->freezone_compare_id;
-    //         // $freezone_compare_data = Cache::get($freezone_compare_id);
-    //         // if (!$freezone_compare_data)
-    //         //     return redirect('/compare-freezone?freezones=' . $request->freezones);
-    //         // $decoded_data = json_decode($freezone_compare_data);
-    //     }
-
-    //     // $freezones = Freezone::whereIn('uuid', $data)->select('id', 'uuid', 'logo', 'name', 'min_price')
-    //     //     ->where('status', 1)
-    //     //     ->with([
-    //     //         'licenses' => function ($query) {
-    //     //             $query->where('status', 1);
-    //     //         },
-    //     //         // 'packages' => function ($query) use ($freezone) {
-    //     //         //     $query->where('status', 1)
-    //     //         //         ->where('freezone_id', $freezone->id)
-    //     //         //         ->select('freezone_id', DB::raw('MIN(price) as min_price'));
-    //     //         // },
-    //     //         'visa_types' => function ($query) {
-    //     //             $query->where('status', 1);
-    //     //             // $query->where('status', 1)->distinct()->pluck('name');
-    //     //         },
-    //     //     ])->get();
-
-    //     // $licenses = $freezone->licenses()->where('status', 1)->distinct()->pluck('name');
-    //     // $packages = $freezone->packages()->where('status', 1)->distinct()->pluck('name');
-    //     // $visa_types = $freezone->visa_types()->where('status', 1)->distinct()->pluck('name');
-    //     // $freezone->licenses = $licenses;
-    //     // $freezone->packages = $packages;
-    //     // $freezone->visa_types = $visa_types;
-    //     // return response()->json($freezones);
-
-    //     $freezones = [];
-    //     $cheapest_freezone_price = PHP_FLOAT_MAX;
-
-    //     foreach ($data as $freezone_uuid) {
-    //         $freezone = Freezone::where('uuid', $freezone_uuid)->first();
-    //         $freezone->min_price = $freezone->licenses()->where('status', 1)->min('price');
-    //         $freezone_id = $freezone->id;
-    //         $freezone = $freezone->load([
-    //             'licenses' => function ($query) use ($freezone_id) {
-    //                 $query->where('status', 1)->where('price', DB::raw("(SELECT MIN(price) FROM licenses WHERE freezone_id = '$freezone_id')"))->first();
-    //             },
-    //             'packages' => function ($query) use ($freezone_id) {
-    //                 $query->where('status', 1)->where('price', DB::raw("(SELECT MIN(price) FROM packages WHERE freezone_id = '$freezone_id')"))->first();
-    //             },
-    //             'visa_types' => function ($query) {
-    //                 $query->where('status', 1);
-    //             },
-    //             'visa_add_ons' => function ($query) {
-    //                 $query->where('status', 1);
-    //             },
-    //             // 'locations' => function ($query) {
-    //             //     $query->where('status', 1);
-    //             // },
-    //         ]);
-
-    //         $freezone->visa_types_count = $freezone->visa_types->count();
-    //         $freezone->visa_add_ons_count = $freezone->visa_add_ons->count();
-    //         // $freezone->locations_name = implode(', ', $freezone->locations->pluck('name')->toArray());
-    //         // dd(count($freezone->packages));
-    //         $cheapest_freezone_price = $freezone->min_price < $cheapest_freezone_price ? $freezone->min_price : $cheapest_freezone_price;
-
-    //         unset($freezone['visa_types']);
-    //         unset($freezone['visa_add_ons']);
-    //         unset($freezone['locations']);
-
-    //         array_push($freezones, $freezone);
-    //     }
-
-    //     foreach ($freezones as $freezone) {
-    //         $freezone->cheapest_freezone = $freezone->min_price == $cheapest_freezone_price;
-    //     }
-    //     return view('frontend.compare_freezone')->with(compact('freezones'));
-
-    //     return response()->json($freezones);
-
-    //     $cheapest_freezone_price = PHP_FLOAT_MAX;
-
-    //     if ($freezone_compare_data) {
-    //         // for existing compare id
-    //         foreach ($freezones as $freezone) {
-    //             $decoded_data->freezone->packages[0]->office = $decoded_data->freezone->offices[0];
-    //             if ($freezone->id == $decoded_data->freezone->id) {
-    //                 $freezone->min_license = $decoded_data->freezone->licenses[0];
-    //                 $freezone->min_package = $decoded_data->freezone->packages[0];
-    //                 $freezone->min_visa_type = $decoded_data->freezone->visa_types[0];
-    //             } else {
-    //                 $min_license = $freezone->licenses()->where('name', $decoded_data->freezone->licenses[0]->name)->first();
-    //                 $min_package = $freezone->packages()->where('name', $decoded_data->freezone->packages[0]->name)->first();
-    //                 $min_visa_type = $freezone->visa_types()->where('name', $decoded_data->freezone->visa_types[0]->name)->first();
-    //                 $freezone->min_license = $min_license ? $min_license : ($freezone->licenses()->where('price', '<', $decoded_data->freezone->licenses[0]->price)->first() ?? $freezone->licenses()->where('price', '>=', $decoded_data->freezone->licenses[0]->price)->first());
-    //                 $freezone->min_package = $min_package ? $min_package : ($freezone->packages()->where('price', '<', $decoded_data->freezone->packages[0]->price)->first() ?? $freezone->packages()->where('price', '>=', $decoded_data->freezone->packages[0]->price)->first());
-    //                 $freezone->min_visa_type = $min_visa_type ? $min_visa_type : ($freezone->visa_types()->where('price', '<', $decoded_data->freezone->visa_types[0]->price)->first() ?? $freezone->visa_types()->where('price', '>=', $decoded_data->freezone->visa_types[0]->price)->first());
-    //             }
-    //             unset($freezone['licenses']);
-    //             unset($freezone['packages']);
-    //             unset($freezone['visa_types']);
-    //             $freezone->min_calculated_price = $freezone->min_license->price + $freezone->min_package->price + $freezone->min_visa_type->price;
-    //             $cheapest_freezone_price = $freezone->min_calculated_price < $cheapest_freezone_price ? $freezone->min_calculated_price : $cheapest_freezone_price;
-    //         }
-    //     } else {
-    //         // for non existing compare id
-    //         foreach ($freezones as $freezone) {
-    //             $freezone->min_license = $freezone->licenses->first(fn ($license) => $license->price == $freezone->licenses->min('price'));
-    //             $freezone->min_package = $freezone->packages->first(fn ($package) => $package->price == $freezone->packages->min('price'));
-    //             $freezone->min_visa_type = $freezone->visa_types->first(fn ($visa_type) => $visa_type->price == $freezone->visa_types->min('price'));
-    //             unset($freezone['licenses']);
-    //             unset($freezone['packages']);
-    //             unset($freezone['visa_types']);
-    //             $freezone->min_calculated_price = $freezone->min_license->price + $freezone->min_package->price + $freezone->min_visa_type->price;
-    //             $cheapest_freezone_price = $freezone->min_calculated_price < $cheapest_freezone_price ? $freezone->min_calculated_price : $cheapest_freezone_price;
-    //         }
-    //     }
-
-    //     foreach ($freezones as $freezone) {
-    //         $freezone->cheapest_freezone = $freezone->min_price == $cheapest_freezone_price;
-    //     }
-
-    //     return view('frontend.compare_freezone')->with(compact('freezones'));
-    // }
+        return view('frontend.compare_packages')->with(compact('packages','attributes'));
+    }
 
     public function compare_freezone(Request $request)
     {
@@ -306,8 +194,8 @@ class HomeController extends Controller
 
             //? 'visa_package', 'license_validity', 'license_name', 'package_price'
 
-            foreach ($data as $freezone_uuid) {
-                $freezone = Freezone::where('uuid', $freezone_uuid)->where('status', 1)->whereHas('licenses', function ($query) use ($decoded_data) {
+            foreach ($data as $freezone_id) {
+                $freezone = Freezone::where('id', $freezone_id)->where('status', 1)->whereHas('licenses', function ($query) use ($decoded_data) {
                     $query->where('status', 1)->where('name', $decoded_data->license_name);
                 })->first();
 
@@ -343,9 +231,9 @@ class HomeController extends Controller
                     }
                 } else {
 
-                    $freezone = Freezone::where('uuid', $freezone_uuid)->first();
+                    $freezone = Freezone::where('id', $freezone_id)->first();
 
-                    $freezone_license = Freezone::where('uuid', $freezone_uuid)->where('status', 1)->whereHas('licenses', function ($query) use ($decoded_data) {
+                    $freezone_license = Freezone::where('id', $freezone_id)->where('status', 1)->whereHas('licenses', function ($query) use ($decoded_data) {
                         $query->where('status', 1)->where('price', '<=', $decoded_data->license_price)->orderBy('price', 'DESC');
                     })->with('min_package')->first();
 
@@ -368,13 +256,13 @@ class HomeController extends Controller
                 $freezones[$key]['cheapest_freezone'] = $freezone['price'] == $cheapest_freezone_price;
             }
         } else {
-            foreach ($data as $freezone_uuid) {
-                $freezone = Freezone::where('uuid', $freezone_uuid)->with('min_package')->first();
+            foreach ($data as $freezone_id) {
+                $freezone = Freezone::where('id', $freezone_id)->with('min_package')->first();
                 $price = $freezone->min_package?->price ?? 0;
                 $cheapest_freezone_price = $price < $cheapest_freezone_price ? $price : $cheapest_freezone_price;
 
                 array_push($freezones, [
-                    'uuid' => $freezone->uuid,
+                    'uuid' => $freezone->id,
                     'logo' => $freezone->logo,
                     'name' => $freezone->name,
                     'license' => $freezone->licenses()->where('status', 1)->where('price', DB::raw("(SELECT MIN(price) FROM licenses WHERE freezone_id = '$freezone->id')"))->first()?->name,

@@ -101,7 +101,7 @@
                 </div>
             @endif
             <div class="compareIconWrapper">
-                <a href="{{ route('explore-freezone', ['ref' => $freezone_detail->uuid]) }}">
+                <a href="{{ route('explore-freezone', ['ref' => $freezone_detail->id]) }}">
                     <img src="{{ asset('images/compare-icon.png') }}" alt="">
                     <h3>Compare</h3>
                 </a>
