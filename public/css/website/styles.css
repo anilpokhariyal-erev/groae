@@ -1286,7 +1286,9 @@ img.corporateImg {
 }
 
 .sliderContent {
-  position: absolute;
+  background: gainsboro;
+  padding: 50px;
+  margin-top: 21px;
   right: 47%;
   top: 75px;
   display: flex;

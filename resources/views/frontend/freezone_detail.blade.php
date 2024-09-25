@@ -35,7 +35,7 @@
 
     <!-- About Banner -->
     <section>
-        <div class="container" style="position: relative; z-index:0">
+        <div class="container" style="position: relative; z-index:0; margin-top: 150px;">
             <div>
                 @if (count($freezone_detail->offers))
                     <div class="businessIncorpContainer" style="margin-top: 50px;">
