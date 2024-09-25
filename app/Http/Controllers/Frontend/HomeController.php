@@ -101,8 +101,7 @@ class HomeController extends Controller
         return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
     }
 
-
-    public function package_detail(Request $request, $package_id)
+    public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
     {
         $freezone_detail = Freezone::with('freezone_pages')->whereHas('freezone_pages', function ($query) {
             return $query->where('status', 1);

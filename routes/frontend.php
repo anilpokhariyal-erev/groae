@@ -32,7 +32,6 @@ Route::get('compare-freezone', [HomeController::class, 'compare_freezone'])->nam
 Route::get('explore-freezone/{id?}', [HomeController::class, 'explore_freezone'])->name('explore-freezone');
 Route::post('get-freezones', [HomeController::class, 'get_freezone'])->name('get-freezones');
 Route::get('freezone-detail/{slug}/{name?}', [HomeController::class, 'freezone_detail'])->name('freezone-detail');
-Route::get('package-detail/{id}', [HomeController::class, 'package_detail'])->name('package-detail');
 
 Route::resource('calculate-licensecosts', CostCalculatorController::class)->only(['index', 'store']);
 Route::get('calculate-licensecost-payment/{id}', [CostCalculatorController::class, 'settle_payment'])->name('calculate-licensecosts.settle_payment');
