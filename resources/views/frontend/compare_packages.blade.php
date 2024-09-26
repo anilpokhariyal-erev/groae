@@ -25,30 +25,49 @@
                     </div>
                     <div class="compareTableColumn-2">
                         <div class="compTb1">
-                            @foreach ($packages as $package)
-                                <div class="compareTableColumnInnr-2">
-                                    <div
-                                        class="{{ $package->title ? 'selectsecondColumn' : 'selectFirstColumn' }}">
-                                        <ul>
-                                            <h3 class="{{ $package->title ? 'selectClr' : 'usersName' }}">
-                                               {{$package->freezone->name}} [{{ $package->title }}]</h3>
-                                            <div class="userSubList">
-                                            @foreach ($package->packageLines as $line)
-                                                <li class="userList {{ $line->attribute_label ? 'whiteTxt' : '' }}">
+                        @foreach ($packages as $package)
+                            <div class="compareTableColumnInnr-2">
+                                <div class="{{ $package->title ? 'selectsecondColumn' : 'selectFirstColumn' }}">
+                                    <ul>
+                                        <h3 class="{{ $package->title ? 'selectClr' : 'usersName' }}">
+                                        {{ $package->freezone->name }} <br>[{{ $package->title }}]</h3>
+                                        <div class="userSubList">
+                                            <!-- Loop through attributes instead of packageLines -->
+                                            @foreach ($attributes as $attribute)
+                                                @php
+                                                    // Find the matching package line for this attribute
+                                                    $line = $package->packageLines->firstWhere('attribute_id', $attribute->id);
+                                                @endphp
+                                                
+                                                <li class="userList {{ $line ? 'whiteTxt' : '' }}">
                                                     <p>
-                                                    {{ $line->attribute_label }}: {{ $line->attribute_option_id ?? 'Not available' }}
+                                                        <!-- Display the attribute option value or 'None' if not available -->
+                                                        {{ $line ? $line->attributeOption->value : '-' }}
                                                     </p>
                                                 </li>
                                             @endforeach
-                                            </div>
-                                        </ul>
-                                    </div>
-
-                                    <div class="cutIconDiv" id="{{ $package->id }}">
-                                        <img src="{{ asset('images/cut-icon.png') }}" alt="">
-                                    </div>
+                                        </div>
+                                    </ul>
                                 </div>
-                            @endforeach
+
+                                <div class="cutIconDiv" id="{{ $package->id }}">
+                                    <img src="{{ asset('images/cut-icon.png') }}" alt="">
+                                </div>
+                                <div class="compareSecondColumn">
+                                    <div class="columnInnr1">
+                                        <img class="itemLogo"
+                                            src="{{ $package->freezone->logo ? Storage::url($package->freezone->logo) : asset('images/placeholder.png') }}"
+                                            alt="">
+                                        <h3 class="usersName">
+                                            <p>{{ $package->freezone->name }}</p>
+                                        </h3>
+                                    </div>
+                                    <p class="rupeesTxt">Starting from <br>{{ $package->currency }}  {{ $package->price }}* / Monthly</p>
+                                </div>
+                            </div>
+                        @endforeach
+
+
                         </div>
                         <div class="compTb2">
                             <div class="bannerBtns" style="margin-top: 0px;">
