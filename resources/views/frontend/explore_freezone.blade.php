@@ -35,7 +35,7 @@
                                     <img src='{{ $item->freezone->logo ? Storage::url($item->freezone->logo) : asset('images/placeholder.png') }}' alt="">
                                 </div>
                                 <div class="secondLayer">
-                                    <h3 class="blogHeading text-left">{{ $item->freezone->name }}</h3>
+                                    <h3 class="blogHeading text-left">{{ $item->freezone->name }} <br>{{$item->title}}</h3>
                                     <p class="blogDetail text-left">{{ $item->description }}</p>
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
                                     <div class="compareSearchOption">
@@ -47,7 +47,7 @@
                                         <div class="compareInput">
                                             <label class="labelcontainer">Compare
                                                 <input class="checkbox" id="package_{{ $item->id }}"
-                                                    data-checkbox="{{ $item->id . '|' . $item->name . '|' . ($item->logo ? Storage::url($item->logo) : asset('images/placeholder.png')) }}"
+                                                    data-checkbox="{{ $item->id . '|' . $item->freezone->name . '<br>' . $item->title . '|' . ($item->logo ? Storage::url($item->logo) : asset('images/placeholder.png')) }}"
                                                     type="checkbox">
                                                 <span class="checkmark"></span>
                                             </label>
