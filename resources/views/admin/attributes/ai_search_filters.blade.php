@@ -6,6 +6,7 @@
                 <button type="button" id="add-dropdown" class="btn btn-secondary mt-2 mb-2">
                     <i class="fa fa-plus"></i> Add More
                 </button>
+                <b>(Add up to {{$maxValue}} filter)</b>
             </div>
 
             @if(session('success'))

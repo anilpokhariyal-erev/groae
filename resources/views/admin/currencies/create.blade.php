@@ -31,19 +31,6 @@
                         </div>
                     </div>
 
-                    <!-- Status -->
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="status">Status <span class="text-danger">*</span></label>
-                            <select name="status" id="status" class="custom-select">
-                                <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
-                            </select>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Save Button -->
                 <div class="ba_flex align_items_center">
                     <button class="mt-1 btn btn-primary">Save</button>

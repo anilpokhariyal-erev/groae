@@ -147,7 +147,7 @@
                         "paging": true, // Enable pagination
                         "searching": true, // Enable search
                         "ordering": true, // Enable sorting
-                        "order": [[ 0, "desc" ]], // Default order by ID descending
+                        "order": [[ 0, "asc" ]], // Default order by ID Ascending
                         "pageLength": 10 // Number of entries to show per page
                     });
                 });

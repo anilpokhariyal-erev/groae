@@ -27,22 +27,12 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="code">Currency Code <span class="text-danger">*</span></label>
-                            <input name="code" id="code" value="{{ old('code', $currency->code) }}" type="text" class="form-control">
+                            <input name="code" id="code" value="{{ old('code', $currency->code) }}" type="text" class="form-control" readonly>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('code')" />
                         </div>
                     </div>
 
-                    <!-- Status -->
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="status">Status <span class="text-danger">*</span></label>
-                            <select name="status" id="status" class="custom-select">
-                                <option value="1" {{ old('status', $currency->status) == 1 ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ old('status', $currency->status) == 0 ? 'selected' : '' }}>Inactive</option>
-                            </select>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
-                        </div>
-                    </div>
+
                 </div>
 
                 <!-- Update Button -->
