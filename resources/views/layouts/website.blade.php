@@ -162,6 +162,15 @@
         </footer>
     @endif
     <div id="template_data" data-points="{{ htmlentities(config('app.url')) }}" style="display: none;"></div>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C7HRMH34BC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-C7HRMH34BC');
+</script>
 </body>
 
 </html>
