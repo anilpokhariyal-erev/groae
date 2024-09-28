@@ -20,6 +20,7 @@ class PackageHeader extends Model
         'currency',
         'trending',
         'visa_package',
+        'allowed_free_packages',
         'status',
         'updated_by'
     ];
