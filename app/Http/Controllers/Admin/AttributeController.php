@@ -185,5 +185,14 @@ class AttributeController extends Controller
         return redirect()->route('attributes.index')->with('success', 'Attribute disabled successfully.');
     }
 
+    public function enabled($id)
+    {
+        $attribute = Attribute::findOrFail($id);
+        $attribute->status = 1;
+        $attribute->save();
+
+        return redirect()->route('attributes.index')->with('success', 'Attribute enabled successfully.');
+    }
+
 
 }

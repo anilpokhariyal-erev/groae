@@ -53,13 +53,25 @@
                             <td>{{ $attribute->name }}</td>
                             <td>{{ $attribute->label }}</td>
                             <td>
-                                    <span class="badge {{ $attribute->status ? 'badge-success' : 'badge-danger' }}">
-                                        {{ $attribute->status ? 'Active' : 'Inactive' }}
-                                    </span>
+                                <span class="badge {{ $attribute->status ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $attribute->status ? 'Active' : 'Inactive' }}
+                                </span>
                             </td>
                             <td>
                                 <a href="{{ route('attributes.edit', $attribute->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="{{ route('attributes.disabled', $attribute->id) }}" class="btn btn-secondary btn-sm">Disabled</a>
+                                @if($attribute->status)
+                                    <a href="{{ route('attributes.disabled', $attribute->id) }}"
+                                       class="btn btn-secondary btn-sm"
+                                       onclick="return confirm('Are you sure you want to disable this attribute?');">
+                                        Disable
+                                    </a>
+                                @else
+                                    <a href="{{ route('attributes.enabled', $attribute->id) }}"
+                                       class="btn btn-primary btn-sm"
+                                       onclick="return confirm('Are you sure you want to enable this attribute?');">
+                                        Enable
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

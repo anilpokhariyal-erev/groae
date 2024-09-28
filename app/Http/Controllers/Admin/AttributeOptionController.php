@@ -152,5 +152,13 @@ class AttributeOptionController extends Controller
 
         return redirect()->route('admin.attribute-options.index')->with('success', 'Attribute disabled successfully.');
     }
+    public function enabled($id)
+    {
+        $attribute = AttributeOption::findOrFail($id);
+        $attribute->status = 1;
+        $attribute->save();
+
+        return redirect()->route('admin.attribute-options.index')->with('success', 'Attribute enabled successfully.');
+    }
 
 }
