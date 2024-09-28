@@ -26,7 +26,7 @@
 
                         <div class="position-relative form-group">
                             <label for="label">Label <span class="text-danger">*</span></label>
-                            <input name="label" id="label" type="text" value="{{ old('label') }}" class="form-control" onkeyup="checkInput(this, 'label')">
+                            <input name="label" id="label" type="text" value="{{ old('label') }}" class="form-control">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('label')" />
                             <div id="label-suggestions" class="suggestions-box"></div>
                         </div>

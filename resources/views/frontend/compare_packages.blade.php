@@ -30,7 +30,7 @@
                                 <div class="{{ $package->title ? 'selectsecondColumn' : 'selectFirstColumn' }}">
                                     <ul>
                                         <h3 class="{{ $package->title ? 'selectClr' : 'usersName' }}">
-                                        {{ $package->freezone->name }} <br>[{{ $package->title }}]</h3>
+                                        {{ $package->freezone->name }}</h3>
                                         <div class="userSubList">
                                             <!-- Loop through attributes instead of packageLines -->
                                             @foreach ($attributes as $attribute)
@@ -62,7 +62,7 @@
                                             <p>{{ $package->freezone->name }}</p>
                                         </h3>
                                     </div>
-                                    <p class="rupeesTxt">Starting from <br>{{ $package->currency }}  {{ $package->price }}* / Monthly</p>
+                                    <p class="rupeesTxt">Starting from <br>{{ $package->currency }}  {{ $package->price }}* </p>
                                 </div>
                             </div>
                         @endforeach

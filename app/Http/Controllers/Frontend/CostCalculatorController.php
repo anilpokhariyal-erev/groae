@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\License;
 use App\Models\Package;
+use App\Models\Attribute;
+use App\Models\AttributeOption;
+use App\Models\PackageHeader;
+use App\Models\PackageLine;
 use App\Models\Activity;
 use App\Models\Freezone;
 use App\Models\ContactUs;
@@ -27,134 +31,103 @@ class CostCalculatorController extends Controller
     {
         $freezones = Freezone::select('id', 'uuid', 'name')->where('status', 1)->get();
         $freezone_data = [];
+        $max_visa_package = 0;
         if ($request->freezone) {
-            $packages = Package::where('status', 1)
+            $max_visa_package = PackageHeader::where('status', 1)
                 ->whereHas('freezone', function ($query) use ($request) {
                     $query->where('uuid', $request->freezone);
-                })->distinct()->pluck('office');
-
-            $license_validity = Package::where('status', 1)
-                ->whereHas('freezone', function ($query) use ($request) {
-                    $query->where('uuid', $request->freezone);
-                })->distinct()->orderBy('license_validity', 'ASC')->pluck('license_validity');
+                })->max('visa_package');
 
             $freezone_data = Freezone::where('uuid', $request->freezone)->with(['licenses', 'visa_types', 'visa_add_ons', 'locations', 'activity_groups'])->first();
 
-            $freezone_data->offices = $packages;
-            $freezone_data->license_validity = $license_validity;
         }
-        return view('frontend.cost_calculator.calculate_licensecost',  compact('freezones', 'freezone_data'));
+        $attributes = Attribute::where('status',1)->with('options')->get();
+        return view('frontend.cost_calculator.calculate_licensecost',  compact('freezones', 'freezone_data', 'attributes', 'max_visa_package'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(CostCalculatorSummaryRequest $request)
-    {
-
+    {        
         if (!Auth::guard('customer')->check()) {
             Session::put('form_input', $request->input());
             return redirect()->route('customer.login')->with('info', ResponseMessage::LOGIN_FIRST_COST_CALCULATOR);
         }
+        
+        $freezone = Freezone::where('uuid', $request->freezone)->firstOrFail();
+        $query = PackageHeader::where('freezone_id', $freezone->id)->with(['packageLines', 'freezone']);
 
-        $license = License::find($request->license);
-
-        if ($request->visa_package == '4+' || $license->name == 'Others') {
-            ContactUs::create([
-                'first_name' => auth('customer')->user()->first_name,
-                'last_name' => auth('customer')->user()->last_name,
-                'email' => auth('customer')->user()->email,
-                'iso2' => auth('customer')->user()->iso2,
-                'dialCode' => auth('customer')->user()->dialCode,
-                'mobile_number' => auth('customer')->user()->mobile_number,
-                'type' => 'freezone',
-                'message' => json_encode($request->except('_token')),
-            ]);
-
-            return back()->with('success', ResponseMessage::CONTACT_US_SUBMIT);
+        // Process selected attributes (attribute_1, attribute_2, ...)
+        $attributes = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'attribute_') === 0) {
+                $attributeId = str_replace('attribute_', '', $key);
+                $attributes[$attributeId] = $value;
+                $query->whereHas('packageLines', function ($q) use ($attributeId, $value) {
+                    $q->where('attribute_id', $attributeId)
+                    ->where('attribute_option_id', $value);
+                });
+            }
         }
 
+        // Process selected activities
+        if ($request->filled('activities_selection')) {
+            // Extract activity IDs from the `activities_selection` field
+            $pattern = '/\|(.*?)\|/';
+            preg_match_all($pattern, $request->activities_selection, $matches);
+            $activityIds = $matches[1];
 
-        $freezone = Freezone::select('id', 'name', 'uuid')->where('uuid', $request->freezone)->with([
-            'licenses' => function ($query) use ($request) {
-                $query->where('status', 1)
-                    ->where('licenses.id', $request->license);
-            },
-            'packages' => function ($query) use ($request) {
-                $query->where('status', 1)
-                    ->where('packages.office', $request->office)
-                    ->where('packages.visa_package', $request->visa_package)
-                    ->where('packages.license_validity', $request->license_validity);
-            },
-            'visa_types' => function ($query) use ($request) {
-                $query->where('status', 1)
-                    ->where('visa_types.id', $request->visa_type);
-            },
-            'visa_add_ons' => function ($query) use ($request) {
-                $query->where('status', 1)
-                    ->where('visa_add_ons.id', $request->visa_add_on);
-            },
-            'locations' => function ($query) use ($request) {
-                $query->where('status', 1)
-                    ->where('locations.id', $request->location);
-            }
-        ])->first();
+            $query->whereHas('freezone.activities', function ($q) use ($activityIds) {
+                $q->whereIn('id', $activityIds);
+            });
+        }
+    
+        // Fetch the best matching package based on the selected attributes and activities
+        $bestPackage = $query->orderBy('price', 'asc')->first();
 
+        $visaPackageAttribute = Attribute::where('name', 'visa_package')->first();
+        $license = License::where('id', $request->license_id)->first();
+
+        // Visa processing
         $packages_array = [];
         $total = 0;
-
-        if (!$freezone || count($freezone->licenses) === 0 || count($freezone->packages) === 0 || ((count($freezone->visa_types) === 0 || count($freezone->visa_add_ons) === 0 || count($freezone->locations) === 0) && $request->visa_package != 0)) {
-            ContactUs::create([
-                'first_name' => auth('customer')->user()->first_name,
-                'last_name' => auth('customer')->user()->last_name,
-                'email' => auth('customer')->user()->email,
-                'iso2' => auth('customer')->user()->iso2,
-                'dialCode' => auth('customer')->user()->dialCode,
-                'mobile_number' => auth('customer')->user()->mobile_number,
-                'type' => 'freezone',
-                'message' => json_encode($request->except('_token')),
-            ]);
-
-            return back()->with('success', ResponseMessage::CONTACT_US_SUBMIT);
-        }
 
         foreach ($request->get('visa_type', []) as $key => $visa_type) {
             $visa_type_data = $freezone->visa_types()->where('id', $request->visa_type[$key])->first();
             $visa_add_on_data = $freezone->visa_add_ons()->where('id', $request->visa_add_on[$key])->first();
             $location_data = $freezone->locations()->where('id', $request->location[$key])->first();
-
-            $visa_package_name = $visa_type_data->name . ', ' . $visa_add_on_data->name . ', ' . $location_data->name;
-            $visa_package_price = floatval($visa_type_data->price) + floatval($visa_add_on_data->price) + floatval($location_data->price);
-
-            array_push($packages_array, ['name' => $visa_package_name, 'price' => $visa_package_price]);
-            $total += $visa_package_price;
+    
+            if ($visa_type_data && $visa_add_on_data && $location_data) {
+                $visa_package_name = $visa_type_data->name . ', ' . $visa_add_on_data->name . ', ' . $location_data->name;
+                $visa_package_price = floatval($visa_type_data->price) + floatval($visa_add_on_data->price) + floatval($location_data->price);
+    
+                array_push($packages_array, ['name' => $visa_package_name, 'price' => $visa_package_price]);
+                $total += $visa_package_price;
+            }
         }
 
-
+        // for activities
         $pattern = '/\|(.*?)\|/';
         preg_match_all($pattern, $request->activities_selection, $matches);
         $activityIds = $matches[1];
 
         $activities = Activity::whereIn('id', $activityIds)->select('id', 'name', 'activity_group_id')->where('status', 1)->with('activity_group')->get();
 
-        $total += $freezone->licenses[0]->price +
-            $freezone->packages[0]->price +
-            ($freezone->visa_types[0]?->price ?? 0) +
-            ($freezone->visa_add_ons[0]?->price ?? 0) +
-            ($freezone->locations[0]?->price ?? 0);
+        // Process selected activities for the summary
+        $activities = Activity::whereIn('id', $activityIds)
+        ->select('id', 'name', 'activity_group_id')
+        ->where('status', 1)
+        ->with('activity_group')
+        ->get();
 
+        // Generate UUID for the session
         $id = Str::uuid();
-        $package_price = $freezone->packages[0]->price;
-        $license_price = $freezone->licenses[0]->price;
-        $visa_package = $request->visa_package;
-        $license_validity = $request->license_validity;
-        $license_name = $freezone->licenses[0]->name;
-        $uuid = $freezone->uuid;
-        $request_data = json_encode($request->except('_token'));
 
-        Cache::put($id, json_encode(compact('visa_package', 'license_validity', 'license_name', 'package_price', 'license_price', 'uuid', 'request_data', 'total')), 36000);
-        return view('frontend.cost_calculator.cost_summary')->with(compact('freezone', 'activities', 'total', 'id', 'packages_array'));
+        // Pass the necessary values to the view
+        return view('frontend.cost_calculator.cost_summary')->with(compact('freezone', 'activities', 'total', 'id', 'packages_array', 'bestPackage'));
     }
+
 
     /**
      * Display the specified resource.
