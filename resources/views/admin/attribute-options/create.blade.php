@@ -30,7 +30,7 @@
 
                         <div class="position-relative form-group">
                             <label for="value">Value <span class="text-danger">*</span></label>
-                            <input name="value" id="value" type="text" value="{{ old('value') }}" class="form-control" onkeyup="checkInput(this)">
+                            <input name="value" id="value" type="text" value="{{ old('value') }}" class="form-control">
                             <ul id="suggestions" class="list-group" style="display: none; max-height: 150px; overflow-y: auto;"></ul>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('value')" />
                         </div>
@@ -58,17 +58,6 @@
     </div>
 
     <script>
-        function checkInput(input) {
-            const value = input.value;
-            const regex = /^[a-zA-Z0-9-_]*$/; // Allow letters, numbers, and underscore only
-
-            if (!regex.test(value)) {
-                input.setCustomValidity("Only underscore, letters, and numbers are allowed.");
-            } else {
-                input.setCustomValidity("");
-                fetchSuggestions(value);
-            }
-        }
 
         function fetchSuggestions(query) {
             if (query.length > 1) {
@@ -85,10 +74,6 @@
                 document.getElementById('suggestions').style.display = 'none';
             }
         }
-
-        document.getElementById('value').addEventListener('keyup', function () {
-            checkInput(this);
-        });
 
         function selectSuggestion(value) {
             const input = document.getElementById('value');
