@@ -62,6 +62,7 @@
                             <th>Freezone</th>
                             <th>Price</th>
                             <th>Status</th>
+                            <th>Trending</th>
                             <th>Created Date</th>
                             <th>Actions</th>
                         </tr>
@@ -75,6 +76,7 @@
                                 <td>{{ $package->freezone->name }}</td>
                                 <td>{{ $package->price }}</td>
                                 <td>@if($package->status == 1) Active @else Inactive @endif</td>
+                                <td>@if($package->trending == 1) Yes @else No @endif</td>
                                 <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>
                                 <td>
                                     <a href="{{ route('package.edit', $package->id) }}" class="ml-1 mr-1">Edit</a>

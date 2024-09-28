@@ -244,6 +244,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::delete('attributes/{attribute}', [AttributeController::class, 'destroy'])->name('attributes.destroy');
     Route::get('attributes/suggestions', [AttributeController::class, 'getSuggestions'])->name('attributes.suggestions');
     Route::get('attributes/{id}/disabled', [AttributeController::class, 'disabled'])->name('attributes.disabled');
+    Route::get('attributes/{id}/enabled', [AttributeController::class, 'enabled'])->name('attributes.enabled');
 
     // AI Search Filters
     Route::get('/attributes/ai-tool-search-filters', [AttributeController::class, 'aiSearchFilters'])->name('admin.ai_search_filters');  
@@ -260,6 +261,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/get-attribute-options/{id}', [AttributeOptionController::class, 'getAttributeOptions']);
     Route::get('attribute-options/suggestions', [AttributeOptionController::class, 'getSuggestions']);
     Route::get('attribute-options/{id}/disabled', [AttributeOptionController::class, 'disabled'])->name('admin.attribute-options.disabled');
+    Route::get('attribute-options/{id}/enabled', [AttributeOptionController::class, 'enabled'])->name('admin.attribute-options.enabled');
 
     // Packages Manager
     Route::get('packages', [PackageController::class, 'index'])->name('package.index');

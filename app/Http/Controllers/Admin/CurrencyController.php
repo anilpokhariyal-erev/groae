@@ -25,8 +25,8 @@ class CurrencyController extends Controller
             'symbol' => 'required|string|max:255',
             'label' => 'required|string|max:255',
             'code' => 'required|string|max:10|unique:currencies',
-            'status' => 'required|boolean',
         ]);
+        $validated['status'] = 1;
 
         Currency::create($validated);
         return redirect()->route('currency.view');
@@ -42,8 +42,6 @@ class CurrencyController extends Controller
         $validated = $request->validate([
             'symbol' => 'required|string|max:255',
             'label' => 'required|string|max:255',
-            'code' => 'required|string|max:10|unique:currencies,code,' . $currency->id,
-            'status' => 'required|boolean',
         ]);
 
         $currency->update($validated);

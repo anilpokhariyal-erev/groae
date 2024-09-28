@@ -120,13 +120,6 @@
                 </a>
             </li>
 
-            <li class="{{ $has_role_or_permission('manage-currencies', 'ba_display_none') }}">
-                    <a href="{{route('currency.view')}}" class="{{ Route::is('currency.*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon fa-solid fa-users"></i>
-                        Manage Currency
-                    </a>
-                </li>
-
             @if(
                 auth()->user()->hasRole('superadmin') || 
                 auth()->user()->can('view-freezones') ||
@@ -251,7 +244,7 @@
             <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
                 <a href="{{route('numbers.view')}}" class="{{ Route::is('numbers.view.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Numbers
+                    Manage Groae Numbers
                 </a>
             </li>
 
@@ -263,6 +256,12 @@
                 </a>
             </li>
             @endif
+            <li class="{{ $has_role_or_permission('manage-currencies', 'ba_display_none') }}">
+                <a href="{{route('currency.view')}}" class="{{ Route::is('currency.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon fa-solid fa-users"></i>
+                    Manage Currency
+                </a>
+            </li>
 
         </ul>
     </div>

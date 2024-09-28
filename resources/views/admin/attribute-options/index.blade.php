@@ -53,11 +53,23 @@
                         <td>{{ $option->value }}</td>
                         <td>
                              <span class="badge {{ $option->status ? 'badge-success' : 'badge-danger' }}">
-                                        {{ $option->status ? 'Active' : 'Inactive' }}
-                                    </span>
+                                 {{ $option->status ? 'Active' : 'Inactive' }}
+                             </span>
                         <td>
                             <a href="{{ route('admin.attribute-options.edit', $option->id) }}" class="btn btn-warning">Edit</a>
-                            <a href="{{ route('admin.attribute-options.disabled', $option->id) }}" class="btn btn-secondary btn-sm">Disabled</a>
+                            @if($option->status)
+                                <a href="{{ route('admin.attribute-options.disabled', $option->id) }}"
+                                   class="btn btn-secondary btn-sm"
+                                   onclick="return confirm('Are you sure you want to disable this option?');">
+                                    Disable
+                                </a>
+                            @else
+                                <a href="{{ route('admin.attribute-options.enabled', $option->id) }}"
+                                   class="btn btn-secondary btn-sm"
+                                   onclick="return confirm('Are you sure you want to enable this option?');">
+                                    Enable
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
