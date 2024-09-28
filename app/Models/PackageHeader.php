@@ -16,10 +16,12 @@ class PackageHeader extends Model
         'freezone_id',
         'price',
         'renewable_price',
+        'discounted_price',
         'currency',
+        'trending',
+        'visa_package',
         'status',
-        'updated_by',
-        'trending'
+        'updated_by'
     ];
 
     // Relationship: PackageHeader belongs to a Freezone
