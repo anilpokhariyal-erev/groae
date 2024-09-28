@@ -86,6 +86,25 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('description')" />
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="visa_package">Visa Package <span class="text-danger">*</span></label>
+                            <input
+                                    type="number"
+                                    name="visa_package"
+                                    id="visa_package"
+                                    value="{{ old('visa_package', $package->visa_package ?? '') }}"
+                                    class="form-control"
+                                    min="0"
+                                    max="99"
+                                    required
+                            >
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('visa_package')" />
+                        </div>
+                    </div>
+
+
                     <!-- Trending Checkbox -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">

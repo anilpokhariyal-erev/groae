@@ -20,7 +20,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="name">System Name <span class="text-danger" title="Only Hyphen allowed. Spaces and special characters not allowed.">*</span></label>
-                            <input name="name" id="name" type="text" value="{{ old('name', $attribute->name) }}" class="form-control" onkeyup="checkInput(this)">
+                            <input name="name" id="name" type="text" value="{{ old('name', $attribute->name) }}" class="form-control" onkeyup="checkInput(this)" readonly>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('name')" />
                             <div id="suggestions" class="suggestions-box"></div>
                         </div>
@@ -45,6 +45,20 @@
                     </div>
 
                 </div>
+
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <input
+                                type="checkbox"
+                                name="show_in_calculator"
+                                id="show_in_calculator"
+                                value="1"
+                                {{ old('show_in_calculator', $attribute->show_in_calculator) ? 'checked' : '' }}>
+                        <label for="show_in_calculator">Visible on calculator</label>
+                        <x-input-error class="mt-2 text-red" :messages="$errors->get('show_in_calculator')" />
+                    </div>
+                </div>
+
 
                 <div class="ba_flex align_items_center">
                     <button class="mt-1 btn btn-primary">Update</button>

@@ -42,6 +42,8 @@ class PackageController extends Controller
             'package_lines.*.attribute_id' => 'required|exists:attributes,id',
             'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
             'package_lines.*.addon_cost' => 'required|numeric|min:0',
+            'visa_package' => 'required|integer|min:0|max:99',
+
         ]);
 
         // Determine if trending checkbox is checked
@@ -58,6 +60,7 @@ class PackageController extends Controller
             'status' => 1,
             'trending' => $isTrending,  // Save the trending value
             'updated_by' => auth()->id(),
+            'visa_package'=>$request->visa_package
         ]);
 
         // Loop through the package lines and create each PackageLine
@@ -106,6 +109,7 @@ class PackageController extends Controller
                 'package_lines.*.attribute_id' => 'required|exists:attributes,id',
                 'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
                 'package_lines.*.addon_cost' => 'required|numeric|min:0',
+                'visa_package' => 'required|integer|min:0|max:99',
             ]);
 
             // If validation passes, update the package
@@ -113,6 +117,7 @@ class PackageController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
                 'freezone_id' => $request->freezone_id,
+                'visa_package' => $request->visa_package,
                 'price' => $request->price,
                 'trending' => $request->trending ? true : false, // Set trending based on checkbox
                 'updated_by' => auth()->id(),

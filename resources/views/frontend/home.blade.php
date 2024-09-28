@@ -58,7 +58,8 @@
                                     alt="">
                             </div>
                             <div class="bottomLayer">
-                                <h3 class="blogHeading">{{ $item->name }}</h3>
+                                <a href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
+                                   class="viewInnrTxt"><h3 class="blogHeading">{{ $item->name }}</h3></a>
                                 <p class="blogDetail">{{ $item->about }}</p>
                                 <button class="viewDetailBtn"><a
                                         href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
