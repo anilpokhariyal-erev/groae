@@ -45,6 +45,14 @@
 
                 </div>
 
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <input type="checkbox" name="show_in_calculator" id="show_in_calculator" value="1" {{ old('show_in_calculator') ? 'checked' : '' }}>
+                        <label for="trending">Visible on calculator</label>
+                        <x-input-error class="mt-2 text-red" :messages="$errors->get('show_in_calculator')" />
+                    </div>
+                </div>
+
                 <div class="ba_flex align_items_center">
                     <button class="mt-1 btn btn-primary">Save</button>
                 </div>

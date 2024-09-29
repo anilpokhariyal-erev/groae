@@ -62,6 +62,7 @@
                             <th>Freezone</th>
                             <th>Price</th>
                             <th>Status</th>
+                            <th>Visa package</th>
                             <th>Trending</th>
                             <th>Created Date</th>
                             <th>Actions</th>
@@ -76,6 +77,7 @@
                                 <td>{{ $package->freezone->name }}</td>
                                 <td>{{ $package->price }}</td>
                                 <td>@if($package->status == 1) Active @else Inactive @endif</td>
+                                <td>{{ $package->visa_package }}</td>
                                 <td>@if($package->trending == 1) Yes @else No @endif</td>
                                 <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>
                                 <td>

@@ -41,7 +41,8 @@ class CostCalculatorController extends Controller
             $freezone_data = Freezone::where('uuid', $request->freezone)->with(['licenses', 'visa_types', 'visa_add_ons', 'locations', 'activity_groups'])->first();
 
         }
-        $attributes = Attribute::where('status',1)->with('options')->get();
+        $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])->with('options')->get();
+
         return view('frontend.cost_calculator.calculate_licensecost',  compact('freezones', 'freezone_data', 'attributes', 'max_visa_package'));
     }
 

@@ -11,7 +11,8 @@ class Attribute extends Model
         'name',
         'label',
         'status',
-        'is_ai_search_enabled'
+        'is_ai_search_enabled',
+        'show_in_calculator'
     ];
 
     // Relationship: Attribute has many AttributeOptions

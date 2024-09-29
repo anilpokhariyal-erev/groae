@@ -43,6 +43,7 @@
                         <th>Name</th>
                         <th>Label</th>
                         <th>Status</th>
+                        <th>Visible on Calculator</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -57,6 +58,7 @@
                                     {{ $attribute->status ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
+                            <td>{{ $attribute->show_in_calculator ? 'Yes' : 'No' }}</td>
                             <td>
                                 <a href="{{ route('attributes.edit', $attribute->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                 @if($attribute->status)

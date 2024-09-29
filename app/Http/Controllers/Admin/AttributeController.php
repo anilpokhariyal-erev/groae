@@ -43,6 +43,7 @@ class AttributeController extends Controller
             'name' => 'required|string|max:255',
             'label' => 'required|string|max:255',
             'status' => 'required|boolean',
+            'show_in_calculator' => 'boolean',
         ]);
 
         if (Attribute::where('name', $validatedData['name'])
@@ -71,19 +72,13 @@ class AttributeController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
             'label' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
-        if (Attribute::where('name', $validatedData['name'])
-            ->where('id', $id)
-            ->where('status', $validatedData['status'])
-            ->exists()) {
-            return redirect()->back()->withErrors(['status' => 'The combination of name and label already exists.'])->withInput();
-        }
 
+        $validatedData['show_in_calculator'] = $request->has('show_in_calculator');
         $attribute = Attribute::findOrFail($id);
-        if ($attribute->countInPackage()) {
+        if ($attribute->countInPackage() and $validatedData['status'] == false) {
             return redirect()->back()->withErrors(['name' => 'The attribute is already use in package.'])->withInput();
         }
         $attribute->update($validatedData);
