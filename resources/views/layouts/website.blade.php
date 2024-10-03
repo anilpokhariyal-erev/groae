@@ -8,17 +8,17 @@
     <title>{{ config('app.name', 'GroAE') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-    <link href="{{ asset('css/website/owl.carousel.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/website/owl.theme.default.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/website/styles.css') }}" rel="stylesheet" />
+    <link href="{{ secure_asset('css/website/owl.carousel.min.css') }}" rel="stylesheet" />
+    <link href="{{ secure_asset('css/website/owl.theme.default.min.css') }}" rel="stylesheet" />
+    <link href="{{ secure_asset('css/website/styles.css') }}" rel="stylesheet" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="{{ asset('js/website/app.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ secure_asset('js/website/app.js') }}" crossorigin="anonymous"></script>
     @yield('js-imports')
-    <script src="{{ asset('js/website/validation.js') }}" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ secure_asset('js/website/validation.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ secure_asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
 
 </head>
 
