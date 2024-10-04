@@ -16,7 +16,7 @@
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
             <div class="app-header header-shadow">
                 <div class="app-header__logo">
-                    <img src="{{ asset('images/GroAE_Logo.png') }}" width="100" class="logo-src">
+                    <img src="{{ secure_asset('images/GroAE_Logo.png') }}" width="100" class="logo-src">
                     <div class="header__pane ml-auto">
                         <div>
                             <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -129,10 +129,10 @@
         </div>
 
         <script src="https://kit.fontawesome.com/428b785ee5.js" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/select2.min.js') }}" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/ckeditor.js') }}" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/script.js') }}?v=0.4" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/select2.min.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/ckeditor.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/script.js') }}?v=0.4" crossorigin="anonymous"></script>
         @push('scripts')
             <!-- DataTables CSS -->
             <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">

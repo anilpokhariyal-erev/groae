@@ -7,7 +7,7 @@
                     <div class="paymntConfirmationContainer">
                         <div class="paymntConfirmWrapper">
                             <div class="thankyouWrap1">
-                                <img src="{{ asset('images/check-icon.png') }}" alt="">
+                                <img src="{{ secure_asset('images/check-icon.png') }}" alt="">
                                 <h2>Thank You!</h2>
                             </div>
                             <div class="thankyouWrap2">
@@ -32,7 +32,7 @@
                             <div class="searchInnrWrapper" style="margin-top: 30px;">
                                 <div class="searchBlogLayer">
                                     <div class="firstLayer">
-                                        <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                                     </div>
                                     <div class="secondLayer">
                                         <a href="{{route('about_us')}}">
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="searchBlogLayer">
                                     <div class="firstLayer">
-                                        <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                                     </div>
                                     <div class="secondLayer">
                                         <h3 class="blogHeading text-left">IT Infrastructure Setup</h3>

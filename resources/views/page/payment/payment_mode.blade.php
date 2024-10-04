@@ -30,7 +30,7 @@
                             <a href="{{route('calculate_licensecost')}}" class="nav-link">Cost Calculator </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ secure_asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     <li class="subInnrLinks">
@@ -86,7 +86,7 @@
             <div class="costCalculateContainer">
                 <div class="container">
                     <div class="backBtn ">
-                        <a class="backAnchor" href="{{route('article_blogs')}}"><img src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                        <a class="backAnchor" href="{{route('article_blogs')}}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                         <h2 class="backTxt">Back</h2>
                     </div>
                     <div class="topHeading">
@@ -125,15 +125,15 @@
             <div class="footerTop">
                 <div class="footerLeft">
                     <div>
-                        <img src="{{ asset('images/GroAE_Logo_Main.png') }}" alt="">
+                        <img src="{{ secure_asset('images/GroAE_Logo_Main.png') }}" alt="">
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="#"><img src="{{ asset('images/facebook.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/instagram.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/twitter.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/youtube.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/linkedin.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/twitter.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
 
                         </div>
                     </div>

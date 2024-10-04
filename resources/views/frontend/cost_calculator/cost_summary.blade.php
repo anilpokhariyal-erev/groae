@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="backBtn ">
                     <a class="backAnchor" href="{{ url()->previous() }}">
-                        <img src="{{ asset('images/cheveron-right.png') }}" alt="">
+                        <img src="{{ secure_asset('images/cheveron-right.png') }}" alt="">
                     </a>
                     <h2 class="backTxt">Back</h2>
                 </div>

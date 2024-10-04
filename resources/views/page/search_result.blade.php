@@ -101,7 +101,7 @@
                     <div class="searchInnrWrapper">
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}"
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}"
                                     alt="">
                             </div>
                             <div class="secondLayer">
@@ -112,7 +112,7 @@
                                 <div class="compareSearchOption">
                                     <button class="viewDetailBtn" style="width: auto;">
                                         <a href="" class="viewInnrTxt">View Details
-                                            <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
                                     <div class="compareInput">
@@ -126,7 +126,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}"
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}"
                                     alt="">
                             </div>
                             <div class="secondLayer">
@@ -137,7 +137,7 @@
                                 <div class="compareSearchOption">
                                     <button class="viewDetailBtn" style="width: auto;">
                                         <a href="" class="viewInnrTxt">View Details
-                                            <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
                                     <div class="compareInput">
@@ -151,7 +151,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                                <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Fujairah Freezone</h3>
@@ -161,7 +161,7 @@
                                 <div class="compareSearchOption">
                                     <button class="viewDetailBtn" style="width: auto;">
                                         <a href="" class="viewInnrTxt">View Details
-                                            <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
                                     <div class="compareInput">
@@ -176,7 +176,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-1.png') }}"
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-1.png') }}"
                                     alt="">
                             </div>
                             <div class="secondLayer">
@@ -187,7 +187,7 @@
                                 <div class="compareSearchOption">
                                     <button class="viewDetailBtn" style="width: auto;">
                                         <a href="" class="viewInnrTxt">View Details
-                                            <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
                                     <div class="compareInput">
@@ -201,7 +201,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-2.png') }}"
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-2.png') }}"
                                     alt="">
                             </div>
                             <div class="secondLayer">
@@ -212,7 +212,7 @@
                                 <div class="compareSearchOption">
                                     <button class="viewDetailBtn" style="width: auto;">
                                         <a href="" class="viewInnrTxt">View Details
-                                            <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
                                     <div class="compareInput">
@@ -268,15 +268,15 @@
             <div class="footerTop">
                 <div class="footerLeft">
                     <div>
-                        <img src="{{ asset('images/GroAE_Logo_Main.png') }}" alt="">
+                        <img src="{{ secure_asset('images/GroAE_Logo_Main.png') }}" alt="">
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="#"><img src="{{ asset('images/facebook.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/instagram.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/twitter.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/youtube.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/linkedin.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/twitter.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
 
                         </div>
                     </div>

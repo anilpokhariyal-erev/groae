@@ -29,7 +29,7 @@
                             <a href="{{route('calculate_licensecost')}}" class="nav-link">Cost Calculator </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ secure_asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     <li class="subInnrLinks">
@@ -103,13 +103,13 @@
                     <div class="searchInnrWrapper">
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Company Name Reservation</h3>
                                 <p class="blogDetail text-left">Reserve your preferred company name before the official incorporation process. Secure the identity of your business.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="{{route('pre_postdetail')}}" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
 
@@ -117,26 +117,26 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Legal Consultation for Freezone</h3>
                                 <p class="blogDetail text-left">Get expert legal advice on setting up your business in the Freezone. Understand the legal requirements and implications.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Company Name Reservation</h3>
                                 <p class="blogDetail text-left">Reserve your preferred company name before the official incorporation process. Secure the identity of your business.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
 
@@ -144,26 +144,26 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Legal Consultation for Freezone</h3>
                                 <p class="blogDetail text-left">Get expert legal advice on setting up your business in the Freezone. Understand the legal requirements and implications.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Company Name Reservation</h3>
                                 <p class="blogDetail text-left">Reserve your preferred company name before the official incorporation process. Secure the identity of your business.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
 
@@ -171,26 +171,26 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Legal Consultation for Freezone</h3>
                                 <p class="blogDetail text-left">Get expert legal advice on setting up your business in the Freezone. Understand the legal requirements and implications.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Company Name Reservation</h3>
                                 <p class="blogDetail text-left">Reserve your preferred company name before the official incorporation process. Secure the identity of your business.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
 
@@ -198,26 +198,26 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Legal Consultation for Freezone</h3>
                                 <p class="blogDetail text-left">Get expert legal advice on setting up your business in the Freezone. Understand the legal requirements and implications.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Company Name Reservation</h3>
                                 <p class="blogDetail text-left">Reserve your preferred company name before the official incorporation process. Secure the identity of your business.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
 
@@ -225,26 +225,26 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Legal Consultation for Freezone</h3>
                                 <p class="blogDetail text-left">Get expert legal advice on setting up your business in the Freezone. Understand the legal requirements and implications.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Company Name Reservation</h3>
                                 <p class="blogDetail text-left">Reserve your preferred company name before the official incorporation process. Secure the identity of your business.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
 
@@ -252,13 +252,13 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer prepostImg">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Legal Consultation for Freezone</h3>
                                 <p class="blogDetail text-left">Get expert legal advice on setting up your business in the Freezone. Understand the legal requirements and implications.</p>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">Read Full Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>

@@ -30,7 +30,7 @@
                             <a href="{{route('calculate_licensecost')}}" class="nav-link">Cost Calculator </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ secure_asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     <li class="subInnrLinks">
@@ -124,7 +124,7 @@
             <div class="exploreItemsContainer">
                 <div class="AIHeader">
                     <div class="hTxt">
-                        <img src="{{ asset('images/bot-2.png') }}" alt="">
+                        <img src="{{ secure_asset('images/bot-2.png') }}" alt="">
                         <h3>AI search to help you find the best Freezone.</h3>
                     </div>
                     <div class="pTxt">
@@ -135,56 +135,56 @@
                     <div class="searchInnrWrapper">
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Dubai Airport Freezone</h3>
                                 <p class="blogDetail text-left">Dubai Airport Freezone is a free economic zone in Dubai, United Arab Emirates, providing company formation and business setup services in Dubai.</p>
                                 <h4 class="rateTxt">Starting @AED 1000</h4>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">View Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Hamriyah Freezone</h3>
                                 <p class="blogDetail text-left">The Hamriyah Free Zone is a free zone place in the city of Sharjah in the United Arab Emirates. Free Zone is 24 square kilometers in size and has a 14 meter deep port.</p>
                                 <h4 class="rateTxt">Starting @AED 1000</h4>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">View Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                                <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Fujairah Freezone</h3>
                                 <p class="blogDetail text-left">Fujairah Free Zone is a special economic zone in Fujairah, which is one of the seven emirates that comprise the United Arab Emirates run by the Fujairah Free Zone Authority.</p>
                                 <h4 class="rateTxt">Starting @AED 1000</h4>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">View Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-1.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-1.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left">Dubai Hamriyah Freezone</h3>
                                 <p class="blogDetail text-left">The Hamriyah Free Zone is a free zone place in the city of Sharjah in the United Arab Emirates. Free Zone is 24 square kilometers in size and has a 14 meter deep port.</p>
                                 <h4 class="rateTxt">Starting @AED 1000</h4>
                                 <button class="viewDetailBtn" style="width: auto;"><a href="" class="viewInnrTxt">View Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
@@ -204,7 +204,7 @@
                     <div class="searchInnrWrapper compareWrapper">
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <a href="{{route('about_us')}}">
@@ -222,7 +222,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left text-decoration cursor">Dubai Media City (DMC): Where Creativity Meets Innovation</h3>
@@ -265,7 +265,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                                <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left text-decoration cursor">Dubai Internet City: "The Silicon Oasis of the Middle East"</h3>
@@ -281,7 +281,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-1.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-1.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <h3 class="blogHeading text-left text-decoration cursor">Dubai International Financial Centre (DIFC)</h3>
@@ -297,7 +297,7 @@
                         </div>
                         <div class="searchBlogLayer">
                             <div class="firstLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-2.png') }}" alt="">
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour-2.png') }}" alt="">
                             </div>
                             <div class="secondLayer">
                                 <a href="#">
@@ -324,7 +324,7 @@
                     <div class="center">
                         <ul class="pagination">
                             <li class="prBtn">
-                                <a id="prev"><img src="{{ asset('images/page-left.png') }}" alt=""></a>
+                                <a id="prev"><img src="{{ secure_asset('images/page-left.png') }}" alt=""></a>
                             </li>
                             <li>
                                 <a id="test1" href="#">1</a>
@@ -336,7 +336,7 @@
                                 <a href="#">3</a>
                             </li>
                             <li class="prBtn">
-                                <a href="#" id="next"><img src="{{ asset('images/page-right.png') }}" alt=""></a>
+                                <a href="#" id="next"><img src="{{ secure_asset('images/page-right.png') }}" alt=""></a>
                             </li>
                         </ul>
                     </div>
@@ -369,7 +369,7 @@
 
             </div>
             <div class="compareIconWrapper">
-                <img src="{{ asset('images/compare-icon.png') }}" alt="">
+                <img src="{{ secure_asset('images/compare-icon.png') }}" alt="">
                 <h3>Compare</h3>
             </div>
 
@@ -385,15 +385,15 @@
             <div class="footerTop">
                 <div class="footerLeft">
                     <div>
-                        <img src="{{ asset('images/GroAE_Logo_Main.png') }}" alt="">
+                        <img src="{{ secure_asset('images/GroAE_Logo_Main.png') }}" alt="">
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="#"><img src="{{ asset('images/facebook.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/instagram.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/twitter.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/youtube.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/linkedin.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/twitter.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
 
                         </div>
                     </div>

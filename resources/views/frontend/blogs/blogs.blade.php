@@ -100,7 +100,7 @@
                                             <button class="viewDetailBtn"><a
                                                     href="{{ route('blog-detail', $blog_val->slug) }}"
                                                     class="viewInnrTxt">Read More
-                                                    <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                                    <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                                 </a>
                                             </button>
                                         </div>

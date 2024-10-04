@@ -27,7 +27,7 @@
                                 <div class="myDownloadWrapper">
                                     <div class="downloadBlock-1">
                                         <div class="downloadsubBlock-1">
-                                            <img src="{{ asset('images/' . strtolower(pathinfo($item->value, PATHINFO_EXTENSION)) . '-download.png') }}"
+                                            <img src="{{ secure_asset('images/' . strtolower(pathinfo($item->value, PATHINFO_EXTENSION)) . '-download.png') }}"
                                                 alt="">
                                         </div>
                                         <div class="downloadsubBlock-2">
@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="uploadBlock-2">
                                         <a class="uploadImg" href="{{ route('protected-file.download', ['path' => $item->value]) }}">
-                                            <img src="{{ asset('images/downloads-whiteicon.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/downloads-whiteicon.png') }}" alt="">
                                             Upload Document
                                         </a>
                                     </div>
