@@ -75,7 +75,7 @@
                                     @if($freezone->licence_registration_procedures_logo)
                                         <img width="150" src='{{ Storage::url($freezone->licence_registration_procedures_logo) }}'>
                                     @else
-                                        <img width="150" src='{{ asset("images/placeholder.png") }}'>
+                                        <img width="150" src='{{ secure_asset("images/placeholder.png") }}'>
                                     @endif
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                                 @if($freezone->rule_regulation_logo)
                                     <img width="150" src='{{ Storage::url($freezone->rule_regulation_logo) }}'>
                                 @else
-                                    <img width="150" src='{{ asset("images/placeholder.png") }}'>
+                                    <img width="150" src='{{ secure_asset("images/placeholder.png") }}'>
                                 @endif
                             </div>
                         </div>

@@ -1,13 +1,13 @@
 <x-website-layout>
     @section('js-imports')
-        <script src="{{ asset('js/website/my_upload.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/my_upload.js') }}" crossorigin="anonymous"></script>
     @endsection
     <section class="center-section">
         <div class="container">
             <div class="myProfileContainer">
                 <div class="backBtn">
                     <a class="backAnchor" href="{{ url()->previous() }}"><img
-                            src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                            src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                     <h2 class="backTxt">Back</h2>
                 </div>
                 <div class="topHeading">

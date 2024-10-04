@@ -18,6 +18,7 @@
                             <th class="tDetailTxt">{{ $freezone->name }}</th>
                             <th></th>
                         </tr>
+
                         <tr>
                             <td class="tHeadingTxt">License Type</td>
                             <td class="tDetailTxt">{{ $freezone->licenses[0]->name }}</td>
@@ -32,16 +33,32 @@
                         </tr>
                         <tr>
                             <td class="tHeadingTxt">Package</td>
-                            <td class="tDetailTxt">{{ $freezone->packages[0]->name }}</td>
+                            <td class="tDetailTxt">{{ $package_detail->title }}</td>
                             <td class="tDetailTxt">
-                                {{ $freezone->packages[0]->price > 0 ? 'AED ' . number_format($freezone->packages[0]->price, 2) : '' }}
+                                {{$package_detail->price > 0 ? 'AED ' . number_format($package_detail->price, 2) : '' }}
                             </td>
                         </tr>
                         <tr>
-                            <td class="tHeadingTxt">Activities</td>
-                            <td class="tDetailTxt">{{ $activities[0]->name . ' (' . $activities[0]->activity_group->name . ')' }}</td>
+                            <td class="tHeadingTxt">Package Attributes</td>
+                            <td class="tDetailTxt">Total {{ count($package_detail->packageLines) }} in Quantity</td>
                             <td class="tDetailTxt"></td>
                         </tr>
+
+                        @foreach ($package_detail->packageLines as $key => $item)
+                            <tr>
+                                <td class="tHeadingTxt lightTxt">Attribute {{ $key + 1 }}</td>
+                                <td class="tDetailTxt">{{ $item->attribute->label}}</td>
+                                <td class="tDetailTxt">{{ $item->attributeOption->value }}</td>
+                            </tr>
+                        @endforeach
+
+                        
+                        <tr>
+                            <td class="tHeadingTxt">Activities</td>
+                            <td class="tDetailTxt">{{ $activities[0]->name . ' (' . $activities[0]->activity_group->name . ')' }}</td>
+                            <td class="tDetailTxt">{{ $activities[0]->price }}</td>
+                        </tr>
+                        
                         @foreach ($activities as $key => $item)
                             @if ($key != 0)
                                 <tr>
@@ -68,7 +85,7 @@
                         <tr>
                             <td class="totalTitleTxt">Actual Cost</td>
                             <td></td>
-                            <td class="amntTxt">AED {{ number_format($total, 2) }}</td>
+                            <td class="amntTxt">AED {{ number_format($package_detail->price, 2) }}</td>
                         </tr>
                     </table>
                 </div>
