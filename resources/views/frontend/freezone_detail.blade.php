@@ -1,6 +1,6 @@
 <x-website-layout>
     @section('js-imports')
-        <script src="{{ asset('js/website/freezone_detail.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/freezone_detail.js') }}" crossorigin="anonymous"></script>
     @endsection
     <!-- About Us Container -->
     <div class="aboutHeaderContainer">
@@ -24,7 +24,7 @@
                         <button class="calculateCostBtn">
                             <a
                                 href="{{ route('calculate-licensecosts.index', ['freezone' => $freezone_detail->uuid]) }}">
-                                <img src="{{ asset('images/calculator-minimalistic-svgrepo-com.png') }}"
+                                <img src="{{ secure_asset('images/calculator-minimalistic-svgrepo-com.png') }}"
                                     alt="" />Calculate Cost</a>
                         </button>
                     </div>
@@ -87,7 +87,7 @@
                     @endif
                 </div>
                 <!--<div class="imageContainer">
-                        <img src="{{ asset('images/about-image.png') }}" alt="">
+                        <img src="{{ secure_asset('images/about-image.png') }}" alt="">
                     </div> -->
 
             </div>
@@ -95,14 +95,14 @@
             @if ($freezone_page->file)
                 <div class="downloadBtn">
                     <a href="#" target="_blank">
-                        <img src="{{ asset('images/pdf_image.png') }}" alt="" />
+                        <img src="{{ secure_asset('images/pdf_image.png') }}" alt="" />
                         <h3>Download Now</h3>
                     </a>
                 </div>
             @endif
             <div class="compareIconWrapper">
                 <a href="{{ route('explore-freezone', ['ref' => $freezone_detail->id]) }}">
-                    <img src="{{ asset('images/compare-icon.png') }}" alt="">
+                    <img src="{{ secure_asset('images/compare-icon.png') }}" alt="">
                     <h3>Compare</h3>
                 </a>
             </div>

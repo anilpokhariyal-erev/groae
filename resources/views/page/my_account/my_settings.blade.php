@@ -3,7 +3,7 @@
         <div class="container">
             <div class="myProfileContainer">
                 <div class="backBtn">
-                    <a class="backAnchor" href="{{ url()->previous() }}"><img src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                    <a class="backAnchor" href="{{ url()->previous() }}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                     <h2 class="backTxt">Back</h2>
                 </div>
                 <div class="topHeading">
@@ -15,7 +15,7 @@
                     <div class="profileDetailWrapper">
                         <div class="addPersonalDoc">
                             <h3>Change Password</h3>
-                            <img src="{{ asset('images/cheveron-left.png') }}" alt="">
+                            <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
                         </div>
 
                         <form id="signupFormItems" class="signupFormItems">

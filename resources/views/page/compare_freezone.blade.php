@@ -29,7 +29,7 @@
                             <a href="{{route('calculate_licensecost')}}" class="nav-link">Cost Calculator </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ secure_asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     <li class="subInnrLinks">
@@ -132,17 +132,17 @@
                                     </ul>
                                 </div>
                                 <div class="cutIconDiv">
-                                    <img src="{{ asset('images/cut-icon.png') }}" alt="">
+                                    <img src="{{ secure_asset('images/cut-icon.png') }}" alt="">
                                 </div>
                                 <div class="compareSecondColumn">
                                     <img class="secondImg" src="{{asset('images/compare-bg2.png')}}" alt="">
                                     <div class="columnInnr" style="background: none;">
-                                        <img src="{{ asset('images/Maskgroup_2.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/Maskgroup_2.png') }}" alt="">
                                         <h3>Dubai Internet City (DIC): The Hub of Tech Innovation</h3>
                                     </div>
                                     <p class="rupeesTxt">AED 1249 / Monthly</p>
                                     <div class="tickIconDiv">
-                                        <img src="{{ asset('images/tick_icon.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/tick_icon.png') }}" alt="">
                                     </div>
                                 </div>
 
@@ -171,17 +171,17 @@
                                     </ul>
                                 </div>
                                 <div class="cutIconDiv">
-                                    <img src="{{ asset('images/cut-icon.png') }}" alt="">
+                                    <img src="{{ secure_asset('images/cut-icon.png') }}" alt="">
                                 </div>
                                 <div class="compareSecondColumn">
                                     <img class="secondImg" src="{{asset('images/table-bg.png')}}" alt="">
                                     <div class="columnInnr" style="background: none;">
-                                        <img src="{{ asset('images/Maskgroup_2.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/Maskgroup_2.png') }}" alt="">
                                         <h3 style="color: #fff;">Dubai Internet City (DIC): The Hub of Tech Innovation</h3>
                                     </div>
                                     <p class="rupeesTxt">AED 1249 / Monthly</p>
                                     <div class="tickIconDiv">
-                                        <img src="{{ asset('images/tick_icon.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/tick_icon.png') }}" alt="">
                                     </div>
                                 </div>
                                 <div class="bannerBtns">
@@ -214,17 +214,17 @@
                                     </ul>
                                 </div>
                                 <div class="cutIconDiv">
-                                    <img src="{{ asset('images/cut-icon.png') }}" alt="">
+                                    <img src="{{ secure_asset('images/cut-icon.png') }}" alt="">
                                 </div>
                                 <div class="compareSecondColumn">
                                     <img class="secondImg" src="{{asset('images/compare-bg2.png')}}" alt="">
                                     <div class="columnInnr" style="background: none;">
-                                        <img src="{{ asset('images/Maskgroup_2.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/Maskgroup_2.png') }}" alt="">
                                         <h3>Dubai Internet City (DIC): The Hub of Tech Innovation</h3>
                                     </div>
                                     <p class="rupeesTxt">AED 1249 / Monthly</p>
                                     <div class="tickIconDiv">
-                                        <img src="{{ asset('images/tick_icon.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/tick_icon.png') }}" alt="">
                                     </div>
                                 </div>
 

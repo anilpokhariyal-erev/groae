@@ -29,7 +29,7 @@
                             <a href="{{route('calculate_licensecost')}}" class="nav-link">Cost Calculator </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ secure_asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     <li class="subInnrLinks">
@@ -85,11 +85,11 @@
             <div class="container">
                 <div class="prepostContainer">
                     <div class="backBtn">
-                        <a class="backAnchor" href="{{route('pre_postinfo')}}"><img src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                        <a class="backAnchor" href="{{route('pre_postinfo')}}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                         <h2 class="backTxt">Back</h2>
                     </div>
                     <div class="preDetailImg">
-                        <img src="{{ asset('images/prepostBannr.png') }}" alt="">
+                        <img src="{{ secure_asset('images/prepostBannr.png') }}" alt="">
                     </div>
                     <div class="prepostHeading">
                         <h2>Company Name Reservation</h2>

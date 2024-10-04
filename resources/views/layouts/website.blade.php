@@ -84,7 +84,7 @@
                                         <form method="post" action="{{ route('customer.logout') }}">
                                             @csrf
                                             <div class="logoutDiv">
-                                                <img src="{{ asset('images/logout-icon.png') }}" alt="">
+                                                <img src="{{ secure_asset('images/logout-icon.png') }}" alt="">
                                                 <button type="button" class="">
                                                     <a onclick="event.preventDefault();this.closest('form').submit();"
                                                         href="">Logout</a>
@@ -125,11 +125,11 @@
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="#"><img src="{{ asset('images/facebook.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/instagram.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/twitter.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/youtube.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/linkedin.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/twitter.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
 
                         </div>
                     </div>

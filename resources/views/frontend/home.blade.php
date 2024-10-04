@@ -1,8 +1,8 @@
 <x-website-layout>
     <!-- banner -->
     @section('js-imports')
-        <script src="{{ asset('js/website/owl.carousel.min.js') }}" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/website/home.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/owl.carousel.min.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
     @endsection
     <section>
         <div class="banner">
@@ -16,7 +16,7 @@
             </div>
             <div class="bannerLayer">
                 <div class="innrLayer">
-                    <img src="{{ asset('images/bot1.png') }}" alt="">
+                    <img src="{{ secure_asset('images/bot1.png') }}" alt="">
                     <h3>AI search to help you find the best Freezone.</h3>
                 </div>
                 @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
@@ -30,7 +30,7 @@
         <div class="container">
             <div class="businessIncorpContainer">
                 <div class="corporateImgWrpper">
-                    <img src="{{ asset('images/business-incorporation.png') }}" alt="" class="aboutImageBannr">
+                    <img src="{{ secure_asset('images/business-incorporation.png') }}" alt="" class="aboutImageBannr">
                 </div>
                 <div class="corporateInnrSection">
                     <h3>Business incorporation
@@ -64,7 +64,7 @@
                                 <button class="viewDetailBtn"><a
                                         href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
                                         class="viewInnrTxt">View Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
@@ -155,7 +155,7 @@
                                     <button class="viewDetailBtn"><a
                                             href="{{ route('blog-detail', $blog_val->slug) }}"
                                             class="viewInnrTxt">Read More
-                                            <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
                                 </div>

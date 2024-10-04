@@ -27,7 +27,7 @@
                                         href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
                                         class="viewInnrTxt">View
                                         Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>

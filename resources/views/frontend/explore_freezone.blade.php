@@ -1,7 +1,7 @@
 <x-website-layout>
     @section('js-imports')
-        <script src="{{ asset('js/website/explore.js') }}" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/website/home.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/explore.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
     @endsection
     <div class="center-section">
         <section>
@@ -17,7 +17,7 @@
             <div class="exploreItemsContainer">
                 <div class="AIHeader">
                     <div class="hTxt">
-                        <img src="{{ asset('images/bot-2.png') }}" alt="">
+                        <img src="{{ secure_asset('images/bot-2.png') }}" alt="">
                         <h3>AI search to help you find the best Freezone.</h3>
                     </div>
                     <div class="pTxt">
@@ -41,7 +41,7 @@
                                     <div class="compareSearchOption">
                                         <button class="viewDetailBtn" style="width: auto;">
                                             <a href="{{ route('freezone-package-detail', ['id' => $item->id]) }}" class="viewInnrTxt">View Details
-                                                <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                                <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                             </a>
                                         </button>
                                         <div class="compareInput">

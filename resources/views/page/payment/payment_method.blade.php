@@ -8,7 +8,7 @@
             <div class="costCalculateContainer">
                 <div class="container">
                     <div class="backBtn ">
-                        <a class="backAnchor" href="{{route('article_blogs')}}"><img src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                        <a class="backAnchor" href="{{route('article_blogs')}}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                         <h2 class="backTxt">Back</h2>
                     </div>
                     <div class="topHeading">
@@ -65,19 +65,19 @@
                                 </p>
                                 <div class="bankNames">
                                     <div class="bankInnrDiv">
-                                        <img src="{{ asset('images/Bank_Albilad_logo.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/Bank_Albilad_logo.png') }}" alt="">
                                     </div>
                                     <div class="bankInnrDiv">
-                                        <img src="{{ asset('images/Bank_Aljazira.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/Bank_Aljazira.png') }}" alt="">
                                     </div>
                                     <div class="bankInnrDiv">
-                                        <img src="{{ asset('images/Riyad_Bank.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/Riyad_Bank.png') }}" alt="">
                                     </div>
                                     <div class="bankInnrDiv">
-                                        <img src="{{ asset('images/SABB_Bank_Logo.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/SABB_Bank_Logo.png') }}" alt="">
                                     </div>
                                     <div class="bankInnrDiv">
-                                        <img src="{{ asset('images/saudi-national-bank-snb.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/saudi-national-bank-snb.png') }}" alt="">
                                     </div>
                                 </div>
                             </div>

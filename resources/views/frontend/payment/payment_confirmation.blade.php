@@ -7,7 +7,7 @@
                 <div class="paymntConfirmationContainer">
                     <div class="paymntConfirmWrapper">
                         <div class="thankyouWrap1">
-                            <img src="{{ asset('images/check-icon.png') }}" alt="">
+                            <img src="{{ secure_asset('images/check-icon.png') }}" alt="">
                             <h2>Thank You!</h2>
                         </div>
                         <div class="thankyouWrap2">

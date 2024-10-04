@@ -68,7 +68,7 @@
                                     </li>
                                     <li>
                                         <div class="logoutDiv">
-                                            <img src="{{ asset('images/logout-icon.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/logout-icon.png') }}" alt="">
                                             <a href="#">Logout </a>
                                         </div>
                                     </li>
@@ -121,7 +121,7 @@
                     <div class="trendingBlog">
                         <div class="blogLayer">
                             <div class="topLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}"
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}"
                                     alt="">
                             </div>
                             <div class="bottomLayer">
@@ -129,14 +129,14 @@
                                 <p class="blogDetail">Dubai Airport Freezone is a free economic zone in Dubai, United
                                     Arab Emirates, providing company formation and business setup services in Dubai.</p>
                                 <button class="viewDetailBtn"><a href="" class="viewInnrTxt">View Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="blogLayer">
                             <div class="topLayer">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}"
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}"
                                     alt="">
                             </div>
                             <div class="bottomLayer">
@@ -150,7 +150,7 @@
                         </div>
                         <div class="blogLayer">
                             <div class="topLayer">
-                                <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                                <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             </div>
                             <div class="bottomLayer">
                                 <h3 class="blogHeading">Fujairah Freezone</h3>
@@ -163,7 +163,7 @@
                         </div>
                         <div class="blogLayer">
                             <div class="topLayer">
-                                <img src="{{ asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}"
+                                <img src="{{ secure_asset('images/glassclad-skyscrapers-central-mumbai-reflecting-sunset-hues-blue-hour.png') }}"
                                     alt="">
                             </div>
                             <div class="bottomLayer">
@@ -171,14 +171,14 @@
                                 <p class="blogDetail">Dubai Airport Freezone is a free economic zone in Dubai, United
                                     Arab Emirates, providing company formation and business setup services in Dubai.</p>
                                 <button class="viewDetailBtn"><a href="" class="viewInnrTxt">View Details
-                                        <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                     </a>
                                 </button>
                             </div>
                         </div>
                         <div class="blogLayer">
                             <div class="topLayer">
-                                <img src="{{ asset('images/modern-business-buildings-financial-district-2.png') }}"
+                                <img src="{{ secure_asset('images/modern-business-buildings-financial-district-2.png') }}"
                                     alt="">
                             </div>
                             <div class="bottomLayer">
@@ -192,7 +192,7 @@
                         </div>
                         <div class="blogLayer">
                             <div class="topLayer">
-                                <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                                <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             </div>
                             <div class="bottomLayer">
                                 <h3 class="blogHeading">Fujairah Freezone</h3>
@@ -245,15 +245,15 @@
             <div class="footerTop">
                 <div class="footerLeft">
                     <div>
-                        <img src="{{ asset('images/GroAE_Logo_Main.png') }}" alt="">
+                        <img src="{{ secure_asset('images/GroAE_Logo_Main.png') }}" alt="">
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="#"><img src="{{ asset('images/facebook.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/instagram.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/twitter.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/youtube.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/linkedin.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/twitter.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
 
                         </div>
                     </div>

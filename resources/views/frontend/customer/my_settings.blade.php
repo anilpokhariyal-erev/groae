@@ -15,7 +15,7 @@
                     <div class="profileDetailWrapper">
                         {{-- <div class="addPersonalDoc">
                             <h3>Change Password</h3>
-                            <img src="{{ asset('images/cheveron-left.png') }}" alt="">
+                            <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
                         </div> --}}
 
                         <form id="signupFormItems" style="margin-top: 0px;" class="signupFormItems" method="POST"

@@ -1,9 +1,9 @@
 <x-website-layout>
     <div class="onboardingContainer">
         <section class="leftBoard">
-            <img src="{{ asset('images/modern-business-buildings-financial-district.png') }}" class="buildingImg">
+            <img src="{{ secure_asset('images/modern-business-buildings-financial-district.png') }}" class="buildingImg">
             <div class="ImgInnrTxt">
-                <img src="{{ asset('images/GroAE_Logo_Main.png') }}" width="100" class="mainLogoImg">
+                <img src="{{ secure_asset('images/GroAE_Logo_Main.png') }}" width="100" class="mainLogoImg">
                 <h3 class="grTxt">Grow with us</h3>
             </div>
         </section>

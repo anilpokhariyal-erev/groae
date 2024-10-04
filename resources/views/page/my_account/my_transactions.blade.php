@@ -3,7 +3,7 @@
         <div class="container">
             <div class="myProfileContainer">
                 <div class="backBtn">
-                    <a class="backAnchor" href="{{ url()->previous() }}"><img src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                    <a class="backAnchor" href="{{ url()->previous() }}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                     <h2 class="backTxt">Back</h2>
                 </div>
                 <div class="topHeading">

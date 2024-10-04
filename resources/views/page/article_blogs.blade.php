@@ -30,7 +30,7 @@
                             <a href="{{route('calculate_licensecost')}}" class="nav-link">Cost Calculator </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <a href="#" class="nav-link" onclick="myFunction()">More <img src="{{ secure_asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     <li class="subInnrLinks">
@@ -90,7 +90,7 @@
                 <div class="articleInnrWrapper">
                     <div class="container">
                         <div class="backBtn">
-                            <a class="backAnchor" href="{{route('home')}}"><img src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                            <a class="backAnchor" href="{{route('home')}}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                             <h2 class="backTxt">Back</h2>
                         </div>
                         <div class="topHeading">
@@ -112,7 +112,7 @@
                         <img src="{{asset('images/blue-search-icon.png')}}" alt="">
                     </div>
                     <div class="searchFilter">
-                        <button>filter <img src="{{ asset('images/sort_icon.png') }}" alt=""></button>
+                        <button>filter <img src="{{ secure_asset('images/sort_icon.png') }}" alt=""></button>
                     </div>
                 </div>
             </div>
@@ -156,7 +156,7 @@
                         <a href="{{route('blog_details')}}">
                             <div class="blogLayer articleBlog">
                                 <div class="topLayer firstImgLayer">
-                                    <img src="{{ asset('images/visa.png') }}" alt="">
+                                    <img src="{{ secure_asset('images/visa.png') }}" alt="">
                                     <img class="cutoutImg" src="{{ asset('images/small-visaCut.png') }}" alt="">
                                 </div>
                                 <div class="bottomLayer">
@@ -166,7 +166,7 @@
                                     <p class="blogDetail">Working and living in the UAE (United Arab Emirates) can be a fantastic opportunity. Still, it can be challenging to navigate the visa
                                         renewal process.</p>
                                     <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More
-                                            <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
                                 </div>
@@ -176,7 +176,7 @@
 
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/panorama-down-town-dubai-modern-city-night.png') }}" alt="">
+                            <img src="{{ secure_asset('images/panorama-down-town-dubai-modern-city-night.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/tech-icon.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -184,12 +184,12 @@
                             <h3 class="blogHeading">How to start a foreign
                                 company in Saudi Arabia</h3>
                             <p class="blogDetail">Looking for a vibrant and diverse environment to launch a new business as an expatriate? Saudi Arabia may be the perfect destination for you. In just the first three months...</p>
-                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ asset('images/leftarrow.png') }}" alt=""></a></button>
+                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ secure_asset('images/leftarrow.png') }}" alt=""></a></button>
                         </div>
                     </div>
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                            <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/bussinss-icon.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -198,12 +198,12 @@
                                 Business Growth & Innovation</h3>
                             <p class="blogDetail">Working and living in the UAE (United Arab Emirates) can be a fantastic opportunity. Still, it can be challenging to navigate the visa
                                 renewal process.</p>
-                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ asset('images/leftarrow.png') }}" alt=""></a></button>
+                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ secure_asset('images/leftarrow.png') }}" alt=""></a></button>
                         </div>
                     </div>
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/visa.png') }}" alt="">
+                            <img src="{{ secure_asset('images/visa.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/investment-icon.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -213,14 +213,14 @@
                             <p class="blogDetail">Working and living in the UAE (United Arab Emirates) can be a fantastic opportunity. Still, it can be challenging to navigate the visa
                                 renewal process.</p>
                             <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More
-                                    <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                    <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                 </a>
                             </button>
                         </div>
                     </div>
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/panorama-down-town-dubai-modern-city-night.png') }}" alt="">
+                            <img src="{{ secure_asset('images/panorama-down-town-dubai-modern-city-night.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/small-visaCut.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -228,12 +228,12 @@
                             <h3 class="blogHeading">How to start a foreign
                                 company in Saudi Arabia</h3>
                             <p class="blogDetail">Looking for a vibrant and diverse environment to launch a new business as an expatriate? Saudi Arabia may be the perfect destination for you. In just the first three months...</p>
-                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ asset('images/leftarrow.png') }}" alt=""></a></button>
+                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ secure_asset('images/leftarrow.png') }}" alt=""></a></button>
                         </div>
                     </div>
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                            <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/bussinss-icon.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -242,12 +242,12 @@
                                 Business Growth & Innovation</h3>
                             <p class="blogDetail">Working and living in the UAE (United Arab Emirates) can be a fantastic opportunity. Still, it can be challenging to navigate the visa
                                 renewal process.</p>
-                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ asset('images/leftarrow.png') }}" alt=""></a></button>
+                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ secure_asset('images/leftarrow.png') }}" alt=""></a></button>
                         </div>
                     </div>
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/visa.png') }}" alt="">
+                            <img src="{{ secure_asset('images/visa.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/bussinss-icon.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -257,14 +257,14 @@
                             <p class="blogDetail">Working and living in the UAE (United Arab Emirates) can be a fantastic opportunity. Still, it can be challenging to navigate the visa
                                 renewal process.</p>
                             <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More
-                                    <img src="{{ asset('images/leftarrow.png') }}" alt="">
+                                    <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                 </a>
                             </button>
                         </div>
                     </div>
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/panorama-down-town-dubai-modern-city-night.png') }}" alt="">
+                            <img src="{{ secure_asset('images/panorama-down-town-dubai-modern-city-night.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/bussinss-icon.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -272,12 +272,12 @@
                             <h3 class="blogHeading">How to start a foreign
                                 company in Saudi Arabia</h3>
                             <p class="blogDetail">Looking for a vibrant and diverse environment to launch a new business as an expatriate? Saudi Arabia may be the perfect destination for you. In just the first three months...</p>
-                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ asset('images/leftarrow.png') }}" alt=""></a></button>
+                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ secure_asset('images/leftarrow.png') }}" alt=""></a></button>
                         </div>
                     </div>
                     <div class="blogLayer articleBlog">
                         <div class="topLayer firstImgLayer">
-                            <img src="{{ asset('images/office-buildings.png') }}" alt="">
+                            <img src="{{ secure_asset('images/office-buildings.png') }}" alt="">
                             <img class="cutoutImg" src="{{ asset('images/tech-icon.png') }}" alt="">
                         </div>
                         <div class="bottomLayer">
@@ -286,7 +286,7 @@
                                 Business Growth & Innovation</h3>
                             <p class="blogDetail">Working and living in the UAE (United Arab Emirates) can be a fantastic opportunity. Still, it can be challenging to navigate the visa
                                 renewal process.</p>
-                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ asset('images/leftarrow.png') }}" alt=""></a></button>
+                            <button class="viewDetailBtn"><a href="" class="viewInnrTxt">Read More <img src="{{ secure_asset('images/leftarrow.png') }}" alt=""></a></button>
                         </div>
                     </div>
                 </div>
@@ -307,15 +307,15 @@
             <div class="footerTop">
                 <div class="footerLeft">
                     <div>
-                        <img src="{{ asset('images/GroAE_Logo_Main.png') }}" alt="">
+                        <img src="{{ secure_asset('images/GroAE_Logo_Main.png') }}" alt="">
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="#"><img src="{{ asset('images/facebook.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/instagram.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/twitter.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/youtube.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ asset('images/linkedin.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/twitter.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
+                            <a href="#"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
 
                         </div>
                     </div>

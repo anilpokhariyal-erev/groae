@@ -7,7 +7,7 @@
                 <div class="detailInnrWrappr">
                     <div class="container">
                         <div class="backBtn">
-                            <a class="backAnchor" href="{{route('explore-freezone')}}"><img src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                            <a class="backAnchor" href="{{route('explore-freezone')}}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                             <h2 class="backTxt">Back</h2>
                         </div>
                         <h3 class="bannrTxt">Dubai Internet City (DIC)
@@ -17,7 +17,7 @@
                                 <a href="">Book Consultation</a>
                             </button>
                             <button class="calculateCostBtn">
-                                <a href=""> <img src="{{ asset('images/calculator-minimalistic-svgrepo-com.png') }}" alt="" />Calculate Cost</a>
+                                <a href=""> <img src="{{ secure_asset('images/calculator-minimalistic-svgrepo-com.png') }}" alt="" />Calculate Cost</a>
                             </button>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                 <div style="position: relative; z-index:0">
                     <div class="businessIncorpContainer" style="margin-top: 50px;">
                         <div>
-                            <img src="{{ asset('images/about-bannr.png') }}" class="aboutImageBannr" alt="">
+                            <img src="{{ secure_asset('images/about-bannr.png') }}" class="aboutImageBannr" alt="">
                         </div>
                         <div class="sliderContent">
                             <h2 class="sliderInnrHeading">Get the Package of you choice
@@ -102,14 +102,14 @@
                     </div>
                     <div style="position: relative;">
                         <div class="imageContainer">
-                            <img src="{{ asset('images/benefit_detail.png') }}" alt="">
+                            <img src="{{ secure_asset('images/benefit_detail.png') }}" alt="">
 
                         </div>
                         <img class="youtubeImg" src="{{ asset('images/youtube-svgrepo-com.png') }}" alt="">
                     </div>
                 </div>
                 <div class="compareIconWrapper">
-                    <img src="{{ asset('images/compare-icon.png') }}" alt="">
+                    <img src="{{ secure_asset('images/compare-icon.png') }}" alt="">
                     <h3>Compare</h3>
                 </div>
             </div>
