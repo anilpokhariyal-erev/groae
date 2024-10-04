@@ -8,17 +8,17 @@
     <title>{{ config('app.name', 'GroAE') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-    <link href="{{ asset('css/website/owl.carousel.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/website/owl.theme.default.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/website/styles.css') }}" rel="stylesheet" />
+    <link href="{{ secure_asset('css/website/owl.carousel.min.css') }}" rel="stylesheet" />
+    <link href="{{ secure_asset('css/website/owl.theme.default.min.css') }}" rel="stylesheet" />
+    <link href="{{ secure_asset('css/website/styles.css') }}" rel="stylesheet" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="{{ asset('js/website/app.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ secure_asset('js/website/app.js') }}" crossorigin="anonymous"></script>
     @yield('js-imports')
-    <script src="{{ asset('js/website/validation.js') }}" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ secure_asset('js/website/validation.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ secure_asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
 
 </head>
 
@@ -134,27 +134,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="footerNav">
-                    <h2>Quick Links</h2>
-                    <nav>
-                        <a href="{{ route('page.content', 'about-us') }}">About Us</a>
-                        <a href="{{ route('page.content', 'article-blogs') }}">Articles & Blogs</a>
-                        <a href="{{ route('page.content', 'career') }}">Career</a>
-                    </nav>
-                </div>
-                <div class="footerNav">
-                    <h2>Policies</h2>
-                    <nav><a href="{{ route('page.content', 'privacy-policy') }}">Privacy Policy</a>
-                        <a href="{{ route('page.content', 'government-policy') }}">Government Policy</a>
-                        <a href="{{ route('page.content', 'terms-and-conditions') }}">Terms & conditions</a>
-                    </nav>
-                </div>
-                <div class="footerNav">
-                    <h2>Support</h2>
-                    <nav><a href="{{ route('page.content', 'faq') }}">FAQ’s</a>
-                        <a href="{{ route('contact-us.index') }}">Contact Us</a>
-                    </nav>
-                </div>
+                
+                @foreach ($footerParents as $parent)
+                    <div class="footerNav">
+                        <h2>{{ $parent->page_name }}</h2>
+                        <nav>
+                            @foreach ($parent->children as $child)
+                                <a href="{{ route('page.content', $child->slug) }}">{{ $child->page_name }}</a>
+                            @endforeach
+                        </nav>
+                    </div>
+                @endforeach
+      
+
             </div>
             <div class="footerBottom">
                 <h3>©{{ date('Y') }} GroAE. All Rights Reserved.</h3>

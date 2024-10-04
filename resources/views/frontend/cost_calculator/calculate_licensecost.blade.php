@@ -61,7 +61,7 @@
                                 <option data-val="0" value="" disabled {{ old('visa_package') == '' ? 'selected' : '' }}>
                                     Choose an Option</option>
                                 @for($i=1; $i<=$max_visa_package; $i++)
-                                    <option data-val="{{$option->value}}" value="{{ $i }}" {{ old('visa_package') == $i ? 'selected' : '' }}>
+                                    <option data-val="{{$i}}" value="{{ $i }}" {{ old('visa_package') == $i ? 'selected' : '' }}>
                                         {{ $i }}
                                     </option>
                                 @endfor
