@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaticPage extends Model
 {
-
-    protected $fillable = [];
+    protected $fillable = [
+        'uuid',
+        'page_name',
+        'description',
+        'image',
+        'slug',
+        'visible_in_footer',
+        'parent_id',
+    ];
 
     protected static function booted()
     {
@@ -17,4 +24,19 @@ class StaticPage extends Model
         });
     }
 
+    /**
+     * Relationship for parent page.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(StaticPage::class, 'parent_id');
+    }
+
+    /**
+     * Relationship for child pages.
+     */
+    public function children()
+    {
+        return $this->hasMany(StaticPage::class, 'parent_id');
+    }
 }
