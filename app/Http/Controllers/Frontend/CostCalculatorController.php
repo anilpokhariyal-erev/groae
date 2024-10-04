@@ -47,7 +47,7 @@ class CostCalculatorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage. 
      */
     public function store(CostCalculatorSummaryRequest $request)
     {        
@@ -85,7 +85,7 @@ class CostCalculatorController extends Controller
         }
     
         // Fetch the best matching package based on the selected attributes and activities
-        $bestPackage = $query->orderBy('price', 'asc')->first();
+        $package_detail = $query->orderBy('price', 'asc')->first();
 
         $visaPackageAttribute = Attribute::where('name', 'visa_package')->first();
         $license = License::where('id', $request->license_id)->first();
@@ -126,7 +126,7 @@ class CostCalculatorController extends Controller
         $id = Str::uuid();
 
         // Pass the necessary values to the view
-        return view('frontend.cost_calculator.cost_summary')->with(compact('freezone', 'activities', 'total', 'id', 'packages_array', 'bestPackage'));
+        return view('frontend.cost_calculator.cost_summary')->with(compact('freezone', 'activities', 'total', 'id', 'packages_array', 'package_detail'));
     }
 
 
