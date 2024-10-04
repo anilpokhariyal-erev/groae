@@ -41,6 +41,11 @@ class Freezone extends Model
         return $this->hasMany(Package::class);
     }
 
+    public function packageheader(): HasMany
+    {
+        return $this->hasMany(PackageHeader::class);
+    }
+
     public function min_package(): HasOne
     {
         return $this->hasOne(Package::class, 'id', 'min_package_id');

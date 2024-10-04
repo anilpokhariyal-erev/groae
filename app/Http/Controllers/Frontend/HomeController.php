@@ -121,6 +121,22 @@ class HomeController extends Controller
         return view('frontend.freezone_detail', compact('freezone_detail', 'freezone_page'));
     }
 
+    public function freezone_package_detail(Request $request, $package_id)
+    {
+        $package_detail = PackageHeader::with([
+            'freezone' => function ($query) {
+                $query->with('activities', 'activity_groups');
+            },
+            'packageLines'=> function ($query) {
+                $query->with('attributeOption', 'attribute');
+            },
+        ])->where('id', $package_id)->first();
+
+        return view('frontend.packagedetail', compact('package_detail'));
+    }
+
+
+
 
     public function get_freezone(Request $request)
     {
