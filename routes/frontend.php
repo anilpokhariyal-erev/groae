@@ -50,7 +50,7 @@ Route::get('article-blogs', [BlogController::class, 'blogs'])->name('article-blo
 Route::get('article-blogs/{slug}', [BlogController::class, 'blog_detail'])->name('blog-detail');
 
 Route::get('/signin', [AuthController::class, 'signin'])->name('customer.login');
-Route::post('/customer-login', [AuthController::class, 'login'])->name('customer.post.login');
+Route::post('/customer-login', [AuthController::class, 'login'])->name('customer.post.login')->secure();
 Route::get('/signup', [AuthController::class, 'signup'])->name('customer.signup');
 Route::post('/customer-signup', [AuthController::class, 'register_customer'])->name('customer.register');
 
