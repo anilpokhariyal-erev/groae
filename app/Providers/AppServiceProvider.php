@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
 use App\Models\StaticPage;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // default urls to https
+        URL::forceScheme('https');
         // Custom Validator
         Validator::extend('matches_confirmation', function ($attribute, $value, $parameters, $validator) {
             return $value == $validator->getData()[$parameters[0]];
