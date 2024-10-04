@@ -1,8 +1,10 @@
 vendor/
+public/vendor/
 !public/vendor
 node_modules/
 npm-debug.log
 .php_cs.cache
+composer.lock
 
 # Laravel 5 & Lumen specific
 public/storage
