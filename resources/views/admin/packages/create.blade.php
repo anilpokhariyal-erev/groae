@@ -171,7 +171,7 @@
         </div>
     @endif
 
-    <script src="{{ asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ secure_asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
     <script>
         let lineIndex = 0;
 

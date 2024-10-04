@@ -67,7 +67,7 @@
                             @if($freezone_page->file && $freezone_page->slug == 'customer-guides')
                             <div>
                                 <a href="{{ Storage::url($freezone_page->file) }}" target="_blank">
-                                    <img src="{{ asset('images/pdf_image.png') }}" alt="" />
+                                    <img src="{{ secure_asset('images/pdf_image.png') }}" alt="" />
                                     <h6>Download Now</h6>
                                 </a>
                             </div>

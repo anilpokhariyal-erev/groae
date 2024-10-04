@@ -25,7 +25,7 @@
                                     <img id="ba_current_image" width="150" src='{{ Storage::url($offer->image) }}'>
                                 @else
                                     <img id="ba_current_image" width="150"
-                                        src='{{ asset('images/placeholder.png') }}'>
+                                        src='{{ secure_asset('images/placeholder.png') }}'>
                                 @endif
                             </div>
                         </div>

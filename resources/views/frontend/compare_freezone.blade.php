@@ -1,6 +1,6 @@
 <x-website-layout>
     @section('js-imports')
-        <script src="{{ asset('js/website/compare.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/compare.js') }}" crossorigin="anonymous"></script>
     @endsection
     <section class="center-section">
         <div class="container">
@@ -62,7 +62,7 @@
                                     </div>
 
                                     <div class="cutIconDiv" id="{{ $item['uuid'] }}">
-                                        <img src="{{ asset('images/cut-icon.png') }}" alt="">
+                                        <img src="{{ secure_asset('images/cut-icon.png') }}" alt="">
                                     </div>
                                     <div class="compareSecondColumn">
                                         @if ($item['cheapest_freezone'])

@@ -1,6 +1,6 @@
 <x-website-layout>
     @section('js-imports')
-        <script src="{{ asset('js/website/compare.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ secure_asset('js/website/compare.js') }}" crossorigin="anonymous"></script>
     @endsection
     <section>
         <div class="center-section"
