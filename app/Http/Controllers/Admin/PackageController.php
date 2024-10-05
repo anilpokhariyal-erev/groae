@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
+use App\Models\Currency;
 use App\Models\PackageHeader;
 use App\Models\PackageLine;
 use App\Models\Freezone;
@@ -25,8 +26,8 @@ class PackageController extends Controller
         $freezones = Freezone::all();
         $attributes = Attribute::where('status',1)->get(); // Fetch attributes
         $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
-    
-        return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions'));
+        $currency = Currency::where('status',1)->get();
+        return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions','currency'));
     }
 
 
@@ -87,11 +88,12 @@ class PackageController extends Controller
         // Fetch all attributes and their options
         $attributes = Attribute::where('status',1)->get(); // Fetch attributes
         $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
+        $currency = Currency::where('status',1)->get();
 
         // Fetch freezones if required
         $freezones = Freezone::all();
 
-        return view('admin.packages.edit', compact('package', 'attributes', 'attributeOptions', 'freezones'));
+        return view('admin.packages.edit', compact('package', 'attributes', 'attributeOptions', 'freezones','currency'));
     }
 
 
@@ -106,6 +108,7 @@ class PackageController extends Controller
                 'description' => 'required|string',
                 'price' => 'required|numeric|min:0',
                 'trending' => 'nullable|boolean', // Validate trending as a boolean
+                'currency' => 'required|string',
                 'package_lines' => 'array',
                 'package_lines.*.attribute_id' => 'required|exists:attributes,id',
                 'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
@@ -120,6 +123,7 @@ class PackageController extends Controller
                 'freezone_id' => $request->freezone_id,
                 'visa_package' => $request->visa_package,
                 'price' => $request->price,
+                'currency'=> $request->currency,
                 'trending' => $request->trending ? true : false, // Set trending based on checkbox
                 'updated_by' => auth()->id(),
             ]);

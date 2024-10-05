@@ -69,14 +69,16 @@
                             <label for="currency">Currency <span class="text-danger">*</span></label>
                             <select name="currency" id="currency" class="custom-select form-control">
                                 <option value="">Select Currency</option>
-                                <option value="USD" {{ old('currency', $package->currency) == 'USD' ? 'selected' : '' }}>Dollar (USD)</option>
-                                <option value="AED" {{ old('currency', $package->currency) == 'AED' ? 'selected' : '' }}>Dirham (AED)</option>
-                                <option value="EUR" {{ old('currency', $package->currency) == 'EUR' ? 'selected' : '' }}>Euro (EUR)</option>
-                                <option value="INR" {{ old('currency', $package->currency) == 'INR' ? 'selected' : '' }}>Rupees (INR)</option>
+                                @foreach($currency as $curr)
+                                    <option value="{{ $curr->code }}" {{ old('currency', $package->currency) == $curr->code ? 'selected' : '' }}>
+                                        {{ $curr->label }} ({{ $curr->symbol }})
+                                    </option>
+                                @endforeach
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('currency')" />
                         </div>
                     </div>
+
 
                     <!-- Package Description -->
                     <div class="col-md-12">
@@ -304,6 +306,7 @@
 
             $('#package-lines-container').append(newLine);
         });
+
 
         // Handle remove package line
         $(document).on('click', '.remove-package-line', function() {

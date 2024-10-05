@@ -51,14 +51,14 @@
                             <label for="currency">Currency <span class="text-danger">*</span></label>
                             <select name="currency" id="currency" class="custom-select form-control">
                                 <option value="">Select Currency</option>
-                                <option value="USD">Dollar (USD)</option>
-                                <option value="AED">Dirham (AED)</option>
-                                <option value="EUR">Euro (EUR)</option>
-                                <option value="INR">Rupees (INR)</option>
+                                @foreach($currency as $curr)
+                                    <option value="{{ $curr->code }}">{{ $curr->label }} ({{ $curr->symbol }})</option>
+                                @endforeach
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('currency')" />
                         </div>
                     </div>
+
 
                     <!-- Package Description -->
                     <div class="col-md-12">
