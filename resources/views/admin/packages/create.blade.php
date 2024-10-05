@@ -49,7 +49,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="currency">Currency <span class="text-danger">*</span></label>
-                            <select name="currency" id="currency" class="custom-select">
+                            <select name="currency" id="currency" class="custom-select form-control">
                                 <option value="">Select Currency</option>
                                 <option value="USD">Dollar (USD)</option>
                                 <option value="AED">Dirham (AED)</option>
