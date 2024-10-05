@@ -87,7 +87,7 @@ class CostCalculatorController extends Controller
         // Fetch the best matching package based on the selected attributes and activities
         $package_detail = $query->orderBy('price', 'asc')->first();
         if (!$package_detail) {
-            return redirect()->back()->withErrors(['freezone' => 'The Package does not exists.'])->withInput();
+            return redirect()->back()->withErrors(['freezone' => 'No package found matching your request.'])->withInput();
         }
 
         $visaPackageAttribute = Attribute::where('name', 'visa_package')->first();
