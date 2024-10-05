@@ -37,6 +37,7 @@ class PackageController extends Controller
             'freezone_id' => 'required|exists:freezones,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'currency' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'package_lines' => 'required|array',
             'package_lines.*.attribute_id' => 'required|exists:attributes,id',
