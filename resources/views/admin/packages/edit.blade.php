@@ -160,7 +160,7 @@
                                 @else
                                     <!-- Display existing package lines -->
                                     @foreach($package->packageLines as $index => $line)
-                                        <div class="row package-line-item">
+                                        <div class="row package-line-item" data-option="{{ $line->attribute_option_id }}">
                                             <div class="col-md-4">
                                                 <div class="position-relative form-group">
                                                     <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
@@ -180,13 +180,7 @@
                                                 <div class="position-relative form-group">
                                                     <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
                                                     <select name="package_lines[{{ $index }}][attribute_option_id]" class="custom-select">
-                                                        <option value="">Select Option</option>
-                                                        @foreach($attributeOptions as $option)
-                                                            <option value="{{ $option->id }}"
-                                                                    @if($line->attribute_option_id == $option->id) selected @endif>
-                                                                {{ $option->value }}
-                                                            </option>
-                                                        @endforeach
+                                                        <option value="">Select Option</option>                                                       
                                                     </select>
                                                 </div>
                                             </div>
@@ -247,67 +241,83 @@
     @endif
 
 </x-admin-layout>
-
 <script>
     $(document).ready(function() {
-        // Create an object to hold attribute and option data
-        const attributes = @json($attributes);
         const attributeOptions = @json($attributeOptions);
 
-        // Handle adding new package line
-        $(document).on('click', '#add-package-line', function() {
+        // Function to populate options based on selected attribute
+        function populateOptions(attributeId, optionsDropdown) {
+            const filteredOptions = attributeOptions.filter(option => option.attribute_id == attributeId);
+            optionsDropdown.empty(); // Clear existing options
+            optionsDropdown.append('<option value="">Select Option</option>');
+            
+            filteredOptions.forEach(option => {
+                optionsDropdown.append(`<option value="${option.id}">${option.value}</option>`);
+            });
+        }
+
+        // Attach change event listener to each attribute dropdown
+        $(document).on('change', 'select[name^="package_lines"][name$="[attribute_id]"]', function() {
+            const selectedAttributeId = $(this).val();
+            const optionsDropdown = $(this).closest('.package-line-item').find('select[name^="package_lines"][name$="[attribute_option_id]"]');
+            if (selectedAttributeId) {
+                populateOptions(selectedAttributeId, optionsDropdown);
+            } else {
+                optionsDropdown.empty(); // Clear if no attribute selected
+                optionsDropdown.append('<option value="">Select Option</option>');
+            }
+        });
+
+        // Trigger change event on page load for existing lines
+        $('select[name^="package_lines"][name$="[attribute_id]"]').each(function() {
+            const selectedAttributeId = $(this).val();
+            const optionsDropdown = $(this).closest('.package-line-item').find('select[name^="package_lines"][name$="[attribute_option_id]"]');
+            if (selectedAttributeId) {
+                populateOptions(selectedAttributeId, optionsDropdown);
+                const selectedOptionId = $(this).closest('.package-line-item').data('option');
+                if (selectedOptionId) {
+                    optionsDropdown.val(selectedOptionId); // Set selected option
+                }
+            }
+        });
+
+        // Handle adding new package line dynamically
+        $('#add-package-line').on('click', function() {
             const index = $('#package-lines-container .package-line-item').length;
-
-            let newLine = `
-            <div class="row package-line-item">
-                <div class="col-md-4">
-                    <div class="position-relative form-group">
-                        <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                        <select name="package_lines[${index}][attribute_id]" class="custom-select">
-                            <option value="">Select Attribute</option>
-            `;
-
-            attributes.forEach(attribute => {
-                newLine += `<option value="${attribute.id}">${attribute.name}</option>`;
-            });
-
-            newLine += `
-                        </select>
+            const newLine = `
+                <div class="row package-line-item">
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
+                            <select name="package_lines[${index}][attribute_id]" class="custom-select">
+                                <option value="">Select Attribute</option>
+                                @foreach($attributes as $attribute)
+                                    <option value="{{$attribute->id}}">{{$attribute->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
+                            <select name="package_lines[${index}][attribute_option_id]" class="custom-select">
+                                <option value="">Select Option</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
+                            <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0">
+                        </div>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-warning remove-package-line">Remove</button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="position-relative form-group">
-                        <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                        <select name="package_lines[${index}][attribute_option_id]" class="custom-select">
-                            <option value="">Select Option</option>
-            `;
-
-            attributeOptions.forEach(option => {
-                newLine += `<option value="${option.id}">${option.value}</option>`;
-            });
-
-            newLine += `
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="position-relative form-group">
-                        <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                        <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0">
-                    </div>
-                </div>
-                  <div class="col-md-12 d-flex justify-content-end">
-                    <button type="button" class="btn btn-warning remove-package-line">Remove</button>
-                </div>
-            </div>
             `;
 
             $('#package-lines-container').append(newLine);
-        });
-
-        // Handle remove package line
-        $(document).on('click', '.remove-package-line', function() {
-            $(this).closest('.package-line-item').remove();
         });
     });
 </script>
