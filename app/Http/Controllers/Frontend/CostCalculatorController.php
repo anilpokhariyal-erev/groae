@@ -86,6 +86,9 @@ class CostCalculatorController extends Controller
     
         // Fetch the best matching package based on the selected attributes and activities
         $package_detail = $query->orderBy('price', 'asc')->first();
+        if (!$package_detail) {
+            return redirect()->back()->withErrors(['freezone' => 'The Package does not exists.'])->withInput();
+        }
 
         $visaPackageAttribute = Attribute::where('name', 'visa_package')->first();
         $license = License::where('id', $request->license_id)->first();
@@ -124,6 +127,7 @@ class CostCalculatorController extends Controller
 
         // Generate UUID for the session
         $id = Str::uuid();
+
 
         // Pass the necessary values to the view
         return view('frontend.cost_calculator.cost_summary')->with(compact('freezone', 'activities', 'total', 'id', 'packages_array', 'package_detail'));

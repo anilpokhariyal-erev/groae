@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // default urls to https
-        URL::forceScheme('https');
+//        URL::forceScheme('https');
         // Custom Validator
         Validator::extend('matches_confirmation', function ($attribute, $value, $parameters, $validator) {
             return $value == $validator->getData()[$parameters[0]];
