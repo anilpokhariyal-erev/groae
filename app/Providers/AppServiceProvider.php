@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
@@ -23,7 +24,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // default urls to https
-        URL::forceScheme('https');
+        if (!App::environment('local')) {
+            URL::forceScheme('https');
+        }
         // Custom Validator
         Validator::extend('matches_confirmation', function ($attribute, $value, $parameters, $validator) {
             return $value == $validator->getData()[$parameters[0]];
@@ -44,6 +47,17 @@ class AppServiceProvider extends ServiceProvider
             print('error in provider');
         }
         // Fetch parent pages (where parent_id is null) and their child pages for footer
-
+        // Override secure_asset function
+        if (!function_exists('secure_asset')) {
+            function secure_asset($path)
+            {
+                // If the environment is local, return the non-secure (http) URL
+                if (App::environment('local')) {
+                    return asset($path);
+                }
+                // Otherwise, return the secure (https) URL
+                return URL::secureAsset($path);
+            }
+        }
     }
 }
