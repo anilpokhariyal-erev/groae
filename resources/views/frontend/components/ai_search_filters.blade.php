@@ -5,7 +5,7 @@
                 <select class="ai_filter_options" name="attribute_{{ $attribute->id }}">
                     <option value="" selected disabled>Choose {{ $attribute->name }}</option>
                     @if($attribute->allow_any)
-                        <option value="any" @if($selectedAttributes[$attribute->id]=="any") selected @endif>Any</option>
+                        <option value="any" {{ isset($selectedAttributes[$attribute->id]) && $selectedAttributes[$attribute->id] == 'any' ? 'selected' : '' }}>Any</option>
                     @endif
                     @foreach ($attribute->options as $option)
                         <option value="{{ $option->id }}" 
