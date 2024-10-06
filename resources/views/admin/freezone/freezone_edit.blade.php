@@ -22,9 +22,10 @@
                     <div class="ba_flex align_items_center pl-3 pr-3">
                         <div class="position-relative form-group">
                             <img id="ba_current_image" width="150"
-                                src='{{ $freezone->logo ? Storage::url($freezone->logo) : asset('images/placeholder.png') }}'>
+                                src="{{ $freezone->logo ? Storage::url($freezone->logo) : asset('images/placeholder.png') }}" alt="Freezone Logo">
                         </div>
                     </div>
+
 
                     <div class="col-md-6">
                         <div class="position-relative form-group">
@@ -33,12 +34,6 @@
                                 type="text" class="form-control">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('name')" />
                         </div>
-
-                        <!-- <div class="position-relative form-group">
-                            <label for="freezone_logo">Logo <span class="text-danger">*</span></label>
-                            <input name="freezone_logo" id="freezone_logo" type="file" class="form-control">
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_logo')" />
-                        </div> -->
 
                         <div class="image-container">
                             <label for="ba_input_image" id="change-image-btn">Change Image</label>
