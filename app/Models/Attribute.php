@@ -10,6 +10,7 @@ class Attribute extends Model
     protected $fillable = [
         'name',
         'label',
+        'allow_any',
         'status',
         'is_ai_search_enabled',
         'show_in_calculator'

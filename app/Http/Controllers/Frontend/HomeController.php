@@ -83,10 +83,12 @@ class HomeController extends Controller
                     ->whereColumn('package_lines.package_id', 'package_headers.id') // Use package_id as foreign key
                     ->where(function ($subQuery) use ($attributeConditions) {
                         foreach ($attributeConditions as $attributeNumber => $attributeValue) {
-                            $subQuery->orWhere(function ($q) use ($attributeNumber, $attributeValue) {
-                                $q->where('attribute_id', $attributeNumber)
-                                ->where('attribute_option_id', $attributeValue);
-                            });
+                            if($attributeValue != "any"){
+                                $subQuery->orWhere(function ($q) use ($attributeNumber, $attributeValue) {
+                                    $q->where('attribute_id', $attributeNumber)
+                                    ->where('attribute_option_id', $attributeValue);
+                                });
+                            }
                         }
                     });
             })->with('packageLines','freezone')->orderBy('id', 'DESC')->get();
