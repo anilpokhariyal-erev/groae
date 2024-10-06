@@ -52,16 +52,16 @@
 {{--                            @endif--}}
 {{--                        @endforeach--}}
                         <tr>
-                            <td class="tHeadingTxt">Package Attributes</td>
+                            <td class="tHeadingTxt">Package Inclusions</td>
                             <td class="tDetailTxt">Total {{ count($package_detail->packageLines) }} in Quantity</td>
                             <td class="tDetailTxt"></td>
                         </tr>
 
                         @foreach ($package_detail->packageLines as $key => $item)
                             <tr>
-                                <td class="tHeadingTxt lightTxt">Attribute {{ $key + 1 }}</td>
-                                <td class="tDetailTxt">{{ $item->attribute->label}}</td>
-                                <td class="tDetailTxt">{{ $item->attributeOption->value }}</td>
+                                <td class="tDetailTxt lightTxt">{{ $item->attribute->label}}</td>
+                                <td class="tDetailTxt lightTxt">{{ $item->attributeOption->value }}</td>
+                                <td class="tDetailTxt lightTxt">{{ $item->attributeOption->price ?? '-' }}</td>
                             </tr>
                         @endforeach
 
