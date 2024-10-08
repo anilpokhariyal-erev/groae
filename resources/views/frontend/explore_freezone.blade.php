@@ -35,7 +35,7 @@
                                     <img src='{{ $item->freezone->logo ? Storage::url($item->freezone->logo) : asset('images/placeholder.png') }}' alt="">
                                 </div>
                                 <div class="secondLayer">
-                                    <a href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}"><h3 class="blogHeading text-left">{{ $item->freezone->name }} <br>{{$item->title}}</h3></a>
+                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}"><h3 class="blogHeading text-left">{{ $item->freezone->name }} <br>{{$item->title}}</h3></a>
                                     <p class="blogDetail text-left">{{ $item->description }}</p>
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
                                     <div class="compareSearchOption">

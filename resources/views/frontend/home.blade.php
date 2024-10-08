@@ -58,10 +58,10 @@
                                     alt="">
                             </div>
                             <div class="bottomLayer">
-                                <a href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
+                                <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
                                    class="viewInnrTxt"><h3 class="blogHeading">{{ $item->name }}</h3></a>
                                 <p class="blogDetail">{{ $item->about }}</p>
-                                <button class="viewDetailBtn"><a
+                                <button class="viewDetailBtn"><a target="_blank"
                                         href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
                                         class="viewInnrTxt">View Details
                                         <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
