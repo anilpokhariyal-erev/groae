@@ -12,11 +12,12 @@
     <link href="{{ secure_asset('css/website/owl.theme.default.min.css') }}" rel="stylesheet" />
     <link href="{{ secure_asset('css/website/styles.css') }}" rel="stylesheet" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-
+    @yield('css-imports')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ secure_asset('js/website/app.js') }}" crossorigin="anonymous"></script>
     @yield('js-imports')
+    @yield('ai-js-imports')
     <script src="{{ secure_asset('js/website/validation.js') }}" crossorigin="anonymous"></script>
     <script src="{{ secure_asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
 
