@@ -71,20 +71,42 @@ class AttributeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'label' => 'required|string|max:255',
             'status' => 'required|boolean',
+            'attribute_options' => 'required|array', 
+            'attribute_options.*' => 'required|string|max:255'
         ]);
 
         $validatedData['show_in_calculator'] = $request->has('show_in_calculator');
+
+        // Find the existing attribute
         $attribute = Attribute::findOrFail($id);
-        if ($attribute->countInPackage() and $validatedData['status'] == false) {
-            return redirect()->back()->withErrors(['name' => 'The attribute is already use in package.'])->withInput();
+
+        // Check if the attribute is already in use in a package
+        if ($attribute->countInPackage() && $validatedData['status'] == false) {
+            return redirect()->back()->withErrors(['name' => 'The attribute is already used in a package.'])->withInput();
         }
+
+        // Update the attribute with validated data
         $attribute->update($validatedData);
 
+        // Remove old attribute options
+        $attribute->options()->delete();
+
+        // Insert new attribute options
+        foreach ($request->attribute_options as $option) {
+            $attribute->options()->create([
+                'value' => $option,
+                'status' => 1, // Default to active status, you can modify this as needed
+            ]);
+        }
+
+        // Redirect back with success message
         return redirect()->route('attributes.index')->with('success', 'Attribute updated successfully.');
     }
+
 
     /**
      * Remove the specified attribute from storage.
