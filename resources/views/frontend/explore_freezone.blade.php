@@ -40,9 +40,9 @@
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
                                     <div class="compareSearchOption">
                                         <button class="viewDetailBtn" style="width: auto;">
-                                            <a href="{{ route('freezone-package-detail', ['id' => $item->id]) }}" class="viewInnrTxt">View Details
-                                                <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
-                                            </a>
+                                        <a href="{{ url('calculate-licensecosts?package_id=' . encrypt($item->id)) }}" class="viewInnrTxt">Customize
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
+                                        </a>
                                         </button>
                                         <div class="compareInput">
                                             <label class="labelcontainer">Compare

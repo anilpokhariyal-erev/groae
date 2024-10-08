@@ -154,30 +154,42 @@ class FreezoneController extends Controller
     public function update(Request $request, string $uuid)
     {
         $freezone = Freezone::where('uuid', $uuid)->first();
-
+    
         if (!$freezone) {
             return abort(404);
         }
-
+    
+        // Validation for the form
         $request->validate([
             'name' => 'required',
             'freezone_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
         ]);
-
+    
         if ($request->file('freezone_logo')) {
-            Storage::delete($freezone->logo);
-            $originalName = 'freezones/' . time() . '_' . str_replace(' ', '_', $request->file('freezone_logo')->getClientOriginalName());
-            //$logo_path = $request->file('freezone_logo')->storeAs('public/freezone', $originalName);
-            Storage::put($originalName, file_get_contents($request->file('freezone_logo')), 'public');
-            $freezone->logo = $originalName;
+            // Delete the old logo if it exists
+            if ($freezone->logo) {
+                Storage::disk('public')->delete($freezone->logo);
+            }
+    
+            // Generate a unique file name without adding 'freezones/' twice
+            $fileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_logo')->getClientOriginalName());
+    
+            // Store the uploaded file directly in 'public/freezones'
+            $path = $request->file('freezone_logo')->storeAs('freezones', $fileName, 'public');
+    
+            // Save the new logo path in the database
+            $freezone->logo = $path;
         }
-
+    
+        // Update other fields
         $freezone->name = strtolower($request->name);
         $freezone->status = $request->status;
         $freezone->save();
-
+    
+        // Redirect back with success message
         return back()->with('success', 'Freezone updated successfully');
     }
+    
 
     public function freezoneInfoShow(string $uuid)
     {

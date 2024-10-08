@@ -7,8 +7,9 @@
             <div class="container">
                 <div class="backBtn ">
                     <a class="backAnchor" href="{{ url()->previous() }}"><img
-                            src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                            src="{{ asset('images/cheveron-right.png') }}" alt="">
                     <h2 class="backTxt">Back</h2>
+                    </a>
                 </div>
                 <div class="topHeading">
                     <h2 class="trendTxt">Calculate License Cost</h2>
@@ -20,12 +21,12 @@
                         <div class="input_wrap w-100">
                             <select required name="freezone" id="freezone" class="inputField2 cursor arrowPlace"
                                 aria-placeholder=" ">
-                                <option value="" disabled {{ request('freezone') == '' ? 'selected' : '' }}>Choose
+                                <option value="" disabled {{ $selected_freezone == '' ? 'selected' : '' }}>Choose
                                     an
                                     Option</option>
                                 @foreach ($freezones as $item)
                                     <option value="{{ $item->uuid }}"
-                                        {{ request('freezone') == $item->uuid ? 'selected' : '' }}>{{ $item->name }}
+                                        {{ $selected_freezone == $item->uuid ? 'selected' : '' }}>{{ $item->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -36,32 +37,45 @@
                     </div>
 
                     @foreach ($attributes as $attribute)
-                    <div class="secondColumn costCalculateForm">
-                        <div class="input_wrap w-100">
-                            <select required name="attribute_{{ $attribute->id }}" id="{{ $attribute->name }}"
-                                class="inputField2 cursor arrowPlace">
-                                <option data-val="0" value="" disabled {{ old('attribute_' . $attribute->id) == '' ? 'selected' : '' }}>
-                                    Choose an Option</option>
-                                @foreach ($attribute->options as $option)
-                                    <option data-val="{{$option->value}}" value="{{ $option->id }}" {{ old('attribute_' . $attribute->id) == $option->id ? 'selected' : '' }}>
-                                        {{ $option->value }}
+                        <div class="secondColumn costCalculateForm">
+                            <div class="input_wrap w-100">
+                                <select required name="attribute_{{ $attribute->id }}" id="{{ $attribute->name }}"
+                                    class="inputField2 cursor arrowPlace">
+                                    <option data-val="0" value="" disabled {{ old('attribute_' . $attribute->id) == '' ? 'selected' : '' }}>
+                                        Choose an Option
                                     </option>
-                                @endforeach
-                            </select>
-                            <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
-                            <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
+                                    @foreach ($attribute->options as $option)
+                                        {{-- Check if package is set and if the package contains this option --}}
+                                        @php
+                                            $selectedOption = isset($package) && $package->packageLines->contains(function ($line) use ($attribute, $option) {
+                                                return $line->attribute_id == $attribute->id && $line->attribute_option_id == $option->id;
+                                            });
+                                        @endphp
+                                        <option data-val="{{ $option->value }}" value="{{ $option->id }}" 
+                                            {{ $selectedOption || old('attribute_' . $attribute->id) == $option->id ? 'selected' : '' }}>
+                                            {{ $option->value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
+                                <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
+                                <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
+                            </div>
                         </div>
-                    </div>
                     @endforeach
+
                     <div class="secondColumn costCalculateForm">
                         <div class="input_wrap w-100">
                             <select required name="visa_package" id="visa_package"
                                 class="inputField2 cursor arrowPlace">
                                 <option data-val="0" value="" disabled {{ old('visa_package') == '' ? 'selected' : '' }}>
-                                    Choose an Option</option>
-                                @for($i=1; $i<=$max_visa_package; $i++)
-                                    <option data-val="{{$i}}" value="{{ $i }}" {{ old('visa_package') == $i ? 'selected' : '' }}>
+                                    Choose an Option </option>
+                                @for($i=0; $i<=$max_visa_package; $i++)
+                                    <option data-val="{{$i}}" value="{{ $i }}" 
+                                    {{ (old('visa_package') == $i 
+                                        or 
+                                        ( isset($package) and $package->visa_package == $i) ) ? 'selected' : '' 
+                                    }}>
                                         {{ $i }}
                                     </option>
                                 @endfor

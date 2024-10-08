@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\CostCalculatorSummaryRequest;
 use App\Models\FreezoneBooking;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class CostCalculatorController extends Controller
 {
@@ -29,21 +31,47 @@ class CostCalculatorController extends Controller
      */
     public function index(Request $request)
     {
+        $package_id = null;
+
+        if ($request->has('package_id')) {
+            try {
+                $package_id = Crypt::decrypt($request->get('package_id'));
+            } catch (DecryptException $e) {
+                // Handle decryption failure, e.g. log the error or show a message
+                return redirect()->back()->withErrors('Invalid package ID.');
+            }
+        }
+        $selected_freezone = $request->get('freezone');
+        $package = null;
+        if($package_id){
+            $package = PackageHeader::with([
+                'packageLines.attribute',
+                'packageLines.attributeOption'
+            ])->findOrFail($package_id);
+            // Get the distinct attributes from the package lines
+            $attributes = $package->packageLines->map(function ($packageLine) {
+                return $packageLine->attribute;
+            })->unique('id'); // Ensure attributes are unique
+            $selected_freezone = $package->freezone->uuid;
+        }else{
+            $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])->with('options')->get();
+        }
+
         $freezones = Freezone::select('id', 'uuid', 'name')->where('status', 1)->get();
         $freezone_data = [];
         $max_visa_package = 0;
-        if ($request->freezone) {
+        if ($selected_freezone) {
             $max_visa_package = PackageHeader::where('status', 1)
-                ->whereHas('freezone', function ($query) use ($request) {
-                    $query->where('uuid', $request->freezone);
+                ->whereHas('freezone', function ($query) use ($selected_freezone) {
+                    $query->where('uuid', $selected_freezone);
                 })->max('visa_package');
 
-            $freezone_data = Freezone::where('uuid', $request->freezone)->with(['licenses', 'visa_types', 'visa_add_ons', 'locations', 'activity_groups'])->first();
+            $freezone_data = Freezone::where('uuid', $selected_freezone)->with(['licenses', 'visa_types', 'visa_add_ons', 'locations', 'activity_groups'])->first();
 
         }
-        $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])->with('options')->get();
+        
 
-        return view('frontend.cost_calculator.calculate_licensecost',  compact('freezones', 'freezone_data', 'attributes', 'max_visa_package'));
+        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezones', 'freezone_data', 'attributes', 'max_visa_package'));
     }
 
     /**

@@ -201,4 +201,8 @@ $(document).ready(function () {
       if (!isNaN(this.value)) regenerateDiv(visa_secton, this.value);
     }
   });
+  // by default show the visa pacakge option if we have value in visa package
+  if(parseInt($('#visa_package').val())>0){
+        $('#visa_package').val($('#visa_package').val()).change();
+  }
 });
