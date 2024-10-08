@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\CostCalculatorSummaryRequest;
 use App\Models\FreezoneBooking;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class CostCalculatorController extends Controller
 {
@@ -29,7 +31,16 @@ class CostCalculatorController extends Controller
      */
     public function index(Request $request)
     {
-        $package_id = $request->get('package_id');
+        $package_id = null;
+
+        if ($request->has('package_id')) {
+            try {
+                $package_id = Crypt::decrypt($request->get('package_id'));
+            } catch (DecryptException $e) {
+                // Handle decryption failure, e.g. log the error or show a message
+                return redirect()->back()->withErrors('Invalid package ID.');
+            }
+        }
         $selected_freezone = $request->get('freezone');
         $package = null;
         if($package_id){
