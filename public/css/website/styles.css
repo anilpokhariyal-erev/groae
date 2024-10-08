@@ -1750,12 +1750,38 @@ input[type='search']::-webkit-search-results-decoration {
   line-height: 24px;
 }
 
+.text-center {
+  text-align: center !important;
+}
 /* ========== blog details css end ====================== */
 
 /* =============================== explore_freezone style ===================== */
 
 .filterItemContainer {
   padding-top: 100px;
+  width: 100%;
+  max-width: 90%;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+/* Add media queries for larger screens */
+@media (min-width: 768px) {
+  .filterItemContainer {
+      max-width: 80%; /* Slightly larger for tablets */
+  }
+}
+
+@media (min-width: 1024px) {
+  .filterItemContainer {
+      max-width: 75%; /* Larger width for bigger screens like desktops */
+  }
+}
+
+@media (min-width: 1440px) {
+  .filterItemContainer {
+      max-width: 60%; /* Max-width for large desktop screens */
+  }
 }
 
 .selctBg {

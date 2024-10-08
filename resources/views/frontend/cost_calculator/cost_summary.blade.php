@@ -35,20 +35,22 @@
                             <td class="tHeadingTxt">Package</td>
                             <td class="tDetailTxt">{{ $package_detail->title }}</td>
                             <td class="tDetailTxt">
-                                {{$package_detail->price > 0 ? 'AED ' . number_format($package_detail->price, 2) : '' }}
+                                {{$package_detail->price > 0 ? $package_detail->currency . ' ' . number_format($package_detail->price, 2) : '' }}
                             </td>
                         </tr>
                         <tr>
-                            <td class="tHeadingTxt">Package Attributes</td>
+                            <td class="tHeadingTxt">Package Inclusions</td>
                             <td class="tDetailTxt">Total {{ count($package_detail->packageLines) }} in Quantity</td>
                             <td class="tDetailTxt"></td>
                         </tr>
 
                         @foreach ($package_detail->packageLines as $key => $item)
                             <tr>
-                                <td class="tHeadingTxt lightTxt">Attribute {{ $key + 1 }}</td>
-                                <td class="tDetailTxt">{{ $item->attribute->label}}</td>
-                                <td class="tDetailTxt">{{ $item->attributeOption->value }}</td>
+                                <td class="">{{ $item->attribute->label}}</td>
+                                <td class="">{{ $item->attributeOption->value }}</td>
+                                <td class="tDetailTxt text-center">
+                                {{ $item->addon_cost>0 ? $package_detail->currency . ' ' . $item->addon_cost : '-' }}
+                                </td>
                             </tr>
                         @endforeach
 
