@@ -35,20 +35,40 @@
                                     <img src='{{ $item->freezone->logo ? Storage::url($item->freezone->logo) : asset('images/placeholder.png') }}' alt="">
                                 </div>
                                 <div class="secondLayer">
-                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}"><h3 class="blogHeading text-left">{{ $item->freezone->name }} <br>{{$item->title}}</h3></a>
+                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
+                                        <h3 class="blogHeading text-left">{{ $item->freezone->name }} <br>{{ $item->title }}</h3>
+                                    </a>
                                     <p class="blogDetail text-left">{{ $item->description }}</p>
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
+
+                                    <!-- Display package attributes -->
+                                    <div class="packageAttributes">
+                                        @if($item->packageLines && count($item->packageLines) > 0)
+                                            <div style="margin-top: 5px">
+                                                @foreach ($item->packageLines as $key => $package_line)
+                                                    @if($package_line->attributeOption->price == 0)
+                                                        <div class="attrHead">{{ $package_line->attribute->label}}</div>
+                                                        <div> - {{ $package_line->attributeOption->value }}</div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+
+                                        @else
+                                            <p>No attributes available.</p>
+                                        @endif
+                                    </div>
+
                                     <div class="compareSearchOption">
                                         <button class="viewDetailBtn" style="width: auto;">
-                                        <a href="{{ url('calculate-licensecosts?package_id=' . encrypt($item->id)) }}" class="viewInnrTxt">Customize
-                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
-                                        </a>
+                                            <a href="{{ url('calculate-licensecosts?package_id=' . encrypt($item->id)) }}" class="viewInnrTxt">Customize
+                                                <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
+                                            </a>
                                         </button>
                                         <div class="compareInput">
                                             <label class="labelcontainer">Compare
                                                 <input class="checkbox" id="package_{{ $item->id }}"
-                                                    data-checkbox="{{ $item->id . '|' . $item->freezone->name . '<br>' . $item->title . '|' . ($item->logo ? Storage::url($item->logo) : asset('images/placeholder.png')) }}"
-                                                    type="checkbox">
+                                                       data-checkbox="{{ $item->id . '|' . $item->freezone->name . '<br>' . $item->title . '|' . ($item->logo ? Storage::url($item->logo) : asset('images/placeholder.png')) }}"
+                                                       type="checkbox">
                                                 <span class="checkmark"></span>
                                             </label>
                                         </div>
@@ -56,6 +76,7 @@
                                 </div>
                             </div>
                         @endforeach
+
                     @endif
                 </div>
 
