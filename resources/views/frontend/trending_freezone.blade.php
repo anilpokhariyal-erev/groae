@@ -23,7 +23,7 @@
                             <div class="bottomLayer">
                                 <h3 class="blogHeading">{{ $item->name }}</h3>
                                 <p class="blogDetail">{!! Str::limit($item->about, 140, ' ...') !!}.</p>
-                                <button class="viewDetailBtn"><a
+                                <button class="viewDetailBtn"><a target="_blank"
                                         href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
                                         class="viewInnrTxt">View
                                         Details
