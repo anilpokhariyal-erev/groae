@@ -29,6 +29,9 @@ use App\Http\Controllers\OtherServiceController;
 
 
 //Admin routes added by brij and working routes
+use App\Http\Controllers\Admin\ActivityGroupController;
+use App\Http\Controllers\Admin\ActivityController;
+
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Frontend\FileController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -175,8 +178,24 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('activity/{uuid}', [PcActivityController::class, 'update'])->name('activity.update')->middleware('role_or_permission:update-actvity');
     Route::get('activity/delete/{uuid}', [PcActivityController::class, 'destroy'])->name('activity.delete')->middleware('role_or_permission:delete-actvity');*/
 
+    Route::get('activity-groups', [ActivityGroupController::class, 'index'])->name('activity-group.index')->middleware('role_or_permission:view-activity-groups');
+    Route::get('activity-group/create', [ActivityGroupController::class, 'create'])->name('activity-group.create')->middleware('role_or_permission:create-activity-group');
+    Route::post('activity-group/store', [ActivityGroupController::class, 'store'])->name('activity-group.store')->middleware('role_or_permission:store-activity-group');
+    Route::get('activity-group/edit/{id}', [ActivityGroupController::class, 'edit'])->name('activity-group.edit')->middleware('role_or_permission:edit-activity-group');
+    Route::put('activity-group/{activityGroup}', [ActivityGroupController::class, 'update'])->name('activity-group.update')->middleware('role_or_permission:update-activity-group');
+    Route::get('activity-group/delete/{id}', [ActivityGroupController::class, 'destroy'])->name('activity-group.delete')->middleware('role_or_permission:delete-activity-group');
 
-    Route::resource('activity', PcActivityController::class);
+
+
+    Route::get('activities', [ActivityController::class, 'index'])->name('activity.index')->middleware('role_or_permission:view-activities');
+    Route::get('activity/create', [ActivityController::class, 'create'])->name('activity.create')->middleware('role_or_permission:create-activity');
+    Route::post('activity/store', [ActivityController::class, 'store'])->name('activity.store')->middleware('role_or_permission:store-activity');
+    Route::get('activity/edit/{id}', [ActivityController::class, 'edit'])->name('activity.edit')->middleware('role_or_permission:edit-activity');
+    Route::put('activity/{id}', [ActivityController::class, 'update'])->name('activity.update')->middleware('role_or_permission:update-activity');
+    Route::get('activity/delete/{id}', [ActivityController::class, 'destroy'])->name('activity.delete')->middleware('role_or_permission:delete-activity');
+
+  
+    // Route::resource('activity', PcActivityController::class);
     Route::resource('licence', PcLicenseController::class);
     Route::get('licence/delete/{uuid}', [PcLicenseController::class, 'destroy'])->name('licence.delete');
 

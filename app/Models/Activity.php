@@ -12,6 +12,15 @@ class Activity extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // Specify the fillable attributes
+    protected $fillable = [
+        'name',         
+        'description', 
+        'price', 
+        'activity_group_id',
+        'freezone_id'
+    ];
+
     public function activity_group()
     {
         return $this->belongsTo(ActivityGroup::class);
