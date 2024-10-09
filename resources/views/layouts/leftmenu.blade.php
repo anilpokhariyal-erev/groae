@@ -122,6 +122,33 @@
 
             @if(
                 auth()->user()->hasRole('superadmin') || 
+                auth()->user()->can('view-activities') ||
+                auth()->user()->can('view-activity-groups') 
+            )
+                <li class="app-sidebar__heading">Activities</li>
+            @endif
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-activity-groups'))
+                <li>
+                    <a href="{{route('activity-group.index')}}" class="{{ Route::is('activity-group.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-folder-open"></i>
+                        Manage Activity Groups
+                    </a>
+                </li>
+            @endif
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-activities'))
+                <li>
+                    <a href="{{route('activity.index')}}" class="{{ Route::is('activity.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-clipboard-list"></i>
+                        Manage Activities
+                    </a>
+                </li>
+            @endif
+
+
+            @if(
+                auth()->user()->hasRole('superadmin') || 
                 auth()->user()->can('view-freezones') ||
                 auth()->user()->can('view-freezone-admin') 
             )
