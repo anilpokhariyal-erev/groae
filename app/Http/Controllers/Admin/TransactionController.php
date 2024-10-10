@@ -60,9 +60,11 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        $transactin_detail = array('');
-        return view('admin.transaction.transaction_detail',compact('transactin_detail'));
+        // Ensure you are eager loading the related models
+        $transaction->load('customer', 'freezone_booked.freezone');
+        return view('admin.transaction.transaction_detail', compact('transaction'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
