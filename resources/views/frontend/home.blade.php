@@ -25,22 +25,7 @@
 
     </section>
 
-    <!-- Business Incorporation -->
-    <section>
-        <div class="container">
-            <div class="businessIncorpContainer">
-                <div class="corporateImgWrpper">
-                    <img src="{{ secure_asset('images/business-incorporation.png') }}" alt="" class="aboutImageBannr">
-                </div>
-                <div class="corporateInnrSection">
-                    <h3>Business incorporation
-                        starting at</h3>
-                    <p>AED 8000</p>
-                    <button class="exploreBtn"><a href="{{ route('explore-freezone') }}">Explore Freezones</a></button>
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('frontend.components.offers_home')
 
     <!-- Trending Freezones  -->
     <section>
@@ -51,7 +36,7 @@
             </div>
             <div class="container">
                 <div class="trendingBlog">
-                    @foreach ($freezones as $item)
+                    @foreach ($trending_freezones as $item)
                         <div class="blogLayer">
                             <div class="topLayer">
                                 <img src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}'
