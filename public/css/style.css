@@ -891,3 +891,21 @@ fieldset{min-width:0;padding:0;margin:0;border:0;}
 .suggestion:hover {
     background-color: #f0f0f0;
 }
+
+.text-center{
+    text-align: center !important;
+}
+
+
+.attribute-option-item {
+    display: flex;
+    align-items: center;
+}
+
+.attribute-option-item input {
+    flex-grow: 1;
+}
+
+.attribute-option-item .btn-danger {
+    margin-left: 10px;
+}

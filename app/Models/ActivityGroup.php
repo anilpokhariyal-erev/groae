@@ -11,17 +11,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ActivityGroup extends Model
 {
     use HasFactory, SoftDeletes;
+    
+    protected $fillable = [
+        'name',
+        'description',
+        'freezone_id',
+    ];
+    
     protected $hidden = ['pivot'];
 
     public function activities()
     {
         return $this->hasMany(Activity::class);
     }
-
-    // public function freezones()
-    // {
-    //     return $this->belongsToMany(Freezone::class);
-    // }
 
     public function freezone()
     {

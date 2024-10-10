@@ -1,5 +1,4 @@
 <x-admin-layout>
-
     <div class="main-card mb-3 card">
         <div class="card-body">
             <div class="ba_flex justify-between">
@@ -16,7 +15,6 @@
                 @csrf
                 @method('PUT')
                 <div class="row">
-
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="name">System Name <span class="text-danger" title="Only Hyphen allowed. Spaces and special characters not allowed.">*</span></label>
@@ -43,32 +41,58 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
                         </div>
                     </div>
-
                 </div>
 
+                <!-- Checkbox for Visibility in Calculator -->
                 <div class="col-md-12">
                     <div class="position-relative form-group">
-                        <input
-                                type="checkbox"
-                                name="show_in_calculator"
-                                id="show_in_calculator"
-                                value="1"
-                                {{ old('show_in_calculator', $attribute->show_in_calculator) ? 'checked' : '' }}>
+                        <input type="checkbox" name="show_in_calculator" id="show_in_calculator" value="1" {{ old('show_in_calculator', $attribute->show_in_calculator) ? 'checked' : '' }}>
                         <label for="show_in_calculator">Visible on calculator</label>
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('show_in_calculator')" />
                     </div>
                 </div>
 
+                <!-- Dynamic Attribute Options -->
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="attribute_values">Attribute Options</label>
+                        <div id="attribute-options-container">
+                            @if(old('attribute_options', $attribute->options))
+                                @foreach(old('attribute_options', $attribute->options) as $key => $option)
+                                    <div class="attribute-option-item d-flex mb-2">
+                                        <input type="text" name="attribute_options[]" class="form-control mr-2" value="{{ $option->value }}" placeholder="Enter option value">
+                                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">X</button>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                        <button type="button" class="btn btn-success mt-2" id="add-attribute-option">Add Option</button>
+                    </div>
+                </div>
 
                 <div class="ba_flex align_items_center">
                     <button class="mt-1 btn btn-primary">Update</button>
                 </div>
             </form>
-
         </div>
     </div>
 
     <script>
+        document.getElementById('add-attribute-option').addEventListener('click', function () {
+            const container = document.getElementById('attribute-options-container');
+            const optionItem = document.createElement('div');
+            optionItem.classList.add('attribute-option-item');
+            optionItem.innerHTML = `
+                <input type="text" name="attribute_options[]" class="form-control mb-2" placeholder="Enter option value">
+                <button type="button" class="btn btn-danger" onclick="removeOption(this)">X</button>
+            `;
+            container.appendChild(optionItem);
+        });
+
+        function removeOption(button) {
+            button.parentElement.remove();
+        }
+
         function checkInput(input, type = 'name') {
             const value = input.value;
             const regex = /^[a-zA-Z0-9-_]*$/; // Allow letters, numbers, and underscore only
