@@ -146,6 +146,23 @@
                 </li>
             @endif
 
+            @if(
+                auth()->user()->hasRole('superadmin') || 
+                auth()->user()->can('view-visa-types') ||
+                auth()->user()->can('view-visa-activities')
+            )
+                <li class="app-sidebar__heading">Visa Types</li>
+            @endif
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-types'))
+                <li>
+                    <a href="{{route('visa-type.index')}}" class="{{ Route::is('visa-type.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-passport"></i>
+                        Manage Visa Types
+                    </a>
+                </li>
+            @endif
+
 
             @if(
                 auth()->user()->hasRole('superadmin') || 

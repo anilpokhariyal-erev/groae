@@ -31,6 +31,7 @@ use App\Http\Controllers\OtherServiceController;
 //Admin routes added by brij and working routes
 use App\Http\Controllers\Admin\ActivityGroupController;
 use App\Http\Controllers\Admin\ActivityController;
+use App\Http\Controllers\Admin\VisaTypeController;
 
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Frontend\FileController;
@@ -186,13 +187,19 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('activity-group/delete/{id}', [ActivityGroupController::class, 'destroy'])->name('activity-group.delete')->middleware('role_or_permission:delete-activity-group');
 
 
-
     Route::get('activities', [ActivityController::class, 'index'])->name('activity.index')->middleware('role_or_permission:view-activities');
     Route::get('activity/create', [ActivityController::class, 'create'])->name('activity.create')->middleware('role_or_permission:create-activity');
     Route::post('activity/store', [ActivityController::class, 'store'])->name('activity.store')->middleware('role_or_permission:store-activity');
     Route::get('activity/edit/{id}', [ActivityController::class, 'edit'])->name('activity.edit')->middleware('role_or_permission:edit-activity');
     Route::put('activity/{id}', [ActivityController::class, 'update'])->name('activity.update')->middleware('role_or_permission:update-activity');
     Route::get('activity/delete/{id}', [ActivityController::class, 'destroy'])->name('activity.delete')->middleware('role_or_permission:delete-activity');
+
+    Route::get('visa-types', [VisaTypeController::class, 'index'])->name('visa-type.index')->middleware('role_or_permission:view-visa-types');
+    Route::get('visa-type/create', [VisaTypeController::class, 'create'])->name('visa-type.create')->middleware('role_or_permission:create-visa-type');
+    Route::post('visa-type/store', [VisaTypeController::class, 'store'])->name('visa-type.store')->middleware('role_or_permission:store-visa-type');
+    Route::get('visa-type/edit/{id}', [VisaTypeController::class, 'edit'])->name('visa-type.edit')->middleware('role_or_permission:edit-visa-type');
+    Route::put('visa-type/{id}', [VisaTypeController::class, 'update'])->name('visa-type.update')->middleware('role_or_permission:update-visa-type');
+    Route::get('visa-type/delete/{id}', [VisaTypeController::class, 'destroy'])->name('visa-type.delete')->middleware('role_or_permission:delete-visa-type');
 
   
     // Route::resource('activity', PcActivityController::class);
