@@ -11,16 +11,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class VisaType extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $fillable = ['freezone_id', 'name', 'price', 'description'];
 
     public function visa_activities()
     {
         return $this->belongsToMany(VisaActivity::class);
     }
-
-    // public function freezones()
-    // {
-    //     return $this->belongsToMany(Freezone::class);
-    // }
 
     public function freezone()
     {
