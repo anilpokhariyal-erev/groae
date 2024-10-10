@@ -71,47 +71,28 @@
 
            
 
-            <!--<li>
-                <a href="{{route('activity.index')}}" class="{{ Route::is('activity.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Activity
-                </a>
-            </li>
-
+            <!--
             <li>
                 <a href="{{route('licence.index')}}" class="{{ Route::is('licence.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
                     Manage licence
                 </a>
             </li>
-
-            <li>
-                <a href="{{route('package.index')}}" class="{{ Route::is('package.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage packages
-                </a>
-            </li>
-
+            
             <li>
                 <a href="{{route('additionalactivity.index')}}" class="{{ Route::is('additionalactivity.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
                     Manage Additional Activities
                 </a>
-            </li>
+            </li> 
+            -->
 
             <li>
-                <a href="{{route('visatype.index')}}" class="{{ Route::is('visatype.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Visa Type
-                </a>
-            </li> -->
-
-            <!--<li>
                 <a href="{{route('transaction.index')}}" class="{{ Route::is('transaction.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
                     Transactions
                 </a>
-            </li> -->
+            </li>
 
             <li class="{{ $has_role_or_permission('view-contact', 'ba_display_none') }}">
                 <a href="{{route('contact.index')}}" class="{{ Route::is('contact.*') ? 'mm-active' : '' }}">
@@ -151,7 +132,7 @@
                 auth()->user()->can('view-visa-types') ||
                 auth()->user()->can('view-visa-activities')
             )
-                <li class="app-sidebar__heading">Visa Types</li>
+                <li class="app-sidebar__heading">Visa Packages</li>
             @endif
 
             @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-types'))

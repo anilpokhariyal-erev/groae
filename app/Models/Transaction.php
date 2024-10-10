@@ -17,20 +17,18 @@ class Transaction extends Model
         'amount',
         'customer_id',
         'payment_status',
-        'message'
+        'message',
+        'freezone_booking_id',
     ];
 
-    public function freezone()
-    {
-        return $this->belongsTo(Freezone::class);
-    }
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
-    function freezone_booked()
+    public function freezone_booked()
     {
-        return $this->belongsTo(FreezoneBooking::class);
+        return $this->belongsTo(FreezoneBooking::class, 'freezone_booking_id'); // Specify the foreign key if it's not 'freezone_booking_id'
     }
 }
+
