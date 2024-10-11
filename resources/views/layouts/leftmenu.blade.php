@@ -101,14 +101,6 @@
                 </a>
             </li>
 
-            @if(
-                auth()->user()->hasRole('superadmin') || 
-                auth()->user()->can('view-activities') ||
-                auth()->user()->can('view-activity-groups') 
-            )
-                <li class="app-sidebar__heading">Activities</li>
-            @endif
-
             @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-activity-groups'))
                 <li>
                     <a href="{{route('activity-group.index')}}" class="{{ Route::is('activity-group.*') ? 'mm-active' : '' }}">
@@ -127,19 +119,20 @@
                 </li>
             @endif
 
-            @if(
-                auth()->user()->hasRole('superadmin') || 
-                auth()->user()->can('view-visa-types') ||
-                auth()->user()->can('view-visa-activities')
-            )
-                <li class="app-sidebar__heading">Visa Packages</li>
-            @endif
-
             @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-types'))
                 <li>
                     <a href="{{route('visa-type.index')}}" class="{{ Route::is('visa-type.*') ? 'mm-active' : '' }}">
                         <i class="metismenu-icon fa-solid fa-passport"></i>
                         Manage Visa Types
+                    </a>
+                </li>
+            @endif
+            
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-add-ons'))
+                <li>
+                    <a href="{{ route('visa-add-on.index') }}" class="{{ Route::is('visa-add-on.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-layer-group"></i>
+                        Manage Visa Add-Ons
                     </a>
                 </li>
             @endif
