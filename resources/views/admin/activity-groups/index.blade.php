@@ -51,6 +51,7 @@
                         <tr>
                             <th>#</th>
                             <th>Group Name</th>
+                            <th>Freezone</th>
                             <th>Created Date</th>
                             <th>Action</th>
                         </tr>
@@ -61,6 +62,7 @@
                             <tr>
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucwords($activityGroup->name)}}</td>
+                                <td>{{ucwords($activityGroup->freezone->name)}}</td>
                                 <td>{{$activityGroup->created_at->format('Y-m-d')}}</td>
                                 <td>
                                     <a class="ml-1 mr-1" href="{{route('activity-group.edit', $activityGroup->id)}}">Edit</a>

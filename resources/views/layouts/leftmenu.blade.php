@@ -154,17 +154,14 @@
             @endif
 
            
-             
-           
-
-            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-freezone-admin'))
+            <!-- @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-freezone-admin'))
                 <li>
                     <a href="{{route('freezone-users.index')}}" class="{{ Route::is('freezone-users.*') ? 'mm-active' : '' }}">
                         <i class="metismenu-icon fa-solid fa-users"></i>
                         Manage Freezones Admin
                     </a>
                 </li>
-            @endif
+            @endif -->
 
             @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-freezones'))
                 <li>

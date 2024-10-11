@@ -76,14 +76,31 @@
                                 <td>{{ $package->title }}</td>
                                 <td>{{ $package->freezone->name }}</td>
                                 <td>{{ $package->price }}</td>
-                                <td>@if($package->status == 1) Active @else Inactive @endif</td>
+                                <td>
+                                    <span class="badge {{ $package->status == 1 ? 'badge-success' : 'badge-danger' }}">
+                                        {{ $package->status == 1 ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>                                
                                 <td>{{ $package->visa_package }}</td>
                                 <td>@if($package->trending == 1) Yes @else No @endif</td>
                                 <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>
                                 <td>
-                                    <a href="{{ route('package.edit', $package->id) }}" class="ml-1 mr-1">Edit</a>
-                                    @if($package->status == 1)<a href="{{ route('package.disabled', $package->id) }}" class="ml-1 mr-1 text-red">Disabled</a>@else<a href="{{ route('package.enabled', $package->id) }}" class="ml-1 mr-1 text-info">Enabled</a> @endif
+                                    <a href="{{ route('package.edit', $package->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    @if($package->status == 1)
+                                        <a href="{{ route('package.disabled', $package->id) }}"
+                                        class="btn btn-secondary btn-sm"
+                                        onclick="return confirm('Are you sure you want to disable this package?');">
+                                            Disable
+                                        </a>
+                                    @else
+                                        <a href="{{ route('package.enabled', $package->id) }}"
+                                        class="btn btn-primary btn-sm"
+                                        onclick="return confirm('Are you sure you want to enable this package?');">
+                                            Enable
+                                        </a>
+                                    @endif
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
