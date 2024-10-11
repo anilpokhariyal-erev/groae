@@ -11,6 +11,13 @@ class VisaAddOn extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'name', 
+        'price', 
+        'description', 
+        'freezone_id',
+    ];
+
     public function freezone()
     {
         return $this->belongsTo(Freezone::class);

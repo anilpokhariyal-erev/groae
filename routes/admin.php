@@ -32,6 +32,7 @@ use App\Http\Controllers\OtherServiceController;
 use App\Http\Controllers\Admin\ActivityGroupController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\VisaTypeController;
+use App\Http\Controllers\Admin\VisaAddOnController;
 
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Frontend\FileController;
@@ -200,7 +201,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('visa-type/edit/{id}', [VisaTypeController::class, 'edit'])->name('visa-type.edit')->middleware('role_or_permission:edit-visa-type');
     Route::put('visa-type/{id}', [VisaTypeController::class, 'update'])->name('visa-type.update')->middleware('role_or_permission:update-visa-type');
     Route::get('visa-type/delete/{id}', [VisaTypeController::class, 'destroy'])->name('visa-type.delete')->middleware('role_or_permission:delete-visa-type');
-
+    
+    Route::get('visa-add-ons', [VisaAddOnController::class, 'index'])->name('visa-add-on.index')->middleware('role_or_permission:view-visa-add-ons');
+    Route::get('visa-add-on/create', [VisaAddOnController::class, 'create'])->name('visa-add-on.create')->middleware('role_or_permission:create-visa-add-on');
+    Route::post('visa-add-on/store', [VisaAddOnController::class, 'store'])->name('visa-add-on.store')->middleware('role_or_permission:store-visa-add-on');
+    Route::get('visa-add-on/edit/{id}', [VisaAddOnController::class, 'edit'])->name('visa-add-on.edit')->middleware('role_or_permission:edit-visa-add-on');
+    Route::put('visa-add-on/{id}', [VisaAddOnController::class, 'update'])->name('visa-add-on.update')->middleware('role_or_permission:update-visa-add-on');
+    Route::get('visa-add-on/delete/{id}', [VisaAddOnController::class, 'destroy'])->name('visa-add-on.delete')->middleware('role_or_permission:delete-visa-add-on');
   
     // Route::resource('activity', PcActivityController::class);
     Route::resource('licence', PcLicenseController::class);

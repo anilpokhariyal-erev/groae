@@ -71,7 +71,7 @@
 
                     <div class="col-md-6">
                         <div class="position-relative form-group">
-                            <label for="visa_package">Visa Package <span class="text-danger">*</span></label>
+                            <label for="visa_package">Free Visa Package <span class="text-danger">*</span></label>
                             <input
                                     type="number"
                                     name="visa_package"
