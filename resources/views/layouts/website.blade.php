@@ -20,6 +20,7 @@
     @yield('ai-js-imports')
     <script src="{{ secure_asset('js/website/validation.js') }}" crossorigin="anonymous"></script>
     <script src="{{ secure_asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
 </head>
 

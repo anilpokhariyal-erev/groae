@@ -1,4 +1,25 @@
 <x-website-layout>
+    <style>
+        .contactUsBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff; /* Change to your desired color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it is on top of other elements */
+        }
+
+        .contactUsBtn i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+    </style>
     <section class="center-section">
         <div class="costCalculateContainer">
             <div class="container">
@@ -109,4 +130,9 @@
             </div>
         </div>
     </section>
+
+    <a href="{{ url('contact-us') }}" class="contactUsBtn">
+        <i class="bi bi-telephone"></i> Contact Us
+    </a>
+
 </x-website-layout>

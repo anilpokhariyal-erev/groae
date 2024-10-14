@@ -94,10 +94,37 @@
                         </div>
                     </div>
 
+                    <!-- Number of Free Activities Allowed -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="activity_limit">Number of Free Activities Allowed</label>
+                            <input type="number" id="activity-limit-input" name="activity_limit"
+                                   class="form-control" value="{{ old('activity_limit') }}"
+                                   min="1" max="{{ count($activities) }}" placeholder="Enter a limit">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_limit')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="free_activities">Free Activities</label>
+                            <select id="free-activities-dropdown" name="free_activities[]" class="custom-select form-control">
+                                <option value="">Select Free Activity</option>
+                                @foreach($activities as $activity)
+                                    <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('free_activities')" />
+                        </div>
+
+                        <!-- Selected Free Activities -->
+                        <div id="selected-activities-container" class="mt-3"></div>
+                    </div>
+
                     <!-- Package Lines (Attributes and Attribute Options) -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
-                            <label for="package_lines">Package Add-ons</label>
+                            <label for="package_lines"><b>Package Add-ons</b></label>
                             <div id="package-lines-container">
                                 <div class="row package-line-item">
                                     <!-- Attribute -->
@@ -242,6 +269,69 @@
                     $optionSelect.empty().append('<option value="">Select Option</option>');
                 }
             });
+        });
+
+        $('#activity-limit-input').on('input', function() {
+            let limit = parseInt($(this).val());
+            let selectedActivities = $('#selected-activities-container .selected-activity').length;
+
+            // Check if activity limit is greater than 0
+            if (limit > 0) {
+                $('#free-activities-dropdown').prop('required', true);
+                // Enable the dropdown only if the number of selected activities is less than the limit
+                $('#free-activities-dropdown').prop('disabled', selectedActivities >= limit);
+            } else {
+                $('#free-activities-dropdown').prop('required', false);
+                $('#free-activities-dropdown').prop('disabled', false);
+            }
+
+            // Enable the dropdown if the number of selected activities is less than the limit
+            if (selectedActivities < limit) {
+                $('#free-activities-dropdown').prop('disabled', false);
+            }
+        });
+
+        // Handle the selection of free activities
+        $(document).on('change', '#free-activities-dropdown', function() {
+            if ($('#activity-limit-input').val() == 0 || $('#activity-limit-input').val() == ''){
+                alert('please enter Number of Free Activities Allowed !')
+                $('#free-activities-dropdown').val('').change();
+                return false;
+            }
+            let activityId = $(this).val();
+            let limit = parseInt($('#activity-limit-input').val());
+            let selectedActivitiesContainer = $('#selected-activities-container');
+
+            // Check if the activity is already selected
+            if (activityId && selectedActivitiesContainer.find(`[data-id="${activityId}"]`).length === 0) {
+                // Create a new element to show selected activities
+                selectedActivitiesContainer.append(`
+            <div class="selected-activity" data-id="${activityId}">
+                ${$(this).find('option:selected').text()}
+                <button type="button" class="btn btn-danger btn-sm remove-activity" data-id="${activityId}">Remove</button>
+                <input type="hidden" name="free_activities[]" value="${activityId}" />
+            </div>
+        `);
+
+                // Disable the dropdown if the limit is reached
+                if (selectedActivitiesContainer.children().length >= limit) {
+                    $(this).prop('disabled', true);
+                }
+            }
+            $(this).val(''); // Reset the dropdown after selection
+        });
+
+
+        // Handle removing selected activities
+        $(document).on('click', '.remove-activity', function() {
+            $(this).closest('.selected-activity').remove();
+            let limit = parseInt($('#activity-limit-input').val());
+            let selectedActivitiesContainer = $('#selected-activities-container');
+
+            // Enable the dropdown if the number of selected activities is less than the limit
+            if (selectedActivitiesContainer.children().length < limit) {
+                $('#free-activities-dropdown').prop('disabled', false);
+            }
         });
     </script>
 </x-admin-layout>

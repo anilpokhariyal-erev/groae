@@ -42,15 +42,22 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
                         </div>
                     </div>
-
-                </div>
-
-                <div class="col-md-12">
-                    <div class="position-relative form-group">
-                        <input type="checkbox" name="show_in_calculator" id="show_in_calculator" value="1" {{ old('show_in_calculator') ? 'checked' : '' }}>
-                        <label for="trending">Visible on calculator</label>
-                        <x-input-error class="mt-2 text-red" :messages="$errors->get('show_in_calculator')" />
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <input type="checkbox" name="show_in_calculator" id="show_in_calculator" value="1" {{ old('show_in_calculator') ? 'checked' : '' }}>
+                            <label for="trending">Visible on calculator</label>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('show_in_calculator')" />
+                        </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <input type="checkbox" name="allow_any" id="allow_any" value="1" {{ old('allow_any') ? 'checked' : '' }}>
+                            <label for="allow_any">Allow Any</label>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('allow_any')" />
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="ba_flex align_items_center">

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
+use App\Models\Activity;
 use App\Models\Currency;
+use App\Models\PackageActivity;
 use App\Models\PackageHeader;
 use App\Models\PackageLine;
 use App\Models\Freezone;
@@ -27,7 +29,8 @@ class PackageController extends Controller
         $attributes = Attribute::where('status',1)->get(); // Fetch attributes
         $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
         $currency = Currency::where('status',1)->get();
-        return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions','currency'));
+        $activities = Activity::where('status',1)->get();
+        return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions','currency','activities'));
     }
 
 
@@ -45,11 +48,21 @@ class PackageController extends Controller
             'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
             'package_lines.*.addon_cost' => 'required|numeric|min:0',
             'visa_package' => 'required|integer|min:0|max:99',
-
+            'activity_limit' => 'nullable|integer|min:1',
+            'free_activities' => 'required_if:activity_limit,>,0|array',
         ]);
+
+        $activity_limit = 0;
 
         // Determine if trending checkbox is checked
         $isTrending = $request->has('trending') ? 1 : 0;
+        if ($request->has('free_activities')) {
+            $activities = array_filter($request->free_activities, function ($activityId) {
+                return !is_null($activityId) && $activityId !== '';
+            });
+            $activity_limit =count($activities);
+        }
+
 
         // Create the package header
         $package = PackageHeader::create([
@@ -62,7 +75,8 @@ class PackageController extends Controller
             'status' => 1,
             'trending' => $isTrending,  // Save the trending value
             'updated_by' => auth()->id(),
-            'visa_package'=>$request->visa_package
+            'visa_package'=>$request->visa_package,
+            'allowed_free_packages' => $activity_limit
         ]);
 
         // Loop through the package lines and create each PackageLine
@@ -76,24 +90,45 @@ class PackageController extends Controller
             ]);
         }
 
+        if ($request->has('free_activities')) {
+            $activities = array_filter($request->free_activities, function ($activityId) {
+                return !is_null($activityId) && $activityId !== '';
+            });
+            foreach ($activities as $activityId) {
+                PackageActivity::create([
+                    'package_id' => $package->id,
+                    'activity_id' => $activityId,
+                    'price' => 0.00, // Assuming free activities have a price of 0
+                    'status' => 1,
+                ]);
+            }
+        }
+
         return redirect()->route('package.index')->with('success', 'Package created successfully!');
     }
 
     // Show the form for editing a specific package
     public function edit($id)
     {
-        // Fetch the package with package lines
-        $package = PackageHeader::with('packageLines')->findOrFail($id);
+        // Fetch the package with related models using eager loading
+        $package = PackageHeader::with(['packageLines', 'packageLines.attribute', 'packageLines.attributeOption'])->findOrFail($id);
 
-        // Fetch all attributes and their options
-        $attributes = Attribute::where('status',1)->get(); // Fetch attributes
-        $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
-        $currency = Currency::where('status',1)->get();
+        // Fetch attributes, attribute options, currency, activities, and freezones
+        $attributes = Attribute::where('status', 1)->get();
+        $attributeOptions = AttributeOption::where('status', 1)->get();
+        $currency = Currency::where('status', 1)->get();
+        $activities = Activity::where('status', 1)->get();
+        $package_activities = PackageActivity::where('package_id', $package->id)
+            ->where('status', 1)
+            ->get();
 
-        // Fetch freezones if required
+        $activityIds = $package_activities->isNotEmpty() ? $package_activities->pluck('activity_id') : collect();
+        $selected_activities = Activity::where('status', 1)->whereIn('id', $activityIds)->get();
+
+        // Fetch freezones
         $freezones = Freezone::all();
 
-        return view('admin.packages.edit', compact('package', 'attributes', 'attributeOptions', 'freezones','currency'));
+        return view('admin.packages.edit', compact('package', 'attributes', 'attributeOptions', 'freezones', 'currency', 'activities','selected_activities'));
     }
 
 
@@ -116,6 +151,15 @@ class PackageController extends Controller
                 'visa_package' => 'required|integer|min:0|max:99',
             ]);
 
+            $activity_limit = 0;
+            if ($request->has('free_activities')) {
+                $activities = array_filter($request->free_activities, function ($activityId) {
+                    return !is_null($activityId) && $activityId !== '';
+                });
+                $activity_limit =count($activities);
+            }
+
+
             // If validation passes, update the package
             $package->update([
                 'title' => $request->title,
@@ -126,6 +170,7 @@ class PackageController extends Controller
                 'currency'=> $request->currency,
                 'trending' => $request->trending ? true : false, // Set trending based on checkbox
                 'updated_by' => auth()->id(),
+                'allowed_free_packages' => $activity_limit
             ]);
 
             // Update package lines
@@ -138,6 +183,38 @@ class PackageController extends Controller
                     'addon_cost' => $line['addon_cost'],
                 ]);
             }
+
+            if ($request->has('free_activities')) {
+                // Get existing package activities
+                $package_activities = PackageActivity::where('package_id', $package->id)->get();
+                $activityIds = $package_activities->isNotEmpty() ? $package_activities->pluck('activity_id')->toArray() :Array();
+
+                // Create new activities if they don't exist
+                foreach ($activities as $activityId) {
+                    if (!in_array($activityId, $activityIds)) {
+                        PackageActivity::create([
+                            'package_id' => $package->id,
+                            'activity_id' => $activityId,
+                            'price' => 0.00, // Assuming free activities have a price of 0
+                            'status' => 1,
+                        ]);
+                    } else {
+                        // If the activity already exists, set status to 1 (active)
+                        PackageActivity::where('package_id', $package->id)
+                            ->where('activity_id', $activityId)
+                            ->update(['status' => 1]);
+                    }
+                }
+
+                // Update status of existing activities not in the new list
+                PackageActivity::where('package_id', $package->id)
+                    ->whereNotIn('activity_id', $activities)
+                    ->update(['status' => 0]); // Mark as inactive
+            } else {
+                // If no free activities were provided, mark all as inactive
+                PackageActivity::where('package_id', $package->id)->update(['status' => 0]);
+            }
+
 
             return redirect()->route('package.index')->with('success', 'Package updated successfully!');
 
