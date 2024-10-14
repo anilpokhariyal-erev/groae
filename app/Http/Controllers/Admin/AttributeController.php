@@ -44,6 +44,7 @@ class AttributeController extends Controller
             'label' => 'required|string|max:255',
             'status' => 'required|boolean',
             'show_in_calculator' => 'boolean',
+            'allow_any' => 'boolean',
         ]);
 
         if (Attribute::where('name', $validatedData['name'])
@@ -78,8 +79,12 @@ class AttributeController extends Controller
             'attribute_options' => 'required|array', 
             'attribute_options.*' => 'required|string|max:255'
         ]);
+        if ($request->has('allow_any')){
+            $validatedData['allow_any'] = $request->input('allow_any');
+        }
 
         $validatedData['show_in_calculator'] = $request->has('show_in_calculator');
+
 
         // Find the existing attribute
         $attribute = Attribute::findOrFail($id);

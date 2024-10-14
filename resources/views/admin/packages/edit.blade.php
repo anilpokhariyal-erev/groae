@@ -115,10 +115,47 @@
                         </div>
                     </div>
 
+                    <!-- Number of Free Activities Allowed -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="activity_limit">Number of Free Activities Allowed</label>
+                            <input type="number" id="activity-limit-input" name="activity_limit"
+                                   class="form-control {{ $errors->has('activity_limit') ? 'is-invalid' : '' }}"
+                                   value="{{ old('activity_limit', $package->allowed_free_packages) }}"
+                                   min="1" max="{{ count($activities) }}" placeholder="Enter a limit">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_limit')" />
+                        </div>
+                    </div>
+
+                    <!-- Free Activities -->
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="free_activities">Free Activities</label>
+                            <select id="free-activities-dropdown" name="free_activities[]" class="custom-select form-control">
+                                <option value="">Select Free Activity</option>
+                                @foreach($activities as $activity)
+                                    <option value="{{ $activity->id }}" >{{ $activity->name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('free_activities')" />
+                        </div>
+
+                        <!-- Selected Free Activities -->
+                        <div id="selected-activities-container" class="mt-3">
+                            @foreach($selected_activities as $activity)
+                                <div class="selected-activity" data-id="{{ $activity->id }}">
+                                    {{ $activity->name }}
+                                    <button type="button" class="btn btn-danger btn-sm remove-activity" data-id="{{ $activity->id }}">Remove</button>
+                                    <input type="hidden" name="free_activities[]" value="{{ $activity->id }}" />
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <!-- Package Lines (Attributes and Attribute Options) -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
-                            <label for="package_lines">Package Add-ons</label>
+                            <label for="package_lines"><b>Package Add-ons</b></label>
 
                             <!-- Multiple rows of package lines to edit existing ones -->
                             <div id="package-lines-container">
@@ -182,7 +219,7 @@
                                                 <div class="position-relative form-group">
                                                     <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
                                                     <select name="package_lines[{{ $index }}][attribute_option_id]" class="custom-select">
-                                                        <option value="">Select Option</option>                                                       
+                                                        <option value="">Select Option</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -252,7 +289,7 @@
             const filteredOptions = attributeOptions.filter(option => option.attribute_id == attributeId);
             optionsDropdown.empty(); // Clear existing options
             optionsDropdown.append('<option value="">Select Option</option>');
-            
+
             filteredOptions.forEach(option => {
                 optionsDropdown.append(`<option value="${option.id}">${option.value}</option>`);
             });
@@ -326,5 +363,85 @@
         $(document).on('click', '.remove-package-line', function() {
             $(this).closest('.package-line-item').remove();
         });
+
+        // Activity limit input handling
+        $('#activity-limit-input').on('input', function() {
+            let limit = parseInt($(this).val());
+            let selectedActivities = $('#selected-activities-container .selected-activity').length;
+
+            // Check if activity limit is greater than 0
+            if (limit > 0) {
+                $('#free-activities-dropdown').prop('required', true);
+                // Enable the dropdown only if the number of selected activities is less than the limit
+                $('#free-activities-dropdown').prop('disabled', selectedActivities >= limit);
+            } else {
+                $('#free-activities-dropdown').prop('required', false);
+                $('#free-activities-dropdown').prop('disabled', false);
+            }
+
+            // Enable the dropdown if the number of selected activities is less than the limit
+            if (selectedActivities < limit) {
+                $('#free-activities-dropdown').prop('disabled', false);
+            }else{
+                // $('#free-activities-dropdown').prop('disabled', true);
+                alert('Please remove extra free activities')
+                // let selectedActivitiesContainer = $('#selected-activities-container');
+                // if (selectedActivitiesContainer.children().length >= limit) {
+                //     $(selectedActivitiesContainer).html('');
+                // }
+
+            }
+        });
+
+        // Handle the selection of free activities
+        $(document).on('change', '#free-activities-dropdown', function() {
+            if ($('#activity-limit-input').val() == ''){
+                alert('Please enter the Number of Free Activities Allowed!');
+                $('#free-activities-dropdown').val('').change();
+                return false;
+            }
+            let activityId = $(this).val();
+            let limit = parseInt($('#activity-limit-input').val());
+            let selectedActivitiesContainer = $('#selected-activities-container');
+
+            // Check if the activity is already selected
+            if (activityId && selectedActivitiesContainer.find(`[data-id="${activityId}"]`).length === 0) {
+                // Create a new element to show selected activities
+                selectedActivitiesContainer.append(`
+                    <div class="selected-activity" data-id="${activityId}">
+                        ${$(this).find('option:selected').text()}
+                        <button type="button" class="btn btn-danger btn-sm remove-activity" data-id="${activityId}">Remove</button>
+                        <input type="hidden" name="free_activities[]" value="${activityId}" />
+                    </div>
+                `);
+
+                // Disable the dropdown if the limit is reached
+                if (selectedActivitiesContainer.children().length >= limit) {
+                    $(this).prop('disabled', true);
+                }
+            }
+            $(this).val(''); // Reset the dropdown after selection
+        });
+
+        // Handle removing selected activities
+        $(document).on('click', '.remove-activity', function() {
+            $(this).closest('.selected-activity').remove();
+            let limit = parseInt($('#activity-limit-input').val());
+            let selectedActivitiesContainer = $('#selected-activities-container');
+
+            // Enable the dropdown if the number of selected activities is less than the limit
+            if (selectedActivitiesContainer.children().length < limit) {
+                $('#free-activities-dropdown').prop('disabled', false);
+            }
+        });
+
+        $(document).ready(function() {
+            let selectedActivitiesContainer = $('#selected-activities-container');
+            let limit = parseInt($('#activity-limit-input').val());
+            if (selectedActivitiesContainer.children().length >= limit) {
+                $('#free-activities-dropdown').prop('disabled', true);
+            }
+        });
+
     });
 </script>
