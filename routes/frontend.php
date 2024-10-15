@@ -27,7 +27,7 @@ use App\Http\Controllers\Frontend\CostCalculatorController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
-Route::get('trending-freezone', [HomeController::class, 'trending_freezone'])->name('trending_freezone');
+Route::get('trending-freezone', [HomeController::class, 'trending_freezone'])->name('trending-freezone');
 Route::get('compare-freezone', [HomeController::class, 'compare_freezone'])->name('compare-freezone');
 Route::get('explore-freezone/{id?}', [HomeController::class, 'explore_freezone'])->name('explore-freezone');
 Route::post('get-freezones', [HomeController::class, 'get_freezone'])->name('get-freezones');
