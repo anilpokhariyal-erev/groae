@@ -15,7 +15,7 @@
                     <h2 class="trendTxt">Calculate License Cost</h2>
                 </div>
                 <form id="costCalculatorForm" class="signupFormItems" method="post"
-                    action="{{ route('calculate-licensecosts.store') }}" novalidate>
+                      action="{{ route('calculate-licensecosts.store') }}{{ isset($package->id) ? '?package_id=' . encrypt($package->id) : '' }}"  novalidate>
                     @csrf
                     <div class="secondColumn costCalculateForm">
                         <div class="input_wrap w-100">
