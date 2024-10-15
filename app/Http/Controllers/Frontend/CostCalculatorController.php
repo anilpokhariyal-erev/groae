@@ -89,7 +89,7 @@ class CostCalculatorController extends Controller
 
         if ($request->has('package_id')) {
             $package_id = Crypt::decrypt($request->get('package_id'));
-            $query->where('package_id', $package_id);
+            $query->where('id', $package_id);
         }
         // Process selected attributes (attribute_1, attribute_2, ...)
         $attributes = [];
