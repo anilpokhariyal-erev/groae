@@ -263,10 +263,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('protected-file/{path}', [FileController::class, 'admin_download'])->name('admin-protected-file.download');
 
-    Route::get('freezone-contact-us', [LeadController::class, 'index'])->name('lead.index')->middleware('role_or_permission:view-leads');
-    Route::get('freezone-contact-us/{uuid}', [LeadController::class, 'show'])->name('lead.show')->middleware('role_or_permission:view-leads');
-    Route::get('freezone-contact-us/{uuid}/{status}', [LeadController::class, 'update_status'])->name('lead.update_status')->middleware('role_or_permission:update-lead');
-    Route::get('freezone-contact-us/delete/{uuid}', [LeadController::class, 'destroy'])->name('lead.delete')->middleware('role_or_permission:delete-lead');
+    Route::get('freezone-contact-us', [LeadController::class, 'index'])->name('contact_us.index')->middleware('role_or_permission:view-leads');
+    Route::get('freezone-contact-us/{uuid}', [LeadController::class, 'show'])->name('contact_us.show')->middleware('role_or_permission:view-leads');
+    Route::get('freezone-contact-us/{uuid}/{status}', [LeadController::class, 'update_status'])->name('contact_us.update_status')->middleware('role_or_permission:update-lead');
+    Route::get('freezone-contact-us/delete/{uuid}', [LeadController::class, 'destroy'])->name('contact_us.delete')->middleware('role_or_permission:delete-lead');
 
     // Attributes Management
     Route::get('attributes', [AttributeController::class, 'index'])->name('attributes.index');
