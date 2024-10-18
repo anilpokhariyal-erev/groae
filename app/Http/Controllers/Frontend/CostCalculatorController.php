@@ -78,7 +78,7 @@ class CostCalculatorController extends Controller
      * Store a newly created resource in storage. 
      */
     public function store(CostCalculatorSummaryRequest $request)
-    {        
+    {
         if (!Auth::guard('customer')->check()) {
             Session::put('form_input', $request->input());
             return redirect()->route('customer.login')->with('info', ResponseMessage::LOGIN_FIRST_COST_CALCULATOR);
@@ -87,6 +87,10 @@ class CostCalculatorController extends Controller
         $freezone = Freezone::where('uuid', $request->freezone)->firstOrFail();
         $query = PackageHeader::where('freezone_id', $freezone->id)->with(['packageLines', 'freezone']);
 
+        if ($request->has('package_id')) {
+            $package_id = Crypt::decrypt($request->get('package_id'));
+            $query->where('id', $package_id);
+        }
         // Process selected attributes (attribute_1, attribute_2, ...)
         $attributes = [];
         foreach ($request->all() as $key => $value) {

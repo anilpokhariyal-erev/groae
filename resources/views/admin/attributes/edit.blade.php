@@ -52,6 +52,14 @@
                     </div>
                 </div>
 
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <input type="checkbox" name="allow_any" id="allow_any" value="1" {{ old('allow_any', $attribute->allow_any) ? 'checked' : '' }}>
+                        <label for="allow_any">Allow Any</label>
+                        <x-input-error class="mt-2 text-red" :messages="$errors->get('allow_any')" />
+                    </div>
+                </div>
+
                 <!-- Dynamic Attribute Options -->
                 <div class="col-md-6">
                     <div class="position-relative form-group">
