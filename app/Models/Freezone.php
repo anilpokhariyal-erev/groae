@@ -22,7 +22,13 @@ class Freezone extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'logo', 'min_price'];
+    protected $fillable = [
+        'name', 
+        'logo', 
+        'min_price',
+        'free_individual_shareholders',
+        'free_corporate_shareholders',
+    ];
 
     protected static function booted()
     {

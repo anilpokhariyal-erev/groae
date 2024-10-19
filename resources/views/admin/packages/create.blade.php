@@ -8,12 +8,17 @@
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="freezone">Freezone <span class="text-danger">*</span></label>
-                            <select name="freezone_id" class="custom-select">
+                            <select name="freezone_id" id="freezone-select" class="custom-select">
                                 <option value="">Select Freezone</option>
                                 @foreach($freezones as $freezone)
-                                    <option value="{{$freezone->id}}" {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>{{$freezone->name}}</option>
+                                    <option value="{{$freezone->id}}" 
+                                            data-free-individual-shareholders="{{$freezone->free_individual_shareholders}}" 
+                                            data-free-corporate-shareholders="{{$freezone->free_corporate_shareholders}}"
+                                            {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>
+                                        {{$freezone->name}}
+                                    </option>
                                 @endforeach
-                            </select>
+                            </select>                            
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_id')" />
                         </div>
                     </div>
@@ -44,6 +49,25 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
                         </div>
                     </div>
+
+                    <!-- Free Individual Shareholders -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="free_individual_shareholders">Free Individual Shareholders</label>
+                            <input name="free_individual_shareholders" id="free_individual_shareholders" value="{{ old('free_individual_shareholders') }}" type="number" class="form-control" min="0">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('free_individual_shareholders')" />
+                        </div>
+                    </div>
+
+                    <!-- Free Corporate Shareholders -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="free_corporate_shareholders">Free Corporate Shareholders</label>
+                            <input name="free_corporate_shareholders" id="free_corporate_shareholders" value="{{ old('free_corporate_shareholders') }}" type="number" class="form-control" min="0">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('free_corporate_shareholders')" />
+                        </div>
+                    </div>
+
 
                     <!-- Currency -->
                     <div class="col-md-6">
@@ -241,6 +265,20 @@
                 </div>
             `;
             container.appendChild(newRow);
+        });
+
+        // JavaScript to handle the freezone change event
+        document.getElementById('freezone-select').addEventListener('change', function() {
+            // Get the selected option
+            const selectedOption = this.options[this.selectedIndex];
+            
+            // Get the values of the data attributes
+            const freeIndividualShareholders = selectedOption.getAttribute('data-free-individual-shareholders');
+            const freeCorporateShareholders = selectedOption.getAttribute('data-free-corporate-shareholders');
+            
+            // Fill the input fields with the retrieved values
+            document.getElementById('free_individual_shareholders').value = freeIndividualShareholders || ''; // Set to empty if null
+            document.getElementById('free_corporate_shareholders').value = freeCorporateShareholders || ''; // Set to empty if null
         });
 
         $(document).on('click', '.remove-package-line', function() {
