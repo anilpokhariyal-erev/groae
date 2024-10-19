@@ -22,7 +22,9 @@ class PackageHeader extends Model
         'visa_package',
         'allowed_free_packages',
         'status',
-        'updated_by'
+        'updated_by',
+        'free_individual_shareholders',
+        'free_corporate_shareholders',
     ];
 
     // Relationship: PackageHeader belongs to a Freezone

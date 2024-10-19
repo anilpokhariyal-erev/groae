@@ -42,7 +42,8 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                           <!-- <th>Additional Information</th>-->
+                            <th>Individual Shareholders</th>
+                            <th>Corporate Shareholders</th>
                             <th>Status</th>
                             <th>Created Date</th>
                             <th>Action</th>
@@ -53,11 +54,9 @@
                         @foreach($freezones as $freezone)
                         <tr>
                             <th scope="row">{{$i++}}</th>
-                            <td>{{ucwords($freezone->name)}}</td>
-                            <!--<td>
-                                <a href="{{route('freezone-info.show', $freezone->uuid)}}" class="{{ $has_role_or_permission('view-freezone-info', 'disabled_link') }}">&nbsp; View &nbsp;</a>
-                                <a href="{{route('freezone-info.edit', $freezone->uuid)}}" class="{{ $has_role_or_permission('edit-freezone-info', 'disabled_link') }}">&nbsp; Edit &nbsp;</a>
-                            </td>-->
+                            <td>{{ucwords($freezone->name)}}</td>           
+                            <td>{{$freezone->free_individual_shareholders}}</td>   
+                            <td>{{$freezone->free_corporate_shareholders}}</td>                    
                             <td>@if($freezone->status == 1) Active @else Inactive @endif</td>
                             <td>{{$freezone->created_at->format('Y-m-d')}}</td>
                             <td>
