@@ -42,8 +42,6 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th>Individual Shareholders</th>
-                            <th>Corporate Shareholders</th>
                             <th>Status</th>
                             <th>Created Date</th>
                             <th>Action</th>
@@ -55,8 +53,6 @@
                         <tr>
                             <th scope="row">{{$i++}}</th>
                             <td>{{ucwords($freezone->name)}}</td>           
-                            <td>{{$freezone->free_individual_shareholders}}</td>   
-                            <td>{{$freezone->free_corporate_shareholders}}</td>                    
                             <td>@if($freezone->status == 1) Active @else Inactive @endif</td>
                             <td>{{$freezone->created_at->format('Y-m-d')}}</td>
                             <td>

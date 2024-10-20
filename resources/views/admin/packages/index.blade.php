@@ -63,8 +63,6 @@
                             <th>Price</th>
                             <th>Status</th>
                             <th>Visa package</th>
-                            <th>Individual Shareholders</th>
-                            <th>Corporate Shareholders</th>
                             <th>Allowed free activities</th>
                             <th>Trending</th>
                             <th>Created Date</th>
@@ -85,8 +83,6 @@
                                     </span>
                                 </td>                                
                                 <td>{{ $package->visa_package }}</td>
-                                <td>{{ $package->free_individual_shareholders }}</td>   
-                                <td>{{ $package->free_corporate_shareholders }}</td> 
                                 <td>{{ $package->allowed_free_packages ?? 0 }}</td>
                                 <td>@if($package->trending == 1) Yes @else No @endif</td>
                                 <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>

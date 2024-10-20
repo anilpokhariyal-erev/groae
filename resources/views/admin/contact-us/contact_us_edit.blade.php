@@ -34,13 +34,15 @@
                             </td></tr>
                             <tr><th>License Type</th><td>
                                 <?php 
-                                $license_type = DB::table('licenses')->select('id','name')->where('id',$freezone_request->license)->first(); 
-                                echo ucwords($license_type->name);
+                                $license_type = DB::table('licenses')->select('id','name')->where('id',$freezone_request->license ?? 0)->first(); 
+                                if($license_type){
+                                    echo ucwords($license_type->name);
+                                }
                                 ?>
                             </td></tr>
-                            <tr><th>Package</th><td>{{$freezone_request->visa_package}}</td></tr>
-                            <tr><th>Office</th><td>{{$freezone_request->office}}</td></tr>
-                            <tr><th>License Validity</th><td>{{$freezone_request->license_validity}} Year</td></tr>
+                            <tr><th>Package</th><td>{{$freezone_request->visa_package ?? 0}}</td></tr>
+                            <tr><th>Office</th><td>{{$freezone_request->office ?? 0}}</td></tr>
+                            <tr><th>License Validity</th><td>{{$freezone_request->license_validity ?? 0}} Year</td></tr>
 
                             <?php $activity_group = explode('___',$freezone_request->activity_group_selection); ?>
                             <tr><th>Activity Group</th>

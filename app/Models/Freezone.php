@@ -26,8 +26,6 @@ class Freezone extends Model
         'name', 
         'logo', 
         'min_price',
-        'free_individual_shareholders',
-        'free_corporate_shareholders',
     ];
 
     protected static function booted()
