@@ -31,25 +31,7 @@
                         </div>
                     </div>
 
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="free_individual_shareholders">Free Individual Shareholders</label>
-                            <input name="free_individual_shareholders" id="free_individual_shareholders" value="{{ old('free_individual_shareholders', 0) }}" type="number" class="form-control" min="0">
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('free_individual_shareholders')" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="free_corporate_shareholders">Free Corporate Shareholders</label>
-                            <input name="free_corporate_shareholders" id="free_corporate_shareholders" value="{{ old('free_corporate_shareholders', 0) }}" type="number" class="form-control" min="0">
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('free_corporate_shareholders')" />
-                        </div>
-                    </div>
-                </div>
+                </div>               
 
                 <div class="ba_flex align_items_center">
                     <button class="mt-1 btn btn-primary">Save</button>

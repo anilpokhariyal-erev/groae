@@ -61,9 +61,9 @@ class FreezoneController extends Controller
     public function index(Request $request)
     {
         if (Auth::user()->freezone_id) {
-            $freezones = Freezone::select('uuid', 'name', 'free_corporate_shareholders', 'free_individual_shareholders', 'logo', 'status', 'created_at')->where('id', Auth::user()->freezone_id);
+            $freezones = Freezone::select('uuid', 'name', 'logo', 'status', 'created_at')->where('id', Auth::user()->freezone_id);
         } else {
-            $freezones = Freezone::select('uuid', 'name', 'free_corporate_shareholders', 'free_individual_shareholders', 'logo', 'status', 'created_at');
+            $freezones = Freezone::select('uuid', 'name', 'logo', 'status', 'created_at');
         }
 
         if ($request->start_date && !$request->end_date) {
@@ -117,8 +117,6 @@ class FreezoneController extends Controller
                 return $query->whereNull('deleted_at');
             })],
             'freezone_logo' => 'required|image|mimes:jpeg,png,jpg,svg|max:5000',
-            'free_individual_shareholders' => 'nullable|integer|min:0',
-            'free_corporate_shareholders' => 'nullable|integer|min:0',
         ]);
 
         DB::beginTransaction();
@@ -133,8 +131,6 @@ class FreezoneController extends Controller
             $freezone->name = $name;
             $freezone->logo = $originalName;
             $freezone->slug = trim(str_replace(' ', '-', $name));
-            $freezone->free_individual_shareholders = $request->input('free_individual_shareholders', 0);
-            $freezone->free_corporate_shareholders = $request->input('free_corporate_shareholders', 0);
             $freezone->status = 1;
 
             $freezone->save();
@@ -175,8 +171,6 @@ class FreezoneController extends Controller
         $request->validate([
             'name' => 'required',
             'freezone_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
-            'free_individual_shareholders' => 'nullable|integer|min:0',
-            'free_corporate_shareholders' => 'nullable|integer|min:0',
         ]);
 
         // Handle file upload for the logo if it exists
@@ -199,10 +193,6 @@ class FreezoneController extends Controller
         // Update other fields
         $freezone->name = strtolower($request->name);
         $freezone->status = $request->status;
-
-        // Update free shareholders
-        $freezone->free_individual_shareholders = $request->input('free_individual_shareholders', 0);
-        $freezone->free_corporate_shareholders = $request->input('free_corporate_shareholders', 0);
 
         // Save the updated freezone data
         $freezone->save();
@@ -329,7 +319,7 @@ class FreezoneController extends Controller
         $freezone = Freezone::where('uuid', $uuid)->first();
 
         if (!$freezone) {
-            return redirect()->route('freezones.index')->with('error', 'Freezone not found'); // corrected to 'freezones.index'
+            return redirect()->route('freezones.index')->with('error', 'Freezone not found');
         }
 
         DB::beginTransaction();
@@ -337,11 +327,11 @@ class FreezoneController extends Controller
             $freezone->freezone_pages()->delete();
             $freezone->delete();
             DB::commit();
-            return redirect()->route('freezones.index')->with('success', 'Freezone deleted successfully'); // corrected to 'freezones.index'
+            return redirect()->route('freezones.index')->with('success', 'Freezone deleted successfully');
         } catch (\Exception $e) {
             DB::rollback();
             Log::error('Error deleting Freezone: ' . $e->getMessage());
-            return redirect()->route('freezones.index')->with('error', 'An error occurred while deleting the Freezone'); // corrected to 'freezones.index'
+            return redirect()->route('freezones.index')->with('error', 'An error occurred while deleting the Freezone');
         }
     }
 

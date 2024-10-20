@@ -44,8 +44,6 @@ class PackageController extends Controller
             'currency' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'renewable_price' => 'required|numeric|min:0',
-            'free_individual_shareholders' => 'required|integer|min:0',
-            'free_corporate_shareholders' => 'required|integer|min:0',
             'package_lines' => 'required|array',
             'package_lines.*.attribute_id' => 'required|exists:attributes,id',
             'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
@@ -79,8 +77,6 @@ class PackageController extends Controller
             'updated_by' => auth()->id(),
             'visa_package' => $request->visa_package,
             'allowed_free_packages' => $activity_limit,
-            'free_individual_shareholders' => $request->free_individual_shareholders,
-            'free_corporate_shareholders' => $request->free_corporate_shareholders,
         ]);
     
         // Loop through the package lines and create each PackageLine
@@ -148,8 +144,6 @@ class PackageController extends Controller
                 'description' => 'required|string',
                 'price' => 'required|numeric|min:0',
                 'renewable_price' => 'required|numeric|min:0',
-                'free_individual_shareholders' => 'required|integer|min:0',
-                'free_corporate_shareholders' => 'required|integer|min:0',
                 'trending' => 'nullable|boolean',
                 'currency' => 'required|string',
                 'package_lines' => 'array',
@@ -179,8 +173,6 @@ class PackageController extends Controller
                 'trending' => $request->trending ? true : false,
                 'updated_by' => auth()->id(),
                 'allowed_free_packages' => $activity_limit,
-                'free_individual_shareholders' => $request->free_individual_shareholders,
-                'free_corporate_shareholders' => $request->free_corporate_shareholders,
             ]);
 
             // Update package lines
