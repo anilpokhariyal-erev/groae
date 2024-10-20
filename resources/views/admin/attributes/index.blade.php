@@ -45,6 +45,7 @@
                         <th>Status</th>
                         <th>Visible on Calculator</th>
                         <th>Allow Any</th>
+                        <th>Allow Multiple</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -61,6 +62,7 @@
                             </td>
                             <td>{{ $attribute->show_in_calculator ? 'Yes' : 'No' }}</td>
                             <td>{{ $attribute->allow_any ? 'Yes' : 'No' }}</td>
+                            <td>{{ $attribute->allow_multiple ? 'Yes' : 'No' }}</td>
                             <td>
                                 <a href="{{ route('attributes.edit', $attribute->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                 @if($attribute->status)

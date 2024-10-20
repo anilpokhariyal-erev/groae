@@ -36,4 +36,10 @@ class PackageHeader extends Model
     {
         return $this->hasMany(PackageLine::class, 'package_id', 'id');
     }
+
+    public function attributeCosts()
+    {
+        return $this->hasMany(PackageAttributesCost::class, 'package_id');
+    }
+
 }
