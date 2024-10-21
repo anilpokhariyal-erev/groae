@@ -22,7 +22,7 @@ class PackageController extends Controller
         return view('admin.packages.index', compact('packages'));
     }
 
-    // Show the form for creating a new package
+    // Show the form for creating a new package 
     public function create()
     {
         $freezones = Freezone::all();
@@ -43,6 +43,7 @@ class PackageController extends Controller
             'description' => 'required|string',
             'currency' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'renewable_price' => 'required|numeric|min:0',
             'package_lines' => 'required|array',
             'package_lines.*.attribute_id' => 'required|exists:attributes,id',
             'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
@@ -51,19 +52,20 @@ class PackageController extends Controller
             'activity_limit' => 'nullable|integer|min:1',
             'free_activities' => 'required_if:activity_limit,>,0|array',
         ]);
-
+    
         $activity_limit = 0;
-
+    
         // Determine if trending checkbox is checked
         $isTrending = $request->has('trending') ? 1 : 0;
         if ($request->has('free_activities')) {
             $activities = array_filter($request->free_activities, function ($activityId) {
                 return !is_null($activityId) && $activityId !== '';
             });
+
             $activity_limit =$request->input('activity_limit');
+
         }
-
-
+    
         // Create the package header
         $package = PackageHeader::create([
             'title' => $request->title,
@@ -75,10 +77,10 @@ class PackageController extends Controller
             'status' => 1,
             'trending' => $isTrending,  // Save the trending value
             'updated_by' => auth()->id(),
-            'visa_package'=>$request->visa_package,
-            'allowed_free_packages' => $activity_limit
+            'visa_package' => $request->visa_package,
+            'allowed_free_packages' => $activity_limit,
         ]);
-
+    
         // Loop through the package lines and create each PackageLine
         foreach ($request->package_lines as $line) {
             PackageLine::create([
@@ -89,7 +91,7 @@ class PackageController extends Controller
                 'status' => 1,
             ]);
         }
-
+    
         if ($request->has('free_activities')) {
             $activities = array_filter($request->free_activities, function ($activityId) {
                 return !is_null($activityId) && $activityId !== '';
@@ -103,9 +105,10 @@ class PackageController extends Controller
                 ]);
             }
         }
-
+    
         return redirect()->route('package.index')->with('success', 'Package created successfully!');
     }
+    
 
     // Show the form for editing a specific package
     public function edit($id)
@@ -132,7 +135,7 @@ class PackageController extends Controller
     }
 
 
-    // Update the specified package in the database
+   // Update the specified package in the database
     public function update(Request $request, PackageHeader $package)
     {
         // Attempt to validate input
@@ -142,7 +145,8 @@ class PackageController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'price' => 'required|numeric|min:0',
-                'trending' => 'nullable|boolean', // Validate trending as a boolean
+                'renewable_price' => 'required|numeric|min:0',
+                'trending' => 'nullable|boolean',
                 'currency' => 'required|string',
                 'package_lines' => 'array',
                 'package_lines.*.attribute_id' => 'required|exists:attributes,id',
@@ -159,7 +163,6 @@ class PackageController extends Controller
                 $activity_limit =$request->input('activity_limit');
             }
 
-
             // If validation passes, update the package
             $package->update([
                 'title' => $request->title,
@@ -167,10 +170,11 @@ class PackageController extends Controller
                 'freezone_id' => $request->freezone_id,
                 'visa_package' => $request->visa_package,
                 'price' => $request->price,
-                'currency'=> $request->currency,
-                'trending' => $request->trending ? true : false, // Set trending based on checkbox
+                'renewable_price' => $request->renewable_price,
+                'currency' => $request->currency,
+                'trending' => $request->trending ? true : false,
                 'updated_by' => auth()->id(),
-                'allowed_free_packages' => $activity_limit
+                'allowed_free_packages' => $activity_limit,
             ]);
 
             // Update package lines
@@ -187,7 +191,7 @@ class PackageController extends Controller
             if ($request->has('free_activities')) {
                 // Get existing package activities
                 $package_activities = PackageActivity::where('package_id', $package->id)->get();
-                $activityIds = $package_activities->isNotEmpty() ? $package_activities->pluck('activity_id')->toArray() :Array();
+                $activityIds = $package_activities->isNotEmpty() ? $package_activities->pluck('activity_id')->toArray() : [];
 
                 // Create new activities if they don't exist
                 foreach ($activities as $activityId) {
@@ -215,7 +219,6 @@ class PackageController extends Controller
                 PackageActivity::where('package_id', $package->id)->update(['status' => 0]);
             }
 
-
             return redirect()->route('package.index')->with('success', 'Package updated successfully!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -226,6 +229,7 @@ class PackageController extends Controller
                 ->withInput(); // Retain the old input
         }
     }
+
 
 
 

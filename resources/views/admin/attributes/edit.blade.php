@@ -42,39 +42,49 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Checkbox for Visibility in Calculator -->
-                <div class="col-md-12">
-                    <div class="position-relative form-group">
-                        <input type="checkbox" name="show_in_calculator" id="show_in_calculator" value="1" {{ old('show_in_calculator', $attribute->show_in_calculator) ? 'checked' : '' }}>
-                        <label for="show_in_calculator">Visible on calculator</label>
-                        <x-input-error class="mt-2 text-red" :messages="$errors->get('show_in_calculator')" />
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="position-relative form-group">
-                        <input type="checkbox" name="allow_any" id="allow_any" value="1" {{ old('allow_any', $attribute->allow_any) ? 'checked' : '' }}>
-                        <label for="allow_any">Allow Any</label>
-                        <x-input-error class="mt-2 text-red" :messages="$errors->get('allow_any')" />
-                    </div>
-                </div>
-
-                <!-- Dynamic Attribute Options -->
-                <div class="col-md-6">
-                    <div class="position-relative form-group">
-                        <label for="attribute_values">Attribute Options</label>
-                        <div id="attribute-options-container">
-                            @if(old('attribute_options', $attribute->options))
-                                @foreach(old('attribute_options', $attribute->options) as $key => $option)
-                                    <div class="attribute-option-item d-flex mb-2">
-                                        <input type="text" name="attribute_options[]" class="form-control mr-2" value="{{ $option->value }}" placeholder="Enter option value">
-                                        <button type="button" class="btn btn-danger" onclick="removeOption(this)">X</button>
-                                    </div>
-                                @endforeach
-                            @endif
+                <div class="row">
+                    <!-- Checkbox for Visibility in Calculator -->
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <input type="checkbox" name="show_in_calculator" id="show_in_calculator" value="1" {{ old('show_in_calculator', $attribute->show_in_calculator) ? 'checked' : '' }}>
+                            <label for="show_in_calculator">Visible on calculator</label>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('show_in_calculator')" />
                         </div>
-                        <button type="button" class="btn btn-success mt-2" id="add-attribute-option">Add Option</button>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <input type="checkbox" name="allow_any" id="allow_any" value="1" {{ old('allow_any', $attribute->allow_any) ? 'checked' : '' }}>
+                            <label for="allow_any">Allow Any</label>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('allow_any')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="position-relative form-group">
+                            <input type="checkbox" name="allow_multiple" id="allow_multiple" value="1" {{ old('allow_multiple', $attribute->allow_multiple ?? 1) ? 'checked' : '' }}>
+                            <label for="allow_multiple">Allow Multiple</label>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('allow_multiple')" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <!-- Dynamic Attribute Options -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="attribute_values">Attribute Options</label>
+                            <div id="attribute-options-container">
+                                @if(old('attribute_options', $attribute->options))
+                                    @foreach(old('attribute_options', $attribute->options) as $key => $option)
+                                        <div class="attribute-option-item d-flex mb-2">
+                                            <input type="text" name="attribute_options[]" class="form-control mr-2" value="{{ $option->value }}" placeholder="Enter option value">
+                                            <button type="button" class="btn btn-danger" onclick="removeOption(this)">X</button>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <button type="button" class="btn btn-success mt-2" id="add-attribute-option">Add Option</button>
+                        </div>
                     </div>
                 </div>
 

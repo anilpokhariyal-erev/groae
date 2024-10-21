@@ -8,7 +8,7 @@
                 </div>
 
                 <div class="ba_flex align_items_center">
-                    <a href="{{route('freezones.index')}}" class="btn btn-primary">Back</a>
+                    <a href="{{ route('freezones.index') }}" class="btn btn-primary">Back</a>
                 </div>
             </div>
             &nbsp;
@@ -18,7 +18,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="name">Name <span class="text-danger">*</span></label>
-                            <input name="name" id="name" value="{{old('name')}}" type="text" class="form-control">
+                            <input name="name" id="name" value="{{ old('name') }}" type="text" class="form-control">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('name')" />
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div>               
 
                 <div class="ba_flex align_items_center">
                     <button class="mt-1 btn btn-primary">Save</button>

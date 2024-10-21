@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
-    // Ensure only authorized users can access the controller methods
+    // Ensure only authorized users can access the controller methods 
     public function __construct()
     {
         $this->middleware('role_or_permission:view-attributes');
@@ -45,6 +45,7 @@ class AttributeController extends Controller
             'status' => 'required|boolean',
             'show_in_calculator' => 'boolean',
             'allow_any' => 'boolean',
+            'allow_multiple' => 'boolean',
         ]);
 
         if (Attribute::where('name', $validatedData['name'])
@@ -82,6 +83,8 @@ class AttributeController extends Controller
         if ($request->has('allow_any')){
             $validatedData['allow_any'] = $request->input('allow_any');
         }
+        
+        $validatedData['allow_multiple'] = $request->input('allow_multiple');
 
         $validatedData['show_in_calculator'] = $request->has('show_in_calculator');
 
@@ -104,7 +107,7 @@ class AttributeController extends Controller
         foreach ($request->attribute_options as $option) {
             $attribute->options()->create([
                 'value' => $option,
-                'status' => 1, // Default to active status, you can modify this as needed
+                'status' => 1, // Default to active status
             ]);
         }
 

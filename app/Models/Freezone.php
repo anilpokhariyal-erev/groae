@@ -22,7 +22,11 @@ class Freezone extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'logo', 'min_price'];
+    protected $fillable = [
+        'name', 
+        'logo', 
+        'min_price',
+    ];
 
     protected static function booted()
     {
@@ -89,5 +93,10 @@ class Freezone extends Model
     public function offers()
     {
         return $this->hasMany(Offer::class);
+    }
+
+    public function defaultAttributes()
+    {
+        return $this->hasMany(FreezoneDefaultAttribute::class);
     }
 }

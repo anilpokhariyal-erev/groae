@@ -62,7 +62,7 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
                         </div>
                     </div>
-
+                    
                     <!-- Currency -->
                     <div class="col-md-6">
                         <div class="position-relative form-group">

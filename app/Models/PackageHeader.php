@@ -22,7 +22,7 @@ class PackageHeader extends Model
         'visa_package',
         'allowed_free_packages',
         'status',
-        'updated_by'
+        'updated_by',
     ];
 
     // Relationship: PackageHeader belongs to a Freezone
@@ -36,4 +36,10 @@ class PackageHeader extends Model
     {
         return $this->hasMany(PackageLine::class, 'package_id', 'id');
     }
+
+    public function attributeCosts()
+    {
+        return $this->hasMany(PackageAttributesCost::class, 'package_id');
+    }
+
 }

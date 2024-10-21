@@ -8,12 +8,14 @@
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="freezone">Freezone <span class="text-danger">*</span></label>
-                            <select name="freezone_id" class="custom-select">
+                            <select name="freezone_id" id="freezone-select" class="custom-select">
                                 <option value="">Select Freezone</option>
                                 @foreach($freezones as $freezone)
-                                    <option value="{{$freezone->id}}" {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>{{$freezone->name}}</option>
+                                    <option value="{{$freezone->id}}" {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>
+                                        {{$freezone->name}}
+                                    </option>
                                 @endforeach
-                            </select>
+                            </select>                            
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_id')" />
                         </div>
                     </div>
@@ -44,7 +46,7 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
                         </div>
                     </div>
-
+                   
                     <!-- Currency -->
                     <div class="col-md-6">
                         <div class="position-relative form-group">
