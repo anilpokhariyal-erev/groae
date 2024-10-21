@@ -79,7 +79,7 @@
                         <tr>
                             <td class="tHeadingTxt">Activities</td>
                             <td class="tDetailTxt">{{ $activities[0]->name . ' (' . $activities[0]->activity_group->name . ')' }}</td>
-                            <td class="tDetailTxt">{{ $activities[0]->price }}</td>
+                            <td class="tDetailTxt">AED {{ $activities[0]->price }}</td>
                         </tr>
                         
                         @foreach ($activities as $key => $item)
@@ -87,7 +87,7 @@
                                 <tr>
                                     <td></td>
                                     <td class="tDetailTxt">{{ $item->name . ' (' . $item->activity_group->name . ')' }}</td>
-                                    <td class="tDetailTxt"></td>
+                                    <td class="tDetailTxt">AED {{$item->price}}</td>
                                 </tr>
                             @endif
                         @endforeach

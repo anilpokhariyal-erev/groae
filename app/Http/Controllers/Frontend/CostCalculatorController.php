@@ -152,7 +152,7 @@ class CostCalculatorController extends Controller
 
         // Process selected activities for the summary
         $activities = Activity::whereIn('id', $activityIds)
-        ->select('id', 'name', 'activity_group_id')
+        ->select('id', 'name', 'activity_group_id','price')
         ->where('status', 1)
         ->with('activity_group')
         ->get();

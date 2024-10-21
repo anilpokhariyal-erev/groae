@@ -73,18 +73,17 @@ class AttributeController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'label' => 'required|string|max:255',
             'status' => 'required|boolean',
-            'attribute_options' => 'required|array', 
-            'attribute_options.*' => 'required|string|max:255'
         ]);
         if ($request->has('allow_any')){
             $validatedData['allow_any'] = $request->input('allow_any');
         }
         
-        $validatedData['allow_multiple'] = $request->input('allow_multiple');
+        $validatedData['allow_multiple'] = $request->input('allow_multiple',0);
 
         $validatedData['show_in_calculator'] = $request->has('show_in_calculator');
 
@@ -103,13 +102,13 @@ class AttributeController extends Controller
         // Remove old attribute options
         $attribute->options()->delete();
 
-        // Insert new attribute options
-        foreach ($request->attribute_options as $option) {
-            $attribute->options()->create([
-                'value' => $option,
-                'status' => 1, // Default to active status
-            ]);
-        }
+            // Insert new attribute options
+            foreach ($request->input('attribute_options',[]) as $option) {
+                $attribute->options()->create([
+                    'value' => $option,
+                    'status' => 1, // Default to active status
+                ]);
+            }
 
         // Redirect back with success message
         return redirect()->route('attributes.index')->with('success', 'Attribute updated successfully.');
