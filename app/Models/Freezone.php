@@ -97,6 +97,6 @@ class Freezone extends Model
 
     public function defaultAttributes()
     {
-        return $this->hasMany(FreezoneDefaultAttribute::class, 'freezone_id');
+        return $this->hasMany(FreezoneDefaultAttribute::class);
     }
 }

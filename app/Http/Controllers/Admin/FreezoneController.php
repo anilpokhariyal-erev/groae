@@ -6,6 +6,8 @@ use DB;
 use App\Assets\Utils;
 use App\Models\Freezone;
 use App\Models\FreezonePage;
+use App\Models\Attribute;
+use App\Models\AttributeOption;
 use Illuminate\Http\Request;
 use App\Assets\ResponseMessage;
 use App\Exports\ExportFreezone;
@@ -149,28 +151,39 @@ class FreezoneController extends Controller
 
     public function edit(string $uuid)
     {
-        $freezone = Freezone::where('uuid', $uuid)->first();
+        $freezone = Freezone::where('uuid', $uuid)->with('defaultAttributes')->firstOrFail();
 
         if (!$freezone) {
             return abort(404);
         }
+        // Fetch attributes, attribute options, currency, activities, and freezones
+        $attributes = Attribute::where('status', 1)->get();
+        $attributeOptions = AttributeOption::where('status', 1)->get();
 
-        return view('admin.freezone.freezone_edit', compact('freezone'));
+        return view('admin.freezone.freezone_edit', compact('freezone', 'attributes', 'attributeOptions',));
     }
 
 
-   public function update(Request $request, string $uuid)
+    public function update(Request $request, string $uuid)
     {
+        // Retrieve the freezone by UUID
         $freezone = Freezone::where('uuid', $uuid)->first();
 
         if (!$freezone) {
             return abort(404);
         }
 
-        // Validation for the form
+        // Validate the incoming request
         $request->validate([
             'name' => 'required',
             'freezone_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
+
+            // Freezone default attributes validation
+            'freezone_default_attributes.*.attribute_id' => 'required|exists:attributes,id',
+            'freezone_default_attributes.*.attribute_option_id' => 'nullable|exists:attribute_options,id',
+            'freezone_default_attributes.*.attribute_value' => 'nullable|numeric|min:0',
+            'freezone_default_attributes.*.attribute_free_qty' => 'nullable|numeric|min:0',
+            'freezone_default_attributes.*.unit_price' => 'nullable|numeric|min:0',
         ]);
 
         // Handle file upload for the logo if it exists
@@ -180,27 +193,81 @@ class FreezoneController extends Controller
                 Storage::disk('public')->delete($freezone->logo);
             }
 
-            // Generate a unique file name without adding 'freezones/' twice
+            // Generate a unique file name
             $fileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_logo')->getClientOriginalName());
 
-            // Store the uploaded file directly in 'public/freezones'
+            // Store the uploaded file in 'freezones'
             $path = $request->file('freezone_logo')->storeAs('freezones', $fileName, 'public');
 
-            // Save the new logo path in the database
+            // Save the new logo path
             $freezone->logo = $path;
         }
 
-        // Update other fields
+        // Update freezone fields
         $freezone->name = strtolower($request->name);
         $freezone->status = $request->status;
 
-        // Save the updated freezone data
-        $freezone->save();
+        // Use a transaction to ensure the consistency of the update
+        DB::transaction(function () use ($freezone, $request) {
+            // Save the updated freezone data
+            $freezone->save();
+
+            // Get the freezone_default_attributes data from the request
+            $attributesData = $request->input('freezone_default_attributes', []);
+
+            // Collect IDs of the attributes coming from the request
+            $attributeKeysFromRequest = [];
+            foreach ($attributesData as $attribute) {
+                $attributeKey = $attribute['attribute_id'] . ':' . ($attribute['attribute_option_id'] ?? 'null');
+                $attributeKeysFromRequest[] = $attributeKey;
+
+                // Set unit_price if not provided but attribute_value is present
+                if ($attribute['attribute_value'] && !$attribute['unit_price']) {
+                    $attribute['unit_price'] = $attribute['attribute_value'];
+                }
+
+                // Check if the attribute record exists for this freezone
+                $existingAttribute = $freezone->defaultAttributes()->where([
+                    ['attribute_id', '=', $attribute['attribute_id']],
+                    ['attribute_option_id', '=', $attribute['attribute_option_id'] ?? null],
+                ])->first();
+
+                if ($existingAttribute) {
+                    // If the record exists, update it
+                    $existingAttribute->update([
+                        'allowed_free_qty' => $attribute['attribute_free_qty'] ?? 0,
+                        'unit_price' => $attribute['unit_price'] ?? 0,
+                    ]);
+                } else {
+                    // If the record does not exist, create a new one
+                    $freezone->defaultAttributes()->create([
+                        'attribute_id' => $attribute['attribute_id'],
+                        'attribute_option_id' => $attribute['attribute_option_id'] ?? null,
+                        'allowed_free_qty' => $attribute['attribute_free_qty'] ?? 0,
+                        'unit_price' => $attribute['unit_price'] ?? 0,
+                    ]);
+                }
+            }
+
+            // Fetch all existing attributes from the database for this freezone
+            $existingAttributes = $freezone->defaultAttributes()->get();
+
+            // Identify and delete attributes that are not in the incoming request
+            foreach ($existingAttributes as $existingAttribute) {
+                $existingKey = $existingAttribute->attribute_id . ':' . ($existingAttribute->attribute_option_id ?? 'null');
+
+                if (!in_array($existingKey, $attributeKeysFromRequest)) {
+                    // Attribute exists in the database but not in the request, so delete it
+                    $existingAttribute->delete();
+                }
+            }
+        });
 
         // Redirect back with success message
         return back()->with('success', 'Freezone updated successfully');
     }
-    
+
+
 
     public function freezoneInfoShow(string $uuid)
     {

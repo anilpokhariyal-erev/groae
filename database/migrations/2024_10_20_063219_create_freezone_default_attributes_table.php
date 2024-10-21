@@ -14,20 +14,33 @@ class CreateFreezoneDefaultAttributesTable extends Migration
     public function up()
     {
         Schema::create('freezone_default_attributes', function (Blueprint $table) {
+            // Add an auto-incrementing primary key 'id'
+            $table->id();
+
+            // Other fields
             $table->unsignedBigInteger('freezone_id');
             $table->unsignedBigInteger('attribute_id');
-            $table->unsignedBigInteger('attribute_option_id');
-            $table->integer('allowed_free_qty')->default(0);
-            $table->integer('unit_price')->default(0);
-            $table->integer('per_unit')->default(1);
+            $table->unsignedBigInteger('attribute_option_id')->nullable(); // Make this nullable
+            $table->integer('allowed_free_qty')->default(0)->nullable();
+            $table->integer('unit_price')->default(0)->nullable();
+            $table->integer('per_unit')->default(1)->nullable();
 
-            // Setting up the foreign keys
+            // Status field
+            $table->tinyInteger('status')->default(1); // 1 for active, 0 for inactive
+
+            // Timestamps for created_at and updated_at
+            $table->timestamps();
+
+            // Soft deletes for deleted_at
+            $table->softDeletes();
+
+            // Foreign keys
             $table->foreign('freezone_id')->references('id')->on('freezones')->onDelete('cascade');
             $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
-            $table->foreign('attribute_option_id')->references('id')->on('attribute_options')->onDelete('cascade');
+            $table->foreign('attribute_option_id')->references('id')->on('attribute_options')->onDelete('cascade')->nullable();
 
-            // Composite primary key
-            $table->primary(['freezone_id', 'attribute_id', 'attribute_option_id']);
+            // You can add a unique index on the combination of freezone_id and attribute_id if needed
+            $table->unique(['freezone_id', 'attribute_id']);
         });
     }
 

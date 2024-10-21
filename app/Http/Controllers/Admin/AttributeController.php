@@ -83,9 +83,8 @@ class AttributeController extends Controller
         if ($request->has('allow_any')){
             $validatedData['allow_any'] = $request->input('allow_any');
         }
-        if ($request->has('allow_multiple')){
-            $validatedData['allow_multiple'] = $request->input('allow_multiple');
-        }
+        
+        $validatedData['allow_multiple'] = $request->input('allow_multiple');
 
         $validatedData['show_in_calculator'] = $request->has('show_in_calculator');
 
