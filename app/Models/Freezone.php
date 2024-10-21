@@ -94,4 +94,9 @@ class Freezone extends Model
     {
         return $this->hasMany(Offer::class);
     }
+
+    public function defaultAttributes()
+    {
+        return $this->hasMany(FreezoneDefaultAttribute::class);
+    }
 }

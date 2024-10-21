@@ -11,9 +11,11 @@ class Attribute extends Model
         'name',
         'label',
         'allow_any',
-        'status',
+        'allow_multiple',
         'is_ai_search_enabled',
-        'show_in_calculator'
+        'ai_filter_display_order',
+        'show_in_calculator',
+        'status',
     ];
 
     // Relationship: Attribute has many AttributeOptions
@@ -26,4 +28,15 @@ class Attribute extends Model
     {
         return PackageLine::where('attribute_id', $this->id)->count();
     }
+
+    public function defaultAttributes()
+    {
+        return $this->hasMany(FreezoneDefaultAttribute::class, 'attribute_id');
+    }
+
+    public function packageAttributesCost()
+    {
+        return $this->hasMany(PackageAttributesCost::class, 'attribute_id');
+    }
+
 }
