@@ -377,5 +377,8 @@ class FreezoneController extends Controller
             return redirect()->route('freezones.index')->with('error', 'An error occurred while deleting the Freezone');
         }
     }
+    public function getDefaultAttributes(string $uuid){
+         return Freezone::with('defaultAttributes')->where('uuid',$uuid)->first();
+    }
 
 }
