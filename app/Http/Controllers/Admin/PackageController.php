@@ -61,7 +61,9 @@ class PackageController extends Controller
             $activities = array_filter($request->free_activities, function ($activityId) {
                 return !is_null($activityId) && $activityId !== '';
             });
-            $activity_limit = count($activities);
+
+            $activity_limit =$request->input('activity_limit');
+
         }
     
         // Create the package header
@@ -158,7 +160,7 @@ class PackageController extends Controller
                 $activities = array_filter($request->free_activities, function ($activityId) {
                     return !is_null($activityId) && $activityId !== '';
                 });
-                $activity_limit = count($activities);
+                $activity_limit =$request->input('activity_limit');
             }
 
             // If validation passes, update the package

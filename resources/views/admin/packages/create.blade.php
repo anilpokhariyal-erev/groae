@@ -279,7 +279,7 @@
 
             // Check if activity limit is greater than 0
             if (limit > 0) {
-                $('#free-activities-dropdown').prop('required', true);
+
                 // Enable the dropdown only if the number of selected activities is less than the limit
                 $('#free-activities-dropdown').prop('disabled', selectedActivities >= limit);
             } else {
