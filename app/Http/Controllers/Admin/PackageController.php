@@ -11,6 +11,7 @@ use App\Models\PackageLine;
 use App\Models\Freezone;
 use App\Models\Attribute; 
 use App\Models\AttributeOption;
+use App\Models\PackageAttributesCost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,26 +49,27 @@ class PackageController extends Controller
             'renewable_price' => 'required|numeric|min:0',
             'package_lines' => 'required|array',
             'package_lines.*.attribute_id' => 'required|exists:attributes,id',
-            'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
-            'package_lines.*.addon_cost' => 'required|numeric|min:0',
+            // Only validate the attribute_option_id if it's present
+            'package_lines.*.attribute_option_id' => 'nullable|exists:attribute_options,id',
+            'package_lines.*.addon_cost' => 'nullable|numeric|min:0',
+            'package_lines.*.allowed_free_qty' => 'nullable|integer|min:0',
+            'package_lines.*.unit_price' => 'nullable|numeric|min:0',
             'visa_package' => 'required|integer|min:0|max:99',
             'activity_limit' => 'nullable|integer|min:1',
             'free_activities' => 'required_if:activity_limit,>,0|array',
         ]);
-    
+
         $activity_limit = 0;
-    
+
         // Determine if trending checkbox is checked
         $isTrending = $request->has('trending') ? 1 : 0;
         if ($request->has('free_activities')) {
             $activities = array_filter($request->free_activities, function ($activityId) {
                 return !is_null($activityId) && $activityId !== '';
             });
-
-            $activity_limit =$request->input('activity_limit');
-
+            $activity_limit = count($activities);
         }
-    
+
         // Create the package header
         $package = PackageHeader::create([
             'title' => $request->title,
@@ -82,18 +84,30 @@ class PackageController extends Controller
             'visa_package' => $request->visa_package,
             'allowed_free_packages' => $activity_limit,
         ]);
-    
-        // Loop through the package lines and create each PackageLine
+
+        // Loop through the package lines and handle based on attribute_option_id
         foreach ($request->package_lines as $line) {
-            PackageLine::create([
-                'package_id' => $package->id,
-                'attribute_id' => $line['attribute_id'],
-                'attribute_option_id' => $line['attribute_option_id'],
-                'addon_cost' => $line['addon_cost'],
-                'status' => 1,
-            ]);
+            if (empty($line['attribute_option_id'])) {
+                // Store in package_attributes_cost if attribute_option_id is empty
+                PackageAttributesCost::create([
+                    'package_id' => $package->id,
+                    'attribute_id' => $line['attribute_id'],
+                    'allowed_free_qty' => $line['allowed_free_qty'],
+                    'unit_price' => $line['unit_price'],
+                    'per_unit' => 1, // Assuming a default value for per_unit
+                ]);
+            } else {
+                // Otherwise, store in the package_lines table
+                PackageLine::create([
+                    'package_id' => $package->id,
+                    'attribute_id' => $line['attribute_id'],
+                    'attribute_option_id' => $line['attribute_option_id'],
+                    'addon_cost' => $line['addon_cost'] ?? 0, // If addon_cost is nullable
+                    'status' => 1,
+                ]);
+            }
         }
-    
+
         if ($request->has('free_activities')) {
             $activities = array_filter($request->free_activities, function ($activityId) {
                 return !is_null($activityId) && $activityId !== '';
@@ -107,10 +121,10 @@ class PackageController extends Controller
                 ]);
             }
         }
-    
+
         return redirect()->route('package.index')->with('success', 'Package created successfully!');
     }
-    
+
 
     // Show the form for editing a specific package
     public function edit($id)
