@@ -286,74 +286,7 @@ class CostCalculatorController extends Controller
         }
     }
 
-    // function ai_compare_old($id)
-    // {
-    //     $freezone_compare_data = Cache::get($id);
-
-    //     if (!$freezone_compare_data)
-    //         return redirect()->route('calculate-licensecosts.index')->with('error', ResponseMessage::SESSION_LINK_EXPIRED);
-
-    //     $decoded_data = json_decode($freezone_compare_data);
-
-    //     return response()->json($decoded_data);
-
-    //     //? 'visa_package', 'license_validity', 'license_name', 'package_price'
-
-
-    //     return view('frontend.under_development');
-
-
-    //     $decoded_data = json_decode($freezone_compare_data);
-    //     $data = [$decoded_data->freezone->uuid];
-
-    //     //AI calculation
-    //     $decoded_data_license_name = $decoded_data->freezone->licenses[0]->name;
-
-    //     $decoded_data_min_price = floatval($decoded_data->freezone->licenses[0]->price) + floatval($decoded_data->freezone->packages[0]->price) + floatval($decoded_data->freezone->visa_types[0]->price);
-
-    //     $freezone = Freezone::where('uuid', '<>', $decoded_data->freezone->uuid)->where('status', 1);
-
-    //     $other_freezone_with_same_license = $freezone->where('min_price', '<=', $decoded_data_min_price)
-    //         ->whereHas('licenses', function ($query) use ($decoded_data_license_name) {
-    //             $query->where('status', 1)
-    //                 ->where('name', $decoded_data_license_name);
-    //         })->orderBy('min_price', 'DESC')->first();
-    //     if ($other_freezone_with_same_license) {
-    //         array_push($data, $other_freezone_with_same_license->uuid);
-    //     } else {
-    //         $other_freezone_with_diff_license = $freezone->where('min_price', '<=', $decoded_data_min_price)
-    //             ->whereHas('licenses', function ($query) use ($decoded_data_license_name) {
-    //                 $query->where('status', 1)
-    //                     ->where('name', '<>', $decoded_data_license_name);
-    //             })->orderBy('min_price', 'DESC')->first();
-    //         if ($other_freezone_with_diff_license) {
-    //             array_push($data, $other_freezone_with_diff_license->uuid);
-    //         } else {
-    //             $other_freezone_with_same_license_max_price = $freezone->where('min_price', '>', $decoded_data_min_price)
-    //                 ->whereHas('licenses', function ($query) use ($decoded_data_license_name) {
-    //                     $query->where('status', 1)
-    //                         ->where('name', $decoded_data_license_name);
-    //                 })->orderBy('min_price', 'ASC')->first();
-    //             if ($other_freezone_with_same_license_max_price) {
-    //                 array_push($data, $other_freezone_with_same_license_max_price->uuid);
-    //             } else {
-    //                 $other_freezone_with_diff_license_max_price = $freezone->where('min_price', '>', $decoded_data_min_price)
-    //                     ->whereHas('licenses', function ($query) use ($decoded_data_license_name) {
-    //                         $query->where('status', 1)
-    //                             ->where('name', '<>', $decoded_data_license_name);
-    //                     })->orderBy('min_price', 'ASC')->first();
-    //                 if ($other_freezone_with_diff_license_max_price) {
-    //                     array_push($data, $other_freezone_with_diff_license_max_price->uuid);
-    //                 } else {
-    //                     return redirect()->route('calculate-licensecosts.index');
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return redirect('/compare-freezone?freezones=' . implode(",", $data) . '&freezone_compare_id=' . $id);
-    // }
-
+   
     function settle_payment($id)
     {
         $customer = auth('customer')->user();

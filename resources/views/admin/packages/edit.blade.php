@@ -1,4 +1,55 @@
 <x-admin-layout>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            }
+
+            .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            }
+
+            .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+            }
+
+            .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+            }
+
+            input:checked + .slider {
+            background-color: #007bff;
+            }
+
+            input:checked + .slider:before {
+            transform: translateX(26px);
+            }
+
+            .btn-danger{
+                color: red;
+            }
+
+    </style>
     @if ($errors->any())
         <div class="main-card">
             <div class="card-body">
@@ -20,7 +71,7 @@
                 @method('PUT')
                 <div class="row">
                     <!-- Freezone Selection -->
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="freezone">Freezone <span class="text-danger">*</span></label>
                             <select name="freezone_id" class="custom-select">
@@ -44,9 +95,10 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('title')" />
                         </div>
                     </div>
-
+                </div>
+                <div class="row">
                     <!-- Package Price -->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="position-relative form-group">
                             <label for="price">Price <span class="text-danger">*</span></label>
                             <input name="price" id="price" value="{{ old('price', $package->price) }}" type="number" class="form-control" min="0">
@@ -55,7 +107,7 @@
                     </div>
 
                     <!-- Renewable Price -->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="position-relative form-group">
                             <label for="renewable_price">Renewable Price</label>
                             <input name="renewable_price" id="renewable_price" value="{{ old('renewable_price', $package->renewable_price) }}" type="number" class="form-control" min="0">
@@ -64,7 +116,7 @@
                     </div>
                     
                     <!-- Currency -->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="position-relative form-group">
                             <label for="currency">Currency <span class="text-danger">*</span></label>
                             <select name="currency" id="currency" class="custom-select form-control">
@@ -79,9 +131,10 @@
                         </div>
                     </div>
 
-
+                </div>
+                <div class="row">
                     <!-- Package Description -->
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="position-relative form-group">
                             <label for="description">Description <span class="text-danger">*</span></label>
                             <textarea name="description" id="description" class="form-control">{{ old('description', $package->description) }}</textarea>
@@ -89,6 +142,20 @@
                         </div>
                     </div>
 
+                     <!-- Trending Checkbox -->
+                     <div class="col-md-3 p-2">
+                        <div class="position-relative form-group">
+                            <label for="trending">Trending</label>
+                            <br>
+                            <label class="switch">
+                                <input type="checkbox" name="trending" id="trending" value="1" {{ old('trending', $package->trending) ? 'checked' : '' }}>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="visa_package">Free Visa Package <span class="text-danger">*</span></label>
@@ -104,16 +171,9 @@
                             >
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('visa_package')" />
                         </div>
-                    </div>
+                    </div>                  
 
 
-                    <!-- Trending Checkbox -->
-                    <div class="col-md-12">
-                        <div class="position-relative form-group">
-                            <label for="trending">Trending</label>
-                            <input type="checkbox" name="trending" id="trending" value="1" {{ old('trending', $package->trending) ? 'checked' : '' }}>
-                        </div>
-                    </div>
 
                     <!-- Number of Free Activities Allowed -->
                     <div class="col-md-6">
@@ -409,7 +469,7 @@
                 selectedActivitiesContainer.append(`
                     <div class="selected-activity" data-id="${activityId}">
                         ${$(this).find('option:selected').text()}
-                        <button type="button" class="btn btn-danger btn-sm remove-activity" data-id="${activityId}">Remove</button>
+                        <button type="button" class="btn btn-danger btn-sm remove-activity" data-id="${activityId}" title="Remove">X</button>
                         <input type="hidden" name="free_activities[]" value="${activityId}" />
                     </div>
                 `);
