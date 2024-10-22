@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\FreezoneController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
@@ -19,6 +20,8 @@ use App\Http\Controllers\Frontend\CustomerController;
 */
 
 Route::post('login', [AuthController::class, 'login']);
+
+Route::get('freezone/{uuid}/get-default-attributes/', [FreezoneController::class, 'getDefaultAttributes'])->middleware(['auth:sanctum']);
 
 Route::post('create-customer', [CustomerController::class, 'store'])->middleware(['auth:sanctum', 'role_or_permission:store-customer']);
 

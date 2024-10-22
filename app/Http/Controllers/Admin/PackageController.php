@@ -12,6 +12,7 @@ use App\Models\Freezone;
 use App\Models\Attribute; 
 use App\Models\AttributeOption;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PackageController extends Controller
 {
@@ -30,7 +31,8 @@ class PackageController extends Controller
         $attributeOptions = AttributeOption::where('status',1)->get(); // Fetch attribute options
         $currency = Currency::where('status',1)->get();
         $activities = Activity::where('status',1)->get();
-        return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions','currency','activities'));
+        $token = Auth::user()->createToken('FreezoneToken')->plainTextToken;
+        return view('admin.packages.create', compact('freezones', 'attributes', 'attributeOptions','currency','activities','token'));
     }
 
 

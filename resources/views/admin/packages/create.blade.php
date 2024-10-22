@@ -11,7 +11,7 @@
                             <select name="freezone_id" id="freezone-select" class="custom-select">
                                 <option value="">Select Freezone</option>
                                 @foreach($freezones as $freezone)
-                                    <option value="{{$freezone->id}}" {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>
+                                    <option value="{{$freezone->id}}" data-uuid="{{$freezone->uuid}}" {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>
                                         {{$freezone->name}}
                                     </option>
                                 @endforeach
@@ -128,42 +128,6 @@
                         <div class="position-relative form-group">
                             <label for="package_lines"><b>Package Add-ons</b></label>
                             <div id="package-lines-container">
-                                <div class="row package-line-item">
-                                    <!-- Attribute -->
-                                    <div class="col-md-4">
-                                        <div class="position-relative form-group">
-                                            <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                                            <select name="package_lines[0][attribute_id]" class="custom-select attribute-select" data-line="0">
-                                                <option value="">Select Attribute</option>
-                                                @foreach($attributes as $attribute)
-                                                    <option value="{{$attribute->id}}">{{$attribute->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.attribute_id')" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Attribute Option -->
-                                    <div class="col-md-4">
-                                        <div class="position-relative form-group">
-                                            <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                                            <select name="package_lines[0][attribute_option_id]" class="custom-select option-select" id="option-select-0">
-                                                <option value="">Select Option</option>
-                                            </select>
-                                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.attribute_option_id')" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Add-on Cost -->
-                                    <div class="col-md-4">
-                                        <div class="position-relative form-group">
-                                            <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                                            <input name="package_lines[0][addon_cost]" type="number" class="form-control" min="0">
-                                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.0.addon_cost')" />
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
                             </div>
                         </div>
@@ -202,10 +166,9 @@
 
     <script src="{{ secure_asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
     <script>
-        let lineIndex = 0;
 
         document.getElementById('add-package-line').addEventListener('click', function() {
-            lineIndex++;
+            let lineIndex = $('.package-line-item').length +1;
             let container = document.getElementById('package-lines-container');
             let newRow = document.createElement('div');
             newRow.classList.add('row', 'package-line-item');
@@ -216,13 +179,13 @@
                         <select name="package_lines[${lineIndex}][attribute_id]" class="custom-select attribute-select" data-line="${lineIndex}">
                             <option value="">Select Attribute</option>
                             @foreach($attributes as $attribute)
-            <option value="{{$attribute->id}}">{{$attribute->name}}</option>
+            <option value="{{$attribute->id}}" data-allow-multiple="{{$attribute->allow_multiple}}">{{$attribute->label}}</option>
                             @endforeach
             </select>
             <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.attribute_id')" />
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 multiple_on">
                     <div class="position-relative form-group">
                         <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
                         <select name="package_lines[${lineIndex}][attribute_option_id]" class="custom-select option-select" id="option-select-${lineIndex}">
@@ -231,18 +194,32 @@
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.attribute_option_id')" />
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 multiple_on">
                     <div class="position-relative form-group">
                         <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
                         <input name="package_lines[${lineIndex}][addon_cost]" type="number" class="form-control" min="0">
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.addon_cost')" />
                     </div>
                 </div>
+                <div class="col-md-4 multiple_off">
+                    <div class="position-relative form-group">
+                      <label for="allowed_free_qty_${lineIndex}">Allowed Free Quantity</label>
+                      <input name="package_lines[${lineIndex}][allowed_free_qty]" type="number" class="form-control" min="0" value="">
+                    </div>
+                </div>
+
+                  <div class="col-md-4 multiple_off">
+                    <div class="position-relative form-group">
+                      <label for="unit_price_${lineIndex}">Unit Price</label>
+                      <input name="package_lines[${lineIndex}][unit_price]" type="number" class="form-control" min="0" value="">
+                    </div>
+                  </div>
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button" class="btn btn-warning remove-package-line">Remove</button>
                 </div>
             `;
             container.appendChild(newRow);
+            $('.package-line-item:last').find('.multiple_off').hide();
         });
 
         $(document).on('click', '.remove-package-line', function() {
@@ -254,21 +231,29 @@
                 var attributeId = $(this).val();
                 var line = $(this).data('line');
                 var $optionSelect = $('#option-select-' + line);
+                let allow_multiple = $(this).find(':selected').data('allow-multiple');
+                if(allow_multiple =='0'){
+                    $(this).closest('.package-line-item').find('.multiple_off').show();
+                    $(this).closest('.package-line-item').find('.multiple_on').hide();
+                }else{
+                    $(this).closest('.package-line-item').find('.multiple_on').show();
+                    $(this).closest('.package-line-item').find('.multiple_off').hide();
 
-                if (attributeId) {
-                    $.ajax({
-                        url: '/admin/get-attribute-options/' + attributeId,
-                        type: 'GET',
-                        success: function(data) {
-                            $optionSelect.empty();
-                            $optionSelect.append('<option value="">Select Option</option>');
-                            $.each(data.options, function(key, value) {
-                                $optionSelect.append('<option value="'+ value.id +'">'+ value.value +'</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $optionSelect.empty().append('<option value="">Select Option</option>');
+                    if (attributeId) {
+                        $.ajax({
+                            url: '/admin/get-attribute-options/' + attributeId,
+                            type: 'GET',
+                            success: function(data) {
+                                $optionSelect.empty();
+                                $optionSelect.append('<option value="">Select Option</option>');
+                                $.each(data.options, function(key, value) {
+                                    $optionSelect.append('<option value="'+ value.id +'">'+ value.value +'</option>');
+                                });
+                            }
+                        });
+                    } else {
+                        $optionSelect.empty().append('<option value="">Select Option</option>');
+                    }
                 }
             });
         });
@@ -323,6 +308,55 @@
             $(this).val(''); // Reset the dropdown after selection
         });
 
+        $(document).ready(function () {
+            $('#freezone-select').on('change', function () {
+                $('#package-lines-container').find('.package-line-item').remove();
+                let freezone_uuid = $(this).find(':selected').data('uuid');
+                if (freezone_uuid === '') {
+                    return;
+                }
+
+                $.ajax({
+                    url: `/api/freezone/${freezone_uuid}/get-default-attributes/`,
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer {{$token}}', // Provide Sanctum token in header
+                        'Accept': 'application/json'
+                    },
+                    success: function (response) {
+                        // Track the number of existing package lines to avoid conflicts
+                        let existingLines = $('.package-line-item').length;
+
+                        response.default_attributes.forEach((attribute, index) => {
+                            let line_no = existingLines + index + 1; // Adjust line number based on existing lines
+                            $('#add-package-line').click(); // Ensure this adds a new line to the DOM
+
+                            // Find the last added attribute-select element
+                            let $lastAttributeSelect = $('.attribute-select:last');
+                            $lastAttributeSelect.val(attribute.attribute_id).change();
+
+                                // Use dynamic selectors for the newly added package line inputs
+                                if (attribute.attribute_option_id > 0) {
+                                    setTimeout(function () {
+                                    $(`select[name="package_lines[${line_no}][attribute_option_id]"]`).val(attribute.attribute_option_id).change();
+                                    }, 900);
+                                    $(`input[name="package_lines[${line_no}][addon_cost]"]`).val(attribute.unit_price);
+                                } else {
+                                    $(`input[name="package_lines[${line_no}][allowed_free_qty]"]`).val(attribute.allowed_free_qty);
+                                    $(`input[name="package_lines[${line_no}][unit_price]"]`).val(attribute.unit_price);
+                                }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error: ' + error);
+                        $('#response').html('<p>An error occurred</p>');
+                    }
+                });
+            });
+        });
+
+
+
 
         // Handle removing selected activities
         $(document).on('click', '.remove-activity', function() {
@@ -335,5 +369,6 @@
                 $('#free-activities-dropdown').prop('disabled', false);
             }
         });
+
     </script>
 </x-admin-layout>

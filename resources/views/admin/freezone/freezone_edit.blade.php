@@ -86,7 +86,7 @@
                                                     <option value="">Select Attribute</option>
                                                     @foreach($attributes as $attr)
                                                         <option value="{{ $attr->id }}" data-allow_multiple="{{ $attr->allow_multiple }}" {{ $attr->id == $attribute->attribute_id ? 'selected' : '' }}>
-                                                            {{ $attr->name }}
+                                                            {{ $attr->label }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -141,7 +141,7 @@
                                             <select name="freezone_default_attributes[0][attribute_id]" class="custom-select">
                                                 <option value="">Select Attribute</option>
                                                 @foreach($attributes as $attribute)
-                                                    <option value="{{ $attribute->id }}" data-allow_multiple="{{ $attribute->allow_multiple }}">{{ $attribute->name }}</option>
+                                                    <option value="{{ $attribute->id }}" data-allow_multiple="{{ $attribute->allow_multiple }}">{{ $attribute->label }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -268,7 +268,7 @@
                         <select name="freezone_default_attributes[${index}][attribute_id]" class="custom-select" data-index="${index}">
                             <option value="">Select Attribute</option>
                             @foreach($attributes as $attribute)
-                                <option value="{{ $attribute->id }}" data-allow_multiple="{{ $attribute->allow_multiple }}">{{ $attribute->name }}</option>
+                                <option value="{{ $attribute->id }}" data-allow_multiple="{{ $attribute->allow_multiple }}">{{ $attribute->label }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -340,7 +340,7 @@
 
         // Find the parent element containing the attribute fields
         const attributeItem = attributeDropdown.closest('.freezone-attribute-item');
-        if (allowMultiple=="0") {
+        if (allowMultiple=="1") {
             // Hide Allowed Free Qty and Unit Price fields if allow_multiple is true
             attributeItem.find('select[name^="freezone_default_attributes"][name$="[attribute_option_id]"]').closest('.col-md-4').show();
             attributeItem.find('input[name^="freezone_default_attributes"][name$="[attribute_value]"]').closest('.col-md-4').show();
@@ -372,7 +372,7 @@
             const selectedAttribute = attributeDropdown.find('option:selected');
             const allowMultiple = selectedAttribute.data('allow_multiple');
             
-            if (allowMultiple=="0") {
+            if (allowMultiple=="1") {
                 // Show Option and Value fields if allow_multiple is true
                 attributeItem.find('select[name^="freezone_default_attributes"][name$="[attribute_option_id]"]').closest('.col-md-4').show();
                 attributeItem.find('input[name^="freezone_default_attributes"][name$="[attribute_value]"]').closest('.col-md-4').show();

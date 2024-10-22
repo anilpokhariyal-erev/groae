@@ -215,8 +215,12 @@ class FreezoneController extends Controller
             // Get the freezone_default_attributes data from the request
             $attributesData = $request->input('freezone_default_attributes', []);
 
+            // delete all existing attributes from the database for this freezone
+            $freezone->defaultAttributes()->delete();
+
             // Collect IDs of the attributes coming from the request
             $attributeKeysFromRequest = [];
+
             foreach ($attributesData as $attribute) {
                 $attributeKey = $attribute['attribute_id'] . ':' . ($attribute['attribute_option_id'] ?? 'null');
                 $attributeKeysFromRequest[] = $attributeKey;
@@ -226,47 +230,19 @@ class FreezoneController extends Controller
                     $attribute['unit_price'] = $attribute['attribute_value'];
                 }
 
-                // Check if the attribute record exists for this freezone
-                $existingAttribute = $freezone->defaultAttributes()->where([
-                    ['attribute_id', '=', $attribute['attribute_id']],
-                    ['attribute_option_id', '=', $attribute['attribute_option_id'] ?? null],
-                ])->first();
-
-                if ($existingAttribute) {
-                    // If the record exists, update it
-                    $existingAttribute->update([
-                        'allowed_free_qty' => $attribute['attribute_free_qty'] ?? 0,
-                        'unit_price' => $attribute['unit_price'] ?? 0,
-                    ]);
-                } else {
-                    // If the record does not exist, create a new one
-                    $freezone->defaultAttributes()->create([
-                        'attribute_id' => $attribute['attribute_id'],
-                        'attribute_option_id' => $attribute['attribute_option_id'] ?? null,
-                        'allowed_free_qty' => $attribute['attribute_free_qty'] ?? 0,
-                        'unit_price' => $attribute['unit_price'] ?? 0,
-                    ]);
-                }
-            }
-
-            // Fetch all existing attributes from the database for this freezone
-            $existingAttributes = $freezone->defaultAttributes()->get();
-
-            // Identify and delete attributes that are not in the incoming request
-            foreach ($existingAttributes as $existingAttribute) {
-                $existingKey = $existingAttribute->attribute_id . ':' . ($existingAttribute->attribute_option_id ?? 'null');
-
-                if (!in_array($existingKey, $attributeKeysFromRequest)) {
-                    // Attribute exists in the database but not in the request, so delete it
-                    $existingAttribute->delete();
-                }
+                // If the record does not exist, create a new one
+                $freezone->defaultAttributes()->create([
+                    'attribute_id' => $attribute['attribute_id'],
+                    'attribute_option_id' => $attribute['attribute_option_id'] ?? null,
+                    'allowed_free_qty' => $attribute['attribute_free_qty'] ?? 0,
+                    'unit_price' => $attribute['unit_price'] ?? 0,
+                ]);
             }
         });
 
         // Redirect back with success message
         return back()->with('success', 'Freezone updated successfully');
     }
-
 
 
     public function freezoneInfoShow(string $uuid)
@@ -338,7 +314,7 @@ class FreezoneController extends Controller
         $freezone->rule_regulation_type = $request->input('rule_regulation_type');
         $freezone->rule_regulation_info = $request->input('rule_regulation_info');
         $freezone->youtube_embedded_video_link = $request->input('youtube_embedded_video_link');
-        
+
         // Handle licence registration procedures image
         if ($request->hasFile('licence_registration_procedures_image')) {
             if ($freezone->licence_registration_procedures_image) {
@@ -374,7 +350,7 @@ class FreezoneController extends Controller
         $freezone->license_id = $request->input('license_id');
         $freezone->license_name = $request->input('license_name');
         $freezone->additional_info = $request->input('additional_info');
-        
+
         $freezone->save();
 
         return back()->with('success', 'Freezone information updated successfully.');
@@ -400,6 +376,9 @@ class FreezoneController extends Controller
             Log::error('Error deleting Freezone: ' . $e->getMessage());
             return redirect()->route('freezones.index')->with('error', 'An error occurred while deleting the Freezone');
         }
+    }
+    public function getDefaultAttributes(string $uuid){
+         return Freezone::with('defaultAttributes')->where('uuid',$uuid)->first();
     }
 
 }
