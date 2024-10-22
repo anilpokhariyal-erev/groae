@@ -5,15 +5,15 @@
             display: inline-block;
             width: 60px;
             height: 34px;
-            }
+        }
 
-            .switch input {
+        .switch input {
             opacity: 0;
             width: 0;
             height: 0;
-            }
+        }
 
-            .slider {
+        .slider {
             position: absolute;
             cursor: pointer;
             top: 0;
@@ -23,9 +23,9 @@
             background-color: #ccc;
             transition: 0.4s;
             border-radius: 34px;
-            }
+        }
 
-            .slider:before {
+        .slider:before {
             position: absolute;
             content: "";
             height: 26px;
@@ -35,20 +35,19 @@
             background-color: white;
             transition: 0.4s;
             border-radius: 50%;
-            }
+        }
 
-            input:checked + .slider {
+        input:checked + .slider {
             background-color: #007bff;
-            }
+        }
 
-            input:checked + .slider:before {
+        input:checked + .slider:before {
             transform: translateX(26px);
-            }
+        }
 
-            .btn-danger{
-                color: red;
-            }
-
+        .btn-danger{
+            color: red;
+        }
     </style>
     @if ($errors->any())
         <div class="main-card">
@@ -98,7 +97,7 @@
                 </div>
                 <div class="row">
                     <!-- Package Price -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="price">Price <span class="text-danger">*</span></label>
                             <input name="price" id="price" value="{{ old('price', $package->price) }}" type="number" class="form-control" min="0">
@@ -107,16 +106,16 @@
                     </div>
 
                     <!-- Renewable Price -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="renewable_price">Renewable Price</label>
                             <input name="renewable_price" id="renewable_price" value="{{ old('renewable_price', $package->renewable_price) }}" type="number" class="form-control" min="0">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
                         </div>
                     </div>
-                    
+
                     <!-- Currency -->
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="currency">Currency <span class="text-danger">*</span></label>
                             <select name="currency" id="currency" class="custom-select form-control">
@@ -128,6 +127,16 @@
                                 @endforeach
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('currency')" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="activity_limit">Number of Free Activities Allowed</label>
+                            <input type="number" id="activity-limit-input" name="activity_limit"
+                                   class="form-control {{ $errors->has('activity_limit') ? 'is-invalid' : '' }}"
+                                   value="{{ old('activity_limit', $package->allowed_free_packages) }}"
+                                   min="1" max="{{ count($activities) }}" >
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_limit')" />
                         </div>
                     </div>
 
@@ -153,95 +162,40 @@
                             </label>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="visa_package">Free Visa Package <span class="text-danger">*</span></label>
-                            <input
-                                    type="number"
-                                    name="visa_package"
-                                    id="visa_package"
-                                    value="{{ old('visa_package', $package->visa_package ?? '') }}"
-                                    class="form-control"
-                                    min="0"
-                                    max="99"
-                                    required
-                            >
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('visa_package')" />
-                        </div>
-                    </div>                  
-
-
-
-                    <!-- Number of Free Activities Allowed -->
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="activity_limit">Number of Free Activities Allowed</label>
-                            <input type="number" id="activity-limit-input" name="activity_limit"
-                                   class="form-control {{ $errors->has('activity_limit') ? 'is-invalid' : '' }}"
-                                   value="{{ old('activity_limit', $package->allowed_free_packages) }}"
-                                   min="1" max="{{ count($activities) }}" placeholder="Enter a limit">
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_limit')" />
-                        </div>
-                    </div>
-
-                    <!-- Free Activities -->
-                    <div class="col-md-12">
-                        <div class="position-relative form-group">
-                            <label for="free_activities">Free Activities</label>
-                            <select id="free-activities-dropdown" name="free_activities[]" class="custom-select form-control">
-                                <option value="">Select Free Activity</option>
-                                @foreach($activities as $activity)
-                                    <option value="{{ $activity->id }}" >{{ $activity->name }}</option>
-                                @endforeach
-                            </select>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('free_activities')" />
-                        </div>
-
-                        <!-- Selected Free Activities -->
-                        <div id="selected-activities-container" class="mt-3">
-                            @foreach($selected_activities as $activity)
-                                <div class="selected-activity" data-id="{{ $activity->id }}">
-                                    {{ $activity->name }}
-                                    <button type="button" class="btn btn-danger btn-sm remove-activity" data-id="{{ $activity->id }}">Remove</button>
-                                    <input type="hidden" name="free_activities[]" value="{{ $activity->id }}" />
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
 
                     <!-- Package Lines (Attributes and Attribute Options) -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="package_lines"><b>Package Add-ons</b></label>
-
                             <!-- Multiple rows of package lines to edit existing ones -->
                             <div id="package-lines-container">
-                                @if($package->packageLines->isEmpty())
-                                    <!-- If no package lines, add an empty row -->
-                                    <div class="row package-line-item">
+                                    <!-- Display existing package lines -->
+                                @php
+                                    $costIndex = count($package->packageLines); // Start costIndex from the length of packageLines
+                                @endphp
+
+                                @foreach($package->packageLines as $lineIndex => $line)
+                                    <div class="row package-line-item" data-option="{{ $line->attribute_option_id }}">
                                         <div class="col-md-4">
                                             <div class="position-relative form-group">
                                                 <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                                                <select name="package_lines[0][attribute_id]" class="custom-select">
+                                                <select name="package_lines[{{ $lineIndex }}][attribute_id]" class="custom-select attribute-select" data-line="{{ $lineIndex }}">
                                                     <option value="">Select Attribute</option>
                                                     @foreach($attributes as $attribute)
-                                                        <option value="{{$attribute->id}}">{{$attribute->name}}</option>
+                                                        <option value="{{ $attribute->id }}"
+                                                                @if($line->attribute_id == $attribute->id) selected @endif>
+                                                            {{ $attribute->label }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 ">
                                             <div class="position-relative form-group">
                                                 <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                                                <select name="package_lines[0][attribute_option_id]" class="custom-select">
+                                                <select name="package_lines[{{ $lineIndex }}][attribute_option_id]" class="custom-select option-select" id="option-select-{{ $lineIndex }}">
                                                     <option value="">Select Option</option>
-                                                    @foreach($attributeOptions as $option)
-                                                        <option value="{{$option->id}}">{{$option->value}}</option>
-                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -249,62 +203,61 @@
                                         <div class="col-md-4">
                                             <div class="position-relative form-group">
                                                 <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                                                <input name="package_lines[0][addon_cost]" type="number" class="form-control" min="0">
+                                                <input name="package_lines[{{ $lineIndex }}][addon_cost]" value="{{ old('package_lines.' . $lineIndex . '.addon_cost', $line->addon_cost) }}" type="number" class="form-control" min="0">
                                             </div>
                                         </div>
+
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <button type="button" class="btn btn-warning remove-package-line">Remove</button>
                                         </div>
                                     </div>
-                                @else
-                                    <!-- Display existing package lines -->
-                                    @foreach($package->packageLines as $index => $line)
-                                        <div class="row package-line-item" data-option="{{ $line->attribute_option_id }}">
-                                            <div class="col-md-4">
-                                                <div class="position-relative form-group">
-                                                    <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                                                    <select name="package_lines[{{ $index }}][attribute_id]" class="custom-select">
-                                                        <option value="">Select Attribute</option>
-                                                        @foreach($attributes as $attribute)
-                                                            <option value="{{ $attribute->id }}"
-                                                                    @if($line->attribute_id == $attribute->id) selected @endif>
-                                                                {{ $attribute->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                @endforeach
 
-                                            <div class="col-md-4">
-                                                <div class="position-relative form-group">
-                                                    <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                                                    <select name="package_lines[{{ $index }}][attribute_option_id]" class="custom-select">
-                                                        <option value="">Select Option</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="position-relative form-group">
-                                                    <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                                                    <input name="package_lines[{{ $index }}][addon_cost]" value="{{ old('package_lines.' . $index . '.addon_cost', $line->addon_cost) }}" type="number" class="form-control" min="0">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 d-flex justify-content-end">
-                                                <!-- Only add the remove button for existing lines -->
-                                                @if($index > 0)
-
-                                                        <button type="button" class="btn btn-warning remove-package-line">Remove</button>
-
-                                                @endif
+                                @foreach($package->attributeCosts as $line)
+                                    <div class="row package-line-item" data-option="{{ $line->attribute_option_id }}">
+                                        <div class="col-md-4">
+                                            <div class="position-relative form-group">
+                                                <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
+                                                <select name="package_lines[{{ $costIndex }}][attribute_id]" class="custom-select attribute-select" data-line="{{ $costIndex }}">
+                                                    <option value="">Select Attribute</option>
+                                                    @foreach($attributes as $attribute)
+                                                        <option value="{{ $attribute->id }}" data-allow-multiple="{{ $attribute->allow_multiple }}"
+                                                                @if($line->attribute_id == $attribute->id) selected @endif>
+                                                            {{ $attribute->label }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
-                                    @endforeach
-                                @endif
+
+                                        <div class="col-md-4">
+                                            <div class="position-relative form-group">
+                                                <label for="allowed_free_qty_{{ $costIndex }}">Allowed Free Quantity</label>
+                                                <input name="package_lines[{{ $costIndex }}][allowed_free_qty]" value="{{ old('package_lines.' . $costIndex . '.allowed_free_qty', $line->allowed_free_qty) }}" type="number" class="form-control" min="0" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="position-relative form-group">
+                                                <label for="unit_price_{{ $costIndex }}">Unit Price</label>
+                                                <input name="package_lines[{{ $costIndex }}][unit_price]" value="{{ old('package_lines.' . $costIndex . '.unit_price', $line->unit_price) }}" type="number" class="form-control" min="0" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <!-- Only add the remove button for existing lines -->
+                                            <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+                                        </div>
+                                    </div>
+
+                                    @php
+                                        $costIndex++; // Increment costIndex for the next iteration
+                                    @endphp
+                                @endforeach
                             </div>
 
-                            <!-- Button to add more package lines -->
+
+                    <!-- Button to add more package lines -->
                             <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
                         </div>
                     </div>
@@ -344,7 +297,6 @@
     $(document).ready(function() {
         const attributeOptions = @json($attributeOptions);
 
-        // Function to populate options based on selected attribute
         function populateOptions(attributeId, optionsDropdown) {
             const filteredOptions = attributeOptions.filter(option => option.attribute_id == attributeId);
             optionsDropdown.empty(); // Clear existing options
@@ -355,17 +307,33 @@
             });
         }
 
-        // Attach change event listener to each attribute dropdown
         $(document).on('change', 'select[name^="package_lines"][name$="[attribute_id]"]', function() {
             const selectedAttributeId = $(this).val();
             const optionsDropdown = $(this).closest('.package-line-item').find('select[name^="package_lines"][name$="[attribute_option_id]"]');
+
+            // Check if an attribute is selected
             if (selectedAttributeId) {
+                // Populate options based on the selected attribute
                 populateOptions(selectedAttributeId, optionsDropdown);
+
+                // Show or hide additional fields based on attribute's multiple selection capability
+                const allow_multiple = $(this).find(':selected').data('allow-multiple');
+                if (allow_multiple == '0') {
+                    $(this).closest('.package-line-item').find('.multiple_off').show();
+                    $(this).closest('.package-line-item').find('.multiple_on').hide();
+                } else {
+                    $(this).closest('.package-line-item').find('.multiple_on').show();
+                    $(this).closest('.package-line-item').find('.multiple_off').hide();
+                }
             } else {
-                optionsDropdown.empty(); // Clear if no attribute selected
+                // Clear the options if no attribute is selected
+                optionsDropdown.empty();
                 optionsDropdown.append('<option value="">Select Option</option>');
+                $(this).closest('.package-line-item').find('.multiple_off').hide();
+                $(this).closest('.package-line-item').find('.multiple_on').hide(); // Hide both sections if no attribute is selected
             }
         });
+
 
         // Trigger change event on page load for existing lines
         $('select[name^="package_lines"][name$="[attribute_id]"]').each(function() {
@@ -382,124 +350,63 @@
 
         // Handle adding new package line dynamically
         $('#add-package-line').on('click', function() {
-            const index = $('#package-lines-container .package-line-item').length;
+            const index = $('#package-lines-container .package-line-item').length + 1; // Increment the index
             const newLine = `
-                <div class="row package-line-item">
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                            <select name="package_lines[${index}][attribute_id]" class="custom-select">
-                                <option value="">Select Attribute</option>
-                                @foreach($attributes as $attribute)
-                                    <option value="{{$attribute->id}}">{{$attribute->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                            <select name="package_lines[${index}][attribute_option_id]" class="custom-select">
-                                <option value="">Select Option</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="position-relative form-group">
-                            <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                            <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0">
-                        </div>
-                    </div>
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <button type="button" class="btn btn-warning remove-package-line">Remove</button>
-                    </div>
+        <div class="row package-line-item">
+            <div class="col-md-4">
+                <div class="position-relative form-group">
+                    <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
+                    <select name="package_lines[${index}][attribute_id]" class="custom-select attribute-select" data-line="${index}">
+                        <option value="">Select Attribute</option>
+                        @foreach($attributes as $attribute)
+            <option value="{{$attribute->id}}" data-allow-multiple="{{$attribute->allow_multiple}}">{{$attribute->label}}</option>
+                        @endforeach
+            </select>
+            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.attribute_id')" />
                 </div>
-            `;
+            </div>
+            <div class="col-md-4 multiple_on">
+                <div class="position-relative form-group">
+                    <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
+                    <select name="package_lines[${index}][attribute_option_id]" class="custom-select option-select" id="option-select-${index}">
+                        <option value="">Select Option</option>
+                    </select>
+                    <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.attribute_option_id')" />
+                </div>
+            </div>
+            <div class="col-md-4 multiple_on">
+                <div class="position-relative form-group">
+                    <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
+                    <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0">
+                    <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.addon_cost')" />
+                </div>
+            </div>
+            <div class="col-md-4 multiple_off">
+                <div class="position-relative form-group">
+                    <label for="allowed_free_qty_${index}">Allowed Free Quantity</label>
+                    <input name="package_lines[${index}][allowed_free_qty]" type="number" class="form-control" min="0" value="">
+                </div>
+            </div>
+            <div class="col-md-4 multiple_off">
+                <div class="position-relative form-group">
+                    <label for="unit_price_${index}">Unit Price</label>
+                    <input name="package_lines[${index}][unit_price]" type="number" class="form-control" min="0" value="">
+                </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+            </div>
+        </div>
+    `;
 
             $('#package-lines-container').append(newLine);
+            $('.package-line-item:last').find('.multiple_off').hide(); // Hide the multiple_off fields by default
         });
+
 
         // Handle remove package line
         $(document).on('click', '.remove-package-line', function() {
             $(this).closest('.package-line-item').remove();
-        });
-
-        // Activity limit input handling
-        $('#activity-limit-input').on('input', function() {
-            let limit = parseInt($(this).val());
-            let selectedActivities = $('#selected-activities-container .selected-activity').length;
-
-            // Check if activity limit is greater than 0
-            if (limit > 0) {
-                // Enable the dropdown only if the number of selected activities is less than the limit
-                $('#free-activities-dropdown').prop('disabled', selectedActivities >= limit);
-            } else {
-                $('#free-activities-dropdown').prop('required', false);
-                $('#free-activities-dropdown').prop('disabled', false);
-            }
-
-            // Enable the dropdown if the number of selected activities is less than the limit
-            if (selectedActivities < limit) {
-                $('#free-activities-dropdown').prop('disabled', false);
-            }else{
-                // $('#free-activities-dropdown').prop('disabled', true);
-                alert('Please remove extra free activities')
-                // let selectedActivitiesContainer = $('#selected-activities-container');
-                // if (selectedActivitiesContainer.children().length >= limit) {
-                //     $(selectedActivitiesContainer).html('');
-                // }
-
-            }
-        });
-
-        // Handle the selection of free activities
-        $(document).on('change', '#free-activities-dropdown', function() {
-            if ($('#activity-limit-input').val() == ''){
-                alert('Please enter the Number of Free Activities Allowed!');
-                $('#free-activities-dropdown').val('').change();
-                return false;
-            }
-            let activityId = $(this).val();
-            let limit = parseInt($('#activity-limit-input').val());
-            let selectedActivitiesContainer = $('#selected-activities-container');
-
-            // Check if the activity is already selected
-            if (activityId && selectedActivitiesContainer.find(`[data-id="${activityId}"]`).length === 0) {
-                // Create a new element to show selected activities
-                selectedActivitiesContainer.append(`
-                    <div class="selected-activity" data-id="${activityId}">
-                        ${$(this).find('option:selected').text()}
-                        <button type="button" class="btn btn-danger btn-sm remove-activity" data-id="${activityId}" title="Remove">X</button>
-                        <input type="hidden" name="free_activities[]" value="${activityId}" />
-                    </div>
-                `);
-
-                // Disable the dropdown if the limit is reached
-                if (selectedActivitiesContainer.children().length >= limit) {
-                    $(this).prop('disabled', true);
-                }
-            }
-            $(this).val(''); // Reset the dropdown after selection
-        });
-
-        // Handle removing selected activities
-        $(document).on('click', '.remove-activity', function() {
-            $(this).closest('.selected-activity').remove();
-            let limit = parseInt($('#activity-limit-input').val());
-            let selectedActivitiesContainer = $('#selected-activities-container');
-
-            // Enable the dropdown if the number of selected activities is less than the limit
-            if (selectedActivitiesContainer.children().length < limit) {
-                $('#free-activities-dropdown').prop('disabled', false);
-            }
-        });
-
-        $(document).ready(function() {
-            let selectedActivitiesContainer = $('#selected-activities-container');
-            let limit = parseInt($('#activity-limit-input').val());
-            if (selectedActivitiesContainer.children().length >= limit) {
-                $('#free-activities-dropdown').prop('disabled', true);
-            }
         });
 
     });
