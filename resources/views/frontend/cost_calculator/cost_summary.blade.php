@@ -124,7 +124,7 @@
                         Manual compare
                     </a>
                     <a class="bookConsBtn" target="_blank" href="{{ route('calculate-licensecosts.settle_payment', ['id' => $id]) }}">
-                        Proceed with Payment
+                        Request Invoice
                     </a>
                 </div>
             </div>
