@@ -69,15 +69,14 @@
                 </a>
             </li>
 
-           
-
-            <!--
             <li>
                 <a href="{{route('licence.index')}}" class="{{ Route::is('licence.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
                     Manage licence
                 </a>
             </li>
+
+            <!--           
             
             <li>
                 <a href="{{route('additionalactivity.index')}}" class="{{ Route::is('additionalactivity.*') ? 'mm-active' : '' }}">
