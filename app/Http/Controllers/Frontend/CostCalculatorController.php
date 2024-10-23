@@ -66,7 +66,7 @@ class CostCalculatorController extends Controller
                     $query->where('uuid', $selected_freezone);
                 })->max('visa_package');
 
-            $freezone_data = Freezone::where('uuid', $selected_freezone)->with(['licenses', 'visa_types', 'visa_add_ons', 'locations', 'activity_groups'])->first();
+            $freezone_data = Freezone::where('uuid', $selected_freezone)->with(['licenses', 'locations', 'activity_groups'])->first();
 
         }
         

@@ -11,14 +11,7 @@
                     </a>
                 </li>
             @endif
-
            
-            <li class="{{ $has_role_or_permission('view-customers', 'ba_display_none') }}">
-                <a href="{{route('customer.index')}}" class="{{ Route::is('customer.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Customers
-                </a>
-            </li>
 
             <!--<li class="{{ $has_role_or_permission('view-leads', 'ba_display_none') }}">
                 <a href="{{route('lead.index')}}" class="{{ Route::is('lead.*') ? 'mm-active' : '' }}">
@@ -69,13 +62,6 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{{route('licence.index')}}" class="{{ Route::is('licence.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage licence
-                </a>
-            </li>
-
             <!--           
             
             <li>
@@ -86,12 +72,7 @@
             </li> 
             -->
 
-            <li>
-                <a href="{{route('transaction.index')}}" class="{{ Route::is('transaction.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Transactions
-                </a>
-            </li>
+           
 
             <li class="{{ $has_role_or_permission('view-contact', 'ba_display_none') }}">
                 <a href="{{route('contact.index')}}" class="{{ Route::is('contact.*') ? 'mm-active' : '' }}">
@@ -100,42 +81,36 @@
                 </a>
             </li>
 
-            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-activity-groups'))
-                <li>
-                    <a href="{{route('activity-group.index')}}" class="{{ Route::is('activity-group.*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon fa-solid fa-folder-open"></i>
-                        Manage Activity Groups
-                    </a>
-                </li>
+            @if(
+                auth()->user()->hasRole('superadmin') ||
+                auth()->user()->can('view-customers') ||
+                auth()->user()->can('view-customers-admin')
+            )
+                <li class="app-sidebar__heading">Customers</li>
             @endif
 
-            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-activities'))
-                <li>
-                    <a href="{{route('activity.index')}}" class="{{ Route::is('activity.*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon fa-solid fa-clipboard-list"></i>
-                        Manage Activities
-                    </a>
-                </li>
-            @endif
+            <li class="{{ $has_role_or_permission('view-customers', 'ba_display_none') }}">
+                <a href="{{route('customer.index')}}" class="{{ Route::is('customer.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon fa-solid fa-users"></i>
+                    Manage Customers
+                </a>
+            </li>
+                        
 
-            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-attribute-headers'))
-                <li>
-                    <a href="{{ route('visa-package-attribute-headers.index') }}" class="{{ Route::is('visa-package-attribute-headers.*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon fa-solid fa-passport"></i>
-                        Manage Visa Package Attribute Headers
-                    </a>
-                </li>
-            @endif
+            <li class="{{ $has_role_or_permission('view-process-document', 'ba_display_none') }}">
+                <a href="{{route('booking.index')}}" class="{{ Route::is('booking.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon fa-solid fa-users"></i>
+                    Manage Freezone Booking Requests
+                </a>
+            </li>
 
+            <li>
+                <a href="{{route('transaction.index')}}" class="{{ Route::is('transaction.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon fa-solid fa-users"></i>
+                    Manage Transactions
+                </a>
+            </li>
 
-            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-types'))
-                <li>
-                    <a href="{{ route('visa-package-attributes.index') }}" class="{{ Route::is('visa-package-attributes.*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon fa-solid fa-passport"></i>
-                        Manage Visa Package Attributes
-                    </a>
-                </li>
-            @endif
 
 
             @if(
@@ -178,12 +153,53 @@
                 </a>
             </li> -->
 
-            <li class="{{ $has_role_or_permission('view-process-document', 'ba_display_none') }}">
-                <a href="{{route('booking.index')}}" class="{{ Route::is('booking.*') ? 'mm-active' : '' }}">
+            
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-activity-groups'))
+                <li>
+                    <a href="{{route('activity-group.index')}}" class="{{ Route::is('activity-group.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-folder-open"></i>
+                        Manage Activity Groups
+                    </a>
+                </li>
+            @endif
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-activities'))
+                <li>
+                    <a href="{{route('activity.index')}}" class="{{ Route::is('activity.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-clipboard-list"></i>
+                        Manage Activities
+                    </a>
+                </li>
+            @endif
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-attribute-headers'))
+                <li>
+                    <a href="{{ route('visa-package-attribute-headers.index') }}" class="{{ Route::is('visa-package-attribute-headers.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-passport"></i>
+                        Manage Visa Package Attribute Headers
+                    </a>
+                </li>
+            @endif
+
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-types'))
+                <li>
+                    <a href="{{ route('visa-package-attributes.index') }}" class="{{ Route::is('visa-package-attributes.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-passport"></i>
+                        Manage Visa Package Attributes
+                    </a>
+                </li>
+            @endif
+
+            <li>
+                <a href="{{route('licence.index')}}" class="{{ Route::is('licence.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Freezone Booking Requests
+                    Manage licence
                 </a>
             </li>
+
+
 
             @if(
                 auth()->user()->hasRole('superadmin') ||
@@ -264,12 +280,13 @@
             </li>
 
 
-            <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
+            <!-- <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
                 <a href="{{route('setting.view')}}" class="{{ Route::is('setting-view.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
                     Setting
                 </a>
-            </li>
+            </li> -->
+
             @endif
             <li class="{{ $has_role_or_permission('manage-currencies', 'ba_display_none') }}">
                 <a href="{{route('currency.view')}}" class="{{ Route::is('currency.*') ? 'mm-active' : '' }}">

@@ -73,6 +73,7 @@
                                         <option value="requested" @if($bookings_data->client_status == "requested") selected @endif>Requested</option>
                                         <option value="approved" @if($bookings_data->client_status == "approved") selected @endif>Approved</option>
                                         <option value="rejected" @if($bookings_data->client_status == "rejected") selected @endif>Rejected</option>
+                                        <option value="completed" @if($bookings_data->client_status == "completed") selected @endif>Completed</option>
                                     </select>
                                 </td>
                                 <td>{{@$bookings_data->created_at->format('Y-m-d')}}</td>

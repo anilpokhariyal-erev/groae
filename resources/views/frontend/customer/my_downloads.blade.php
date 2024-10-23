@@ -39,7 +39,7 @@
                                     <div class="uploadBlock-2">
                                         <a class="uploadImg" href="{{ route('protected-file.download', ['path' => $item->value]) }}">
                                             <img src="{{ secure_asset('images/downloads-whiteicon.png') }}" alt="">
-                                            Upload Document
+                                            Downlaod Document
                                         </a>
                                     </div>
                                 </div>
