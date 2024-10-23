@@ -1,6 +1,6 @@
 <x-admin-layout>
     <div class="text-right">
-        <a href="{{route('licence.create')}}" class="mb-2 mr-2 btn btn-primary text-white">Create Licence</a>
+        <a href="{{route('license.create')}}" class="mb-2 mr-2 btn btn-primary text-white">Create Licence</a>
     </div>
    
 
@@ -54,28 +54,23 @@
                     </thead>
                     <tbody>
                         @php $i = 1; @endphp
-                        @foreach($licence as $licence_val)
+                        @foreach($licenses as $license_val)
                             <tr>
                                 <th scope="row">{{$i++}}</th>
-                                <td>{{@$licence_val->freezone->name}}</td>
-                                <td>{{ucfirst($licence_val->name)}}</td>
-                                <td>{{$licence_val->price}}</td>
-                                <td>@if($licence_val->status == 1) Active @else Inactive @endif</td>
-                                <td>{{$licence_val->created_at?$licence_val->created_at->format('Y-m-d'):''}}</td>
+                                <td>{{@$license_val->freezone->name}}</td>
+                                <td>{{ucfirst($license_val->name)}}</td>
+                                <td>{{$license_val->price}}</td>
+                                <td>@if($license_val->status == 1) Active @else Inactive @endif</td>
+                                <td>{{$license_val->created_at?$license_val->created_at->format('Y-m-d'):''}}</td>
                                 <td>
-                                    <a class="ml-1 mr-1"  href="{{ route('licence.edit',$licence_val->id) }}">Edit</a>
-                                    <a class="ml-1 mr-1 text-red" href="#" onclick="confirmDelete('{{route('licence.delete', $licence_val->id)}}'); return false;" >Delete</a>
+                                    <a class="ml-1 mr-1"  href="{{ route('license.edit',$license_val->id) }}">Edit</a>
+                                    <a class="ml-1 mr-1 text-red" href="#" onclick="confirmDelete('{{route('license.delete', $license_val->id)}}'); return false;" >Delete</a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-
-            <div class="mt-3 pagination">
-                {{ $licence->links() }}
-            </div>
-
         </div>
     </div>
 </x-admin-layout>

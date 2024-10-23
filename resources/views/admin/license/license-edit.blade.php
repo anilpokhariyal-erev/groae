@@ -2,17 +2,18 @@
 
     <div class="main-card mb-3 card">
         <div class="card-body">
-            <form method="post" action="{{ route('licence.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('license.update',$license->id) }}" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="row">
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="freezone">Freezone <span class="text-danger">*</span></label>
                             <select name="freezone" class="custom-select">
                                 <option value="">Select Freezone</option>
-                                @if($freezone)
-                                    @foreach($freezone as $freezone_val)
-                                        <option @if(old('freezone') == $freezone_val->id) selected='selected' @endif value="{{$freezone_val->id}}">{{$freezone_val->name}}</option>
+                                @if($freezones)
+                                    @foreach($freezones as $freezone_val)
+                                        <option @if(old('freezone',$license->freezone_id) == $freezone_val->id) selected='selected' @endif value="{{$freezone_val->id}}">{{$freezone_val->name}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -22,8 +23,8 @@
 
                     <div class="col-md-6">
                         <div class="position-relative form-group">
-                            <label for="image">Name</label>
-                            <input name="name" id="name" value="{{old('name')}}" type="text" class="form-control">
+                            <label for="image">Name <span class="text-danger">*</span></label>
+                            <input name="name" id="name" value="{{old('name',$license->name)}}" type="text" class="form-control">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('name')" />
                         </div>
                     </div>
@@ -31,7 +32,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="price">Price <span class="text-danger">*</span></label>
-                            <input name="price" id="price" value="{{old('price')}}" type="number" class="form-control" min="0">
+                            <input name="price" id="price" value="{{old('price',$license->price)}}" type="number" class="form-control" min="0">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('price')" />
                         </div>
                     </div>
@@ -39,7 +40,7 @@
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="description">Description <span class="text-danger">*</span></label>
-                            <textarea name="description" id="description" class="form-control">{{old('description')}}</textarea>
+                            <textarea name="description" id="description" class="form-control">{{old('description',$license->description)}}</textarea>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('description')" />
                         </div>
                     </div>

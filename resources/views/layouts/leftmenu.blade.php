@@ -193,9 +193,9 @@
             @endif
 
             <li>
-                <a href="{{route('licence.index')}}" class="{{ Route::is('licence.*') ? 'mm-active' : '' }}">
+                <a href="{{route('license.index')}}" class="{{ Route::is('license.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage licence
+                    Manage license
                 </a>
             </li>
 
