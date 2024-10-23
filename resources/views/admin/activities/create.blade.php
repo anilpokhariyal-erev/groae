@@ -33,6 +33,22 @@
 
                     <div class="col-md-12">
                         <div class="position-relative form-group">
+                            <label for="license">License <span class="text-danger">*</span></label>
+                            <select name="licence_id" class="custom-select" id="license">
+                                <option value="">Select License</option>
+                                @foreach($licenses as $license)
+                                    <option value="{{ $license->id }}" 
+                                        {{ old('licence_id') == $license->id ? 'selected' : '' }}>
+                                        {{ $license->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('license_id')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
                             <label for="name">Activity Name <span class="text-danger">*</span></label>
                             <input name="name" id="name" value="{{ old('name') }}" type="text" class="form-control">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('name')" />
