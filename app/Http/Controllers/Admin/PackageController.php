@@ -47,28 +47,10 @@ class PackageController extends Controller
             'currency' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'renewable_price' => 'required|numeric|min:0',
-            'package_lines' => 'required|array',
-            'package_lines.*.attribute_id' => 'required|exists:attributes,id',
-            // Only validate the attribute_option_id if it's present
-            'package_lines.*.attribute_option_id' => 'nullable|exists:attribute_options,id',
-            'package_lines.*.addon_cost' => 'nullable|numeric|min:0',
-            'package_lines.*.allowed_free_qty' => 'nullable|integer|min:0',
-            'package_lines.*.unit_price' => 'nullable|numeric|min:0',
-            'visa_package' => 'required|integer|min:0|max:99',
-            'activity_limit' => 'nullable|integer|min:1',
-            'free_activities' => 'required_if:activity_limit,>,0|array',
         ]);
-
-        $activity_limit = 0;
 
         // Determine if trending checkbox is checked
         $isTrending = $request->has('trending') ? 1 : 0;
-        if ($request->has('free_activities')) {
-            $activities = array_filter($request->free_activities, function ($activityId) {
-                return !is_null($activityId) && $activityId !== '';
-            });
-            $activity_limit = count($activities);
-        }
 
         // Create the package header
         $package = PackageHeader::create([
@@ -81,12 +63,11 @@ class PackageController extends Controller
             'status' => 1,
             'trending' => $isTrending,  // Save the trending value
             'updated_by' => auth()->id(),
-            'visa_package' => $request->visa_package,
-            'allowed_free_packages' => $activity_limit,
+            'allowed_free_packages' => $request->input('activity_limit',0),
         ]);
 
         // Loop through the package lines and handle based on attribute_option_id
-        foreach ($request->package_lines as $line) {
+        foreach ($request->input('package_lines',[]) as $line) {
             if (empty($line['attribute_option_id'])) {
                 // Store in package_attributes_cost if attribute_option_id is empty
                 PackageAttributesCost::create([
@@ -107,21 +88,6 @@ class PackageController extends Controller
                 ]);
             }
         }
-
-        if ($request->has('free_activities')) {
-            $activities = array_filter($request->free_activities, function ($activityId) {
-                return !is_null($activityId) && $activityId !== '';
-            });
-            foreach ($activities as $activityId) {
-                PackageActivity::create([
-                    'package_id' => $package->id,
-                    'activity_id' => $activityId,
-                    'price' => 0.00, // Assuming free activities have a price of 0
-                    'status' => 1,
-                ]);
-            }
-        }
-
         return redirect()->route('package.index')->with('success', 'Package created successfully!');
     }
 
@@ -130,8 +96,7 @@ class PackageController extends Controller
     public function edit($id)
     {
         // Fetch the package with related models using eager loading
-        $package = PackageHeader::with(['packageLines', 'packageLines.attribute', 'packageLines.attributeOption'])->findOrFail($id);
-
+        $package = PackageHeader::with(['packageLines', 'packageLines.attribute', 'packageLines.attributeOption','attributeCosts'])->findOrFail($id);
         // Fetch attributes, attribute options, currency, activities, and freezones
         $attributes = Attribute::where('status', 1)->get();
         $attributeOptions = AttributeOption::where('status', 1)->get();
@@ -160,24 +125,11 @@ class PackageController extends Controller
                 'freezone_id' => 'required|exists:freezones,id',
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
+                'currency' => 'required|string',
                 'price' => 'required|numeric|min:0',
                 'renewable_price' => 'required|numeric|min:0',
                 'trending' => 'nullable|boolean',
-                'currency' => 'required|string',
-                'package_lines' => 'array',
-                'package_lines.*.attribute_id' => 'required|exists:attributes,id',
-                'package_lines.*.attribute_option_id' => 'required|exists:attribute_options,id',
-                'package_lines.*.addon_cost' => 'required|numeric|min:0',
-                'visa_package' => 'required|integer|min:0|max:99',
             ]);
-
-            $activity_limit = 0;
-            if ($request->has('free_activities')) {
-                $activities = array_filter($request->free_activities, function ($activityId) {
-                    return !is_null($activityId) && $activityId !== '';
-                });
-                $activity_limit =$request->input('activity_limit');
-            }
 
             // If validation passes, update the package
             $package->update([
@@ -190,65 +142,45 @@ class PackageController extends Controller
                 'currency' => $request->currency,
                 'trending' => $request->trending ? true : false,
                 'updated_by' => auth()->id(),
-                'allowed_free_packages' => $activity_limit,
+                'allowed_free_packages' => $request->input('activity_limit',0),
             ]);
 
-            // Update package lines
-            $package->packageLines()->delete(); // Clear existing lines if necessary
+            // Clear existing package lines
+            $package->packageLines()->delete();
+            $package->attributeCosts()->delete();
 
-            foreach ($request->package_lines as $line) {
-                $package->packageLines()->create([
-                    'attribute_id' => $line['attribute_id'],
-                    'attribute_option_id' => $line['attribute_option_id'],
-                    'addon_cost' => $line['addon_cost'],
-                ]);
-            }
-
-            if ($request->has('free_activities')) {
-                // Get existing package activities
-                $package_activities = PackageActivity::where('package_id', $package->id)->get();
-                $activityIds = $package_activities->isNotEmpty() ? $package_activities->pluck('activity_id')->toArray() : [];
-
-                // Create new activities if they don't exist
-                foreach ($activities as $activityId) {
-                    if (!in_array($activityId, $activityIds)) {
-                        PackageActivity::create([
-                            'package_id' => $package->id,
-                            'activity_id' => $activityId,
-                            'price' => 0.00, // Assuming free activities have a price of 0
-                            'status' => 1,
-                        ]);
-                    } else {
-                        // If the activity already exists, set status to 1 (active)
-                        PackageActivity::where('package_id', $package->id)
-                            ->where('activity_id', $activityId)
-                            ->update(['status' => 1]);
-                    }
+            // Loop through the package lines and handle based on attribute_option_id
+            foreach ($request->input('package_lines', []) as $line) {
+                if (empty($line['attribute_option_id'])) {
+                    // Store in package_attributes_cost if attribute_option_id is empty
+                    PackageAttributesCost::create([
+                        'package_id' => $package->id,
+                        'attribute_id' => $line['attribute_id'],
+                        'allowed_free_qty' => $line['allowed_free_qty'] ?? 0, // New field handling
+                        'unit_price' => $line['unit_price'] ?? 0, // New field handling
+                        'per_unit' => 1, // Assuming a default value for per_unit
+                    ]);
+                } else {
+                    // Otherwise, store in the package_lines table
+                    PackageLine::create([
+                        'package_id' => $package->id,
+                        'attribute_id' => $line['attribute_id'],
+                        'attribute_option_id' => $line['attribute_option_id'],
+                        'addon_cost' => $line['addon_cost'] ?? 0, // If addon_cost is nullable
+                        'status' => 1,
+                    ]);
                 }
-
-                // Update status of existing activities not in the new list
-                PackageActivity::where('package_id', $package->id)
-                    ->whereNotIn('activity_id', $activities)
-                    ->update(['status' => 0]); // Mark as inactive
-            } else {
-                // If no free activities were provided, mark all as inactive
-                PackageActivity::where('package_id', $package->id)->update(['status' => 0]);
             }
 
             return redirect()->route('package.index')->with('success', 'Package updated successfully!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation failure
-            // You can log the error or customize the response here
             return redirect()->back()
                 ->withErrors($e->validator) // Send back the validation errors
                 ->withInput(); // Retain the old input
         }
     }
-
-
-
-
 
     // Delete the specified package from the database
     public function destroy(PackageHeader $package)
