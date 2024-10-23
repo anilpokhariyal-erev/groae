@@ -10,10 +10,10 @@
                         </div>
 
                         <button id="filter-button" class="btn btn-primary mr-1 ml-1">Filter</button>
-                        <a href="{{route('visa-add-on.index')}}" class="btn btn-primary">Reset</a>
+                        <a href="{{route('visa-package-attributes.index')}}" class="btn btn-primary">Reset</a>
                     </div>
                     <div class="ba_flex align_items_center">
-                        <a href="{{route('visa-add-on.create')}}" class="btn btn-primary text-white">Create Visa Add-On</a>
+                        <a href="{{route('visa-package-attributes.create')}}" class="btn btn-primary text-white">Create Visa Package Attribute</a>
                     </div>
                 </div>
             </form>
@@ -22,7 +22,7 @@
 
     <div class="main-card mb-3 card mt-2">
         <div class="card-body">
-            <h5 class="card-heading">Visa Add-Ons</h5>
+            <h5 class="card-heading">Visa Package Attributes</h5>
             @if(session('success'))
                 <div class="main-card">
                     <div class="card-body">
@@ -50,27 +50,27 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Visa Add-On Name</th>
+                            <th>Attribute Header</th>
                             <th>Freezone</th>
                             <th>Price</th>
-                            <th>Status</th>
+                            <th>Description</th>
                             <th>Created Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $i = 1; @endphp
-                        @foreach($visaAddOns as $visaAddOn)
+                        @foreach($visaPackageAttributes as $attribute)
                             <tr>
                                 <th scope="row">{{$i++}}</th>
-                                <td>{{ucwords($visaAddOn->name)}}</td>
-                                <td>{{ucwords($visaAddOn->freezone->name)}}</td>
-                                <td>{{ $visaAddOn->price }}</td>
-                                <td>{{ $visaAddOn->status ? 'Active' : 'Inactive' }}</td>
-                                <td>{{$visaAddOn->created_at->format('Y-m-d')}}</td>
+                                <td>{{ucwords($attribute->attribute_header->title)}}</td>
+                                <td>{{ucwords($attribute->freezone->name)}}</td>
+                                <td>{{ $attribute->price }}</td>
+                                <td>{{ $attribute->description }}</td>
+                                <td>{{$attribute->created_at->format('Y-m-d')}}</td>
                                 <td>
-                                    <a class="ml-1 mr-1" href="{{route('visa-add-on.edit', $visaAddOn->id)}}">Edit</a>
-                                    <!-- <a class="ml-1 mr-1 text-red" href="#" onclick="confirmDelete('{{route('visa-add-on.delete', $visaAddOn->id)}}'); return false;">Delete</a> -->
+                                    <a class="ml-1 mr-1" href="{{route('visa-package-attributes.edit', $attribute->id)}}">Edit</a>
+                                    <a class="ml-1 mr-1 text-red" href="#" onclick="confirmDelete('{{route('visa-package-attributes.delete', $attribute->id)}}'); return false;">Delete</a>
                                 </td>
                             </tr>
                         @endforeach

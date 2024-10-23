@@ -119,20 +119,21 @@
                 </li>
             @endif
 
-            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-types'))
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-attribute-headers'))
                 <li>
-                    <a href="{{route('visa-type.index')}}" class="{{ Route::is('visa-type.*') ? 'mm-active' : '' }}">
+                    <a href="{{ route('visa-package-attribute-headers.index') }}" class="{{ Route::is('visa-package-attribute-headers.*') ? 'mm-active' : '' }}">
                         <i class="metismenu-icon fa-solid fa-passport"></i>
-                        Manage Visa Types
+                        Manage Visa Package Attribute Headers
                     </a>
                 </li>
             @endif
-            
-            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-add-ons'))
+
+
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-visa-types'))
                 <li>
-                    <a href="{{ route('visa-add-on.index') }}" class="{{ Route::is('visa-add-on.*') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon fa-solid fa-layer-group"></i>
-                        Manage Visa Add-Ons
+                    <a href="{{ route('visa-package-attributes.index') }}" class="{{ Route::is('visa-package-attributes.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-passport"></i>
+                        Manage Visa Package Attributes
                     </a>
                 </li>
             @endif
