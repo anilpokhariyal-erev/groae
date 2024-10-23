@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Blog;
 use App\Models\Offer;
-use App\Models\License;
 use App\Models\Package;
 use App\Models\Setting;
 use App\Models\Freezone;
-use App\Models\VisaType;
 use App\Models\StaticPage;
 use App\Models\Attribute;
 use App\Models\PackageHeader;
@@ -32,9 +30,6 @@ class HomeController extends Controller
     public function home()
     {
         $freezones = Freezone::select('id', 'name', 'logo', 'about', 'slug', 'created_at')->orderBy('freezone_views_count', 'DESC')->skip(0)->take(3)->get();
-        $licenses = License::where('status', 1)->distinct()->pluck('name');
-        $offices = Package::where('status', 1)->distinct()->pluck('office');
-        $visa_types = VisaType::where('status', 1)->distinct()->pluck('name');
         $offer = Offer::select('id', 'title', 'discount', 'image', 'freezone_id')->with('freezone')->take(3)->get();
         $blogs = Blog::select('id', 'title', 'short_description', 'image', 'slug', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(3)->get();
         $groae_number = Setting::where('section_key', 'groae_number')->get();
@@ -49,7 +44,7 @@ class HomeController extends Controller
             ->get();
         $attributes = $this->ai_filter_options();
 
-        return view('frontend.home', compact('blogs', 'freezones', 'licenses', 'offices', 'visa_types', 'offer', 'groae_number', 'attributes','trending_freezones'));
+        return view('frontend.home', compact('blogs', 'freezones',  'offer', 'groae_number', 'attributes','trending_freezones'));
     }
     
     public function trending_freezone()
