@@ -62,7 +62,6 @@
                             <th>Freezone</th>
                             <th>Price</th>
                             <th>Status</th>
-                            <th>Visa package</th>
                             <th>Allowed free activities</th>
                             <th>Trending</th>
                             <th>Created Date</th>
@@ -81,8 +80,7 @@
                                     <span class="badge {{ $package->status == 1 ? 'badge-success' : 'badge-danger' }}">
                                         {{ $package->status == 1 ? 'Active' : 'Inactive' }}
                                     </span>
-                                </td>                                
-                                <td>{{ $package->visa_package }}</td>
+                                </td>
                                 <td>{{ $package->allowed_free_packages ?? 0 }}</td>
                                 <td>@if($package->trending == 1) Yes @else No @endif</td>
                                 <td>{{ $package->created_at ? $package->created_at->format('Y-m-d') : '' }}</td>
