@@ -279,13 +279,14 @@
                 </a>
             </li>
 
-
-            <!-- <li class="{{ $has_role_or_permission('view-setting', 'ba_display_none') }}">
-                <a href="{{route('setting.view')}}" class="{{ Route::is('setting-view.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Setting
-                </a>
-            </li> -->
+                @if(Auth::user()->setting == 1)
+                    <li>
+                        <a href="{{ route('setting.view') }}" class="{{ Route::is('setting-view.*') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon fa-solid fa-users"></i>
+                            Setting
+                        </a>
+                    </li>
+                @endif
 
             @endif
             <li class="{{ $has_role_or_permission('manage-currencies', 'ba_display_none') }}">

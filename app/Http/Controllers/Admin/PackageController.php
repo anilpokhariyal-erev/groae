@@ -88,6 +88,11 @@ class PackageController extends Controller
                 ]);
             }
         }
+        //activities entries
+        $freezone_activities= Activity::where('freezone_id',$package->freezone_id)->get();
+        foreach ($freezone_activities as $activity) {
+            PackageActivity::create(['package_id' => $package->id, 'activity_id' => $activity->id,'price'=>$activity->price]);
+        }
         return redirect()->route('package.index')->with('success', 'Package created successfully!');
     }
 

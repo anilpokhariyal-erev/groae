@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
     public function setting(){
+        if (Auth::user()->setting != 1) {
+            abort(403, 'Unauthorized action.');
+        }
 
         // Fetching 'min' and 'max' data for 'manage_ai_fields_limit'
         $ai_field_limits = Setting::where('section_key', 'manage_ai_fields_limit')
