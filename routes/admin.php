@@ -13,12 +13,10 @@ use App\Http\Controllers\ProfileController;
 
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PcLicenseController;
-use App\Http\Controllers\PcPackageController;
+use App\Http\Controllers\Admin\LicenseController;
 use App\Http\Controllers\Admin\BlogController;
 
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\PcActivityController;
 
 
 //Frontend Controllers
@@ -210,12 +208,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('visa-package-attribute-headers/delete/{id}', [VisaPackageAttributeHeaderController::class, 'destroy'])->name('visa-package-attribute-headers.delete')->middleware('role_or_permission:delete-visa-package-attribute-header');
 
 
-    // Route::resource('activity', PcActivityController::class);
-    Route::resource('licence', PcLicenseController::class);
-    Route::get('licence/delete/{uuid}', [PcLicenseController::class, 'destroy'])->name('licence.delete');
-
-    // Route::resource('package', PcPackageController::class);
-    // Route::get('package/delete/{uuid}', [PcPackageController::class, 'destroy'])->name('package.delete');
+    Route::resource('license', LicenseController::class);
+    Route::get('license/delete/{uuid}', [LicenseController::class, 'destroy'])->name('license.delete');
 
     Route::resource('additionalactivity', PcAdditionalActivityController::class);
     Route::get('additionalactivity/delete/{uuid}', [PcAdditionalActivityController::class, 'destroy'])->name('additionalactivity.delete');
