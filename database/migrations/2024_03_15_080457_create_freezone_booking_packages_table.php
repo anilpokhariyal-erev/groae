@@ -2,8 +2,6 @@
 
 use App\Models\FreezoneBooking;
 use App\Models\Location;
-use App\Models\VisaAddOn;
-use App\Models\VisaType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price')->default(0);
-            $table->foreignIdFor(VisaType::class);
-            $table->foreignIdFor(VisaAddOn::class);
             $table->foreignIdFor(Location::class);
             $table->foreignIdFor(FreezoneBooking::class);
             $table->timestamps();

@@ -1,18 +1,17 @@
 <x-admin-layout>
-
     <div class="main-card mb-3 card">
         <div class="card-body">
             <div class="ba_flex justify-between">
                 <div class="ba_flex align_items_center">
-                    <h5 class="card-heading">Create Visa Add-On</h5>
+                    <h5 class="card-heading">Create Visa Package Attribute</h5>
                 </div>
 
                 <div class="ba_flex align_items_center">
-                    <a href="{{ route('visa-add-on.index') }}" class="btn btn-primary">Back</a>
+                    <a href="{{ route('visa-package-attributes.index') }}" class="btn btn-primary">Back</a>
                 </div>
             </div>
             &nbsp;
-            <form method="post" action="{{ route('visa-add-on.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('visa-package-attributes.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <!-- Freezone Selection -->
@@ -22,23 +21,37 @@
                             <select name="freezone_id" class="custom-select">
                                 <option value="">Select Freezone</option>
                                 @foreach($freezones as $freezone)
-                                    <option value="{{ $freezone->id }}" {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>{{ $freezone->name }}</option>
+                                    <option value="{{$freezone->id}}" {{ old('freezone_id') == $freezone->id ? 'selected' : '' }}>{{$freezone->name}}</option>
                                 @endforeach
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_id')" />
                         </div>
                     </div>
 
-                    <!-- Visa Add-On Name -->
+                    <!-- Visa Package Attribute Header Selection -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
-                            <label for="name">Visa Add-On Name <span class="text-danger">*</span></label>
-                            <input name="name" id="name" value="{{ old('name') }}" type="text" class="form-control">
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('name')" />
+                            <label for="attribute_header">Visa Package Attribute Header <span class="text-danger">*</span></label>
+                            <select name="attribute_header_id" class="custom-select">
+                                <option value="">Select Attribute Header</option>
+                                @foreach($attributeHeaders as $attributeHeader)
+                                    <option value="{{$attributeHeader->id}}" {{ old('attribute_header_id') == $attributeHeader->id ? 'selected' : '' }}>{{$attributeHeader->title}}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_header_id')" />
                         </div>
                     </div>
 
-                    <!-- Price -->
+                    <!-- Value Field -->
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="value">Value <span class="text-danger">*</span></label>
+                            <input name="value" id="value" value="{{ old('value') }}" type="text" class="form-control" maxlength="50" required>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('value')" />
+                        </div>
+                    </div>
+
+                    <!-- Price Field -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="price">Price <span class="text-danger">*</span></label>
@@ -47,7 +60,7 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
+                    <!-- Description Field -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="description">Description</label>
@@ -61,8 +74,6 @@
                     <button class="mt-1 btn btn-primary">Save</button>
                 </div>
             </form>
-
         </div>
     </div>
-
 </x-admin-layout>

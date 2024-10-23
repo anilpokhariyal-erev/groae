@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CustomersTableSeeder::class);
         $this->call(FreezonePagesTableSeeder::class);
         $this->call(StaticPagesTableSeeder::class);
-        $this->call(VisaAddOnsTableSeeder::class);
         $this->call(LocationsTableSeeder::class);
         $this->call(CountriesTableSeeder::class);
         $this->call(StatesTableSeeder::class);

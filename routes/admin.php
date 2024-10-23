@@ -31,8 +31,8 @@ use App\Http\Controllers\OtherServiceController;
 //Admin routes added by brij and working routes
 use App\Http\Controllers\Admin\ActivityGroupController;
 use App\Http\Controllers\Admin\ActivityController;
-use App\Http\Controllers\Admin\VisaTypeController;
-use App\Http\Controllers\Admin\VisaAddOnController;
+use App\Http\Controllers\Admin\VisaPackageAttributeHeaderController;
+use App\Http\Controllers\Admin\VisaPackageAttributeController;
 
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Frontend\FileController;
@@ -195,20 +195,21 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('activity/{id}', [ActivityController::class, 'update'])->name('activity.update')->middleware('role_or_permission:update-activity');
     Route::get('activity/delete/{id}', [ActivityController::class, 'destroy'])->name('activity.delete')->middleware('role_or_permission:delete-activity');
 
-    Route::get('visa-types', [VisaTypeController::class, 'index'])->name('visa-type.index')->middleware('role_or_permission:view-visa-types');
-    Route::get('visa-type/create', [VisaTypeController::class, 'create'])->name('visa-type.create')->middleware('role_or_permission:create-visa-type');
-    Route::post('visa-type/store', [VisaTypeController::class, 'store'])->name('visa-type.store')->middleware('role_or_permission:store-visa-type');
-    Route::get('visa-type/edit/{id}', [VisaTypeController::class, 'edit'])->name('visa-type.edit')->middleware('role_or_permission:edit-visa-type');
-    Route::put('visa-type/{id}', [VisaTypeController::class, 'update'])->name('visa-type.update')->middleware('role_or_permission:update-visa-type');
-    Route::get('visa-type/delete/{id}', [VisaTypeController::class, 'destroy'])->name('visa-type.delete')->middleware('role_or_permission:delete-visa-type');
+    Route::get('visa-package-attributes', [VisaPackageAttributeController::class, 'index'])->name('visa-package-attributes.index')->middleware('role_or_permission:view-visa-types');
+    Route::get('visa-package-attributes/create', [VisaPackageAttributeController::class, 'create'])->name('visa-package-attributes.create')->middleware('role_or_permission:create-visa-type');
+    Route::post('visa-package-attributes/store', [VisaPackageAttributeController::class, 'store'])->name('visa-package-attributes.store')->middleware('role_or_permission:store-visa-type');
+    Route::get('visa-package-attributes/edit/{id}', [VisaPackageAttributeController::class, 'edit'])->name('visa-package-attributes.edit')->middleware('role_or_permission:edit-visa-type');
+    Route::put('visa-package-attributes/{id}', [VisaPackageAttributeController::class, 'update'])->name('visa-package-attributes.update')->middleware('role_or_permission:update-visa-type');
+    Route::get('visa-package-attributes/delete/{id}', [VisaPackageAttributeController::class, 'destroy'])->name('visa-package-attributes.delete')->middleware('role_or_permission:delete-visa-type');
     
-    Route::get('visa-add-ons', [VisaAddOnController::class, 'index'])->name('visa-add-on.index')->middleware('role_or_permission:view-visa-add-ons');
-    Route::get('visa-add-on/create', [VisaAddOnController::class, 'create'])->name('visa-add-on.create')->middleware('role_or_permission:create-visa-add-on');
-    Route::post('visa-add-on/store', [VisaAddOnController::class, 'store'])->name('visa-add-on.store')->middleware('role_or_permission:store-visa-add-on');
-    Route::get('visa-add-on/edit/{id}', [VisaAddOnController::class, 'edit'])->name('visa-add-on.edit')->middleware('role_or_permission:edit-visa-add-on');
-    Route::put('visa-add-on/{id}', [VisaAddOnController::class, 'update'])->name('visa-add-on.update')->middleware('role_or_permission:update-visa-add-on');
-    Route::get('visa-add-on/delete/{id}', [VisaAddOnController::class, 'destroy'])->name('visa-add-on.delete')->middleware('role_or_permission:delete-visa-add-on');
-  
+    Route::get('visa-package-attribute-headers', [VisaPackageAttributeHeaderController::class, 'index'])->name('visa-package-attribute-headers.index')->middleware('role_or_permission:view-visa-package-attribute-headers');
+    Route::get('visa-package-attribute-headers/create', [VisaPackageAttributeHeaderController::class, 'create'])->name('visa-package-attribute-headers.create')->middleware('role_or_permission:create-visa-package-attribute-header');
+    Route::post('visa-package-attribute-headers/store', [VisaPackageAttributeHeaderController::class, 'store'])->name('visa-package-attribute-headers.store')->middleware('role_or_permission:store-visa-package-attribute-header');
+    Route::get('visa-package-attribute-headers/edit/{id}', [VisaPackageAttributeHeaderController::class, 'edit'])->name('visa-package-attribute-headers.edit')->middleware('role_or_permission:edit-visa-package-attribute-header');
+    Route::put('visa-package-attribute-headers/{id}', [VisaPackageAttributeHeaderController::class, 'update'])->name('visa-package-attribute-headers.update')->middleware('role_or_permission:update-visa-package-attribute-header');
+    Route::get('visa-package-attribute-headers/delete/{id}', [VisaPackageAttributeHeaderController::class, 'destroy'])->name('visa-package-attribute-headers.delete')->middleware('role_or_permission:delete-visa-package-attribute-header');
+
+
     // Route::resource('activity', PcActivityController::class);
     Route::resource('licence', PcLicenseController::class);
     Route::get('licence/delete/{uuid}', [PcLicenseController::class, 'destroy'])->name('licence.delete');
