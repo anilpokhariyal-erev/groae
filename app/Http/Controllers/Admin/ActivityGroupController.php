@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\Freezone;
 use App\Models\ActivityGroup;
+use App\Models\License;
 use App\Http\Controllers\Controller;
 
 class ActivityGroupController extends Controller
@@ -29,9 +30,10 @@ class ActivityGroupController extends Controller
      */
     public function create()
     {
-
         $freezones = Freezone::all();
-        return view('admin.activity-groups.create', compact('freezones'));
+        $licenses = License::all();
+
+        return view('admin.activity-groups.create', compact('freezones', 'licenses')); // Pass both freezones and licenses to the view
     }
 
     /**
@@ -43,6 +45,7 @@ class ActivityGroupController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'freezone_id' => 'required|exists:freezones,id',
+            'licence_id' => 'required|exists:licenses,id',
         ]);
 
         ActivityGroup::create($validatedData);
@@ -56,7 +59,8 @@ class ActivityGroupController extends Controller
     public function edit($id){
          $activityGroup = ActivityGroup::where('id', $id)->first();
          $freezones = Freezone::all();
-        return view('admin.activity-groups.edit', compact('freezones', 'activityGroup'));
+         $licenses = License::all();
+        return view('admin.activity-groups.edit', compact('freezones', 'activityGroup', 'licenses'));
     }
 
     /**
@@ -69,6 +73,7 @@ class ActivityGroupController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'freezone_id' => 'required|exists:freezones,id',
+            'licence_id' => 'required|exists:licenses,id',
         ]);
 
         // Update the activity group with the validated data

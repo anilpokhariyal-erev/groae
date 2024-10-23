@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Activity;
 use App\Models\ActivityGroup;
+use App\Models\License;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -31,7 +32,8 @@ class ActivityController extends Controller
     public function create()
     {
         $activityGroups = ActivityGroup::all();
-        return view('admin.activities.create', compact('activityGroups'));
+        $licenses = License::all();
+        return view('admin.activities.create', compact('activityGroups', 'licenses'));
     }
 
     /**
@@ -43,7 +45,8 @@ class ActivityController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'activity_group_id' => 'required|exists:activity_groups,id'
+            'activity_group_id' => 'required|exists:activity_groups,id',
+            'licence_id' => 'required|exists:licenses,id',
         ]);
 
         // Retrieve the activity group to get the freezone_id
@@ -56,6 +59,7 @@ class ActivityController extends Controller
             'price' => $validatedData['price'],
             'activity_group_id' => $validatedData['activity_group_id'],
             'freezone_id' => $activityGroup->freezone_id,
+            'licence_id' => $validatedData['licence_id'],
         ]);
 
         return redirect()->route('activity.index')->with('success', 'Activity created successfully.');
@@ -68,7 +72,8 @@ class ActivityController extends Controller
     {
         $activity = Activity::findOrFail($id); // Fetch the activity using id
         $activityGroups = ActivityGroup::all(); // Fetch all activity groups
-        return view('admin.activities.edit', compact('activityGroups', 'activity'));
+        $licenses = License::all();
+        return view('admin.activities.edit', compact('activityGroups', 'activity', 'licenses'));
     }    
 
     /**
@@ -81,6 +86,7 @@ class ActivityController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'activity_group_id' => 'required|exists:activity_groups,id',
+            'licence_id' => 'required|exists:licenses,id',
         ]);
     
         // Find the activity by id
@@ -94,6 +100,7 @@ class ActivityController extends Controller
             'price' => $validatedData['price'],
             'activity_group_id' => $validatedData['activity_group_id'],
             'freezone_id' => $activity->freezone_id,
+            'licence_id' => $validatedData['licence_id'],
         ]);
     
         return redirect()->route('activity.index')->with('success', 'Activity updated successfully.');

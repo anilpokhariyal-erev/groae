@@ -33,7 +33,24 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_id')" />
                         </div>
                     </div>
-                    
+
+                    <!-- License Selection -->
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="license">License <span class="text-danger">*</span></label>
+                            <select name="licence_id" class="custom-select">
+                                <option value="">Select License</option>
+                                @foreach($licenses as $license)
+                                    <option value="{{ $license->id }}" 
+                                        {{ old('licence_id', $activityGroup->licence_id) == $license->id ? 'selected' : '' }}>
+                                        {{ $license->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('license_id')" />
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="name">Group Name <span class="text-danger">*</span></label>

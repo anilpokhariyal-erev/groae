@@ -11,11 +11,6 @@ class License extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // public function freezones()
-    // {
-    //     return $this->belongsToMany(Freezone::class);
-    // }
-
     public function freezone()
     {
         return $this->belongsTo(Freezone::class);
