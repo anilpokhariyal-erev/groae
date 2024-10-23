@@ -7,8 +7,7 @@ use App\Models\License;
 use App\Models\Package;
 use App\Models\Activity;
 use App\Models\Location;
-use App\Models\VisaType;
-use App\Models\VisaAddOn;
+use App\Models\VisaPackageAttribute;
 use Illuminate\Support\Str;
 use App\Models\FreezonePage;
 use App\Models\VisaActivity;
@@ -65,14 +64,9 @@ class Freezone extends Model
         return $this->hasMany(Activity::class);
     }
 
-    public function visa_types()
+    public function visaPackageAttributes()
     {
-        return $this->hasMany(VisaType::class);
-    }
-
-    public function visa_add_ons()
-    {
-        return $this->hasMany(VisaAddOn::class);
+        return $this->hasMany(VisaPackageAttribute::class, 'freezone_id');
     }
 
     public function locations()
