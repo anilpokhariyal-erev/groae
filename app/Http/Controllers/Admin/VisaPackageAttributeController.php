@@ -17,7 +17,7 @@ class VisaPackageAttributeController extends Controller
     }
 
     /**
-     * Display a listing of visa package attributes.
+     * Display a listing of visa package attributes. 
      */
     public function index()
     {
@@ -84,6 +84,7 @@ class VisaPackageAttributeController extends Controller
         $validatedData = $request->validate([
             'freezone_id' => 'required|exists:freezones,id', // Ensure freezone_id exists in the FreeZones table
             'attribute_header_id' => 'required|exists:visa_package_attribute_header,id', // Ensure attribute_header_id exists
+            'value' => 'required|string|max:50',
             'price' => 'required|numeric|min:0', // Ensure price is a valid numeric value
             'description' => 'nullable|string', // Description can be null
         ]);
@@ -95,6 +96,7 @@ class VisaPackageAttributeController extends Controller
         $visaPackageAttribute->update([
             'freezone_id' => $validatedData['freezone_id'],
             'attribute_header_id' => $validatedData['attribute_header_id'],
+            'value' => $validatedData['value'] ?? '',
             'price' => $validatedData['price'],
             'description' => $validatedData['description'] ?? null, // If description is null, default to null
         ]);
