@@ -52,6 +52,7 @@
                             <th>#</th>
                             <th>Attribute Header</th>
                             <th>Freezone</th>
+                            <th>Value</th>
                             <th>Price</th>
                             <th>Description</th>
                             <th>Created Date</th>
@@ -65,6 +66,7 @@
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucwords($attribute->attribute_header->title)}}</td>
                                 <td>{{ucwords($attribute->freezone->name)}}</td>
+                                <td>{{ $attribute->value }}</td>
                                 <td>{{ $attribute->price }}</td>
                                 <td>{{ $attribute->description }}</td>
                                 <td>{{$attribute->created_at->format('Y-m-d')}}</td>
