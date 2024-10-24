@@ -388,9 +388,15 @@ class FreezoneController extends Controller
         $freezone = Freezone::where('uuid', $uuid)->first();
 
         if ($freezone) {
-            $visa_package_attr = VisaPackageAttribute::with(['attribute_header'])
+            $visa_package_attr = VisaPackageAttribute::has('attribute_header')
+                ->whereHas('attribute_header', function ($query) {
+                    $query->where('status', 1);
+                })
                 ->where('freezone_id', $freezone->id)
+                ->where('status', 1)
+                ->with('attribute_header')
                 ->get();
+
         } else {
             // Handle case where freezone is not found
             $visa_package_attr = collect(); // Return an empty collection

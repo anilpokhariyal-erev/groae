@@ -209,11 +209,8 @@ $(document).ready(function () {
 
   $('#visa_package').on('change', function () {
     const packageCount = parseInt($(this).val()); // Get the selected value
-
     if (!isNaN(packageCount) && packageCount > 0) {
-      const params = new URLSearchParams(window.location.search);
-      const freezoneValue = params.get('freezone');
-
+      const freezoneValue = $('#freezone').val();
       if (freezoneValue) {
         // Generate visa packages based on the selected package count
         generate_visa_package(freezoneValue, packageCount);
