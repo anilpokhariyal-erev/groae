@@ -11,6 +11,8 @@ use App\Models\PackageLine;
 use App\Models\Activity;
 use App\Models\Freezone;
 use App\Models\ContactUs;
+use App\Models\VisaPackageAttribute;
+use App\Models\VisaPackageAttributeHeader;
 use Illuminate\Support\Str;
 use App\Models\VisaActivity;
 use Illuminate\Http\Request;

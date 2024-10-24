@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FreezoneController;
+use App\Http\Controllers\Admin\PackageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
@@ -22,6 +23,8 @@ use App\Http\Controllers\Frontend\CustomerController;
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('freezone/{uuid}/get-default-attributes/', [FreezoneController::class, 'getDefaultAttributes'])->middleware(['auth:sanctum']);
+Route::get('freezone/{uuid}/visa_package/', [FreezoneController::class, 'getVisaPackageAttributes']);
+Route::post('package/save-activities/', [PackageController::class, 'savePackageActivities'])->middleware(['auth:sanctum']);
 
 Route::post('create-customer', [CustomerController::class, 'store'])->middleware(['auth:sanctum', 'role_or_permission:store-customer']);
 

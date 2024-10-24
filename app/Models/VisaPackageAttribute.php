@@ -14,7 +14,7 @@ class VisaPackageAttribute extends Model
     use HasFactory, SoftDeletes;
 
     // Update the fillable attributes, removing 'name' and adding 'attribute_header_id'
-    protected $fillable = ['freezone_id', 'attribute_header_id', 'value', 'price', 'description'];
+    protected $fillable = ['freezone_id', 'attribute_header_id', 'value', 'price', 'description','status'];
 
     /**
      * Define the relationship with VisaActivity
