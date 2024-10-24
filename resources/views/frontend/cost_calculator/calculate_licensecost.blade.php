@@ -39,6 +39,13 @@
                     @foreach ($attributes as $attribute)
                         <div class="secondColumn costCalculateForm">
                             <div class="input_wrap w-100">
+                                @if(!$attribute->allow_multiple)
+
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
+                                    <input type="number"  name="attribute_{{ $attribute->id }}" value="" class="inputField2 cursor arrowPlace"  min="0">
+                                    <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
+                                    <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
+                                @else
                                 <select required name="attribute_{{ $attribute->id }}" id="{{ $attribute->name }}"
                                     class="inputField2 cursor arrowPlace">
                                     <option data-val="0" value="" disabled {{ old('attribute_' . $attribute->id) == '' ? 'selected' : '' }}>
@@ -51,7 +58,7 @@
                                                 return $line->attribute_id == $attribute->id && $line->attribute_option_id == $option->id;
                                             });
                                         @endphp
-                                        <option data-val="{{ $option->value }}" value="{{ $option->id }}" 
+                                        <option data-val="{{ $option->value }}" value="{{ $option->id }}"
                                             {{ $selectedOption || old('attribute_' . $attribute->id) == $option->id ? 'selected' : '' }}>
                                             {{ $option->value }}
                                         </option>
@@ -60,6 +67,7 @@
                                 <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
                                 <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
                                 <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -71,11 +79,8 @@
                                 <option data-val="0" value="" disabled {{ old('visa_package') == '' ? 'selected' : '' }}>
                                     Choose an Option </option>
                                 @for($i=0; $i<=$max_visa_package; $i++)
-                                    <option data-val="{{$i}}" value="{{ $i }}" 
-                                    {{ (old('visa_package') == $i 
-                                        or 
-                                        ( isset($package) and $package->visa_package == $i) ) ? 'selected' : '' 
-                                    }}>
+                                    <option data-val="{{$i}}" value="{{ $i }}"
+                                    >
                                         {{ $i }}
                                     </option>
                                 @endfor

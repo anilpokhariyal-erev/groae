@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\VisaPackageAttribute;
+use App\Models\VisaPackageAttributeHeader;
 use DB;
 use App\Assets\Utils;
 use App\Models\Freezone;
@@ -380,5 +382,22 @@ class FreezoneController extends Controller
     public function getDefaultAttributes(string $uuid){
          return Freezone::with('defaultAttributes')->where('uuid',$uuid)->first();
     }
+
+    public function getVisaPackageAttributes(string $uuid)
+    {
+        $freezone = Freezone::where('uuid', $uuid)->first();
+
+        if ($freezone) {
+            $visa_package_attr = VisaPackageAttribute::with(['attribute_header'])
+                ->where('freezone_id', $freezone->id)
+                ->get();
+        } else {
+            // Handle case where freezone is not found
+            $visa_package_attr = collect(); // Return an empty collection
+        }
+
+        return response()->json($visa_package_attr); // Return JSON response
+    }
+
 
 }

@@ -48,6 +48,32 @@
         .btn-danger{
             color: red;
         }
+
+        .modal-body {
+            overflow-y: auto; /* Allows for scrolling if content is taller than the viewport */
+            max-height: calc(80vh - 200px); /* Adjusts maximum height to avoid full viewport height */
+        }
+
+        .modal-dialog {
+            margin: 0; /* Remove default margin to avoid bottom alignment */
+            position: relative; /* Ensure it positions relative to its parent */
+            max-height: 80vh; /* Set a maximum height */
+        }
+
+        .modal-content {
+            border-radius: 0.5rem; /* Optional: rounded corners */
+            position: absolute; /* Allow better control over positioning */
+            top: 150px; /* Position it at the top */
+            left: 100%; /* Center horizontally */
+            /*transform: translateX(-50%); !* Adjust for centering *!*/
+        }
+
+        .modal-header, .modal-footer {
+            padding: 1rem; /* Optional: increase padding */
+        }
+
+
+
     </style>
     @if ($errors->any())
         <div class="main-card">
@@ -64,7 +90,9 @@
     @endif
     <div class="main-card mb-3 card">
         <div class="card-body">
-            <h5 class="card-title">Edit Package</h5>
+            <h5 class="card-title">Edit Package <span>&nbsp<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#manageActivitiesModal">
+                Manage Activities
+            </button></span></h5>
             <form method="post" action="{{ route('package.update', $package->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -292,8 +320,61 @@
         </div>
     @endif
 
+    <div class="modal fade" id="manageActivitiesModal" tabindex="-1" aria-labelledby="manageActivitiesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- This should remain -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="manageActivitiesModalLabel">Manage Activities</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="activitiesForm">
+                        <div class="row" style="text-align: center">
+                            <div class="col-md-4">Activity</div>
+                            <div class="col-md-4">Price</div>
+                            <div class="col-md-4">Status</div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            @foreach($package_activities as $activity)
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="activity{{ $activity->id }}">
+                                            {{ $activity->activity->name }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="number" value="{{ $activity->price }}" name="activities_price[]" data-activity-id="{{ $activity->id }}" min="0">
+                                        </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label class="switch">
+                                            <input type="checkbox" class="form-check-input-ch" name="allowed_free[]" id="allowed_free_{{ $activity->id }}" value="1"
+                                                    {{ in_array($activity->activity_id, $selected_activity_ids) ? 'checked' : '' }} onclick="limitCheckboxes(this)">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveActivities()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </x-admin-layout>
 <script>
+
     $(document).ready(function() {
         const attributeOptions = @json($attributeOptions);
 
@@ -410,4 +491,81 @@
         });
 
     });
+    async function saveActivities() {
+        const selectedActivities = [];
+        const activitiesData =[]
+
+        // Collect selected activities and their prices
+        document.querySelectorAll('#activitiesForm .form-check-input-ch').forEach(checkbox => {
+            // Get the activity ID from the checkbox ID
+            const activityId = checkbox.id.split('_')[2];
+
+            // Find the corresponding price input based on the data attribute
+            const priceInput = document.querySelector(`input[name="activities_price[]"][data-activity-id="${activityId}"]`);
+
+            if (priceInput) {
+                activitiesData.push({
+                    activityId: activityId,
+                    price: priceInput.value || 0 // Default price to 0 if empty
+                });
+            } else {
+                console.warn(`Price input not found for Activity ID: ${activityId}`); // Debugging
+            }
+        });
+         document.querySelectorAll('#activitiesForm .form-check-input-ch:checked').forEach(checkboxs => {
+            const checked_activityId = checkboxs.id.split('_')[2];
+            selectedActivities.push(checked_activityId)
+        });
+
+        const saveButton = document.querySelector('.btn-primary');
+        saveButton.disabled = true; // Disable the button to prevent multiple clicks
+
+        try {
+            let package_id = {{$package->id}}
+            // Send selected activities and their prices to the server using Fetch API
+            const response = await fetch(`${window.location.origin}/api/package/save-activities`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer {{$token}}', // Provide Sanctum token in header
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    package_id: package_id,
+                    selected_activities: selectedActivities,
+                    activities: activitiesData
+                })
+            });
+
+            const result = await response.json();
+            console.log('Response from server:', result); // Debugging: Log the full response
+
+            if (response.ok) {
+                alert('Activities saved successfully!');
+            } else {
+                alert('Failed to save activities: ' + (result.message || 'Unknown error'));
+                console.error('Error Response:', result);
+            }
+        } catch (error) {
+            console.error('Network Error:', error);
+            alert('An error occurred while saving activities. Please try again.');
+        } finally {
+            saveButton.disabled = false; // Re-enable the button
+
+            // Close the modal
+            const modalElement = document.getElementById('manageActivitiesModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
+        }
+    }
+    function limitCheckboxes(checkbox) {
+        const maxAllowed = {{$package->allowed_free_packages}};
+        const checkedCheckboxes = document.querySelectorAll('.form-check-input-ch:checked');
+
+        if (checkedCheckboxes.length > maxAllowed) {
+            alert(`You can only select up to ${maxAllowed} activities.`);
+            checkbox.checked = false; // Uncheck the checkbox if limit exceeded
+        }
+    }
+
 </script>
