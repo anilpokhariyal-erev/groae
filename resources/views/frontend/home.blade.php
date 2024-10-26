@@ -36,28 +36,30 @@
             </div>
             <div class="container">
                 <div class="trendingBlog">
-                    @foreach ($trending_freezones as $item)
-                        <div class="blogLayer">
-                            <div class="topLayer">
-                                <img src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}'
-                                    alt="">
+                    @foreach ($freezones as $item)
+                        @if($item->trending)
+                            <div class="blogLayer">
+                                <div class="topLayer">
+                                    <img src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}'
+                                        alt="">
+                                </div>
+                                <div class="bottomLayer">
+                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
+                                    class="viewInnrTxt"><h3 class="blogHeading">{{ $item->name }}</h3></a>
+                                    <p class="blogDetail">{{ $item->about }}</p>
+                                    <button class="viewDetailBtn"><a target="_blank"
+                                            href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
+                                            class="viewInnrTxt">View Details
+                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
+                                        </a>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="bottomLayer">
-                                <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
-                                   class="viewInnrTxt"><h3 class="blogHeading">{{ $item->name }}</h3></a>
-                                <p class="blogDetail">{{ $item->about }}</p>
-                                <button class="viewDetailBtn"><a target="_blank"
-                                        href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
-                                        class="viewInnrTxt">View Details
-                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
-                                    </a>
-                                </button>
-                            </div>
-                        </div>
+                        @endif
                     @endforeach
                 </div>
                 <div class="commonViewMoreBtn">
-                    <button class="viwBtn"><a href="{{ route('trending_freezone') }}" class="viewMoreTxt">View
+                    <button class="viwBtn"><a href="{{ route('trending-freezone') }}" class="viewMoreTxt">View
                             More</a></button>
                 </div>
             </div>

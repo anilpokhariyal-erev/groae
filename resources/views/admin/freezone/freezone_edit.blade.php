@@ -1,4 +1,53 @@
 <x-admin-layout>
+<style>
+    /* The switch - the box around the slider */
+    .switch {
+        position: relative;
+        display: block;
+        width: 60px;
+        height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 5px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 60%;
+    }
+
+    input:checked + .slider {
+        background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+</style>
     <div class="main-card mb-3 card">
         <div class="card-body">
             <div class="ba_flex justify-between">
@@ -61,6 +110,15 @@
                                 accept="image/*" onchange="displayImage(this, 'ba_current_image')">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_logo')" />
                         </div>
+
+                        <div class="position-relative form-group">
+                            <label for="name">Trending </label>
+                            <div class="switch">
+                                <input type="checkbox" id="trendingSwitch" name="trending" {{ $freezone->trending ? 'checked' : '' }}>
+                                <label class="slider" for="trendingSwitch"></label>
+                            </div>
+                        </div>
+                        
 
                         <div class="position-relative form-group">
                             <label for="status">Status <span class="text-danger">*</span></label>
