@@ -84,4 +84,4 @@ Route::post('/payment', [PaymentController::class, 'pay']);
 
 Route::resource('contact-us', ContactUsController::class)->only(['index', 'store']);
 
-Route::get('/{slug}', [HomeController::class, 'page_content'])->name('page.content');
+Route::get('/page/{slug}', [HomeController::class, 'page_content'])->name('page.content');

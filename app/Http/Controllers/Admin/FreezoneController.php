@@ -179,7 +179,7 @@ class FreezoneController extends Controller
         $request->validate([
             'name' => 'required',
             'freezone_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
-
+            'trending' => 'nullable|in:on',
             // Freezone default attributes validation
             'freezone_default_attributes.*.attribute_id' => 'required|exists:attributes,id',
             'freezone_default_attributes.*.attribute_option_id' => 'nullable|exists:attribute_options,id',
@@ -207,6 +207,7 @@ class FreezoneController extends Controller
 
         // Update freezone fields
         $freezone->name = strtolower($request->name);
+        $freezone->trending = $request->has('trending') && $request->input('trending') === 'on' ? 1 : 0;
         $freezone->status = $request->status;
 
         // Use a transaction to ensure the consistency of the update

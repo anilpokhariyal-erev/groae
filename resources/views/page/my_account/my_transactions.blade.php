@@ -91,7 +91,7 @@
                         </div>
                         <div class="loadMoreSec">
                             <button class="loadMoreBtn">
-                                <a href="{{route('trending_freezone')}}">Load More</a>
+                                <a href="{{route('trending-freezone')}}">Load More</a>
                             </button>
                         </div>
                     </div>

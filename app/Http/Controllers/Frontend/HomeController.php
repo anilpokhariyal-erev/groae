@@ -29,27 +29,18 @@ class HomeController extends Controller
 
     public function home()
     {
-        $freezones = Freezone::select('id', 'name', 'logo', 'about', 'slug', 'created_at')->orderBy('freezone_views_count', 'DESC')->skip(0)->take(3)->get();
+        $freezones = Freezone::where('status',1)->select('id', 'name', 'logo', 'about', 'slug', 'trending', 'created_at')->orderBy('freezone_views_count', 'DESC')->skip(0)->take(3)->get();
         $offer = Offer::select('id', 'title', 'discount', 'image', 'freezone_id')->with('freezone')->take(3)->get();
         $blogs = Blog::select('id', 'title', 'short_description', 'image', 'slug', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(3)->get();
         $groae_number = Setting::where('section_key', 'groae_number')->get();
-        $trending_freezones = Freezone::select('id', 'name', 'logo', 'about', 'slug', 'created_at', DB::raw('MAX(freezone_views_count) as freezone_views_count'))
-            ->whereHas('packageheader', function($query) {
-                $query->where('trending', 1);
-            })
-            ->groupBy('id', 'name', 'logo', 'about', 'slug', 'created_at') // Group by all selected columns
-            ->orderBy('freezone_views_count', 'DESC')
-            ->skip(0)
-            ->take(3)
-            ->get();
         $attributes = $this->ai_filter_options();
 
-        return view('frontend.home', compact('blogs', 'freezones',  'offer', 'groae_number', 'attributes','trending_freezones'));
+        return view('frontend.home', compact('blogs', 'freezones',  'offer', 'groae_number', 'attributes'));
     }
     
     public function trending_freezone()
     {
-        $freezones = Freezone::select('id', 'name', 'logo', 'about', 'slug', 'created_at', 'freezone_views_count')->orderBy('freezone_views_count', 'DESC')->get();
+        $freezones = Freezone::where('status',1)->select('id', 'name', 'logo', 'about', 'slug', 'created_at', 'freezone_views_count')->orderBy('freezone_views_count', 'DESC')->get();
         return view('frontend.trending_freezone', compact('freezones'));
     }
 
