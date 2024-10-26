@@ -14,7 +14,7 @@
                 <div class="topHeading">
                     <h2 class="trendTxt">Calculate License Cost</h2>
                 </div>
-                <form id="costCalculatorForm" class="signupFormItems" method="post"
+                <form id="costCalculatorForm" class="signupFormItems" method="post" data-token={{$token}}
                       action="{{ route('calculate-licensecosts.store') }}{{ isset($package->id) ? '?package_id=' . encrypt($package->id) : '' }}"  novalidate>
                     @csrf
                     <div class="secondColumn costCalculateForm">
@@ -131,15 +131,15 @@
                     </div>
                     <input type="hidden" id="activities_selection" name="activities_selection" />
 
-                    @if (!empty($freezone_data))
-                        <div style="display: none;" id="visa_data">
-                            {{ json_encode([
-                                'visa_types' => $freezone_data['visa_types'],
-                                'visa_add_ons' => $freezone_data['visa_add_ons'],
-                                'locations' => $freezone_data['locations'],
-                            ]) }}
-                        </div>
-                    @endif
+{{--                    @if (!empty($freezone_data))--}}
+{{--                        <div style="display: none;" id="visa_data">--}}
+{{--                            {{ json_encode([--}}
+{{--                                'visa_types' => $freezone_data['visa_types'],--}}
+{{--                                'visa_add_ons' => $freezone_data['visa_add_ons'],--}}
+{{--                                'locations' => $freezone_data['locations'],--}}
+{{--                            ]) }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
 
                     <div id="visa_section"></div>
 

@@ -233,42 +233,4 @@ class PackageController extends Controller
         return redirect()->route('package.index')->with('success', 'Package enabled successfully!');
     }
 
-    public function savePackageActivities(Request $request)
-    {
-        $activities = $request->input('activities'); // Retrieve activities from the request
-        $selected_activities = $request->input('selected_activities');
-        $package_id = $request->input('package_id');
-
-        try {
-            if (empty($activities)) {
-                return response()->json(['message' => 'No activities to update'], 400);
-            }
-
-            // Use a database transaction for safety
-            DB::transaction(function () use ($activities,$selected_activities,$package_id) {
-                foreach ($activities as $activityData) {
-                    PackageActivity::where('id', $activityData['activityId'])
-                        ->update(['price' => $activityData['price']]);
-                }
-                    PackageActivity::where('package_id', $package_id)
-                        ->update(['allowed_free' => 0]);
-                foreach ($selected_activities as $activityId) {
-                    PackageActivity::where('id', $activityId)
-                        ->update(['allowed_free' => 1]);
-                }
-
-            });
-
-
-            return response()->json(['message' => 'Activities updated successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to update activities',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-
-
 }

@@ -15,8 +15,15 @@ const updateActivitiesList = value => {
 };
 
 const generate_visa_package = (value, rowCount) => {
+  let token = $('#costCalculatorForm').data('token');
   if (value) {
-    fetch(`${url}/api/freezone/${value}/visa_package`)
+    fetch(`${url}/api/freezone/${value}/visa_package`,{
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' // Optional, if you want to specify content type
+      }
+    })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -52,8 +59,8 @@ const generate_visa_package = (value, rowCount) => {
 
               // Create a select dropdown for each group
               const select = $('<select>', {
-                name: `visa_package_attributes_${header.id}_${i}`, // Ensure unique names for each row
-                id: `visa_package_attributes_${header.id}_${i}`,
+                name: `${header.name}[]`, // Ensure unique names for each row
+                id: `${header.name}[]`,
                 class: 'inputField2 cursor arrowPlace'
               });
 
@@ -208,7 +215,8 @@ $(document).ready(function () {
   });
 
   $('#visa_package').on('change', function () {
-    const packageCount = parseInt($(this).val()); // Get the selected value
+    const packageCount = parseInt($(this).val());
+    $('#visa_section').empty();
     if (!isNaN(packageCount) && packageCount > 0) {
       const freezoneValue = $('#freezone').val();
       if (freezoneValue) {

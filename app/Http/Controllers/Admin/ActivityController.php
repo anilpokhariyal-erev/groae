@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Activity;
 use App\Models\ActivityGroup;
 use App\Models\License;
+use App\Models\PackageActivity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ActivityController extends Controller
 {
@@ -113,5 +115,40 @@ class ActivityController extends Controller
     {
         $activity->delete();
         return redirect()->route('activity.index')->with('success', 'Activity deleted successfully.');
+    }
+
+    public function savePackageActivities(Request $request)
+    {
+        $activities = $request->input('activities'); // Retrieve activities from the request
+        $selected_activities = $request->input('selected_activities');
+        $package_id = $request->input('package_id');
+
+        try {
+            if (empty($activities)) {
+                return response()->json(['message' => 'No activities to update'], 400);
+            }
+
+            DB::transaction(function () use ($activities, $selected_activities, $package_id) {
+                foreach ($activities as $activityData) {
+                    $activity = PackageActivity::find($activityData['activityId']);
+                    if ($activity) {
+                        $activity->update(['price' => $activityData['price'],]);
+                    }
+                }
+                // Update all activities in the package to disallow free access
+                PackageActivity::where('package_id', $package_id)->update(['allowed_free' => 0]);
+
+                // Allow free access only to selected activities
+                PackageActivity::whereIn('id', $selected_activities)->update(['allowed_free' => 1]);
+            });
+
+
+            return response()->json(['message' => 'Activities updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update activities',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

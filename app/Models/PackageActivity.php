@@ -12,6 +12,7 @@ class PackageActivity extends Model
         'activity_id',
         'price',
         'status',
+        'allowed_free'
     ];
 
     // Relationship: PackageActivity belongs to a PackageHeader

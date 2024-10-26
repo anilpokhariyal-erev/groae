@@ -19,6 +19,19 @@
         .contactUsBtn i {
             margin-right: 5px; /* Space between icon and text */
         }
+        .info-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 18px;         /* Adjust size */
+            height: 18px;        /* Make it a perfect circle */
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;  /* Makes it a circle */
+            font-size: 16px;     /* Adjust font size */
+            cursor: pointer;     /* Optional: pointer cursor */
+        }
     </style>
     <section class="center-section">
         <div class="costCalculateContainer">
@@ -44,7 +57,7 @@
                             <td class="tHeadingTxt">License Type</td>
                             <td class="tDetailTxt">{{ $freezone->licenses[0]->name }}</td>
                             <td class="tDetailTxt">
-                                {{ $freezone->licenses[0]->price > 0 ? 'AED ' . number_format($freezone->licenses[0]->price, 2) : '' }}
+                                {{ $freezone->licenses[0]->price > 0 ? $package_detail->currency.' '. number_format($freezone->licenses[0]->price, 2) : '' }}
                             </td>
                         </tr>
                         <tr>
@@ -69,46 +82,62 @@
                             <tr>
                                 <td class="">{{ $item->attribute->label}}</td>
                                 <td class="">{{ $item->attributeOption->value }}</td>
-                                <td class="tDetailTxt text-center">
+                                <td class="tDetailTxt">
                                 {{ $item->addon_cost>0 ? $package_detail->currency . ' ' . $item->addon_cost : '-' }}
                                 </td>
                             </tr>
                         @endforeach
 
-                        
                         <tr>
                             <td class="tHeadingTxt">Activities</td>
-                            <td class="tDetailTxt">{{ $activities[0]->name . ' (' . $activities[0]->activity_group->name . ')' }}</td>
-                            <td class="tDetailTxt">AED {{ $activities[0]->price }}</td>
+                            <td class="tDetailTxt">
+                                {{ $package_activities[0]->activity->name . ' (' . $package_activities[0]->activity->activity_group->name . ')' }}
+                            </td>
+                            <td class="tDetailTxt">
+                                {!! $package_activities[0]->allowed_free ? '<del>' : '' !!}
+                                {{$package_detail->currency}}  {{$package_activities[0]->price }}
+                                {!! $package_activities[0]->allowed_free ? '</del><p>Free</p>' : '' !!}
+                            </td>
                         </tr>
-                        
-                        @foreach ($activities as $key => $item)
+
+
+                    @foreach ($package_activities as $key => $item)
                             @if ($key != 0)
                                 <tr>
                                     <td></td>
-                                    <td class="tDetailTxt">{{ $item->name . ' (' . $item->activity_group->name . ')' }}</td>
-                                    <td class="tDetailTxt">AED {{$item->price}}</td>
+                                    <td class="tDetailTxt">{{ $item->activity->name . ' (' . $item->activity->activity_group->name . ')' }}</td>
+                                    <td class="tDetailTxt"> {!! $item->allowed_free ? '<del>' : '' !!} {{$package_detail->currency }} {{$item->price }}  {!! $item->allowed_free ? '</del><p>Free</p>' : '' !!}</td>
                                 </tr>
                             @endif
                         @endforeach
                         <tr>
                             <td class="tHeadingTxt">Visa Details</td>
-                            <td class="tDetailTxt">Total {{ count($packages_array) }} in Quantity</td>
+                            <td class="tDetailTxt">Total {{count($packages_arr['visa_package_attributes'])}} in Quantity</td>
                             <td class="tDetailTxt"></td>
                         </tr>
 
-                        @foreach ($packages_array as $key => $item)
+                        @foreach ($packages_arr['visa_package_attributes'] as $items)
+                            @php($total_attr_cost = 0)
+                            @php($attribute_cost_calculation = "")
                             <tr>
-                                <td class="tHeadingTxt lightTxt">Visa Package {{ $key + 1 }}</td>
-                                <td class="tDetailTxt">{{ $item['name'] }}</td>
-                                <td class="tDetailTxt">{{ number_format($item['price'], 2) > 0 ? 'AED ' . number_format($item['price'], 2) : '' }}</td>
+                                <td class="tHeadingTxt lightTxt">
+                                </td>
+                                <td class="tDetailTxt">
+                                    @foreach ($items as $key =>$item)
+                                        <span title="{{ $item->attribute_header->title }}">{{ $item->value }},</span>
+                                        @php($total_attr_cost += $item->price)
+                                        @php(  $attribute_cost_calculation .= $item->attribute_header->title . '-'. $item->value . ": $package_detail->currency ". $item->price . "\n" )
+                                    @endforeach
+                                </td>
+                                <td class="tDetailTxt">
+                                    {{$package_detail->currency }} {{ number_format($total_attr_cost,2)}} <span  class="info-icon" title="{{$attribute_cost_calculation}}">i</span></td>
                             </tr>
                         @endforeach
 
                         <tr>
                             <td class="totalTitleTxt">Actual Cost</td>
                             <td></td>
-                            <td class="amntTxt">AED {{ number_format($package_detail->price, 2) }}</td>
+                            <td class="amntTxt">{{$package_detail->currency }} {{ number_format($package_detail->price, 2) }}</td>
                         </tr>
                     </table>
                 </div>

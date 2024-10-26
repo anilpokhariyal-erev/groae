@@ -6,6 +6,7 @@ use App\Models\License;
 use App\Models\Package;
 use App\Models\Attribute;
 use App\Models\AttributeOption;
+use App\Models\PackageActivity;
 use App\Models\PackageHeader;
 use App\Models\PackageLine;
 use App\Models\Activity;
@@ -71,9 +72,10 @@ class CostCalculatorController extends Controller
             $freezone_data = Freezone::where('uuid', $selected_freezone)->with(['licenses', 'locations', 'activity_groups'])->first();
 
         }
-        
 
-        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezones', 'freezone_data', 'attributes', 'max_visa_package'));
+        $token = config('auth.app_api_token');
+
+        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezones', 'freezone_data', 'attributes', 'max_visa_package','token'));
     }
 
     /**
@@ -81,91 +83,105 @@ class CostCalculatorController extends Controller
      */
     public function store(CostCalculatorSummaryRequest $request)
     {
+        // Check if the customer is logged in
         if (!Auth::guard('customer')->check()) {
             Session::put('form_input', $request->input());
             return redirect()->route('customer.login')->with('info', ResponseMessage::LOGIN_FIRST_COST_CALCULATOR);
         }
-        
-        $freezone = Freezone::where('uuid', $request->freezone)->firstOrFail();
-        $query = PackageHeader::where('freezone_id', $freezone->id)->with(['packageLines', 'freezone']);
 
-        if ($request->has('package_id')) {
+        // Retrieve the Freezone
+        $freezone = Freezone::where('uuid', $request->freezone)->firstOrFail();
+
+        // Initialize the Package query with eager loading
+        $query = PackageHeader::where('freezone_id', $freezone->id)
+            ->with(['packageLines', 'freezone.activities']);
+
+        // Handle package_id if present
+        if ($request->filled('package_id')) {
             $package_id = Crypt::decrypt($request->get('package_id'));
             $query->where('id', $package_id);
         }
-        // Process selected attributes (attribute_1, attribute_2, ...)
-        $attributes = [];
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'attribute_') === 0) {
-                $attributeId = str_replace('attribute_', '', $key);
-                $attributes[$attributeId] = $value;
-                $query->whereHas('packageLines', function ($q) use ($attributeId, $value) {
-                    $q->where('attribute_id', $attributeId)
-                    ->where('attribute_option_id', $value);
-                });
-            }
+
+        // Extract activity IDs once
+        $activityIds = $this->extractActivityIds($request->activities_selection);
+
+        // Filter by activities if any are provided
+        if (!empty($activityIds)) {
+            $query->whereHas('freezone.activities', fn($q) => $q->whereIn('id', $activityIds));
         }
 
-        // Process selected activities
-        if ($request->filled('activities_selection')) {
-            // Extract activity IDs from the `activities_selection` field
-            $pattern = '/\|(.*?)\|/';
-            preg_match_all($pattern, $request->activities_selection, $matches);
-            $activityIds = $matches[1];
-
-            $query->whereHas('freezone.activities', function ($q) use ($activityIds) {
-                $q->whereIn('id', $activityIds);
-            });
-        }
-    
-        // Fetch the best matching package based on the selected attributes and activities
+        // Retrieve the matching package
         $package_detail = $query->orderBy('price', 'asc')->first();
         if (!$package_detail) {
             return redirect()->back()->withErrors(['freezone' => 'No package found matching your request.'])->withInput();
         }
 
-        $visaPackageAttribute = Attribute::where('name', 'visa_package')->first();
-        $license = License::where('id', $request->license_id)->first();
+        // Fetch Visa package attributes
+        $packages_arr = $this->getVisaPackageAttributes($request, $freezone);
 
-        // Visa processing
-        $packages_array = [];
-        $total = 0;
+        // Retrieve package activities
+        $package_activities = $this->getPackageActivities($activityIds, $package_id);
 
-        foreach ($request->get('visa_type', []) as $key => $visa_type) {
-            $visa_type_data = $freezone->visa_types()->where('id', $request->visa_type[$key])->first();
-            $visa_add_on_data = $freezone->visa_add_ons()->where('id', $request->visa_add_on[$key])->first();
-            $location_data = $freezone->locations()->where('id', $request->location[$key])->first();
-    
-            if ($visa_type_data && $visa_add_on_data && $location_data) {
-                $visa_package_name = $visa_type_data->name . ', ' . $visa_add_on_data->name . ', ' . $location_data->name;
-                $visa_package_price = floatval($visa_type_data->price) + floatval($visa_add_on_data->price) + floatval($location_data->price);
-    
-                array_push($packages_array, ['name' => $visa_package_name, 'price' => $visa_package_price]);
-                $total += $visa_package_price;
+        // Generate a UUID for the session
+        $id = Str::uuid();
+
+        $total =0;
+
+        // Render the view with compact variables
+        return view('frontend.cost_calculator.cost_summary')->with(compact(
+            'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr'
+        ));
+    }
+
+    /**
+     * Extracts activity IDs from the activities_selection field.
+     */
+    private function extractActivityIds(string $activities_selection): array
+    {
+        preg_match_all('/\|(.*?)\|/', $activities_selection, $matches);
+        return $matches[1] ?? [];
+    }
+
+    /**
+     * Retrieves visa package attributes grouped by attribute headers.
+     */
+    private function getVisaPackageAttributes($request, $freezone)
+    {
+        $visa_package_headers = VisaPackageAttribute::select('attribute_header_id')
+            ->with('attribute_header')
+            ->where('freezone_id', $freezone->id)
+            ->groupBy('attribute_header_id')
+            ->get();
+
+        $packages_arr = ['visa_package_attributes' => []];
+
+        foreach ($visa_package_headers as $header) {
+            $header_name = $header->attribute_header->name;
+            $values = (array) $request->input($header_name);
+
+            foreach ($values as $key => $val) {
+                $package_attribute = VisaPackageAttribute::with('attribute_header')->findOrFail($val);
+                $packages_arr['visa_package_attributes'][$key][$header_name] = $package_attribute;
             }
         }
 
-        // for activities
-        $pattern = '/\|(.*?)\|/';
-        preg_match_all($pattern, $request->activities_selection, $matches);
-        $activityIds = $matches[1];
-
-        $activities = Activity::whereIn('id', $activityIds)->select('id', 'name', 'activity_group_id')->where('status', 1)->with('activity_group')->get();
-
-        // Process selected activities for the summary
-        $activities = Activity::whereIn('id', $activityIds)
-        ->select('id', 'name', 'activity_group_id','price')
-        ->where('status', 1)
-        ->with('activity_group')
-        ->get();
-
-        // Generate UUID for the session
-        $id = Str::uuid();
-
-
-        // Pass the necessary values to the view
-        return view('frontend.cost_calculator.cost_summary')->with(compact('freezone', 'activities', 'total', 'id', 'packages_array', 'package_detail'));
+        return $packages_arr;
     }
+
+    /**
+     * Retrieves activities linked to the given package and activity IDs.
+     */
+    private function getPackageActivities(array $activityIds, ?int $package_id)
+    {
+        if (empty($activityIds)) return collect();
+
+        return PackageActivity::with(['activity', 'activity.activity_group'])
+            ->whereIn('activity_id', $activityIds)
+            ->where('package_id', $package_id)
+            ->where('status', 1)
+            ->get();
+    }
+
 
 
     /**

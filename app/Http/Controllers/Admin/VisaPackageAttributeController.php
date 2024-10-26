@@ -13,7 +13,7 @@ class VisaPackageAttributeController extends Controller
     // Authorization Middleware
     public function __construct()
     {
-        $this->middleware('role_or_permission:view-visa-package-attributes');
+        $this->middleware('role_or_permission:view-visa-package-attributes')->except('getVisaPackageAttributes');
     }
 
     /**
@@ -113,4 +113,27 @@ class VisaPackageAttributeController extends Controller
         $visaPackageAttribute->delete();
         return redirect()->route('visa-package-attributes.index')->with('success', 'Visa Package Attribute deleted successfully.');
     }
+
+    public function getVisaPackageAttributes(string $uuid)
+    {
+        $freezone = Freezone::where('uuid', $uuid)->first();
+
+        if ($freezone) {
+            $visa_package_attr = VisaPackageAttribute::has('attribute_header')
+                ->whereHas('attribute_header', function ($query) {
+                    $query->where('status', 1);
+                })
+                ->where('freezone_id', $freezone->id)
+                ->where('status', 1)
+                ->with('attribute_header')
+                ->get();
+
+        } else {
+            // Handle case where freezone is not found
+            $visa_package_attr = collect(); // Return an empty collection
+        }
+
+        return response()->json($visa_package_attr); // Return JSON response
+    }
+
 }
