@@ -71,7 +71,7 @@ Route::get('/blog_details', [PageController::class, 'blog_details'])->name('blog
 
 // Route::get('/compare_freezone', [PageController::class, 'compare_freezone'])->name('compare_freezone');
 
-Route::get('/trending_freezone', [PageController::class, 'trending_freezone'])->name('trending_freezone');
+// Route::get('/trending_freezone', [PageController::class, 'trending_freezone'])->name('trending_freezone');
 
 // Route::get('/about_us', [PageController::class, 'about_us'])->name('about_us');
 

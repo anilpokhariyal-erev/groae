@@ -1,5 +1,4 @@
 <x-website-layout>
-    <!-- trending-freezone================ -->
     <section class="center-section">
         <div class="container">
             <div class="trendingFreezoneContainer">

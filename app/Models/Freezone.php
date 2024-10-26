@@ -25,6 +25,7 @@ class Freezone extends Model
         'name', 
         'logo', 
         'min_price',
+        'trending',
     ];
 
     protected static function booted()
