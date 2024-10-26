@@ -11,7 +11,19 @@
                     <a href="{{ route('activity.index') }}" class="btn btn-primary">Back</a>
                 </div>
             </div>
-            &nbsp;
+            &nbsp;            @if ($errors->any())
+                <div class="main-card">
+                    <div class="card-body">
+                        <div class="custom-red-alert" role="alert">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <form method="post" action="{{ route('activity.update', $activity->id) }}" enctype="multipart/form-data">
                 @csrf

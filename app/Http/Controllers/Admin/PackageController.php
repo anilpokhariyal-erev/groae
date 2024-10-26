@@ -14,6 +14,7 @@ use App\Models\AttributeOption;
 use App\Models\PackageAttributesCost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PackageController extends Controller
 {
@@ -91,7 +92,7 @@ class PackageController extends Controller
         //activities entries
         $freezone_activities= Activity::where('freezone_id',$package->freezone_id)->get();
         foreach ($freezone_activities as $activity) {
-            PackageActivity::create(['package_id' => $package->id, 'activity_id' => $activity->id,'price'=>$activity->price]);
+            PackageActivity::create(['package_id' => $package->id, 'activity_id' => $activity->id,'price'=>$activity->price,'status'=>1,'allowed_free'=>0]);
         }
         return redirect()->route('package.index')->with('success', 'Package created successfully!');
     }
@@ -101,27 +102,43 @@ class PackageController extends Controller
     public function edit($id)
     {
         // Fetch the package with related models using eager loading
-        $package = PackageHeader::with(['packageLines', 'packageLines.attribute', 'packageLines.attributeOption','attributeCosts'])->findOrFail($id);
+        $package = PackageHeader::with([
+            'packageLines',
+            'packageLines.attribute',
+            'packageLines.attributeOption',
+            'attributeCosts'
+        ])->findOrFail($id);
+
         // Fetch attributes, attribute options, currency, activities, and freezones
         $attributes = Attribute::where('status', 1)->get();
         $attributeOptions = AttributeOption::where('status', 1)->get();
         $currency = Currency::where('status', 1)->get();
         $activities = Activity::where('status', 1)->get();
-        $package_activities = PackageActivity::where('package_id', $package->id)
-            ->where('status', 1)
-            ->get();
+        $package_activities = PackageActivity::with('activity')->where('package_id', $package->id)
+           ->where('status',1)->get();
+        $token = Auth::user()->createToken('FreezoneToken')->plainTextToken;
 
-        $activityIds = $package_activities->isNotEmpty() ? $package_activities->pluck('activity_id') : collect();
-        $selected_activities = Activity::where('status', 1)->whereIn('id', $activityIds)->get();
+        // Collect only the IDs of selected activities and convert to array
+        $selected_activity_ids = $package_activities->where('allowed_free',1)->pluck('activity_id')->toArray();
 
         // Fetch freezones
         $freezones = Freezone::all();
 
-        return view('admin.packages.edit', compact('package', 'attributes', 'attributeOptions', 'freezones', 'currency', 'activities','selected_activities'));
+        // Pass all required data to the view
+        return view('admin.packages.edit', compact(
+            'package',
+            'attributes',
+            'attributeOptions',
+            'freezones',
+            'currency',
+            'activities',
+            'selected_activity_ids',
+            'package_activities',
+            'token'
+        ));
     }
 
-
-   // Update the specified package in the database
+    // Update the specified package in the database
     public function update(Request $request, PackageHeader $package)
     {
         // Attempt to validate input

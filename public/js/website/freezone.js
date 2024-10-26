@@ -14,6 +14,98 @@ const updateActivitiesList = value => {
   dom_element.trigger('change');
 };
 
+const generate_visa_package = (value, rowCount) => {
+  let token = $('#costCalculatorForm').data('token');
+  if (value) {
+    fetch(`${url}/api/freezone/${value}/visa_package`,{
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' // Optional, if you want to specify content type
+      }
+    })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          const visaSection = $('#visa_section');
+          visaSection.empty(); // Clear existing content
+
+          // Group data by unique attribute_header_id
+          const groupedData = data.reduce((acc, item) => {
+            const headerId = item.attribute_header_id;
+            if (!acc[headerId]) {
+              acc[headerId] = {
+                header: item.attribute_header,
+                attributes: []
+              };
+            }
+            acc[headerId].attributes.push(item);
+            return acc;
+          }, {});
+
+          // Create rows based on the specified row count
+          for (let i = 0; i < rowCount; i++) {
+            const rowContainer = $('<div>', { class: 'visa-row secondColumn costCalculateForm', style: 'margin-bottom: 20px;' });
+
+            // Iterate over each unique attribute_header group to generate dropdowns
+            Object.values(groupedData).forEach((group) => {
+              const { header, attributes } = group;
+
+              // Create a div with class "input_wrap w-100"
+              const inputWrap = $('<div>', {
+                class: 'input_wrap w-100',
+                style: 'margin-top: 3%;'
+              });
+
+              // Create a select dropdown for each group
+              const select = $('<select>', {
+                name: `${header.name}[]`, // Ensure unique names for each row
+                id: `${header.name}[]`,
+                class: 'inputField2 cursor arrowPlace'
+              });
+
+              // Add a default option
+              select.append(
+                  $('<option>', {
+                    value: '',
+                    text: 'Choose an Option',
+                    disabled: true,
+                    selected: true
+                  })
+              );
+
+              // Populate the select with attribute values
+              attributes.forEach((attr) => {
+                const option = $('<option>', {
+                  value: attr.id,
+                  text: attr.value
+                });
+                select.append(option);
+              });
+
+              // Create a label for the select dropdown
+              const label = $('<label>', {
+                for: `visa_package_attributes_${header.id}_${i}`,
+                text: header.title
+              });
+
+              // Append the label and select to the div
+              inputWrap.append(select,label);
+
+              // Append the input wrapper to the row container
+              rowContainer.append(inputWrap);
+            });
+
+            // Append the entire row to the visa section
+            visaSection.append(rowContainer);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching visa package attributes:', error);
+        });
+  }
+};
+
 const refreshSelectionDiv = (div, value) => {
   const display_div = $(`#${div}_display`);
   display_div.html('');
@@ -49,74 +141,6 @@ const handleCheckboxChange = (e, i) => {
     $(`#visa_type_${i}`).val('');
     $(`#visa_add_on_${i}`).val('');
     $(`#location_${i}`).val('');
-  }
-};
-
-const regenerateDiv = (visa_secton, div_iteration) => {
-  visa_secton.empty();
-  if ($('#visa_data').html()) {
-    const data = JSON.parse($('#visa_data').html().trim());
-
-    let groupDivs = [];
-
-    for (let i = 1; i <= div_iteration; i++) {
-      let visa_types_options = data.visa_types.map(
-        visa_type =>
-          `<option value="${visa_type.id}">${visa_type.name}</option>`
-      );
-      visa_types_options.unshift(
-        '<option value="" disabled selected>Choose an Option</option>'
-      );
-
-      let visa_add_ons_options = data.visa_add_ons.map(
-        visa_add_on =>
-          `<option value="${visa_add_on.id}">${visa_add_on.name}</option>`
-      );
-      visa_add_ons_options.unshift(
-        '<option value="" disabled selected>Choose an Option</option>'
-      );
-
-      let locations_options = data.locations.map(
-        location => `<option value="${location.id}">${location.name}</option>`
-      );
-      locations_options.unshift(
-        '<option value="" disabled selected>Choose an Option</option>'
-      );
-
-      groupDivs.push(`<div id="visa-group-${i}" class="secondColumn costCalculateForm" style="margin-bottom: 20px; width: 100%; display: flex; flex-direction:column;">
-        <div class="visaPackage" style="text-align: center; margin-bottom: 10px;"><h3 class="trendDetails">Visa Package ${i}</h3>
-        <div><div class="compareInput">
-        <label style="display: ${
-          i === 1 ? 'none' : 'block'
-        };" class="labelcontainer" id="checkbox_label_${i}">Same as the First one<input type="checkbox" id="visa_package_checkbox_${i}" onchange="handleCheckboxChange(this, ${i});"><span class="checkmark"></span>
-        </label></div></div></div>
-        <div style="display:flex; gap:15px;">
-        <div class="input_wrap w-100">
-          <select required name="visa_type[${i}]" id="visa_type_${i}" class="inputField2 cursor arrowPlace" select-id="${i}" onchange="refreshcheckboxes(this);">
-              ${visa_types_options.join('')}
-          </select>
-          <label for="visa_type_${i}">Visa Type</label>
-          <p id="visa_type_${i}_error" class="errorMessage"></p>
-        </div>
-        <div class="input_wrap w-100">
-          <select required name="visa_add_on[${i}]" id="visa_add_on_${i}" class="inputField2 cursor arrowPlace" select-id="${i}" onchange="refreshcheckboxes(this);">
-              ${visa_add_ons_options.join('')}
-          </select>
-          <label for="visa_add_on_${i}">Visa Add On</label>
-          <p id="visa_add_on_${i}_error" class="errorMessage"></p>
-        </div>
-        <div class="input_wrap w-100">
-          <select required name="location[${i}]" id="location_${i}" class="inputField2 cursor arrowPlace" select-id="${i}" onchange="refreshcheckboxes(this);">
-              ${locations_options.join('')}
-          </select>
-          <label for="location_${i}">Location</label>
-          <p id="location_${i}_error" class="errorMessage"></p>
-        </div>
-        </div>
-      </div>`);
-    }
-
-    visa_secton.hide().html(groupDivs.join('')).slideDown(500);
   }
 };
 
@@ -191,18 +215,15 @@ $(document).ready(function () {
   });
 
   $('#visa_package').on('change', function () {
-    const visa_secton = $('#visa_section');
-
-    if ($("[id^='visa-group']").length) {
-      $("[id^='visa-group']").slideUp(400, () => {
-        if (!isNaN(this.value)) regenerateDiv(visa_secton, this.value);
-      });
-    } else {
-      if (!isNaN(this.value)) regenerateDiv(visa_secton, this.value);
+    const packageCount = parseInt($(this).val());
+    $('#visa_section').empty();
+    if (!isNaN(packageCount) && packageCount > 0) {
+      const freezoneValue = $('#freezone').val();
+      if (freezoneValue) {
+        // Generate visa packages based on the selected package count
+        generate_visa_package(freezoneValue, packageCount);
+      }
     }
   });
-  // by default show the visa pacakge option if we have value in visa package
-  if(parseInt($('#visa_package').val())>0){
-        $('#visa_package').val($('#visa_package').val()).change();
-  }
+
 });
