@@ -108,11 +108,14 @@ class VisaPackageAttributeController extends Controller
     /**
      * Remove the specified visa package attribute from storage.
      */
-    public function destroy(VisaPackageAttribute $visaPackageAttribute)
+    public function destroy($id)
     {
+        $visaPackageAttribute = VisaPackageAttribute::findOrFail($id);
         $visaPackageAttribute->delete();
+
         return redirect()->route('visa-package-attributes.index')->with('success', 'Visa Package Attribute deleted successfully.');
     }
+    
 
     public function getVisaPackageAttributes(string $uuid)
     {

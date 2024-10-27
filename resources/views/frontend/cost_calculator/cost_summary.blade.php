@@ -91,12 +91,8 @@
                         <tr>
                             <td class="tHeadingTxt">Activities</td>
                             <td class="tDetailTxt">
-                                {{ $package_activities[0]->activity->name . ' (' . $package_activities[0]->activity->activity_group->name . ')' }}
                             </td>
                             <td class="tDetailTxt">
-                                {!! $package_activities[0]->allowed_free ? '<del>' : '' !!}
-                                {{$package_detail->currency}}  {{$package_activities[0]->price }}
-                                {!! $package_activities[0]->allowed_free ? '</del><p>Free</p>' : '' !!}
                             </td>
                         </tr>
 
