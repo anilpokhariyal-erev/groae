@@ -52,19 +52,6 @@
                             <th class="tDetailTxt">{{ $freezone->name }}</th>
                             <th></th>
                         </tr>
-
-                        <tr>
-                            <td class="tHeadingTxt">License Type</td>
-                            <td class="tDetailTxt">{{ $freezone->licenses[0]->name }}</td>
-                            <td class="tDetailTxt">
-                                {{ $freezone->licenses[0]->price > 0 ? $package_detail->currency.' '. number_format($freezone->licenses[0]->price, 2) : '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tHeadingTxt">Office</td>
-                            <td class="tDetailTxt">{{ $freezone->packages[0]->office ?? 'N/A' }}</td>
-                            <td class="tDetailTxt"></td>
-                        </tr>
                         <tr>
                             <td class="tHeadingTxt">Package</td>
                             <td class="tDetailTxt">{{ $package_detail->title }}</td>
@@ -72,6 +59,16 @@
                                 {{$package_detail->price > 0 ? $package_detail->currency . ' ' . number_format($package_detail->price, 2) : '' }}
                             </td>
                         </tr>
+                        @foreach($package_detail->attributeCosts as $attribute_cost)
+                        <tr>
+                            <td class="tHeadingTxt">{{$attribute_cost->attribute->label}}</td>
+                            <td class="tDetailTxt"></td>
+                            <td class="tDetailTxt">
+                            {{$attribute_cost->unit_price > 0 ? $package_detail->currency . ' ' . number_format($attribute_cost->unit_price, 2) : '' }}
+                            </td>
+                        </tr>
+                        @endforeach
+                        
                         <tr>
                             <td class="tHeadingTxt">Package Inclusions</td>
                             <td class="tDetailTxt">Total {{ count($package_detail->packageLines) }} in Quantity</td>
@@ -97,7 +94,7 @@
                         </tr>
 
 
-                    @foreach ($package_activities as $key => $item)
+                        @foreach ($package_activities as $key => $item)
                             @if ($key != 0)
                                 <tr>
                                     <td></td>
