@@ -60,34 +60,23 @@
                             </td>
                         </tr>
                         @foreach($package_detail->attributeCosts as $attribute_cost)
-                            @if($attribute_cost->attribute->name == "visa_package")
-                            @php($total_visa_package = count($packages_arr['visa_package_attributes']))
-                                <tr>
-                                    <td class="tHeadingTxt">{{$attribute_cost->attribute->label}}</td>
-                                    <td class="tDetailTxt">
-                                        {{$total_visa_package}}                                
-                                    </td>
-                                    <td class="tDetailTxt">
-                                        @if($total_visa_package <= $attribute_cost->allowed_free_qty)
-                                            <del title="{{$attribute_cost->attribute->label}} free upto {{$attribute_cost->allowed_free_qty}}">
-                                                {{$attribute_cost->unit_price > 0 ? $package_detail->currency . ' ' . number_format($attribute_cost->unit_price, 2) : '' }}
-                                            </del>
-                                            <div>Free</div>
-                                        @else
-                                            <div>{{$attribute_cost->calculateAttributeCost($total_visa_package)}}</div>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td class="tHeadingTxt">{{$attribute_cost->attribute->label}}</td>
-                                    <td class="tDetailTxt">
-                                    </td>
-                                    <td class="tDetailTxt">
-                                        {{$attribute_cost->unit_price > 0 ? $package_detail->currency . ' ' . number_format($attribute_cost->unit_price, 2) : '' }}
-                                    </td>
-                                </tr>
-                            @endif
+                            @php($total_visa_package = $request->input($attribute_cost->attribute->name))
+                            <tr>
+                                <td class="tHeadingTxt">{{$attribute_cost->attribute->label}}</td>
+                                <td class="tDetailTxt">
+                                    {{$total_visa_package}}                                
+                                </td>
+                                <td class="tDetailTxt">
+                                    @if($total_visa_package <= $attribute_cost->allowed_free_qty)
+                                        <del title="{{$attribute_cost->attribute->label}} free upto {{$attribute_cost->allowed_free_qty}}">
+                                            {{$attribute_cost->unit_price > 0 ? $package_detail->currency . ' ' . number_format($attribute_cost->unit_price, 2) : '' }}
+                                        </del>
+                                        <div>Free</div>
+                                    @else
+                                        <div>{{$attribute_cost->calculateAttributeCost($total_visa_package)}}</div>
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
                         
                         <tr>

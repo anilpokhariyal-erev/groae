@@ -116,7 +116,7 @@ class CostCalculatorController extends Controller
         $total =0;
 
         // Render the view with compact variables
-        return view('frontend.cost_calculator.cost_summary')->with(compact(
+        return view('frontend.cost_calculator.cost_summary')->with(compact('request', 
             'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr'
         ));
     }

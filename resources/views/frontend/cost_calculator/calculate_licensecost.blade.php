@@ -42,11 +42,11 @@
                                 @if(!$attribute->allow_multiple)
 
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
-                                    <input type="number"  name="attribute_{{ $attribute->id }}" value="" class="inputField2 cursor arrowPlace" id="{{ $attribute->name }}"  min="0">
+                                    <input type="number"  name="{{ $attribute->name }}" value="" class="inputField2 cursor arrowPlace" id="{{ $attribute->name }}"  min="0">
                                     <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
                                     <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
                                 @else
-                                <select required name="attribute_{{ $attribute->id }}" id="{{ $attribute->name }}"
+                                <select required name="{{ $attribute->name }}" id="{{ $attribute->name }}"
                                     class="inputField2 cursor arrowPlace">
                                     <option data-val="0" value="" disabled {{ old('attribute_' . $attribute->id) == '' ? 'selected' : '' }}>
                                         Choose an Option
