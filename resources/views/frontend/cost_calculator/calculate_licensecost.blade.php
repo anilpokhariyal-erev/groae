@@ -13,6 +13,10 @@
                 </div>
                 <div class="topHeading">
                     <h2 class="trendTxt">Package Cost Estimator</h2>
+                    <h3 style="text-align:center">
+                        <span style="color:#304a6f">Package:</span> 
+                        <strong>{{$package->title}}</strong>
+                    </h3>
                 </div>
                 <form id="costCalculatorForm" class="signupFormItems" method="post" data-token={{$token}}
                       action="{{ route('calculate-licensecosts.store') }}{{ isset($package->id) ? '?package_id=' . encrypt($package->id) : '' }}"  novalidate>
