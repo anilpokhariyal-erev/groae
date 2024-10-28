@@ -60,7 +60,7 @@
                             </td>
                         </tr>
                         @foreach($package_detail->attributeCosts as $attribute_cost)
-                            @php($total_visa_package = $request->input($attribute_cost->attribute->name))
+                            @php($total_visa_package = $request->input($attribute_cost->attribute->name) ?? $attribute_cost->allowed_free_qty)
                             <tr>
                                 <td class="tHeadingTxt">{{$attribute_cost->attribute->label}}</td>
                                 <td class="tDetailTxt">
