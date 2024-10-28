@@ -12,7 +12,7 @@
                     </a>
                 </div>
                 <div class="topHeading">
-                    <h2 class="trendTxt">Calculate License Cost</h2>
+                    <h2 class="trendTxt">Package Cost Estimator</h2>
                 </div>
                 <form id="costCalculatorForm" class="signupFormItems" method="post" data-token={{$token}}
                       action="{{ route('calculate-licensecosts.store') }}{{ isset($package->id) ? '?package_id=' . encrypt($package->id) : '' }}"  novalidate>
@@ -42,11 +42,11 @@
                                 @if(!$attribute->allow_multiple)
 
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
-                                    <input type="number"  name="attribute_{{ $attribute->id }}" value="" class="inputField2 cursor arrowPlace"  min="0">
+                                    <input type="number"  name="{{ $attribute->name }}" value="" class="inputField2 cursor arrowPlace" id="{{ $attribute->name }}"  min="0">
                                     <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
                                     <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
                                 @else
-                                <select required name="attribute_{{ $attribute->id }}" id="{{ $attribute->name }}"
+                                <select required name="{{ $attribute->name }}" id="{{ $attribute->name }}"
                                     class="inputField2 cursor arrowPlace">
                                     <option data-val="0" value="" disabled {{ old('attribute_' . $attribute->id) == '' ? 'selected' : '' }}>
                                         Choose an Option
@@ -71,25 +71,6 @@
                             </div>
                         </div>
                     @endforeach
-
-                    <div class="secondColumn costCalculateForm">
-                        <div class="input_wrap w-100">
-                            <select required name="visa_package" id="visa_package"
-                                class="inputField2 cursor arrowPlace">
-                                <option data-val="0" value="" disabled {{ old('visa_package') == '' ? 'selected' : '' }}>
-                                    Choose an Option </option>
-                                @for($i=0; $i<=$max_visa_package; $i++)
-                                    <option data-val="{{$i}}" value="{{ $i }}"
-                                    >
-                                        {{ $i }}
-                                    </option>
-                                @endfor
-                            </select>
-                            <label for="visa_package"> Visa Package</label>
-                            <p id="visa_package_error" class="errorMessage"></p>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('visa_package')" />
-                        </div>
-                    </div>
 
                     <div class="secondColumn costCalculateForm">
                         <div class="input_wrap w-100">
@@ -130,16 +111,6 @@
                         </div>
                     </div>
                     <input type="hidden" id="activities_selection" name="activities_selection" />
-
-{{--                    @if (!empty($freezone_data))--}}
-{{--                        <div style="display: none;" id="visa_data">--}}
-{{--                            {{ json_encode([--}}
-{{--                                'visa_types' => $freezone_data['visa_types'],--}}
-{{--                                'visa_add_ons' => $freezone_data['visa_add_ons'],--}}
-{{--                                'locations' => $freezone_data['locations'],--}}
-{{--                            ]) }}--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
 
                     <div id="visa_section"></div>
 

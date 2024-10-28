@@ -5,17 +5,11 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\License;
 use App\Models\Package;
 use App\Models\Attribute;
-use App\Models\AttributeOption;
 use App\Models\PackageActivity;
 use App\Models\PackageHeader;
-use App\Models\PackageLine;
-use App\Models\Activity;
 use App\Models\Freezone;
-use App\Models\ContactUs;
 use App\Models\VisaPackageAttribute;
-use App\Models\VisaPackageAttributeHeader;
 use Illuminate\Support\Str;
-use App\Models\VisaActivity;
 use Illuminate\Http\Request;
 use App\Assets\ResponseMessage;
 use App\Http\Controllers\Controller;
@@ -51,15 +45,9 @@ class CostCalculatorController extends Controller
                 'packageLines.attribute',
                 'packageLines.attributeOption'
             ])->findOrFail($package_id);
-            // Get the distinct attributes from the package lines
-            $attributes = $package->packageLines->map(function ($packageLine) {
-                return $packageLine->attribute;
-            })->unique('id'); // Ensure attributes are unique
             $selected_freezone = $package->freezone->uuid;
-        }else{
-            $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])->with('options')->get();
         }
-
+        $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])->with('options')->get();
         $freezones = Freezone::select('id', 'uuid', 'name')->where('status', 1)->get();
         $freezone_data = [];
         $max_visa_package = 0;
@@ -128,7 +116,7 @@ class CostCalculatorController extends Controller
         $total =0;
 
         // Render the view with compact variables
-        return view('frontend.cost_calculator.cost_summary')->with(compact(
+        return view('frontend.cost_calculator.cost_summary')->with(compact('request', 
             'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr'
         ));
     }

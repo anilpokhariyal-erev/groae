@@ -27,8 +27,21 @@ class PackageAttributesCost extends Model
         return $this->belongsTo(PackageHeader::class, 'package_id');
     }
 
+
     public function attribute()
     {
         return $this->belongsTo(Attribute::class, 'attribute_id');
+    }
+    
+
+    public function calculateAttributeCost($attributeRequested)
+    {
+        $perUnit = $this->per_unit;
+        $allowedFreeQty = $this->allowed_free_qty;
+        $unitPrice = $this->unit_price;
+
+        $calculatedValue = ((fmod($attributeRequested, $perUnit) + $attributeRequested) - $allowedFreeQty) * ($unitPrice / $perUnit);
+
+        return $this->package->currency ." " . number_format($calculatedValue, 2);
     }
 }
