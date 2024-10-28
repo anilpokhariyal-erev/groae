@@ -162,8 +162,8 @@
                         <div class="position-relative form-group">
                             <label for="package_lines"><b>Package Add-ons</b></label>
                             <div id="package-lines-container">
-                                <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
                             </div>
+                            <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
                         </div>
                     </div>
 

@@ -16,7 +16,8 @@ class ActivityGroup extends Model
         'name',
         'description',
         'freezone_id',
-        'licence_id'
+        'licence_id',
+        'code'
     ];
     
     protected $hidden = ['pivot'];

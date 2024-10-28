@@ -19,7 +19,8 @@ class Activity extends Model
         'price', 
         'activity_group_id',
         'freezone_id',
-        'licence_id'
+        'licence_id',
+        'code',
     ];
 
     public function activity_group()

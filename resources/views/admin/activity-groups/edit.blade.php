@@ -61,6 +61,14 @@
 
                     <div class="col-md-12">
                         <div class="position-relative form-group">
+                            <label for="code">code <span class="text-danger">*</span></label>
+                            <input name="code" id="code" value="{{ old('code',$activityGroup->code) }}" type="text" class="form-control">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('code')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
                             <label for="description">Description</label>
                             <textarea name="description" id="description" class="form-control">{{ old('description', $activityGroup->description) }}</textarea>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('description')" />

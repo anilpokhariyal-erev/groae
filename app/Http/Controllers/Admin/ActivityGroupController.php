@@ -7,6 +7,7 @@ use App\Models\Freezone;
 use App\Models\ActivityGroup;
 use App\Models\License;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ActivityGroupController extends Controller
 {
@@ -31,9 +32,8 @@ class ActivityGroupController extends Controller
     public function create()
     {
         $freezones = Freezone::all();
-        $licenses = License::all();
-
-        return view('admin.activity-groups.create', compact('freezones', 'licenses')); // Pass both freezones and licenses to the view
+        $token = Auth::user()->createToken('ActivityGroupToken')->plainTextToken;
+        return view('admin.activity-groups.create', compact('freezones','token')); // Pass both freezones and licenses to the view
     }
 
     /**
@@ -46,6 +46,7 @@ class ActivityGroupController extends Controller
             'description' => 'nullable|string',
             'freezone_id' => 'required|exists:freezones,id',
             'licence_id' => 'required|exists:licenses,id',
+            'code' => 'required|string|max:20|unique:activity_groups,code',
         ]);
 
         ActivityGroup::create($validatedData);
@@ -74,6 +75,7 @@ class ActivityGroupController extends Controller
             'description' => 'nullable|string',
             'freezone_id' => 'required|exists:freezones,id',
             'licence_id' => 'required|exists:licenses,id',
+            'code' => 'nullable|string|max:20|unique:activity_groups,code',
         ]);
 
         // Update the activity group with the validated data
