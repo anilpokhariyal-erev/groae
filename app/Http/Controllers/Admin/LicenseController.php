@@ -32,8 +32,8 @@ class LicenseController extends Controller
             $licenses = $licenses->whereDate('created_at', '>=', $request->start_date)
                                  ->whereDate('created_at', '<=', $request->end_date);
         }
+        $licenses = $licenses->get();
 
-        $licenses = $licenses->paginate(Utils::itemPerPage);
         return view('admin.license.license-index', compact('licenses'));
     }
 

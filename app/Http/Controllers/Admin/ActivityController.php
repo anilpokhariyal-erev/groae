@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Activity;
 use App\Models\ActivityGroup;
+use App\Models\Freezone;
 use App\Models\License;
 use App\Models\PackageActivity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ActivityController extends Controller
@@ -24,7 +26,6 @@ class ActivityController extends Controller
     public function index()
     {
         $activities = Activity::with('activity_group', 'freezone')->get();
-
         return view('admin.activities.index', compact('activities'));
     }
 
@@ -34,8 +35,8 @@ class ActivityController extends Controller
     public function create()
     {
         $activityGroups = ActivityGroup::all();
-        $licenses = License::all();
-        return view('admin.activities.create', compact('activityGroups', 'licenses'));
+        $token = Auth::user()->createToken('ActivityToken')->plainTextToken;
+        return view('admin.activities.create', compact('activityGroups','token'));
     }
 
     /**
@@ -49,6 +50,7 @@ class ActivityController extends Controller
             'price' => 'required|numeric|min:0',
             'activity_group_id' => 'required|exists:activity_groups,id',
             'licence_id' => 'required|exists:licenses,id',
+            'code' => 'required|string|max:20|unique:activities,code',
         ]);
 
         // Retrieve the activity group to get the freezone_id
@@ -62,6 +64,7 @@ class ActivityController extends Controller
             'activity_group_id' => $validatedData['activity_group_id'],
             'freezone_id' => $activityGroup->freezone_id,
             'licence_id' => $validatedData['licence_id'],
+            'code' => $validatedData['code'],
         ]);
 
         return redirect()->route('activity.index')->with('success', 'Activity created successfully.');
@@ -74,8 +77,9 @@ class ActivityController extends Controller
     {
         $activity = Activity::findOrFail($id); // Fetch the activity using id
         $activityGroups = ActivityGroup::all(); // Fetch all activity groups
-        $licenses = License::all();
-        return view('admin.activities.edit', compact('activityGroups', 'activity', 'licenses'));
+        $token = Auth::user()->createToken('ActivityToken')->plainTextToken;
+        $license = License::findOrFail($activity->licence_id);
+        return view('admin.activities.edit', compact('activityGroups', 'activity', 'license','token'));
     }    
 
     /**
@@ -89,6 +93,7 @@ class ActivityController extends Controller
             'price' => 'required|numeric|min:0',
             'activity_group_id' => 'required|exists:activity_groups,id',
             'licence_id' => 'required|exists:licenses,id',
+            'code' => 'required|string|max:20|unique:activities,code,'.$id,
         ]);
     
         // Find the activity by id
@@ -103,6 +108,7 @@ class ActivityController extends Controller
             'activity_group_id' => $validatedData['activity_group_id'],
             'freezone_id' => $activity->freezone_id,
             'licence_id' => $validatedData['licence_id'],
+            'code' => $validatedData['code'],
         ]);
     
         return redirect()->route('activity.index')->with('success', 'Activity updated successfully.');
@@ -151,4 +157,23 @@ class ActivityController extends Controller
             ], 500);
         }
     }
+    public function getActivityGroupLicenses(string $activity_group_id) {
+        $activity_group = ActivityGroup::findOrFail($activity_group_id);
+        $selected_license = License::find($activity_group->licence_id); // Optional if no license
+
+        $licenses = License::where('freezone_id', $activity_group->freezone_id)->get();
+
+        return response()->json([
+            'selected_license' => $selected_license,
+            'licenses' => $licenses,
+        ]);
+    }
+    public function getActivityGroupFreezoneLicenses(string $freezoneId) {
+        $freezone = Freezone::findOrFail($freezoneId);
+        $licenses = License::where('freezone_id', $freezone->id)->get();
+        return response()->json([
+            'licenses' => $licenses,
+        ]);
+    }
+
 }

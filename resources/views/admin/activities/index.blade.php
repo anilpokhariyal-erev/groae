@@ -53,6 +53,7 @@
                             <th>Activity Name</th>
                             <th>Activity Group</th>
                             <th>Price</th>
+                            <th>Code</th>
                             <th>Created Date</th>
                             <th>Action</th>
                         </tr>
@@ -65,6 +66,7 @@
                                 <td>{{ucwords($activity->name)}}</td>
                                 <td>{{ucwords($activity->activity_group->name)}}</td>
                                 <td>{{ $activity->price }}</td>
+                                <td>{{$activity->code}}</td>
                                 <td>{{$activity->created_at->format('Y-m-d')}}</td>
                                 <td>
                                     <a class="ml-1 mr-1" href="{{route('activity.edit', $activity->id)}}">Edit</a>
