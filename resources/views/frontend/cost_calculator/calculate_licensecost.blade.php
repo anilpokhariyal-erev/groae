@@ -52,7 +52,7 @@
                                 @else
                                 <select required name="{{ $attribute->name }}" id="{{ $attribute->name }}"
                                     class="inputField2 cursor arrowPlace">
-                                    <option data-val="0" value="" disabled {{ old('attribute_' . $attribute->id) == '' ? 'selected' : '' }}>
+                                    <option data-val="0" value="" disabled {{ old($attribute->name) == '' ? 'selected' : '' }}>
                                         Choose an Option
                                     </option>
                                     @foreach ($attribute->options as $option)
@@ -63,7 +63,7 @@
                                             });
                                         @endphp
                                         <option data-val="{{ $option->value }}" value="{{ $option->id }}"
-                                            {{ $selectedOption || old('attribute_' . $attribute->id) == $option->id ? 'selected' : '' }}>
+                                            {{ $selectedOption || old($attribute->name) == $option->id ? 'selected' : '' }}>
                                             {{ $option->value }}
                                         </option>
                                     @endforeach
