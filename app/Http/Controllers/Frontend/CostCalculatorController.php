@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\Activity;
 use App\Models\License;
 use App\Models\Package;
 use App\Models\Attribute;
@@ -110,6 +111,12 @@ class CostCalculatorController extends Controller
         // Retrieve package activities
         $package_activities = $this->getPackageActivities($activityIds, $package_id);
 
+        $licenseIds = Activity::whereIn('id', $activityIds)
+            ->pluck('licence_id') // Extract only licence_id column
+            ->unique()            // Ensure the IDs are unique
+            ->values();
+        $licenses = License::whereIn('id', $licenseIds)->get();
+
         // Generate a UUID for the session
         $id = Str::uuid();
 
@@ -117,7 +124,7 @@ class CostCalculatorController extends Controller
 
         // Render the view with compact variables
         return view('frontend.cost_calculator.cost_summary')->with(compact('request', 
-            'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr'
+            'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses'
         ));
     }
 
