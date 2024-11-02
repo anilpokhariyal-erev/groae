@@ -79,7 +79,7 @@ class HomeController extends Controller
                     ->where(function ($subQuery) use ($attributeConditions) {
                         foreach ($attributeConditions as $attributeNumber => $attributeValue) {
                             if($attributeValue != "any"){
-                                $subQuery->orWhere(function ($q) use ($attributeNumber, $attributeValue) {
+                                $subQuery->where(function ($q) use ($attributeNumber, $attributeValue) {
                                     $q->where('attribute_id', $attributeNumber)
                                     ->where('attribute_option_id', $attributeValue);
                                 });
