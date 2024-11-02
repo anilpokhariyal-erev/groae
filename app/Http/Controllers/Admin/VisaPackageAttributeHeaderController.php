@@ -6,6 +6,7 @@ use App\Models\VisaPackageAttributeHeader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\VisaPackageAttributeController;
 
 class VisaPackageAttributeHeaderController extends Controller
 {
@@ -74,8 +75,12 @@ class VisaPackageAttributeHeaderController extends Controller
     public function destroy($id)
     {
         $header = VisaPackageAttributeHeader::findOrFail($id);
-        $header->delete();
+        $header->update(['status' => 0]);
 
-        return redirect()->route('visa-package-attribute-headers.index')->with('success', 'Visa Package Attribute Header deleted successfully.');
+        // Call the destroyByHeader function with the header ID
+        (new VisaPackageAttributeController())->destroyByHeader($header->id);
+
+        return redirect()->route('visa-package-attribute-headers.index')->with('success', 'Visa Package Attribute Header and associated attributes deleted successfully.');
     }
+
 }

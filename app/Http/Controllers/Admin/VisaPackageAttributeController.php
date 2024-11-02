@@ -21,7 +21,12 @@ class VisaPackageAttributeController extends Controller
      */
     public function index()
     {
-        $visaPackageAttributes = VisaPackageAttribute::with('freezone', 'attribute_header')->get();
+        $visaPackageAttributes = VisaPackageAttribute::with('freezone', 'attribute_header')
+                                    ->where('status', 1)
+                                    ->whereHas('attribute_header', function ($query) {
+                                        $query->where('status', 1);
+                                    })
+                                    ->get();
 
         return view('admin.visa-package-attributes.index', compact('visaPackageAttributes'));
     }
@@ -31,8 +36,8 @@ class VisaPackageAttributeController extends Controller
      */
     public function create()
     {
-        $freezones = Freezone::all();
-        $attributeHeaders = VisaPackageAttributeHeader::all();
+        $freezones = Freezone::where('status',1)->get();
+        $attributeHeaders = VisaPackageAttributeHeader::where('status',1)->get();
         return view('admin.visa-package-attributes.create', compact('freezones', 'attributeHeaders'));
     }
 
@@ -111,11 +116,20 @@ class VisaPackageAttributeController extends Controller
     public function destroy($id)
     {
         $visaPackageAttribute = VisaPackageAttribute::findOrFail($id);
+        $visaPackageAttribute->update(['status'=>0]);
         $visaPackageAttribute->delete();
 
         return redirect()->route('visa-package-attributes.index')->with('success', 'Visa Package Attribute deleted successfully.');
     }
-    
+
+
+    public function destroyByHeader($headerId)
+    {
+        VisaPackageAttribute::where('attribute_header_id', $headerId)->delete();
+
+        return response()->json(['message' => 'Visa Package Attributes deleted successfully for the specified header.']);
+    }
+
 
     public function getVisaPackageAttributes(string $uuid)
     {
