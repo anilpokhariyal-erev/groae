@@ -55,48 +55,47 @@ class HomeController extends Controller
             $decoded_data = json_decode($data);
             $selected = $decoded_data->uuid;
         }
-
+    
         // Initialize package query
         $packages = PackageHeader::where('status', 1);
-
+    
         // Process attribute parameters
         $attributeConditions = [];
         $selectedAttributes = [];
-
+    
         foreach ($request->all() as $key => $value) {
             if (preg_match('/^attribute_(\d+)$/', $key, $matches)) {
-                $attributeConditions[$matches[1]] = $value; // Extracting the attribute number
+                $attributeConditions[$matches[1]] = $value;
                 $selectedAttributes[$matches[1]] = $value;
             }
         }
-
-        // Filter packages based on attributes if provided
+    
+        // Apply filters only if attribute conditions exist
         if (!empty($attributeConditions)) {
-            $packages = $packages->whereExists(function ($query) use ($attributeConditions) {
-                $query->select(DB::raw(1))
-                    ->from('package_lines')
-                    ->whereColumn('package_lines.package_id', 'package_headers.id') // Use package_id as foreign key
-                    ->where(function ($subQuery) use ($attributeConditions) {
-                        foreach ($attributeConditions as $attributeNumber => $attributeValue) {
-                            if($attributeValue != "any"){
-                                $subQuery->where(function ($q) use ($attributeNumber, $attributeValue) {
-                                    $q->where('attribute_id', $attributeNumber)
-                                    ->where('attribute_option_id', $attributeValue);
-                                });
-                            }
+            $packages = $packages->whereHas('packageLines', function ($query) use ($attributeConditions) {
+                $query->where(function ($subQuery) use ($attributeConditions) {
+                    foreach ($attributeConditions as $attributeId => $optionId) {
+                        if ($optionId !== "any") {
+                            $subQuery->orWhere(function ($q) use ($attributeId, $optionId) {
+                                $q->where('attribute_id', $attributeId)
+                                  ->where('attribute_option_id', $optionId);
+                            });
                         }
-                    });
-            })->with('packageLines','freezone')->orderBy('id', 'DESC')->get();
-        } else {
-            $packages = collect(); // Empty collection if no attributes provided
+                    }
+                });
+            });
         }
-
+    
+        // Load related data and sort the packages
+        $packages = $packages->with(['packageLines', 'freezone'])->orderBy('id', 'DESC')->get();
+    
         // Retrieve attributes for filter options
         $attributes = $this->ai_filter_options();
-
-        // Pass only packages to the view
+    
+        // Pass data to the view
         return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
     }
+    
 
     public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
     {
