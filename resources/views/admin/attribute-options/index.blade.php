@@ -49,7 +49,7 @@
                 @foreach ($attributeOptions as $index => $option)
                     <tr>
                         <td>{{ $index + 1 }}</td> <!-- Serial number starts from 1 -->
-                        <td>{{ $option->attribute->name }}</td>
+                        <td>{{ $option->attribute->label }}</td>
                         <td>{{ $option->value }}</td>
                         <td>
                              <span class="badge {{ $option->status ? 'badge-success' : 'badge-danger' }}">
