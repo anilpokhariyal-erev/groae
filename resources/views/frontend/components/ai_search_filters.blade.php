@@ -47,11 +47,13 @@
 @endsection
 
 <div class="searchFields">
-    <form class="searchingForm" id="searchForm">
+    <form class="searchingForm" id="searchForm" method="POST">
+        @csrf
         @foreach ($attributes as $attribute)
             <div class="formContainer">
-                <select class="ai_filter_options" name="attribute_{{ $attribute->id }}">
-                    <option value="" selected disabled>Choose {{ $attribute->name }}</option>
+                <input type="hidden" name="attribute_key[]" value="{{ $attribute->id }}">
+                <select class="ai_filter_options" name="attribute_value[]">
+                    <option value="" selected disabled>Choose {{ $attribute->label }}</option>
                     @if($attribute->allow_any)
                         <option value="any" {{ isset($selectedAttributes[$attribute->id]) && $selectedAttributes[$attribute->id] == 'any' ? 'selected' : '' }}>Any</option>
                     @endif

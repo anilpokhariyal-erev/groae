@@ -60,29 +60,22 @@ class HomeController extends Controller
         $packages = PackageHeader::where('status', 1);
     
         // Process attribute parameters
-        $attributeConditions = [];
-        $selectedAttributes = [];
-    
-        foreach ($request->all() as $key => $value) {
-            if (preg_match('/^attribute_(\d+)$/', $key, $matches)) {
-                $attributeConditions[$matches[1]] = $value;
-                $selectedAttributes[$matches[1]] = $value;
-            }
-        }
+        $attributeKeys = $request->input('attribute_key');
+        $attributeValues = $request->input('attribute_value');
+        $attributeConditions = array_map(function($key, $value) {
+            return "$key-$value";
+        }, $attributeKeys, $attributeValues);
+
+        $selectedAttributes = array_combine($attributeKeys, $attributeValues);
     
         // Apply filters only if attribute conditions exist
         if (!empty($attributeConditions)) {
-            $packages = $packages->whereHas('packageLines', function ($query) use ($attributeConditions) {
-                $query->where(function ($subQuery) use ($attributeConditions) {
-                    foreach ($attributeConditions as $attributeId => $optionId) {
-                        if ($optionId !== "any") {
-                            $subQuery->orWhere(function ($q) use ($attributeId, $optionId) {
-                                $q->where('attribute_id', $attributeId)
-                                  ->where('attribute_option_id', $optionId);
-                            });
-                        }
-                    }
-                });
+            $packages = $packages->whereHas('packageLines', 
+            function ($query) use ($attributeConditions){
+                $query->whereIn(
+                    DB::raw('CONCAT(package_lines.attribute_id,"-",package_lines.attribute_option_id)'),
+                    $attributeConditions
+                );
             });
         }
     
