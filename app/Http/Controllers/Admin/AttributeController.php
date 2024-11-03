@@ -100,15 +100,15 @@ class AttributeController extends Controller
         $attribute->update($validatedData);
 
         // Remove old attribute options
-        $attribute->options()->delete();
+        $attribute->options()->update(['status' => 0]);
 
-            // Insert new attribute options
-            foreach ($request->input('attribute_options',[]) as $option) {
-                $attribute->options()->create([
-                    'value' => $option,
-                    'status' => 1, // Default to active status
-                ]);
-            }
+        // Insert or update attribute options
+        foreach ($request->input('attribute_options', []) as $option) {
+            $attribute->options()->updateOrCreate(
+                ['value' => $option], // Condition to check for existing option
+                ['status' => 1] // Fields to update or create
+            );
+        }
 
         // Redirect back with success message
         return redirect()->route('attributes.index')->with('success', 'Attribute updated successfully.');
