@@ -68,10 +68,6 @@
                 </table>
             </div>
 
-            <div class="mt-3 pagination">
-                {{ $freezone_pages->links() }}
-            </div>
-
         </div>
     </div>
 
