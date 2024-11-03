@@ -64,6 +64,7 @@
                                 {{ $package_detail->price > 0 ? $package_detail->currency . ' ' . number_format($package_detail->price, 2) : '' }}
                             </td>
                         </tr>
+                        @php $total_price = $package_detail->price; @endphp
 
                         @foreach ($package_detail->attributeCosts as $attribute_cost)
                             @php
@@ -79,7 +80,11 @@
                                         </del>
                                         <div>Free</div>
                                     @else
-                                        <div>{{ $attribute_cost->calculateAttributeCost($total_visa_package) }}</div>
+                                        <div>
+                                            @php $total_attribute_cost = $attribute_cost->calculateAttributeCost($total_visa_package) @endphp
+                                            {{ $total_attribute_cost }}
+                                            @php $total_price += str_replace($package_detail->currency.' ', '', $total_attribute_cost); @endphp
+                                        </div>
                                     @endif
                                 </td>
                             </tr>
@@ -97,6 +102,7 @@
                                 <td>{{ $item->attributeOption->value }}</td>
                                 <td class="tDetailTxt">
                                     {{ $item->addon_cost > 0 ? $package_detail->currency . ' ' . $item->addon_cost : '-' }}
+                                    @php $total_price += $item->addon_cost; @endphp
                                 </td>
                             </tr>
                         @endforeach
@@ -113,6 +119,7 @@
                                 <td class="tDetailTxt">{{ $item->name }}</td>
                                 <td class="tDetailTxt">
                                     {{ $package_detail->currency }} {{ $item->price }}
+                                    @php $total_price += $item->price; @endphp
                                 </td>
                             </tr>
                         @endforeach
@@ -128,9 +135,12 @@
                                 <td></td>
                                 <td class="tDetailTxt">{{ $item->activity->name }} ({{ $item->activity->activity_group->name }})</td>
                                 <td class="tDetailTxt">
-                                    {!! $item->allowed_free ? '<del>' : '' !!}
-                                    {{ $package_detail->currency }} {{ $item->price }}
-                                    {!! $item->allowed_free ? '</del><p>Free</p>' : '' !!}
+                                    @if($item->allowed_free)
+                                        <del>{!! $item->allowed_free !!}</del> <p>Free</p>
+                                    @else
+                                        {{ $package_detail->currency }} {{ $item->price }}
+                                        @php $total_price += $item->price; @endphp
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -159,38 +169,13 @@
                                 </td>
                                 <td class="tDetailTxt">
                                     {{ $package_detail->currency }} {{ number_format($total_attr_cost, 2) }}
+                                    @php $total_price += $total_attr_cost; @endphp
                                     <span class="info-icon" title="{{ $attribute_cost_calculation }}">i</span>
                                 </td>
                             </tr>
                         @endforeach
 
-                        @php
-                            $total_price = $package_detail->price;
-
-                            foreach ($package_detail->attributeCosts as $attribute_cost) {
-                                $total_visa_package = $request->input($attribute_cost->attribute->name) ?? $attribute_cost->allowed_free_qty;
-                                if ($total_visa_package > $attribute_cost->allowed_free_qty) {
-                                    $total_price += $attribute_cost->calculateAttributeCost($total_visa_package);
-                                }
-                            }
-
-                            foreach ($package_detail->packageLines as $item) {
-                                $total_price += $item->addon_cost;
-                            }
-                            foreach ($licenses as $item) {
-                               $total_price += $item->price;
-                            }
-
-                            foreach ($package_activities as $item) {
-                                $total_price += !$item->allowed_free ? $item->price : 0;
-                            }
-
-                            foreach ($packages_arr['visa_package_attributes'] as $items) {
-                                foreach ($items as $item) {
-                                    $total_price += $item->price;
-                                }
-                            }
-                        @endphp
+                        
 
                         <tr>
                             <td class="totalTitleTxt">Actual Cost</td>

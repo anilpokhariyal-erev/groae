@@ -915,9 +915,9 @@ fieldset{min-width:0;padding:0;margin:0;border:0;}
 /*======================= switch =======================*/
 .form-group .switch {
     position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+    display: block;
+    width: 65px;
+    height: 40px;
   }
   
   .form-group .switch input {
