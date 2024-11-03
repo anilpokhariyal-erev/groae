@@ -243,7 +243,7 @@
 
                                 @foreach($package->attributeCosts as $line)
                                     <div class="row package-line-item" data-option="{{ $line->attribute_option_id }}">
-                                        <div class="col-md-4">
+                                        <div class="col-lg-3">
                                             <div class="position-relative form-group">
                                                 <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
                                                 <select name="package_lines[{{ $costIndex }}][attribute_id]" class="custom-select attribute-select" data-line="{{ $costIndex }}">
@@ -258,14 +258,21 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-lg-3">
                                             <div class="position-relative form-group">
                                                 <label for="allowed_free_qty_{{ $costIndex }}">Allowed Free Quantity</label>
                                                 <input name="package_lines[{{ $costIndex }}][allowed_free_qty]" value="{{ old('package_lines.' . $costIndex . '.allowed_free_qty', $line->allowed_free_qty) }}" type="number" class="form-control" min="0" value="">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-lg-3 multiple_off">
+                                            <div class="position-relative form-group">
+                                            <label for="max_allowed_qty_{{ $costIndex }}">Allowed Max Quantity</label>
+                                            <input name="package_lines[{{ $costIndex }}][max_allowed_qty]" type="number" class="form-control" min="0" value="{{ old('package_lines.' . $costIndex . '.max_allowed_qty', $line->max_allowed_qty) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
                                             <div class="position-relative form-group">
                                                 <label for="unit_price_{{ $costIndex }}">Unit Price</label>
                                                 <input name="package_lines[{{ $costIndex }}][unit_price]" value="{{ old('package_lines.' . $costIndex . '.unit_price', $line->unit_price) }}" type="number" class="form-control" min="0" value="">
@@ -434,7 +441,7 @@
             const index = $('#package-lines-container .package-line-item').length + 1; // Increment the index
             const newLine = `
         <div class="row package-line-item">
-            <div class="col-md-4">
+            <div class="col-lg-3">
                 <div class="position-relative form-group">
                     <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
                     <select name="package_lines[${index}][attribute_id]" class="custom-select attribute-select" data-line="${index}">
@@ -462,13 +469,21 @@
                     <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.addon_cost')" />
                 </div>
             </div>
-            <div class="col-md-4 multiple_off">
+            <div class="col-lg-3 multiple_off">
                 <div class="position-relative form-group">
                     <label for="allowed_free_qty_${index}">Allowed Free Quantity</label>
                     <input name="package_lines[${index}][allowed_free_qty]" type="number" class="form-control" min="0" value="">
                 </div>
             </div>
-            <div class="col-md-4 multiple_off">
+
+            <div class="col-lg-3 multiple_off">
+                <div class="position-relative form-group">
+                    <label for="max_allowed_qty_${index}">Allowed Max Quantity</label>
+                    <input name="package_lines[${index}][max_allowed_qty]" type="number" class="form-control" min="0" value="">
+                </div>
+            </div>
+
+            <div class="col-lg-3 multiple_off">
                 <div class="position-relative form-group">
                     <label for="unit_price_${index}">Unit Price</label>
                     <input name="package_lines[${index}][unit_price]" type="number" class="form-control" min="0" value="">

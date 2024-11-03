@@ -16,6 +16,7 @@ class PackageAttributesCost extends Model
         'package_id',
         'attribute_id',
         'allowed_free_qty',
+        'max_allowed_qty',
         'unit_price',
         'per_unit',
     ];
