@@ -64,13 +64,12 @@
                             <tr>
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucwords($activity->name)}}</td>
-                                <td>{{ucwords($activity->activity_group->name)}}</td>
+                                <td>{{$activity->activity_group ? ucwords($activity->activity_group->name) : ''}}</td>
                                 <td>{{ $activity->price }}</td>
                                 <td>{{$activity->code}}</td>
                                 <td>{{$activity->created_at->format('Y-m-d')}}</td>
                                 <td>
                                     <a class="ml-1 mr-1" href="{{route('activity.edit', $activity->id)}}">Edit</a>
-                                    <!-- <a class="ml-1 mr-1 text-red" href="#" onclick="confirmDelete('{{route('activity.delete', $activity->id)}}'); return false;">Delete</a> -->
                                 </td>
                             </tr>
                         @endforeach
