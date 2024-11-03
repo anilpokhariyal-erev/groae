@@ -110,23 +110,26 @@
                                 accept="image/*" onchange="displayImage(this, 'ba_current_image')">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_logo')" />
                         </div>
-
-                        <div class="position-relative form-group">
-                            <label for="name">Trending </label>
-                            <div class="switch">
-                                <input type="checkbox" id="trendingSwitch" name="trending" {{ $freezone->trending ? 'checked' : '' }}>
-                                <label class="slider" for="trendingSwitch"></label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="name">Trending </label>
+                                    <div class="switch">
+                                        <input type="checkbox" id="trendingSwitch" name="trending" {{ $freezone->trending ? 'checked' : '' }}>
+                                        <label class="slider" for="trendingSwitch"></label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-
-                        <div class="position-relative form-group">
-                            <label for="status">Status <span class="text-danger">*</span></label>
-                            <select name="status" class="form-control">
-                                <option @if ($freezone->status == 1) selected='selected' @endif value="1">Active</option>
-                                <option @if ($freezone->status == 0) selected='selected' @endif value="0">Inactive</option>
-                            </select>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="status">Status <span class="text-danger">*</span></label>
+                                    <select name="status" class="form-control">
+                                        <option @if ($freezone->status == 1) selected='selected' @endif value="1">Active</option>
+                                        <option @if ($freezone->status == 0) selected='selected' @endif value="0">Inactive</option>
+                                    </select>
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
+                                </div>
+                            </div>
                         </div>
                     </div>
 

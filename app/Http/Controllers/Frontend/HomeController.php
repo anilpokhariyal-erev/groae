@@ -62,11 +62,15 @@ class HomeController extends Controller
         // Process attribute parameters
         $attributeKeys = $request->input('attribute_key');
         $attributeValues = $request->input('attribute_value');
-        $attributeConditions = array_map(function($key, $value) {
-            return "$key-$value";
-        }, $attributeKeys, $attributeValues);
+        $attributeConditions = [];
+        $selectedAttributes = [];
+        if ($attributeKeys) {
+            $attributeConditions = array_map(function($key, $value) {
+                return "$key-$value";
+            }, $attributeKeys, $attributeValues);
 
-        $selectedAttributes = array_combine($attributeKeys, $attributeValues);
+            $selectedAttributes = array_combine($attributeKeys, $attributeValues);
+        }
     
         // Apply filters only if attribute conditions exist
         if (!empty($attributeConditions)) {
