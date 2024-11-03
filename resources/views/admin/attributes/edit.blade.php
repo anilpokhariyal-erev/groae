@@ -77,8 +77,13 @@
                                 @if(old('attribute_options', $attribute->options))
                                     @foreach(old('attribute_options', $attribute->options) as $key => $option)
                                         <div class="attribute-option-item d-flex mb-2">
-                                            <input type="text" name="attribute_options[]" class="form-control mr-2" value="{{ $option->value }}" placeholder="Enter option value">
-                                            <button type="button" class="btn btn-danger" onclick="removeOption(this)">X</button>
+                                            @if($option->status==1)
+                                                <input type="text" name="attribute_options[]" class="form-control mr-2" value="{{ $option->value }}" placeholder="Enter option value">
+                                                <button type="button" class="btn btn-danger" onclick="removeOption(this)" title="Disable">X</button>
+                                            @else
+                                                <input type="text" name="attribute_del_options[]" class="form-control mr-2 del_option" value="{{ $option->value }}" placeholder="Enter option value">
+                                                <button type="button" class="btn btn-danger" onclick="addOption(this)" title="Enable"><i class="fa fa-check"></i></button>
+                                            @endif
                                         </div>
                                     @endforeach
                                 @endif
@@ -110,6 +115,15 @@
         function removeOption(button) {
             button.parentElement.remove();
         }
+
+        function addOption(button) {
+            // Convert button.parentElement to a jQuery object
+            let val = $(button).parent().find('input[name="attribute_del_options[]"]').val();
+            $('#add-attribute-option').click();
+            $('input[name="attribute_options[]"]:last').val(val);
+            removeOption(button);
+        }
+
 
         function checkInput(input, type = 'name') {
             const value = input.value;
