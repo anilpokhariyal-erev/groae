@@ -94,10 +94,10 @@
 
                         <tr>
                             <td class="tHeadingTxt">Package Inclusions</td>
-                            <td class="tDetailTxt">Total {{ count($package_detail->packageLines) }} in Quantity</td>
+                            <td class="tDetailTxt">Total {{ count($filtered_package_lines) }} in Quantity</td>
                             <td></td>
                         </tr>
-                        @foreach ($package_detail->packageLines as $item)
+                        @foreach ($filtered_package_lines as $item)
 
                             <tr>
                                 <td>{{ $item->attribute->label }}</td>
@@ -105,6 +105,30 @@
                                 <td class="tDetailTxt">
                                     {{ $item->addon_cost > 0 ? $package_detail->currency . ' ' . $item->addon_cost : '-' }}
                                     @php $total_price += $item->addon_cost; @endphp
+                                </td>
+                            </tr>
+                        @endforeach
+
+                        @foreach ($filtered_package_lines_multiple as $item)
+
+                            <tr>
+                                <td>{{ $item->attribute->label }}</td>
+                                <td>{{ $package_lines[$item->attribute->name]}}</td>
+                                <td class="tDetailTxt">
+                                    @if ($package_lines[$item->attribute->name] <= $item->allowed_free_qty)
+                                        <del title="{{ $item->attribute->label }} free up to {{ $item->allowed_free_qty }}">
+                                            {{ $item->unit_price > 0 ? $package_detail->currency . ' ' . number_format($item->unit_price, 2) : '' }}
+                                        </del>
+                                        <div>Free</div>
+                                    @else
+                                        <div>
+                                            @php $total_attribute_cost = $item->calculateAttributeCost($package_lines[$item->attribute->name]) @endphp
+                                            {{ $total_attribute_cost }}
+                                            @php     $numeric_total_attribute_cost = floatval(preg_replace('/[^0-9.]/', '', $total_attribute_cost));
+                                                    $total_price += $numeric_total_attribute_cost;
+                                            @endphp
+                                        </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
