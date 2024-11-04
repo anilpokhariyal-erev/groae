@@ -83,7 +83,9 @@
                                         <div>
                                             @php $total_attribute_cost = $attribute_cost->calculateAttributeCost($total_visa_package) @endphp
                                             {{ $total_attribute_cost }}
-                                            @php $total_price += str_replace($package_detail->currency.' ', '', $total_attribute_cost); @endphp
+                                            @php     $numeric_total_attribute_cost = floatval(preg_replace('/[^0-9.]/', '', $total_attribute_cost));
+                                                    $total_price += $numeric_total_attribute_cost;
+                                            @endphp
                                         </div>
                                     @endif
                                 </td>
@@ -95,8 +97,8 @@
                             <td class="tDetailTxt">Total {{ count($package_detail->packageLines) }} in Quantity</td>
                             <td></td>
                         </tr>
-
                         @foreach ($package_detail->packageLines as $item)
+
                             <tr>
                                 <td>{{ $item->attribute->label }}</td>
                                 <td>{{ $item->attributeOption->value }}</td>
