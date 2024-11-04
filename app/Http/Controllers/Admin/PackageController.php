@@ -75,6 +75,7 @@ class PackageController extends Controller
                     'package_id' => $package->id,
                     'attribute_id' => $line['attribute_id'],
                     'allowed_free_qty' => $line['allowed_free_qty'],
+                    'max_allowed_qty' => $line['max_allowed_qty'],
                     'unit_price' => $line['unit_price'],
                     'per_unit' => 1, // Assuming a default value for per_unit
                 ]);
@@ -179,6 +180,7 @@ class PackageController extends Controller
                         'package_id' => $package->id,
                         'attribute_id' => $line['attribute_id'],
                         'allowed_free_qty' => $line['allowed_free_qty'] ?? 0, // New field handling
+                        'max_allowed_qty' => $line['max_allowed_qty'],
                         'unit_price' => $line['unit_price'] ?? 0, // New field handling
                         'per_unit' => 1, // Assuming a default value for per_unit
                     ]);

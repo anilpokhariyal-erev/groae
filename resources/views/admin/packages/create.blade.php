@@ -207,7 +207,7 @@
             let newRow = document.createElement('div');
             newRow.classList.add('row', 'package-line-item');
             newRow.innerHTML = `
-                <div class="col-md-4">
+                <div class="col-lg-3">
                     <div class="position-relative form-group">
                         <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
                         <select name="package_lines[${lineIndex}][attribute_id]" class="custom-select attribute-select" data-line="${lineIndex}">
@@ -235,14 +235,21 @@
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.addon_cost')" />
                     </div>
                 </div>
-                <div class="col-md-4 multiple_off">
+                <div class="col-lg-3 multiple_off">
                     <div class="position-relative form-group">
                       <label for="allowed_free_qty_${lineIndex}">Allowed Free Quantity</label>
                       <input name="package_lines[${lineIndex}][allowed_free_qty]" type="number" class="form-control" min="0" value="">
                     </div>
                 </div>
 
-                  <div class="col-md-4 multiple_off">
+                <div class="col-lg-3 multiple_off">
+                    <div class="position-relative form-group">
+                      <label for="max_allowed_qty_${lineIndex}">Allowed Max Quantity</label>
+                      <input name="package_lines[${lineIndex}][max_allowed_qty]" type="number" class="form-control" min="0" value="">
+                    </div>
+                </div>
+
+                  <div class="col-lg-3 multiple_off">
                     <div class="position-relative form-group">
                       <label for="unit_price_${lineIndex}">Unit Price</label>
                       <input name="package_lines[${lineIndex}][unit_price]" type="number" class="form-control" min="0" value="">
