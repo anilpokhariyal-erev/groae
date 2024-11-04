@@ -27,6 +27,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('freezone/{uuid}/get-default-attributes/', [FreezoneController::class, 'getDefaultAttributes'])->middleware(['auth:sanctum']);
 Route::get('freezone/{uuid}/visa_package/', [VisaPackageAttributeController::class, 'getVisaPackageAttributes'])->middleware(['app.api_token']);
 Route::post('package/save-activities/', [ActivityController::class, 'savePackageActivities'])->middleware(['auth:sanctum']);
+Route::post('package/load-activities/', [ActivityController::class, 'loadPackageActivities'])->middleware(['auth:sanctum']);
 Route::get('activity/{activity_group_id}/license', [ActivityController::class, 'getActivityGroupLicenses'])->middleware(['auth:sanctum']);
 Route::get('activity-group/freezone/{freezoneId}/license', [ActivityController::class, 'getActivityGroupFreezoneLicenses'])->middleware(['auth:sanctum']);
 

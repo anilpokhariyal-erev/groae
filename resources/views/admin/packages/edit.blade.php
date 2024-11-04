@@ -88,11 +88,16 @@
             </div>
         </div>
     @endif
-    <div class="main-card mb-3 card">
+    <div class="main-card card">
         <div class="card-body">
-            <h5 class="card-title">Edit Package <span>&nbsp<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#manageActivitiesModal">
-                Manage Activities
-            </button></span></h5>
+            <div class="row">
+                <div class="col-md-9"><h5 class="card-title">Edit Package : {{ $package->title }}</h5></div>
+                <div class="col-md-2"><button class="btn btn-primary" id="manage_activity">Manage Activities</button></div>
+            </div>            
+        </div>
+    </div>
+    <div class="main-card mt-1 mb-3 card package-form">        
+        <div class="card-body">            
             <form method="post" action="{{ route('package.update', $package->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -309,6 +314,47 @@
         </div>
     </div>
 
+    <div class="main-card card pacakge-activities hide">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Price</th>
+                            <th>Free</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($package_activities as $activity)
+                        <tr>
+                            <td>{{ $activity->activity->name }}</td>
+                            <td>
+                                <span class="activity_price">{{ $activity->price }}</span>
+                                <input type="hidden" name="activity_id" value="{{$activity->id}}">
+                                <input type="hidden" name="activity_price" value="{{$activity->price}}">
+                            </td>
+                            <td>
+                            <input type="checkbox" class="free_activity" {{ $activity->allowed_free == 1 ? 'checked' : '' }}>
+                            </td>
+                            <td>
+                               <strong style="cursor: pointer; font-size: 20px">
+                                    <i class="fa fa-remove text-danger remove_activity" title="Remove"></i>
+                               </strong> 
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="row p-3">
+                <button class="btn btn-primary" onclick="saveActivities()">Save Changes</button>
+                <button class="btn btn-primary ml-2" onclick="loadActivities()">Load All Activities</button>
+            </div>
+        </div>
+    </div>
+
     @if (session('error'))
         <div class="modal fade show" id="errorModal" style="display: block;">
             <div class="modal-dialog">
@@ -327,56 +373,6 @@
         </div>
     @endif
 
-    <div class="modal fade" id="manageActivitiesModal" tabindex="-1" aria-labelledby="manageActivitiesModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- This should remain -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="manageActivitiesModalLabel">Manage Activities</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="activitiesForm">
-                        <div class="row" style="text-align: center">
-                            <div class="col-md-4">Activity</div>
-                            <div class="col-md-4">Price</div>
-                            <div class="col-md-4">Status</div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            @foreach($package_activities as $activity)
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="activity{{ $activity->id }}">
-                                            {{ $activity->activity->name }}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="number" value="{{ $activity->price }}" name="activities_price[]" data-activity-id="{{ $activity->id }}" min="0">
-                                        </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="position-relative form-group">
-                                        <label class="switch">
-                                            <input type="checkbox" class="form-check-input-ch" name="allowed_free[]" id="allowed_free_{{ $activity->id }}" value="1"
-                                                    {{ in_array($activity->activity_id, $selected_activity_ids) ? 'checked' : '' }} onclick="limitCheckboxes(this)">
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveActivities()">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </x-admin-layout>
@@ -394,6 +390,30 @@
                 optionsDropdown.append(`<option value="${option.id}">${option.value}</option>`);
             });
         }
+
+        $(document).on('click', '#manage_activity', function(){
+            let show_form = $(this).attr('show_form');
+            if(show_form==0){
+                $(this).attr('show_form', 1);
+                $(this).text('Manage Activities');
+                $('.package-form').show();
+                $('.pacakge-activities').hide();
+            }else{
+                $(this).attr('show_form', 0);
+                $(this).text('Manage Package');
+                $('.package-form').hide();
+                $('.pacakge-activities').show();
+            }
+        });
+
+        $(document).on('click', '.remove_activity', function(){
+            $(this).closest('tr').remove();
+        });
+
+        $(document).on('click', '.free_activity', function(){
+            $(this).closest('tr').find('.activity_price').html('0.00');
+            $(this).closest('tr').find('input[name="activity_price"]').val(0.00);
+        });
 
         $(document).on('change', 'select[name^="package_lines"][name$="[attribute_id]"]', function() {
             const selectedAttributeId = $(this).val();
@@ -440,60 +460,60 @@
         $('#add-package-line').on('click', function() {
             const index = $('#package-lines-container .package-line-item').length + 1; // Increment the index
             const newLine = `
-        <div class="row package-line-item">
-            <div class="col-lg-3">
-                <div class="position-relative form-group">
-                    <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                    <select name="package_lines[${index}][attribute_id]" class="custom-select attribute-select" data-line="${index}">
-                        <option value="">Select Attribute</option>
-                        @foreach($attributes as $attribute)
-            <option value="{{$attribute->id}}" data-allow-multiple="{{$attribute->allow_multiple}}">{{$attribute->label}}</option>
-                        @endforeach
-            </select>
-            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.attribute_id')" />
-                </div>
-            </div>
-            <div class="col-md-4 multiple_on">
-                <div class="position-relative form-group">
-                    <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                    <select name="package_lines[${index}][attribute_option_id]" class="custom-select option-select" id="option-select-${index}">
-                        <option value="">Select Option</option>
-                    </select>
-                    <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.attribute_option_id')" />
-                </div>
-            </div>
-            <div class="col-md-4 multiple_on">
-                <div class="position-relative form-group">
-                    <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                    <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0">
-                    <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.addon_cost')" />
-                </div>
-            </div>
-            <div class="col-lg-3 multiple_off">
-                <div class="position-relative form-group">
-                    <label for="allowed_free_qty_${index}">Allowed Free Quantity</label>
-                    <input name="package_lines[${index}][allowed_free_qty]" type="number" class="form-control" min="0" value="">
-                </div>
-            </div>
+                    <div class="row package-line-item">
+                        <div class="col-lg-3">
+                            <div class="position-relative form-group">
+                                <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
+                                <select name="package_lines[${index}][attribute_id]" class="custom-select attribute-select" data-line="${index}">
+                                    <option value="">Select Attribute</option>
+                                    @foreach($attributes as $attribute)
+                        <option value="{{$attribute->id}}" data-allow-multiple="{{$attribute->allow_multiple}}">{{$attribute->label}}</option>
+                                    @endforeach
+                        </select>
+                        <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.attribute_id')" />
+                            </div>
+                        </div>
+                        <div class="col-md-4 multiple_on">
+                            <div class="position-relative form-group">
+                                <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
+                                <select name="package_lines[${index}][attribute_option_id]" class="custom-select option-select" id="option-select-${index}">
+                                    <option value="">Select Option</option>
+                                </select>
+                                <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.attribute_option_id')" />
+                            </div>
+                        </div>
+                        <div class="col-md-4 multiple_on">
+                            <div class="position-relative form-group">
+                                <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
+                                <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0">
+                                <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.addon_cost')" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 multiple_off">
+                            <div class="position-relative form-group">
+                                <label for="allowed_free_qty_${index}">Allowed Free Quantity</label>
+                                <input name="package_lines[${index}][allowed_free_qty]" type="number" class="form-control" min="0" value="">
+                            </div>
+                        </div>
 
-            <div class="col-lg-3 multiple_off">
-                <div class="position-relative form-group">
-                    <label for="max_allowed_qty_${index}">Allowed Max Quantity</label>
-                    <input name="package_lines[${index}][max_allowed_qty]" type="number" class="form-control" min="0" value="">
-                </div>
-            </div>
+                        <div class="col-lg-3 multiple_off">
+                            <div class="position-relative form-group">
+                                <label for="max_allowed_qty_${index}">Allowed Max Quantity</label>
+                                <input name="package_lines[${index}][max_allowed_qty]" type="number" class="form-control" min="0" value="">
+                            </div>
+                        </div>
 
-            <div class="col-lg-3 multiple_off">
-                <div class="position-relative form-group">
-                    <label for="unit_price_${index}">Unit Price</label>
-                    <input name="package_lines[${index}][unit_price]" type="number" class="form-control" min="0" value="">
-                </div>
-            </div>
-            <div class="col-md-12 d-flex justify-content-end">
-                <button type="button" class="btn btn-warning remove-package-line">Remove</button>
-            </div>
-        </div>
-    `;
+                        <div class="col-lg-3 multiple_off">
+                            <div class="position-relative form-group">
+                                <label for="unit_price_${index}">Unit Price</label>
+                                <input name="package_lines[${index}][unit_price]" type="number" class="form-control" min="0" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+                        </div>
+                    </div>
+                `;
 
             $('#package-lines-container').append(newLine);
             $('.package-line-item:last').find('.multiple_off').hide(); // Hide the multiple_off fields by default
@@ -506,54 +526,44 @@
         });
 
     });
+
     async function saveActivities() {
-        const selectedActivities = [];
-        const activitiesData =[]
+        const activities = [];
+        
+        // Collect data from the table rows
+        $('.pacakge-activities .table tbody tr').each(function() {
+            const activityId = $(this).find('input[name="activity_id"]').val(); // Get the activity ID
+            const price = $(this).find('input[name="activity_price"]').val(); // Get the activity price
+            const isFree = $(this).find('.free_activity').is(':checked'); // Check if 'Free' checkbox is checked
 
-        // Collect selected activities and their prices
-        document.querySelectorAll('#activitiesForm .form-check-input-ch').forEach(checkbox => {
-            // Get the activity ID from the checkbox ID
-            const activityId = checkbox.id.split('_')[2];
-
-            // Find the corresponding price input based on the data attribute
-            const priceInput = document.querySelector(`input[name="activities_price[]"][data-activity-id="${activityId}"]`);
-
-            if (priceInput) {
-                activitiesData.push({
-                    activityId: activityId,
-                    price: priceInput.value || 0 // Default price to 0 if empty
-                });
-            } else {
-                console.warn(`Price input not found for Activity ID: ${activityId}`); // Debugging
-            }
-        });
-         document.querySelectorAll('#activitiesForm .form-check-input-ch:checked').forEach(checkboxs => {
-            const checked_activityId = checkboxs.id.split('_')[2];
-            selectedActivities.push(checked_activityId)
+            activities.push({
+                activity_id: activityId,
+                price: price,
+                free_activity: isFree
+            });
         });
 
-        const saveButton = document.querySelector('.btn-primary');
-        saveButton.disabled = true; // Disable the button to prevent multiple clicks
+        const activitiesJson = JSON.stringify(activities);
 
         try {
-            let package_id = {{$package->id}}
-            // Send selected activities and their prices to the server using Fetch API
+            const package_id = {{$package->id}}; 
+            const token = '{{$token}}';
+            
+            // Send the data to the server using Fetch API
             const response = await fetch(`${window.location.origin}/api/package/save-activities`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer {{$token}}', // Provide Sanctum token in header
+                    'Authorization': `Bearer ${token}`, // Pass Sanctum token in header
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     package_id: package_id,
-                    selected_activities: selectedActivities,
-                    activities: activitiesData
+                    activities: activities
                 })
             });
 
             const result = await response.json();
-            console.log('Response from server:', result); // Debugging: Log the full response
 
             if (response.ok) {
                 alert('Activities saved successfully!');
@@ -564,16 +574,46 @@
         } catch (error) {
             console.error('Network Error:', error);
             alert('An error occurred while saving activities. Please try again.');
-        } finally {
-            saveButton.disabled = false; // Re-enable the button
-
-            // Close the modal
-            const modalElement = document.getElementById('manageActivitiesModal');
-            const modal = bootstrap.Modal.getInstance(modalElement);
-            modal.hide();
         }
     }
-    function limitCheckboxes(checkbox) {
+
+    
+    async function loadActivities(){
+        try {
+            const package_id = {{$package->id}}; 
+            const token = '{{$token}}'; 
+            
+            // Send the data to the server using Fetch API
+            const response = await fetch(`${window.location.origin}/api/package/load-activities`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Pass Sanctum token in header
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    package_id: package_id
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('Activities fetched successfully!');
+                // Reload the current page from the server
+                location.reload(true);
+            } else {
+                alert('Failed to fetch activities: ' + (result.message || 'Unknown error'));
+                console.error('Error Response:', result);
+            }
+        } catch (error) {
+            console.error('Network Error:', error);
+            alert('An error occurred while fetching activities. Please try again.');
+        }
+    }
+
+
+    function limitCheckboxes(checkbox) { //deprecated, need to implement this login in the check activity
         const maxAllowed = {{$package->allowed_free_packages}};
         const checkedCheckboxes = document.querySelectorAll('.form-check-input-ch:checked');
 
