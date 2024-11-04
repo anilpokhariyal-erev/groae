@@ -26,7 +26,6 @@ const generate_visa_package = (value, rowCount) => {
     })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           const visaSection = $('#visa_section');
           visaSection.empty(); // Clear existing content
 
@@ -78,7 +77,8 @@ const generate_visa_package = (value, rowCount) => {
               attributes.forEach((attr) => {
                 const option = $('<option>', {
                   value: attr.id,
-                  text: attr.value
+                  text: attr.value,
+                  description: attr.description
                 });
                 select.append(option);
               });
@@ -199,6 +199,7 @@ $(document).ready(function () {
 
       if (is_changed) dependent.trigger('change');
     }
+    $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + $(this).find(':selected').attr('description') + '</p>');
   });
 
   $('input[type=hidden]').on('change', function () {
