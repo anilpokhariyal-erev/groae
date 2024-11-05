@@ -41,10 +41,7 @@ Route::get('calculate-licensecost-payment/{id}', [CostCalculatorController::clas
 Route::get('calculate-licensecost-comparison/{id}', [CostCalculatorController::class, 'ai_compare'])->name('calculate-licensecost.compare.ai');
 Route::get('cost-summary', [CostCalculatorController::class, 'cost_summary'])->name('calculate-licensecost.summary');
 
-// Route::post('get-freezone-amenities', [CostCalculatorController::class, 'getFreezoneAmenities'])->name('get-freezone-amenities');
-// Route::post('get-offices', [CostCalculatorController::class, 'getOffices'])->name('get-offices');
-// Route::post('get-visa-activity', [CostCalculatorController::class, 'getVisaActivity'])->name('get-visa-activity');
-
+Route::get('package-raised-success', [CostCalculatorController::class, 'package_raise_success'])->name('package-raised-success');
 //added by brij these routes
 Route::get('article-blogs', [BlogController::class, 'blogs'])->name('article-blogs');
 Route::get('article-blogs/{slug}', [BlogController::class, 'blog_detail'])->name('blog-detail');

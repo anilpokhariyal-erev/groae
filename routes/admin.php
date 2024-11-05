@@ -171,13 +171,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::post('ckeditor-image-upload', [CommonController::class, 'ckeditorImageUpload']);
 
-    /*Route::get('activity', [PcActivityController::class, 'index'])->name('activity.index')->middleware('role_or_permission:view-actvity');
-    Route::get('activity/create', [PcActivityController::class, 'create'])->name('activity.create')->middleware('role_or_permission:create-actvity');
-    Route::post('activity/store', [PcActivityController::class, 'store'])->name('activity.store')->middleware('role_or_permission:store-actvity');
-    Route::get('activity/edit/{uuid}', [PcActivityController::class, 'edit'])->name('activity.edit')->middleware('role_or_permission:edit-actvity');
-    Route::put('activity/{uuid}', [PcActivityController::class, 'update'])->name('activity.update')->middleware('role_or_permission:update-actvity');
-    Route::get('activity/delete/{uuid}', [PcActivityController::class, 'destroy'])->name('activity.delete')->middleware('role_or_permission:delete-actvity');*/
-
     Route::get('activity-groups', [ActivityGroupController::class, 'index'])->name('activity-group.index')->middleware('role_or_permission:view-activity-groups');
     Route::get('activity-group/create', [ActivityGroupController::class, 'create'])->name('activity-group.create')->middleware('role_or_permission:create-activity-group');
     Route::post('activity-group/store', [ActivityGroupController::class, 'store'])->name('activity-group.store')->middleware('role_or_permission:store-activity-group');

@@ -6,10 +6,13 @@ use App\Models\Activity;
 use App\Models\License;
 use App\Models\Package;
 use App\Models\Attribute;
+use App\Models\Customer;
 use App\Models\PackageActivity;
 use App\Models\PackageHeader;
 use App\Models\Freezone;
 use App\Models\VisaPackageAttribute;
+use App\Models\PackageBooking;
+use App\Models\PackageBookingDetail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Assets\ResponseMessage;
@@ -21,6 +24,8 @@ use App\Http\Requests\CostCalculatorSummaryRequest;
 use App\Models\FreezoneBooking;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CostCalculatorController extends Controller
 {
@@ -81,6 +86,9 @@ class CostCalculatorController extends Controller
         // Retrieve the Freezone
         $freezone = Freezone::where('uuid', $request->freezone)->firstOrFail();
 
+        // customer data
+        $customer = Auth::guard('customer')->user();
+
         // Initialize the Package query with eager loading
         $query = PackageHeader::where('freezone_id', $freezone->id)
             ->with(['packageLines','attributeCosts', 'freezone.activities']);
@@ -133,9 +141,9 @@ class CostCalculatorController extends Controller
         $id = Str::uuid();
 
         $total =0;
-
+        $token = Auth::user()->createToken('InvoiceToken')->plainTextToken;
         // Render the view with compact variables
-        return view('frontend.cost_calculator.cost_summary')->with(compact('request', 
+        return view('frontend.cost_calculator.cost_summary')->with(compact('request', 'token', 'customer',
             'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses', 'filtered_package_lines','filtered_package_lines_multiple','package_lines',
         ));
     }
@@ -192,36 +200,17 @@ class CostCalculatorController extends Controller
 
 
     /**
-     * Display the specified resource.
+     * Display the Success message for Package Invoice Raised
      */
-    public function show(string $id)
+    public function package_raise_success()
     {
-        //
+        // Define the success message
+        $successMessage = 'Invoice request successfully raised. You can check your profile section for the update. This may take a few hours to reflect in your profile.';
+
+        // Return the view with the success message
+        return view('frontend.cost_calculator.invoice_raised_success', compact('successMessage'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     function cost_summary()
     {
@@ -373,4 +362,130 @@ class CostCalculatorController extends Controller
 
         return view('frontend.payment.payment_confirmation')->with(compact('transaction'));
     }
+
+
+    public function raisePackageInvoice(Request $request)
+    {
+        // Validate the core parts of the request data
+        $validatedData = $request->validate([
+            'customer.id' => 'required|string',
+            'freezone.name' => 'required|string',
+            'package.id' => 'required|string',
+            'package.price' => 'required|numeric',
+            'package.currency' => 'required|string',
+            'totalCost' => 'required|numeric',
+            'inclusions' => 'nullable|array',
+            'licenses' => 'nullable|array',
+            'activities' => 'nullable|array',
+            'visaDetails' => 'nullable|array'
+        ]);
+
+        try {
+            // Begin transaction to ensure data integrity
+            DB::beginTransaction();
+
+            // Fetch customer and package data from their respective models
+            $customer = Customer::find($validatedData["customer"]["id"]);
+            // pacakge data
+            $package = PackageHeader::find($validatedData['package']['id']);
+            
+            if (!$customer || !$package) {
+                return response()->json(['message' => 'Customer or package not found.'], 404);
+            }
+
+            // Calculate final costs, assuming discount if applicable
+            $originalCost = $validatedData['totalCost'];
+            $discountAmount = 0;
+            $finalCost = $originalCost - $discountAmount;
+
+            // Create a new entry in package_bookings
+            $packageBooking = new PackageBooking();
+            $packageBooking->customer_id = $customer->id;
+            $packageBooking->package_id = $package->id;
+            $packageBooking->original_cost = $originalCost;
+            $packageBooking->discount_amount = $discountAmount;
+            $packageBooking->final_cost = $finalCost;
+            $packageBooking->payment_status = 0; // unpaid
+            $packageBooking->status = 1; // active
+            $packageBooking->save();
+
+            // Save inclusions as package booking details
+            if (!empty($validatedData['inclusions'])) {
+                foreach ($validatedData['inclusions'] as $inclusion) {
+                    $packageBookingDetail = new PackageBookingDetail();
+                    $packageBookingDetail->package_booking_id = $packageBooking->id;
+                    $packageBookingDetail->attribute_name = $inclusion['label'];
+                    $packageBookingDetail->attribute_value = $inclusion['option'];
+                    $packageBookingDetail->quantity = 1;
+                    $packageBookingDetail->price_per_unit = $inclusion['addonCost'];
+                    $packageBookingDetail->total_cost = $inclusion['addonCost'];
+                    $packageBookingDetail->status = 1;
+                    $packageBookingDetail->save();
+                }
+            }
+
+            // Save licenses as package booking details
+            if (!empty($validatedData['licenses'])) {
+                foreach ($validatedData['licenses'] as $license) {
+                    $packageBookingDetail = new PackageBookingDetail();
+                    $packageBookingDetail->package_booking_id = $packageBooking->id;
+                    $packageBookingDetail->attribute_name = "License: " . $license['name'];
+                    $packageBookingDetail->attribute_value = $license['name'];
+                    $packageBookingDetail->quantity = 1;
+                    $packageBookingDetail->price_per_unit = $license['price'];
+                    $packageBookingDetail->total_cost = $license['price'];
+                    $packageBookingDetail->status = 1;
+                    $packageBookingDetail->save();
+                }
+            }
+
+            // Save activities as package booking details
+            if (!empty($validatedData['activities'])) {
+                foreach ($validatedData['activities'] as $activity) {
+                    $packageBookingDetail = new PackageBookingDetail();
+                    $packageBookingDetail->package_booking_id = $packageBooking->id;
+                    $packageBookingDetail->attribute_name = "Activity: " . $activity['name'];
+                    $packageBookingDetail->attribute_value = $activity['group'];
+                    $packageBookingDetail->quantity = 1;
+                    $packageBookingDetail->price_per_unit = $activity['price'];
+                    $packageBookingDetail->total_cost = $activity['price'];
+                    $packageBookingDetail->status = 1;
+                    $packageBookingDetail->save();
+                }
+            }
+
+            // Save visa details as package booking details
+            if (!empty($validatedData['visaDetails'])) {
+                foreach ($validatedData['visaDetails'] as $visaDetail) {
+                    foreach ($visaDetail['items'] as $item) {
+                        $packageBookingDetail = new PackageBookingDetail();
+                        $packageBookingDetail->package_booking_id = $packageBooking->id;
+                        $packageBookingDetail->attribute_name = "Visa Detail: " . $item['header'];
+                        $packageBookingDetail->attribute_value = $item['value'];
+                        $packageBookingDetail->quantity = 1;
+                        $packageBookingDetail->price_per_unit = $item['price'];
+                        $packageBookingDetail->total_cost = $item['price'];
+                        $packageBookingDetail->status = 1;
+                        $packageBookingDetail->save();
+                    }
+                }
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+            // Return success message
+            return response()->json(['message' => 'Invoice successfully created'], 200);
+
+        } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
+
+            // Log error and return response
+            Log::error("Error creating package invoice: " . $e->getMessage());
+            return response()->json(['message' => 'Failed to create invoice', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
 }
