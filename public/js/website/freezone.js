@@ -199,7 +199,10 @@ $(document).ready(function () {
 
       if (is_changed) dependent.trigger('change');
     }
-    $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + $(this).find(':selected').attr('description') + '</p>');
+    const description = $(this).find(':selected').attr('description');
+    if (description) {
+        $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + description + '</p>');
+    }
   });
 
   $('input[type=hidden]').on('change', function () {
