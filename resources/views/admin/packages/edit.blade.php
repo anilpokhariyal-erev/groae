@@ -380,7 +380,8 @@
 
     $(document).ready(function() {
         const attributeOptions = @json($attributeOptions);
-
+        $('.package-form').show();
+        $('.pacakge-activities').hide();
         function populateOptions(attributeId, optionsDropdown) {
             const filteredOptions = attributeOptions.filter(option => option.attribute_id == attributeId);
             optionsDropdown.empty(); // Clear existing options
@@ -410,10 +411,6 @@
             $(this).closest('tr').remove();
         });
 
-        $(document).on('click', '.free_activity', function(){
-            $(this).closest('tr').find('.activity_price').html('0.00');
-            $(this).closest('tr').find('input[name="activity_price"]').val(0.00);
-        });
 
         $(document).on('change', 'select[name^="package_lines"][name$="[attribute_id]"]', function() {
             const selectedAttributeId = $(this).val();
