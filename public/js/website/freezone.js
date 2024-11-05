@@ -28,7 +28,6 @@ const generate_visa_package = (value, rowCount) => {
     .then((data) => {
       const visaSection = $('#visa_section');
       visaSection.empty(); // Clear existing content
-
       // Group data by unique attribute_header_id
       const groupedData = data.reduce((acc, item) => {
         const headerId = item.attribute_header_id;
@@ -102,7 +101,7 @@ const generate_visa_package = (value, rowCount) => {
         });
 
         // Add "Same as First" checkbox for rows other than the first
-        if (i > 0) {
+        if (i > 0 && data.length>0) {
           const sameAsFirstCheckbox = $('<input>', {
             type: 'checkbox',
             class: 'same-as-first-checkbox',

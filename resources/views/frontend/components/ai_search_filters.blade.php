@@ -47,12 +47,11 @@
 @endsection
 
 <div class="searchFields">
-    <form class="searchingForm" id="searchForm" method="POST">
+    <form class="searchingForm" id="searchForm" method="POST" action="explore-freezone">
         @csrf
         @foreach ($attributes as $attribute)
             <div class="formContainer">
-                <input type="hidden" name="attribute_key[]" value="{{ $attribute->id }}">
-                <select class="ai_filter_options" name="attribute_value[]">
+                <select class="ai_filter_options" name="attribute_value[{{$attribute->id }}]">
                     <option value="" selected disabled>Choose {{ $attribute->label }}</option>
                     @if($attribute->allow_any)
                         <option value="any" {{ isset($selectedAttributes[$attribute->id]) && $selectedAttributes[$attribute->id] == 'any' ? 'selected' : '' }}>Any</option>
@@ -82,7 +81,6 @@
 <script>
     $(document).ready(function() {
         $('.ai_filter_options').select2({
-            // placeholder: "Select an option",
             allowClear: true
         });
     });

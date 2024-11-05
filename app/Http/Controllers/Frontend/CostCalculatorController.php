@@ -53,7 +53,11 @@ class CostCalculatorController extends Controller
             ])->findOrFail($package_id);
             $selected_freezone = $package->freezone->uuid;
         }
-        $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])->with('options')->get();
+        $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])
+            ->with(['options', 'packageAttributesCost' => function($query) use ($package_id) {
+                $query->where('package_id', $package_id);
+            }])
+            ->get();
         $freezones = Freezone::select('id', 'uuid', 'name')->where('status', 1)->get();
         $freezone_data = [];
         $max_visa_package = 0;

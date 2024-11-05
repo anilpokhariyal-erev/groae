@@ -43,10 +43,14 @@
                     @foreach ($attributes as $attribute)
                         <div class="secondColumn costCalculateForm">
                             <div class="input_wrap w-100">
+                                @php
+                                    $max_value = '';
+                                    if(isset($attribute->packageAttributesCost) && (count($attribute->packageAttributesCost)>0))
+                                    $max_value  = $attribute->packageAttributesCost[0]['max_allowed_qty']
+                                @endphp
                                 @if(!$attribute->allow_multiple)
-
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
-                                    <input type="number"  name="package_lines[{{ $attribute->name }}]" value="" class="inputField2 cursor arrowPlace" id="{{ $attribute->name }}"  min="0">
+                                    <input type="number"  name="package_lines[{{ $attribute->name }}]" value="" class="inputField2 cursor arrowPlace max_check" id="{{ $attribute->name }}" min="0" data-max="{{$max_value}}" max="{{$max_value}}">
                                     <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
                                     <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
                                 @else
@@ -125,5 +129,19 @@
             </div>
         </div>
     </section>
-    <script></script>
+    <script>
+
+        document.querySelectorAll('.max_check').forEach(function(input) {
+            input.addEventListener('change', function() {
+                const maxValue = parseInt(this.getAttribute('data-max'));
+                const currentValue = parseInt(this.value);
+
+                if (currentValue > maxValue) {
+                    alert(`The maximum allowed value is ${maxValue}.`);
+                    this.value = maxValue; // Optionally reset to max value
+                }
+            });
+        });
+
+    </script>
 </x-website-layout>
