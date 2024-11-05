@@ -17,94 +17,138 @@ const updateActivitiesList = value => {
 const generate_visa_package = (value, rowCount) => {
   let token = $('#costCalculatorForm').data('token');
   if (value) {
-    fetch(`${url}/api/freezone/${value}/visa_package`,{
+    fetch(`${url}/api/freezone/${value}/visa_package`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json' // Optional, if you want to specify content type
       }
     })
-        .then((response) => response.json())
-        .then((data) => {
-          const visaSection = $('#visa_section');
-          visaSection.empty(); // Clear existing content
+    .then((response) => response.json())
+    .then((data) => {
+      const visaSection = $('#visa_section');
+      visaSection.empty(); // Clear existing content
 
-          // Group data by unique attribute_header_id
-          const groupedData = data.reduce((acc, item) => {
-            const headerId = item.attribute_header_id;
-            if (!acc[headerId]) {
-              acc[headerId] = {
-                header: item.attribute_header,
-                attributes: []
-              };
-            }
-            acc[headerId].attributes.push(item);
-            return acc;
-          }, {});
+      // Group data by unique attribute_header_id
+      const groupedData = data.reduce((acc, item) => {
+        const headerId = item.attribute_header_id;
+        if (!acc[headerId]) {
+          acc[headerId] = {
+            header: item.attribute_header,
+            attributes: []
+          };
+        }
+        acc[headerId].attributes.push(item);
+        return acc;
+      }, {});
 
-          // Create rows based on the specified row count
-          for (let i = 0; i < rowCount; i++) {
-            const rowContainer = $('<div>', { class: 'visa-row secondColumn costCalculateForm', style: 'margin-bottom: 20px;' });
-
-            // Iterate over each unique attribute_header group to generate dropdowns
-            Object.values(groupedData).forEach((group) => {
-              const { header, attributes } = group;
-
-              // Create a div with class "input_wrap w-100"
-              const inputWrap = $('<div>', {
-                class: 'input_wrap w-100',
-                style: 'margin-top: 3%;'
-              });
-
-              // Create a select dropdown for each group
-              const select = $('<select>', {
-                name: `${header.name}[]`, // Ensure unique names for each row
-                id: `${header.name}[]`,
-                class: 'inputField2 cursor arrowPlace'
-              });
-
-              // Add a default option
-              select.append(
-                  $('<option>', {
-                    value: '',
-                    text: 'Choose an Option',
-                    disabled: true,
-                    selected: true
-                  })
-              );
-
-              // Populate the select with attribute values
-              attributes.forEach((attr) => {
-                const option = $('<option>', {
-                  value: attr.id,
-                  text: attr.value,
-                  description: attr.description
-                });
-                select.append(option);
-              });
-
-              // Create a label for the select dropdown
-              const label = $('<label>', {
-                for: `visa_package_attributes_${header.id}_${i}`,
-                text: header.title
-              });
-
-              // Append the label and select to the div
-              inputWrap.append(select,label);
-
-              // Append the input wrapper to the row container
-              rowContainer.append(inputWrap);
-            });
-
-            // Append the entire row to the visa section
-            visaSection.append(rowContainer);
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching visa package attributes:', error);
+      // Create rows based on the specified row count
+      for (let i = 0; i < rowCount; i++) {
+        const rowContainer = $('<div>', {
+          class: 'visa-row secondColumn costCalculateForm',
+          style: 'margin-bottom: 20px; position: relative;'
         });
+
+        // Iterate over each unique attribute_header group to generate dropdowns
+        Object.values(groupedData).forEach((group) => {
+          const { header, attributes } = group;
+
+          // Create a div with class "input_wrap w-100"
+          const inputWrap = $('<div>', {
+            class: 'input_wrap w-100',
+            style: 'margin-top: 3%;'
+          });
+
+          // Create a select dropdown for each group
+          const select = $('<select>', {
+            name: `${header.name}[]`, // Ensure unique names for each row
+            id: `${header.name}_${i}`,
+            class: 'inputField2 cursor arrowPlace',
+            'data-header-id': header.id,
+            'data-row-index': i
+          });
+
+          // Add a default option
+          select.append(
+            $('<option>', {
+              value: '',
+              text: 'Choose an Option',
+              disabled: true,
+              selected: true
+            })
+          );
+
+          // Populate the select with attribute values
+          attributes.forEach((attr) => {
+            const option = $('<option>', {
+              value: attr.id,
+              text: attr.value,
+              description: attr.description
+            });
+            select.append(option);
+          });
+
+          // Create a label for the select dropdown
+          const label = $('<label>', {
+            for: `visa_package_attributes_${header.id}_${i}`,
+            text: header.title
+          });
+
+          // Append the label and select to the div
+          inputWrap.append(select, label);
+
+          // Append the input wrapper to the row container
+          rowContainer.append(inputWrap);
+        });
+
+        // Add "Same as First" checkbox for rows other than the first
+        if (i > 0) {
+          const sameAsFirstCheckbox = $('<input>', {
+            type: 'checkbox',
+            class: 'same-as-first-checkbox',
+            'data-row-index': i,
+            text: 'Same as First'
+          });
+
+          const sameAsFirstLabel = $('<label>', {
+            text: 'Same as First',
+            class: 'same-as-first-label',
+            style: 'margin-left: 5px; font-size: 14px;'
+          });
+
+          // Append checkbox to the row
+          rowContainer.append(sameAsFirstCheckbox, sameAsFirstLabel);
+
+          // Add change event listener to apply first-row values when checked
+          sameAsFirstCheckbox.on('change', function() {
+            if ($(this).is(':checked')) {
+              applyFirstRowSelection(i);
+            }
+          });
+        }
+
+        // Append the entire row to the visa section
+        visaSection.append(rowContainer);
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching visa package attributes:', error);
+    });
   }
 };
+
+// Function to apply selections from the first row to the current row
+const applyFirstRowSelection = (rowIndex) => {
+  // Get all selects in the first row (rowIndex 0)
+  $('#visa_section .visa-row:eq(0) select').each(function() {
+    const headerId = $(this).data('header-id');
+    const selectedValue = $(this).val();
+
+    // Set the selected value in the corresponding select of the specified row
+    $(`#visa_section .visa-row:eq(${rowIndex}) select[data-header-id="${headerId}"]`).val(selectedValue);
+  });
+};
+
 
 const refreshSelectionDiv = (div, value) => {
   const display_div = $(`#${div}_display`);
@@ -200,9 +244,9 @@ $(document).ready(function () {
       if (is_changed) dependent.trigger('change');
     }
     const description = $(this).find(':selected').attr('description');
-    if (description) {
-        $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + description + '</p>');
-    }
+  if (description) {
+      $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + description + '</p>');
+  }
   });
 
   $('input[type=hidden]').on('change', function () {

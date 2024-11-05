@@ -3513,9 +3513,7 @@ tr:nth-child(even) {
 }
 
 .noteContainer {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
+  display: block;
   margin-top: 40px;
 }
 
