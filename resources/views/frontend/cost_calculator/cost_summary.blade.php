@@ -66,37 +66,50 @@
                         </tr>
                         @php $total_price = $package_detail->price; @endphp
 
-                        @foreach ($package_detail->attributeCosts as $attribute_cost)
+                        @foreach ($filtered_package_lines_multiple as $attribute_cost)
                             @php
                                 $total_visa_package = $request->input($attribute_cost->attribute->name) ?? $attribute_cost->allowed_free_qty;
                             @endphp
                             <tr>
                                 <td class="tHeadingTxt">{{ $attribute_cost->attribute->label }}</td>
-                                <td class="tDetailTxt">{{ $total_visa_package }}</td>
+                                <td class="tDetailTxt">{{ $package_lines[$attribute_cost->attribute->name] }}</td>
                                 <td class="tDetailTxt">
-                                    @if ($total_visa_package <= $attribute_cost->allowed_free_qty)
+                                    @if ($package_lines[$attribute_cost->attribute->name] <= $attribute_cost->allowed_free_qty)
                                         <del title="{{ $attribute_cost->attribute->label }} free up to {{ $attribute_cost->allowed_free_qty }}">
                                             {{ $attribute_cost->unit_price > 0 ? $package_detail->currency . ' ' . number_format($attribute_cost->unit_price, 2) : '' }}
                                         </del>
                                         <div>Free</div>
+                                        <span class="info-icon" title="{{ $total_attribute_cost }}">i</span>
                                     @else
                                         <div>
-                                            @php $total_attribute_cost = $attribute_cost->calculateAttributeCost($total_visa_package) @endphp
+                                            @php
+                                                $total_attribute_cost = $attribute_cost->calculateAttributeCost($package_lines[$attribute_cost->attribute->name]);
+                                            @endphp
                                             {{ $total_attribute_cost }}
-                                            @php $total_price += str_replace($package_detail->currency.' ', '', $total_attribute_cost); @endphp
+                                            @php
+                                                $numeric_total_attribute_cost = floatval(preg_replace('/[^0-9.]/', '', $total_attribute_cost));
+                                                $total_price += $numeric_total_attribute_cost;
+
+                                                // Creating info_attribute_cost with line breaks
+                                                $info_attribute_cost = $attribute_cost->allowed_free_qty . ' ' . $attribute_cost->attribute->label . ' = Free';
+                                                $info_attribute_cost .= "\n";
+                                                $info_attribute_cost .=  $package_lines[$attribute_cost->attribute->name] - $attribute_cost->allowed_free_qty . ' ' . $attribute_cost->attribute->label . ' = ' . $total_attribute_cost .' ('.$package_lines[$attribute_cost->attribute->name] - $attribute_cost->allowed_free_qty.'x'. $attribute_cost->unit_price .')';
+                                            @endphp
+                                            <span class="info-icon" title="{!! e($info_attribute_cost) !!}">i</span>
                                         </div>
                                     @endif
+
                                 </td>
                             </tr>
                         @endforeach
 
                         <tr>
                             <td class="tHeadingTxt">Package Inclusions</td>
-                            <td class="tDetailTxt">Total {{ count($package_detail->packageLines) }} in Quantity</td>
+                            <td class="tDetailTxt">Total {{ count($filtered_package_lines) }} in Quantity</td>
                             <td></td>
                         </tr>
+                        @foreach ($filtered_package_lines as $item)
 
-                        @foreach ($package_detail->packageLines as $item)
                             <tr>
                                 <td>{{ $item->attribute->label }}</td>
                                 <td>{{ $item->attributeOption->value }}</td>
@@ -136,7 +149,7 @@
                                 <td class="tDetailTxt">{{ $item->activity->name }} ({{ $item->activity->activity_group->name }})</td>
                                 <td class="tDetailTxt">
                                     @if($item->allowed_free)
-                                        <del>{!! $item->allowed_free !!}</del> <p>Free</p>
+                                        <del>{{ $package_detail->currency }} {!! $item->price !!}</del> <p>Free</p>
                                     @else
                                         {{ $package_detail->currency }} {{ $item->price }}
                                         @php $total_price += $item->price; @endphp

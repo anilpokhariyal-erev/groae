@@ -83,7 +83,7 @@ class CostCalculatorController extends Controller
 
         // Initialize the Package query with eager loading
         $query = PackageHeader::where('freezone_id', $freezone->id)
-            ->with(['packageLines', 'freezone.activities']);
+            ->with(['packageLines','attributeCosts', 'freezone.activities']);
 
         // Handle package_id if present
         if ($request->filled('package_id')) {
@@ -101,6 +101,18 @@ class CostCalculatorController extends Controller
 
         // Retrieve the matching package
         $package_detail = $query->orderBy('price', 'asc')->first();
+        $package_lines =$request->input('package_lines');
+        $filtered_package_lines = [];
+        $filtered_package_lines_multiple = [];
+        if ($package_lines) {
+            $filtered_package_lines = $package_detail->packageLines->filter(function ($line) use ($package_lines) {
+                return array_key_exists($line->attribute->name, $package_lines) && $line->attributeOption->id == $package_lines[$line->attribute->name];
+            });
+            $filtered_package_lines_multiple = $package_detail->attributeCosts->filter(function ($line) use ($package_lines) {
+                return array_key_exists($line->attribute->name, $package_lines);
+            });
+
+        }
         if (!$package_detail) {
             return redirect()->back()->withErrors(['freezone' => 'No package found matching your request.'])->withInput();
         }
@@ -124,7 +136,7 @@ class CostCalculatorController extends Controller
 
         // Render the view with compact variables
         return view('frontend.cost_calculator.cost_summary')->with(compact('request', 
-            'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses'
+            'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses', 'filtered_package_lines','filtered_package_lines_multiple','package_lines',
         ));
     }
 
