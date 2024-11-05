@@ -55,6 +55,9 @@ class HomeController extends Controller
             $decoded_data = json_decode($data);
             $selected = $decoded_data->uuid;
         }
+        if ($request->method() =="POST" && !$id) {
+            return redirect()->route('explore-freezone');
+        }
     
         // Initialize package query
         $packages = PackageHeader::where('status', 1);
