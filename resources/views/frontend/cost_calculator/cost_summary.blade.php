@@ -191,7 +191,7 @@
                         
 
                         <tr>
-                            <td class="totalTitleTxt">Actual Cost</td>
+                            <td class="totalTitleTxt">Total Cost *</td>
                             <td></td>
                             <td class="amntTxt">{{ $package_detail->currency }} {{ number_format($total_price, 2) }}</td>
                         </tr>
@@ -199,14 +199,13 @@
                 </div>
 
                 <div class="noteContainer">
-                    <h3>Note:</h3>
-                    <p>For comparison, we consider <span>license, package</span> and <span>visa type</span> costs only. Prices may vary based on selected activities at the final stage.</p>
+                    <h3>Notes:</h3>
+                    <p>{{ $package_detail->description }}</p><br>
+                    <p>* For comparison, we consider <span>license, package</span> and <span>visa type</span> costs only. Prices may vary based on selected activities at the final stage.</p>
                 </div>
 
                 <div class="bannerBtns">
-                    <a class="compBtn" href="{{ route('calculate-licensecost.compare.ai', ['id' => $id]) }}" target="_blank">AI Comparison</a>
-                    <a class="compBtn" href="{{ route('explore-freezone', ['id' => $id]) }}" target="_blank">Manual Compare</a>
-                    <a class="bookConsBtn" href="{{ route('calculate-licensecosts.settle_payment', ['id' => $id]) }}" target="_blank">Request Invoice</a>
+                    <a class="bookConsBtn" id="requestInvoice" href="#" target="_blank">Request Invoice</a>
                 </div>
             </div>
         </div>
@@ -215,4 +214,72 @@
     <a href="{{ url('contact-us') }}" class="contactUsBtn">
         <i class="bi bi-telephone"></i> Contact Us
     </a>
+
+    <script type="text/javascript">
+        const summaryData = {
+            freezone: {
+                name: "{{ $freezone->name }}"
+            },
+            package: {
+                title: "{{ $package_detail->title }}",
+                price: "{{ $package_detail->price > 0 ? $package_detail->price : 0 }}",
+                currency: "{{ $package_detail->currency }}"
+            },
+            attributes: [
+                @foreach ($filtered_package_lines_multiple as $attribute_cost)
+                {
+                    label: "{{ $attribute_cost->attribute->label }}",
+                    selectedQty: "{{ $package_lines[$attribute_cost->attribute->name] }}",
+                    freeQty: "{{ $attribute_cost->allowed_free_qty }}",
+                    unitPrice: "{{ $attribute_cost->unit_price }}",
+                    totalCost: "{{ $attribute_cost->calculateAttributeCost($package_lines[$attribute_cost->attribute->name]) }}"
+                },
+                @endforeach
+            ],
+            inclusions: [
+                @foreach ($filtered_package_lines as $item)
+                {
+                    label: "{{ $item->attribute->label }}",
+                    option: "{{ $item->attributeOption->value }}",
+                    addonCost: "{{ $item->addon_cost }}"
+                },
+                @endforeach
+            ],
+            licenses: [
+                @foreach ($licenses as $item)
+                {
+                    name: "{{ $item->name }}",
+                    price: "{{ $item->price }}"
+                },
+                @endforeach
+            ],
+            activities: [
+                @foreach ($package_activities as $item)
+                {
+                    name: "{{ $item->activity->name }}",
+                    group: "{{ $item->activity->activity_group->name }}",
+                    price: "{{ $item->price }}",
+                    isFree: "{{ $item->allowed_free ? 'true' : 'false' }}"
+                },
+                @endforeach
+            ],
+            visaDetails: [
+                @foreach ($packages_arr['visa_package_attributes'] as $items)
+                {
+                    items: [
+                        @foreach ($items as $item)
+                        {
+                            header: "{{ $item->attribute_header->title }}",
+                            value: "{{ $item->value }}",
+                            price: "{{ $item->price }}"
+                        },
+                        @endforeach
+                    ]
+                },
+                @endforeach
+            ],
+            totalCost: "{{ $total_price }}"
+        };
+        console.log(summaryData);
+    </script>
 </x-website-layout>
