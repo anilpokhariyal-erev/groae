@@ -41,8 +41,8 @@
                 <div class="backBtn">
                     <a class="backAnchor" href="{{ url()->previous() }}">
                         <img src="{{ secure_asset('images/cheveron-right.png') }}" alt="Back">
+                        <h2 class="backTxt">Back</h2>
                     </a>
-                    <h2 class="backTxt">Back</h2>
                 </div>
 
                 <div class="topHeading">
@@ -111,8 +111,8 @@
                         @foreach ($filtered_package_lines as $item)
 
                             <tr>
-                                <td>{{ $item->attribute->label }}</td>
-                                <td>{{ $item->attributeOption->value }}</td>
+                                <td class="tHeadingTxt">{{ $item->attribute->label }}</td>
+                                <td class="tDetailTxt">{{ $item->attributeOption->value }}</td>
                                 <td class="tDetailTxt">
                                     {{ $item->addon_cost > 0 ? $package_detail->currency . ' ' . $item->addon_cost : '-' }}
                                     @php $total_price += $item->addon_cost; @endphp
