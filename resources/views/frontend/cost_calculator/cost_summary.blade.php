@@ -205,7 +205,7 @@
                 </div>
 
                 <div class="bannerBtns">
-                    <a class="bookConsBtn" id="requestInvoice" href="#" target="_blank">Request Invoice</a>
+                    <a class="bookConsBtn" id="requestInvoice" href="#">Request Invoice</a>
                 </div>
             </div>
         </div>
@@ -216,70 +216,100 @@
     </a>
 
     <script type="text/javascript">
-        const summaryData = {
-            freezone: {
-                name: "{{ $freezone->name }}"
-            },
-            package: {
-                title: "{{ $package_detail->title }}",
-                price: "{{ $package_detail->price > 0 ? $package_detail->price : 0 }}",
-                currency: "{{ $package_detail->currency }}"
-            },
-            attributes: [
-                @foreach ($filtered_package_lines_multiple as $attribute_cost)
-                {
-                    label: "{{ $attribute_cost->attribute->label }}",
-                    selectedQty: "{{ $package_lines[$attribute_cost->attribute->name] }}",
-                    freeQty: "{{ $attribute_cost->allowed_free_qty }}",
-                    unitPrice: "{{ $attribute_cost->unit_price }}",
-                    totalCost: "{{ $attribute_cost->calculateAttributeCost($package_lines[$attribute_cost->attribute->name]) }}"
+        $(document).ready(function () {
+            const summaryData = {
+                freezone: {
+                    name: "{{ $freezone->name }}"
                 },
-                @endforeach
-            ],
-            inclusions: [
-                @foreach ($filtered_package_lines as $item)
-                {
-                    label: "{{ $item->attribute->label }}",
-                    option: "{{ $item->attributeOption->value }}",
-                    addonCost: "{{ $item->addon_cost }}"
+                customer: {
+                    id: "{{ $customer->id }}"
                 },
-                @endforeach
-            ],
-            licenses: [
-                @foreach ($licenses as $item)
-                {
-                    name: "{{ $item->name }}",
-                    price: "{{ $item->price }}"
+                package: {
+                    id: "{{ $package_detail->id }}",
+                    price: "{{ $package_detail->price > 0 ? $package_detail->price : 0 }}",
+                    currency: "{{ $package_detail->currency }}"
                 },
-                @endforeach
-            ],
-            activities: [
-                @foreach ($package_activities as $item)
-                {
-                    name: "{{ $item->activity->name }}",
-                    group: "{{ $item->activity->activity_group->name }}",
-                    price: "{{ $item->price }}",
-                    isFree: "{{ $item->allowed_free ? 'true' : 'false' }}"
-                },
-                @endforeach
-            ],
-            visaDetails: [
-                @foreach ($packages_arr['visa_package_attributes'] as $items)
-                {
-                    items: [
-                        @foreach ($items as $item)
-                        {
-                            header: "{{ $item->attribute_header->title }}",
-                            value: "{{ $item->value }}",
-                            price: "{{ $item->price }}"
-                        },
-                        @endforeach
-                    ]
-                },
-                @endforeach
-            ],
-            totalCost: "{{ $total_price }}"
-        };
-        console.log(summaryData);
+                attributes: [
+                    @foreach ($filtered_package_lines_multiple as $attribute_cost)
+                    {
+                        label: "{{ $attribute_cost->attribute->label }}",
+                        selectedQty: "{{ $package_lines[$attribute_cost->attribute->name] }}",
+                        freeQty: "{{ $attribute_cost->allowed_free_qty }}",
+                        unitPrice: "{{ $attribute_cost->unit_price }}",
+                        totalCost: "{{ $attribute_cost->calculateAttributeCost($package_lines[$attribute_cost->attribute->name]) }}"
+                    },
+                    @endforeach
+                ],
+                inclusions: [
+                    @foreach ($filtered_package_lines as $item)
+                    {
+                        label: "{{ $item->attribute->label }}",
+                        option: "{{ $item->attributeOption->value }}",
+                        addonCost: "{{ $item->addon_cost }}"
+                    },
+                    @endforeach
+                ],
+                licenses: [
+                    @foreach ($licenses as $item)
+                    {
+                        name: "{{ $item->name }}",
+                        price: "{{ $item->price }}"
+                    },
+                    @endforeach
+                ],
+                activities: [
+                    @foreach ($package_activities as $item)
+                    {
+                        name: "{{ $item->activity->name }}",
+                        group: "{{ $item->activity->activity_group->name }}",
+                        price: "{{ $item->price }}",
+                        isFree: "{{ $item->allowed_free ? 'true' : 'false' }}"
+                    },
+                    @endforeach
+                ],
+                visaDetails: [
+                    @foreach ($packages_arr['visa_package_attributes'] as $items)
+                    {
+                        items: [
+                            @foreach ($items as $item)
+                            {
+                                header: "{{ $item->attribute_header->title }}",
+                                value: "{{ $item->value }}",
+                                price: "{{ $item->price }}"
+                            },
+                            @endforeach
+                        ]
+                    },
+                    @endforeach
+                ],
+                totalCost: "{{ $total_price }}"
+            };
+            console.log(summaryData);
+            $('#requestInvoice').on('click', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: `/api/package/raise-invoice`,  // Update with the appropriate endpoint
+                    type: 'POST',
+                    data: JSON.stringify(summaryData),
+                    contentType: 'application/json',
+                    headers: {
+                        'Authorization': 'Bearer {{$token}}', // Use your Sanctum token
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        // Handle success response here
+                        location.href = "/package-raised-success"
+                    },
+                    error: function (error) {
+                        // Handle error response here
+                        alert('There was an error requesting the invoice. Please try again.');
+                    }
+                });
+            });
+            
+        });
+
     </script>
 </x-website-layout>
