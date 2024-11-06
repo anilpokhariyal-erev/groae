@@ -105,7 +105,7 @@
                     <!-- Renewable Price -->
                     <div class="col-md-6">
                         <div class="position-relative form-group">
-                            <label for="renewable_price">Renewable Price<span class="text-danger">*</span><</label>
+                            <label for="renewable_price">Renewable Price<span class="text-danger">*</span></label>
                             <input name="renewable_price" id="renewable_price" value="{{old('renewable_price')}}" type="number" class="form-control" min="0" require>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
                         </div>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="position-relative form-group">
-                            <label for="activity_limit">Number of Free Activities Allowed<span class="text-danger">*</span><</label>
+                            <label for="activity_limit">Number of Free Activities Allowed<span class="text-danger">*</span></label>
                             <input type="number" id="activity-limit-input" name="activity_limit"
                                    class="form-control" value="{{ old('activity_limit') }}"
                                    min="1" max="{{ count($activities) }}">
