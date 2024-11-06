@@ -130,7 +130,7 @@ class FreezoneController extends Controller
             Storage::put($originalName, file_get_contents($request->file('freezone_logo')), 'public');
 
             // Creating the Freezone
-            $name = strtolower($request->name);
+            $name = $request->name;
             $freezone = new Freezone;
             $freezone->name = $name;
             $freezone->logo = $originalName;
@@ -206,7 +206,7 @@ class FreezoneController extends Controller
         }
 
         // Update freezone fields
-        $freezone->name = strtolower($request->name);
+        $freezone->name = $request->name;
         $freezone->trending = $request->has('trending') && $request->input('trending') === 'on' ? 1 : 0;
         $freezone->status = $request->status;
 
