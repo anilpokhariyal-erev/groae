@@ -121,7 +121,7 @@
                         @endforeach
 
                         <tr>
-                            <td class="tHeadingTxt">Licences</td>
+                            <td class="tHeadingTxt">Licenses</td>
                             <td class="tDetailTxt">Total {{ count($licenses) }} in Quantity</td>
                             <td></td>
                         </tr>
