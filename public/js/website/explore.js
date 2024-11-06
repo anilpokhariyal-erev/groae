@@ -69,11 +69,7 @@ $(document).ready(function () {
   });
 
   $('#clearSearchBtn').on('click', function () {
-    if (searchParams.size) {
       window.location.href = `${origin}${pathname}`;
-    } else {
-      $('#searchForm').trigger('reset');
-    }
   });
 
   $('.checkbox').on('click', function (e) {

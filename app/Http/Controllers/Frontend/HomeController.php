@@ -47,54 +47,48 @@ class HomeController extends Controller
     public function explore_freezone(Request $request, $id = null)
     {
         $selected = null;
+
+        // Check if ID is provided and retrieve data from cache
         if ($id) {
             $data = Cache::get($id);
             if (!$data) {
                 return redirect()->route('explore-freezone');
             }
-            $decoded_data = json_decode($data);
-            $selected = $decoded_data->uuid;
+            $selected = json_decode($data)->uuid;
         }
-        if ($request->method() =="POST" && !$id) {
+
+        // Initialize package query with active status
+        $packagesQuery = PackageHeader::where('status', 1);
+
+        $attributeValues = $request->input('attribute_value', []);
+
+        // Redirect if POST request has no attribute values
+        if ($request->isMethod('post') && empty($attributeValues)) {
             return redirect()->route('explore-freezone');
         }
-    
-        // Initialize package query
-        $packages = PackageHeader::where('status', 1);
-    
-        // Process attribute parameters
-        $attributeKeys = $request->input('attribute_key');
-        $attributeValues = $request->input('attribute_value');
-        $attributeConditions = [];
-        $selectedAttributes = [];
-        if ($attributeKeys) {
-            $attributeConditions = array_map(function($key, $value) {
-                return "$key-$value";
-            }, $attributeKeys, $attributeValues);
 
-            $selectedAttributes = array_combine($attributeKeys, $attributeValues);
+        $selectedAttributes = $attributeValues ?? [];
+
+        // Apply attribute filters if they exist
+        if (!empty($attributeValues)) {
+                foreach ($attributeValues as $attributeId => $optionId) {
+                    $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
+                    $query->where('package_lines.attribute_id', $attributeId)
+                        ->where('package_lines.attribute_option_id', $optionId);
+                    });
+                }
         }
-    
-        // Apply filters only if attribute conditions exist
-        if (!empty($attributeConditions)) {
-            $packages = $packages->whereHas('packageLines', 
-            function ($query) use ($attributeConditions){
-                $query->whereIn(
-                    DB::raw('CONCAT(package_lines.attribute_id,"-",package_lines.attribute_option_id)'),
-                    $attributeConditions
-                );
-            });
-        }
-    
-        // Load related data and sort the packages
-        $packages = $packages->with(['packageLines', 'freezone'])->orderBy('id', 'DESC')->get();
-    
+
+        // Load related data and order the packages
+        $packages = $packagesQuery->with(['packageLines', 'freezone'])->orderByDesc('id')->get();
+
         // Retrieve attributes for filter options
         $attributes = $this->ai_filter_options();
-    
+
         // Pass data to the view
         return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
     }
+
     
 
     public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
