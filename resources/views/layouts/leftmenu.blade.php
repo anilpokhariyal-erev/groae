@@ -11,28 +11,7 @@
                     </a>
                 </li>
             @endif
-           
 
-            <!--<li class="{{ $has_role_or_permission('view-leads', 'ba_display_none') }}">
-                <a href="{{route('lead.index')}}" class="{{ Route::is('lead.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Lead Management
-                </a>
-            </li>
-
-            <li class="{{ $has_role_or_permission('view-other-service', 'ba_display_none') }}">
-                <a href="{{ route('other-service.index') }}" class="{{ Route::is('other-service.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Other Services
-                </a>
-            </li>
-
-            <li class="{{ $has_role_or_permission('view-testimonials', 'ba_display_none') }}">
-                <a href="{{route('testimonial.index')}}" class="{{ Route::is('testimonial.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Testimonials
-                </a>
-            </li> -->
 
             <li class="{{ $has_role_or_permission('view-offers', 'ba_display_none') }}">
                 <a href="{{route('offer.index')}}" class="{{ Route::is('offer.*') ? 'mm-active' : '' }}">
@@ -62,17 +41,6 @@
                 </a>
             </li>
 
-            <!--           
-            
-            <li>
-                <a href="{{route('additionalactivity.index')}}" class="{{ Route::is('additionalactivity.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Additional Activities
-                </a>
-            </li> 
-            -->
-
-           
 
             <li class="{{ $has_role_or_permission('view-contact', 'ba_display_none') }}">
                 <a href="{{route('contact.index')}}" class="{{ Route::is('contact.*') ? 'mm-active' : '' }}">
@@ -98,9 +66,9 @@
                         
 
             <li class="{{ $has_role_or_permission('view-process-document', 'ba_display_none') }}">
-                <a href="{{route('booking.index')}}" class="{{ Route::is('booking.*') ? 'mm-active' : '' }}">
+                <a href="{{route('package-bookings.index')}}" class="{{ Route::is('booking.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Freezone Booking Requests
+                    Manage Package Booking Requests
                 </a>
             </li>
 

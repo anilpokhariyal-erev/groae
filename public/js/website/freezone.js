@@ -102,6 +102,12 @@ const generate_visa_package = (value, rowCount) => {
 
         // Add "Same as First" checkbox for rows other than the first
         if (i > 0 && data.length>0) {
+          const divSaveAsFirst = $('<div>', {
+            text: 'Same as First',
+            class: 'divclass',
+            style: 'width: 45%; padding: 2px;text-align: center;color:#7d7d7d;'
+          });
+
           const sameAsFirstCheckbox = $('<input>', {
             type: 'checkbox',
             class: 'same-as-first-checkbox',
@@ -109,14 +115,10 @@ const generate_visa_package = (value, rowCount) => {
             text: 'Same as First'
           });
 
-          const sameAsFirstLabel = $('<label>', {
-            text: 'Same as First',
-            class: 'same-as-first-label',
-            style: 'margin-left: 5px; font-size: 14px;'
-          });
-
+          divSaveAsFirst.append(sameAsFirstCheckbox);
+          
           // Append checkbox to the row
-          rowContainer.append(sameAsFirstCheckbox, sameAsFirstLabel);
+          rowContainer.append(divSaveAsFirst);
 
           // Add change event listener to apply first-row values when checked
           sameAsFirstCheckbox.on('change', function() {
