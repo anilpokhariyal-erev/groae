@@ -14,7 +14,7 @@ class StaticPageController extends Controller
 
     public function index()
     {
-        $static_pages = StaticPage::orderBy('id', 'desc')->paginate(Utils::itemPerPage);
+        $static_pages = StaticPage::orderBy('id', 'desc')->get();
         return view('admin.static-page.static_page_index', compact('static_pages'));
     }
 
@@ -29,27 +29,16 @@ class StaticPageController extends Controller
     {
         $request->validate([
             'page_name' => 'required|string|max:100',
-            //'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:5000',
             'description' => 'required|string',
-        ]
-        /*,[
-            'image.image' => 'The file must be an image.',
-            'image.mimes' => 'Only JPEG, PNG, JPG, and SVG images are allowed.',
-            'image.max' => 'The image size should not exceed 5MB.',
-        ]*/
-        );
-
-        //$originalName = time().'_'.$request->file('image')->getClientOriginalName();
-        //$image_path = $request->file('image')->storeAs('public/freezone/static_page', $originalName);
+        ]);
 
         try{
-            $page_name = strtolower($request->page_name);
+            $page_name = $request->page_name;
             $static_page = new StaticPage;
             $static_page->page_name = $page_name;
             $static_page->description = $request->description;
-            //$static_page->image = $image_path;
             $static_page->image = NULL;
-            $static_page->slug = trim(str_replace(' ','-',$page_name));
+            $static_page->slug = trim(str_replace(' ','-',strtolower($page_name)));
             $static_page->save();
             return redirect()->route('static-page.index')->with('success', ResponseMessage::PageCreateMsg);
         }catch(\Exception){
@@ -74,7 +63,8 @@ class StaticPageController extends Controller
         $static_page = StaticPage::where('id', $id)->first();
 
         if($static_page){
-            return view('admin.static-page.static_page_edit', compact('static_page'));
+            $pages = StaticPage::where('id','!=', $id)->get();
+            return view('admin.static-page.static_page_edit', compact('static_page', 'pages'));
         }
         return abort(404);
     }
@@ -90,24 +80,15 @@ class StaticPageController extends Controller
 
         $request->validate([
             'page_name' => 'required|string|max:100',
-            //'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
+            'parent_id' => 'required|integer|exists:static_pages,id',
+            'visible_in_footer' => 'nullable|in:on',
             'description' => 'required|string',
-        ]
-        /*,[
-            'image.image' => 'The file must be an image.',
-            'image.mimes' => 'Only JPEG, PNG, JPG, and SVG images are allowed.',
-            'image.max' => 'The image size should not exceed 5MB.',
-        ]*/
-        );
-        try{
-            /*if($request->file('image')){
-                Storage::delete($static_page->image);
-                $originalName = time().'_'.$request->file('image')->getClientOriginalName();
-                $image_path = $request->file('image')->storeAs('public/freezone/static_page', $originalName);
-                $static_page->image = $image_path;
-            }*/
+        ]);
 
-            $static_page->page_name = strtolower($request->page_name);
+        try{
+            $static_page->page_name = $request->page_name;
+            $static_page->parent_id = $request->parent_id;
+            $static_page->visible_in_footer = $request->has('visible_in_footer') ? 1 : 0;
             $static_page->description = $request->description;
             $static_page->save();
 
@@ -119,7 +100,7 @@ class StaticPageController extends Controller
     }
 
 
-    public function destroy(string $uuid)
+    public function destroy(int $id)
     {
         $static_page = StaticPage::where('id', $id)->first();
 
