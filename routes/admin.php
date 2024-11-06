@@ -45,6 +45,7 @@ use App\Http\Controllers\Admin\StaticPageController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\PcAdditionalActivityController;
 use App\Http\Controllers\Admin\FreezoneBookingController;
+use App\Http\Controllers\Admin\PackageBookingController;
 use App\Http\Controllers\Admin\CustomerDocumentController;
 
 use App\Http\Controllers\Admin\AttributeController;
@@ -294,6 +295,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('packages/{package}/disabled', [PackageController::class, 'disabled'])->name('package.disabled');
     Route::get('packages/{package}/enabled', [PackageController::class, 'enabled'])->name('package.enabled');
 
+    Route::get('pacakage/bookings', [PackageBookingController::class, 'index'])->name('package-bookings.index')->middleware('role_or_permission:view-booking');
+    Route::get('pacakage/bookings/{id}', [PackageBookingController::class, 'show'])->name('package-bookings.show')->middleware('role_or_permission:view-booking');
 
     // currency Manager
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currency.view');
