@@ -106,7 +106,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="freezone">Freezone <span class="text-danger">*</span></label>
-                            <select name="freezone_id" class="custom-select">
+                            <select name="freezone_id" class="custom-select" required>
                                 <option value="">Select Freezone</option>
                                 @foreach($freezones as $freezone)
                                     <option value="{{ $freezone->id }}"
@@ -123,7 +123,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="title">Package Name <span class="text-danger">*</span></label>
-                            <input name="title" id="title" value="{{ old('title', $package->title) }}" type="text" class="form-control">
+                            <input name="title" id="title" value="{{ old('title', $package->title) }}" type="text" class="form-control" required>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('title')" />
                         </div>
                     </div>
@@ -133,7 +133,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="price">Price <span class="text-danger">*</span></label>
-                            <input name="price" id="price" value="{{ old('price', $package->price) }}" type="number" class="form-control" min="0">
+                            <input name="price" id="price" value="{{ old('price', $package->price) }}" type="number" class="form-control" min="0" required>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('price')" />
                         </div>
                     </div>
@@ -141,8 +141,8 @@
                     <!-- Renewable Price -->
                     <div class="col-md-6">
                         <div class="position-relative form-group">
-                            <label for="renewable_price">Renewable Price</label>
-                            <input name="renewable_price" id="renewable_price" value="{{ old('renewable_price', $package->renewable_price) }}" type="number" class="form-control" min="0">
+                            <label for="renewable_price">Renewable Price<span class="text-danger">*</span></label>
+                            <input name="renewable_price" id="renewable_price" value="{{ old('renewable_price', $package->renewable_price) }}" type="number" class="form-control" min="0" required>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="currency">Currency <span class="text-danger">*</span></label>
-                            <select name="currency" id="currency" class="custom-select form-control">
+                            <select name="currency" id="currency" class="custom-select form-control" required>
                                 <option value="">Select Currency</option>
                                 @foreach($currency as $curr)
                                     <option value="{{ $curr->code }}" {{ old('currency', $package->currency) == $curr->code ? 'selected' : '' }}>
@@ -164,11 +164,11 @@
                     </div>
                     <div class="col-md-6">
                         <div class="position-relative form-group">
-                            <label for="activity_limit">Number of Free Activities Allowed</label>
+                            <label for="activity_limit">Number of Free Activities Allowed<span class="text-danger">*</span></label>
                             <input type="number" id="activity-limit-input" name="activity_limit"
                                    class="form-control {{ $errors->has('activity_limit') ? 'is-invalid' : '' }}"
                                    value="{{ old('activity_limit', $package->allowed_free_packages) }}"
-                                   min="1" max="{{ count($activities) }}" >
+                                   min="1" max="{{ count($activities) }}" required>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_limit')" />
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                     <div class="col-md-8">
                         <div class="position-relative form-group">
                             <label for="description">Description <span class="text-danger">*</span></label>
-                            <textarea name="description" id="description" class="form-control">{{ old('description', $package->description) }}</textarea>
+                            <textarea name="description" id="description" class="form-control" required>{{ old('description', $package->description) }}</textarea>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('description')" />
                         </div>
                     </div>
@@ -520,6 +520,19 @@
         // Handle remove package line
         $(document).on('click', '.remove-package-line', function() {
             $(this).closest('.package-line-item').remove();
+        });
+
+        $(document).on('click', '.activity_price', function(){
+            $(this).hide();
+            $(this).closest('td').find("input[name='activity_price']").attr('type', 'number').show().focus();
+        });
+
+        $(document).on('blur', "input[name='activity_price']", function(){
+            var newActivityPrice = $(this).val();  // Get the new value
+            // Update the text display
+            $(this).closest('td').find('.activity_price').text(newActivityPrice).show();
+            // Hide the input again
+            $(this).hide();
         });
 
     });
