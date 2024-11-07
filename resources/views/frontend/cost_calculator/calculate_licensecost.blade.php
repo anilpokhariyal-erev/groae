@@ -45,16 +45,15 @@
                                     <option data-val="0" value="" disabled {{ old($attribute->name) == '' ? 'selected' : '' }}>
                                         Choose an Option
                                     </option>
-                                    @foreach ($attribute->options as $option)
-                                        {{-- Check if package is set and if the package contains this option --}}
+                                    @foreach ($package->fetchPackageAttributes($attribute->id) as $option)
                                         @php
                                             $selectedOption = isset($package) && $package->packageLines->contains(function ($line) use ($attribute, $option) {
-                                                return $line->attribute_id == $attribute->id && $line->attribute_option_id == $option->id;
+                                                return $line->attribute_id == $attribute->id && $line->attribute_option_id == $option->attributeOption->id;
                                             });
                                         @endphp
-                                        <option data-val="{{ $option->value }}" value="{{ $option->id }}"
-                                            {{ $selectedOption || old($attribute->name) == $option->id ? 'selected' : '' }}>
-                                            {{ $option->value }}
+                                        <option data-val="{{ $option->attributeOption->value }}" value="{{ $option->attributeOption->id }}"
+                                            {{ $selectedOption || old($attribute->name) == $option->attributeOption->id ? 'selected' : '' }}>
+                                            {{ $option->attributeOption->value }}
                                         </option>
                                     @endforeach
                                 </select>

@@ -53,27 +53,24 @@ class CostCalculatorController extends Controller
             ])->findOrFail($package_id);
             $selected_freezone = $package->freezone->uuid;
         }
-        $attributes = Attribute::where([['status', 1], ['show_in_calculator', 1]])
-            ->with(['options', 'packageAttributesCost' => function($query) use ($package_id) {
-                $query->where('package_id', $package_id);
-            }])
-            ->get();
-        $freezones = Freezone::select('id', 'uuid', 'name')->where('status', 1)->get();
-        $freezone_data = [];
-        $max_visa_package = 0;
-        if ($selected_freezone) {
-            $max_visa_package = PackageHeader::where('status', 1)
-                ->whereHas('freezone', function ($query) use ($selected_freezone) {
-                    $query->where('uuid', $selected_freezone);
-                })->max('visa_package');
+        
+        $attributes = Attribute::where('status', 1)
+                    ->whereIn('id', explode(',', $package->show_on_calculator))
+                    ->with(['options', 'packageAttributesCost' => function($query) use ($package_id) {
+                        $query->where('package_id', $package_id);
+                    }])
+                    ->get();
 
+
+        $freezone_data = [];
+        if ($selected_freezone) {            
             $freezone_data = Freezone::where('uuid', $selected_freezone)->with(['licenses', 'locations', 'activity_groups'])->first();
 
         }
 
         $token = config('auth.app_api_token');
 
-        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezones', 'freezone_data', 'attributes', 'max_visa_package','token'));
+        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezone_data', 'attributes', 'token'));
     }
 
     /**
