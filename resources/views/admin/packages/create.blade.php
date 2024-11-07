@@ -214,7 +214,7 @@
                         <select name="package_lines[${lineIndex}][attribute_id]" class="custom-select attribute-select" data-line="${lineIndex}">
                             <option value="">Select Attribute</option>
                             @foreach($attributes as $attribute)
-            <option value="{{$attribute->id}}" data-allow-multiple="{{$attribute->allow_multiple}}">{{$attribute->label}}</option>
+            <option value="{{$attribute->id}}" data-show-on-calculator="{{$attribute->show_in_calculator}}" data-allow-multiple="{{$attribute->allow_multiple}}">{{$attribute->label}}</option>
                             @endforeach
             </select>
             <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.attribute_id')" />
@@ -275,6 +275,20 @@
                 var line = $(this).data('line');
                 var $optionSelect = $('#option-select-' + line);
                 let allow_multiple = $(this).find(':selected').data('allow-multiple');
+                let show_on_calculator = $(this).find(':selected').data("show-on-calculator");
+                let calculator_element = $(this).closest('.package-line-item').find('.show_on_calculator_check');
+                if(show_on_calculator==1){
+                    calculator_element.prop('checked', true);
+                    if (!show_on_calculator_arr.includes(attributeId)) {
+                        show_on_calculator_arr.push(attributeId);
+                    }
+                }else{
+                    calculator_element.prop('checked', false);
+                    // Remove attribute_id from the array if it exists
+                    show_on_calculator_arr = show_on_calculator_arr.filter(id => id != attributeId);
+                }
+                $('#show_on_calculator').val(show_on_calculator_arr);
+
                 if(allow_multiple =='0'){
                     $(this).closest('.package-line-item').find('.multiple_off').show();
                     $(this).closest('.package-line-item').find('.multiple_on').hide();
@@ -299,9 +313,7 @@
                     }
                 }
             });
-        });
-
-        $(document).ready(function () {
+            
             $('#freezone-select').on('change', function () {
                 $('#package-lines-container').find('.package-line-item').remove();
                 let freezone_uuid = $(this).find(':selected').data('uuid');

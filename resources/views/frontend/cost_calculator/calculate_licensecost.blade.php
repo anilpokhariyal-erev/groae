@@ -17,29 +17,15 @@
                         <span style="color:#304a6f">Package:</span> 
                         <strong>{{$package->title}}</strong>
                     </h3>
+                    <h3 style="text-align:center">
+                        <span style="color:#304a6f">Freezone:</span> 
+                        <strong>{{$package->freezone->name}}</strong>
+                    </h3>
                 </div>
                 <form id="costCalculatorForm" class="signupFormItems" method="post" data-token={{$token}}
                       action="{{ route('calculate-licensecosts.store') }}{{ isset($package->id) ? '?package_id=' . encrypt($package->id) : '' }}"  novalidate>
                     @csrf
-                    <div class="secondColumn costCalculateForm">
-                        <div class="input_wrap w-100">
-                            <select required name="freezone" id="freezone" class="inputField2 cursor arrowPlace"
-                                aria-placeholder=" ">
-                                <option value="" disabled {{ $selected_freezone == '' ? 'selected' : '' }}>Choose
-                                    an
-                                    Option</option>
-                                @foreach ($freezones as $item)
-                                    <option value="{{ $item->uuid }}"
-                                        {{ $selected_freezone == $item->uuid ? 'selected' : '' }}>{{ $item->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <label for="freezone">Freezone</label>
-                            <p id="freezone_error" class="errorMessage"></p>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone')" />
-                        </div>
-                    </div>
-
+                    <input type="hidden" name="freezone" id="freezone" value="{{$package->freezone->uuid}}">
                     @foreach ($attributes as $attribute)
                         <div class="secondColumn costCalculateForm">
                             <div class="input_wrap w-100">
@@ -51,7 +37,7 @@
                                 @if(!$attribute->allow_multiple)
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
                                     <input type="number"  name="package_lines[{{ $attribute->name }}]" value="" class="inputField2 cursor arrowPlace max_check" id="{{ $attribute->name }}" min="0" @if($max_value>0) data-max="{{$max_value}}" max="{{$max_value}}" @endif>
-                                    <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
+                                    <label for="package_lines[{{ $attribute->name }}]">{{ $attribute->label }}</label>
                                     <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
                                 @else
                                 <select required name="package_lines[{{ $attribute->name }}]" id="{{ $attribute->name }}"
@@ -72,7 +58,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <label for="attribute_{{ $attribute->id }}">{{ $attribute->label }}</label>
+                                <label for="package_lines[{{ $attribute->name }}]">{{ $attribute->label }}</label>
                                 <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
                                 <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
                                 @endif
