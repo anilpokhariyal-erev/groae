@@ -21,6 +21,7 @@ class PackageHeader extends Model
         'trending',
         'visa_package',
         'allowed_free_packages',
+        'show_on_calculator',
         'status',
         'updated_by',
     ];
