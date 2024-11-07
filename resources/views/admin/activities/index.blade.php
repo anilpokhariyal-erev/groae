@@ -52,6 +52,7 @@
                             <th>#</th>
                             <th>Activity Name</th>
                             <th>Activity Group</th>
+                            <th>License</th>
                             <th>Price</th>
                             <th>Code</th>
                             <th>Created Date</th>
@@ -65,6 +66,7 @@
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucwords($activity->name)}}</td>
                                 <td>{{$activity->activity_group ? ucwords($activity->activity_group->name) : ''}}</td>
+                                <td>{{$activity->license?->name}}</td>
                                 <td>{{ $activity->price }}</td>
                                 <td>{{$activity->code}}</td>
                                 <td>{{$activity->created_at->format('Y-m-d')}}</td>

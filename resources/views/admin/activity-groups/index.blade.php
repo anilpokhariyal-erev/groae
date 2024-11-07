@@ -52,6 +52,7 @@
                             <th>#</th>
                             <th>Group Name</th>
                             <th>Freezone</th>
+                            <th>License</th>
                             <th>Code</th>
                             <th>Created Date</th>
                             <th>Action</th>
@@ -64,6 +65,7 @@
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucwords($activityGroup->name)}}</td>
                                 <td>{{ucwords($activityGroup->freezone->name)}}</td>
+                                <td>{{$activityGroup->license?->name}}</td>
                                 <td>{{$activityGroup->code}}</td>
                                 <td>{{$activityGroup->created_at->format('Y-m-d')}}</td>
                                 <td>

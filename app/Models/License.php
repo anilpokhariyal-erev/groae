@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class License extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $fillable = [
+        'name',
+        'description',
+        'freezone_id',
+        'price',
+        'status'
+    ];
 
     public function freezone()
     {
