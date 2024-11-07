@@ -53,7 +53,7 @@ class CostCalculatorController extends Controller
             ])->findOrFail($package_id);
             $selected_freezone = $package->freezone->uuid;
         }
-        
+
         $attributes = Attribute::where('status', 1)
                     ->whereIn('id', explode(',', $package->show_on_calculator))
                     ->with(['options', 'packageAttributesCost' => function($query) use ($package_id) {
@@ -133,9 +133,9 @@ class CostCalculatorController extends Controller
         $package_activities = $this->getPackageActivities($activityIds, $package_id);
 
         $licenseIds = Activity::whereIn('id', $activityIds)
-            ->pluck('licence_id') // Extract only licence_id column
-            ->unique()            // Ensure the IDs are unique
-            ->values();
+                    ->pluck('licence_id') // Extract only licence_id column
+                    ->unique()            // Ensure the IDs are unique
+                    ->values();
         $licenses = License::whereIn('id', $licenseIds)->get();
 
         // Generate a UUID for the session
