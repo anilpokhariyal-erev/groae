@@ -75,18 +75,18 @@ class PackageController extends Controller
                 // Store in package_attributes_cost if attribute_option_id is empty
                 PackageAttributesCost::create([
                     'package_id' => $package->id,
-                    'attribute_id' => $line['attribute_id'],
-                    'allowed_free_qty' => $line['allowed_free_qty'],
-                    'max_allowed_qty' => $line['max_allowed_qty'],
-                    'unit_price' => $line['unit_price'],
+                    'attribute_id' => $line['attribute_id'] ?? null,
+                    'allowed_free_qty' => $line['allowed_free_qty'] ?? 0,
+                    'max_allowed_qty' => $line['max_allowed_qty'] ?? 0,
+                    'unit_price' => $line['unit_price'] ?? 0,
                     'per_unit' => 1, // Assuming a default value for per_unit
                 ]);
             } else {
                 // Otherwise, store in the package_lines table
                 PackageLine::create([
                     'package_id' => $package->id,
-                    'attribute_id' => $line['attribute_id'],
-                    'attribute_option_id' => $line['attribute_option_id'],
+                    'attribute_id' => $line['attribute_id'] ?? null,
+                    'attribute_option_id' => $line['attribute_option_id'] ?? null,
                     'addon_cost' => $line['addon_cost'] ?? 0, // If addon_cost is nullable
                     'status' => 1,
                 ]);
@@ -183,9 +183,9 @@ class PackageController extends Controller
                     // Store in package_attributes_cost if attribute_option_id is empty
                     PackageAttributesCost::create([
                         'package_id' => $package->id,
-                        'attribute_id' => $line['attribute_id'],
+                        'attribute_id' => $line['attribute_id'] ?? null,
                         'allowed_free_qty' => $line['allowed_free_qty'] ?? 0, // New field handling
-                        'max_allowed_qty' => $line['max_allowed_qty'],
+                        'max_allowed_qty' => $line['max_allowed_qty'] ?? 0,
                         'unit_price' => $line['unit_price'] ?? 0, // New field handling
                         'per_unit' => 1, // Assuming a default value for per_unit
                     ]);
@@ -193,8 +193,8 @@ class PackageController extends Controller
                     // Otherwise, store in the package_lines table
                     PackageLine::create([
                         'package_id' => $package->id,
-                        'attribute_id' => $line['attribute_id'],
-                        'attribute_option_id' => $line['attribute_option_id'],
+                        'attribute_id' => $line['attribute_id'] ?? null,
+                        'attribute_option_id' => $line['attribute_option_id'] ?? null,
                         'addon_cost' => $line['addon_cost'] ?? 0, // If addon_cost is nullable
                         'status' => 1,
                     ]);

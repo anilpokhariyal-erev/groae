@@ -107,13 +107,9 @@
                         <div class="position-relative form-group">
                             <label for="freezone">Freezone <span class="text-danger">*</span></label>
                             <select name="freezone_id" class="custom-select" required>
-                                <option value="">Select Freezone</option>
-                                @foreach($freezones as $freezone)
-                                    <option value="{{ $freezone->id }}"
-                                            @if($package->freezone_id == $freezone->id) selected @endif>
-                                        {{ $freezone->name }}
-                                    </option>
-                                @endforeach
+                                <option value="{{ $package->freezone_id }}" selected>
+                                    {{ $package->freezone->name }}
+                                </option>
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_id')" />
                         </div>
@@ -337,22 +333,24 @@
                     </thead>
                     <tbody>
                     @foreach($package_activities as $activity)
-                        <tr>
-                            <td>{{ $activity->activity->name }}</td>
-                            <td>
-                                <span class="activity_price">{{ $activity->price }}</span>
-                                <input type="hidden" name="activity_id" value="{{$activity->id}}">
-                                <input type="hidden" name="activity_price" value="{{$activity->price}}">
-                            </td>
-                            <td>
-                            <input type="checkbox" class="free_activity" {{ $activity->allowed_free == 1 ? 'checked' : '' }}>
-                            </td>
-                            <td>
-                               <strong style="cursor: pointer; font-size: 20px">
-                                    <i class="fa fa-remove text-danger remove_activity" title="Remove"></i>
-                               </strong> 
-                            </td>
-                        </tr>
+                        @if($activity->activity)
+                            <tr>
+                                <td>{{ $activity->activity->name }}</td>
+                                <td>
+                                    <span class="activity_price">{{ $activity->price }}</span>
+                                    <input type="hidden" name="activity_id" value="{{$activity->id}}">
+                                    <input type="hidden" name="activity_price" value="{{$activity->price}}">
+                                </td>
+                                <td>
+                                <input type="checkbox" class="free_activity" {{ $activity->allowed_free == 1 ? 'checked' : '' }}>
+                                </td>
+                                <td>
+                                <strong style="cursor: pointer; font-size: 20px">
+                                        <i class="fa fa-remove text-danger remove_activity" title="Remove"></i>
+                                </strong> 
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>
