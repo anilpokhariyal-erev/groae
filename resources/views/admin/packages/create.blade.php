@@ -134,7 +134,8 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- For show on calculator field -->
+                <input type="hidden" name="show_on_calculator" id="show_on_calculator">
                 <div class="row">
                     <!-- Package Description -->
                     <div class="col-md-8">
@@ -200,7 +201,7 @@
 
     <script src="{{ secure_asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
     <script>
-
+        let show_on_calculator_arr = [];
         document.getElementById('add-package-line').addEventListener('click', function() {
             let lineIndex = $('.package-line-item').length +1;
             let container = document.getElementById('package-lines-container');
@@ -257,6 +258,7 @@
                   </div>
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+                    <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;"> Show on Calculator
                 </div>
             `;
             container.appendChild(newRow);
@@ -343,6 +345,26 @@
                         $('#response').html('<p>An error occurred</p>');
                     }
                 });
+            });
+
+            $(document).on('click', '.show_on_calculator_check', function() {
+                let attribute_id = $(this).closest('.package-line-item').find('.attribute-select').val();
+                // Prevent checking if attribute_id is null or 0
+                if (!attribute_id || attribute_id === "0") {
+                    alert("Please select a valid attribute first.");
+                    $(this).prop('checked', false);
+                    return;
+                }
+                if ($(this).is(':checked')) {
+                    // Add attribute_id to the array if it's not already included
+                    if (!show_on_calculator_arr.includes(attribute_id)) {
+                        show_on_calculator_arr.push(attribute_id);
+                    }
+                } else {
+                    // Remove attribute_id from the array if it exists
+                    show_on_calculator_arr = show_on_calculator_arr.filter(id => id !== attribute_id);
+                }
+                $('#show_on_calculator').val(show_on_calculator_arr);
             });
         });
 

@@ -172,8 +172,12 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_limit')" />
                         </div>
                     </div>
-
                 </div>
+                <!-- For show on calculator field -->
+                @php
+                    $showOnCalculatorArray = explode(',', $package->show_on_calculator);
+                @endphp
+                 <input type="hidden" name="show_on_calculator" id="show_on_calculator" value="{{$package->show_on_calculator}}">
                 <div class="row">
                     <!-- Package Description -->
                     <div class="col-md-8">
@@ -242,6 +246,8 @@
 
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+                                            <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;" @if(in_array($line->attribute_id, $showOnCalculatorArray)) 
+                                            checked @endif> Show on Calculator
                                         </div>
                                     </div>
                                 @endforeach
@@ -287,6 +293,9 @@
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <!-- Only add the remove button for existing lines -->
                                             <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+                                            <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;"
+                                            @if(in_array($line->attribute_id, $showOnCalculatorArray)) 
+                                            checked @endif> Show on Calculator
                                         </div>
                                     </div>
 
@@ -377,7 +386,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </x-admin-layout>
 <script>
-
+    let show_on_calculator_arr = "{{$package->show_on_calculator}}".split(',');
     $(document).ready(function() {
         const attributeOptions = @json($attributeOptions);
         $('.package-form').show();
@@ -508,6 +517,7 @@
                         </div>
                         <div class="col-md-12 d-flex justify-content-end">
                             <button type="button" class="btn btn-warning remove-package-line">Remove</button>
+                            <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;"> Show on Calculator
                         </div>
                     </div>
                 `;
@@ -622,15 +632,34 @@
         }
     }
 
-
-    function limitCheckboxes(checkbox) { //deprecated, need to implement this login in the check activity
+    $(document).on('click','.free_activity', function(){
         const maxAllowed = {{$package->allowed_free_packages}};
-        const checkedCheckboxes = document.querySelectorAll('.form-check-input-ch:checked');
+        const checkedCheckboxes = document.querySelectorAll('.free_activity:checked');
 
         if (checkedCheckboxes.length > maxAllowed) {
             alert(`You can only select up to ${maxAllowed} activities.`);
-            checkbox.checked = false; // Uncheck the checkbox if limit exceeded
+            $(this).prop('checked', false);
         }
-    }
+    });
+
+    $(document).on('click', '.show_on_calculator_check', function() {
+        let attribute_id = $(this).closest('.package-line-item').find('.attribute-select').val();
+        // Prevent checking if attribute_id is null or 0
+        if (!attribute_id || attribute_id === "0") {
+            alert("Please select a valid attribute first.");
+            $(this).prop('checked', false);
+            return;
+        }
+        if ($(this).is(':checked')) {
+            // Add attribute_id to the array if it's not already included
+            if (!show_on_calculator_arr.includes(attribute_id)) {
+                show_on_calculator_arr.push(attribute_id);
+            }
+        } else {
+            // Remove attribute_id from the array if it exists
+            show_on_calculator_arr = show_on_calculator_arr.filter(id => id !== attribute_id);
+        }
+        $('#show_on_calculator').val(show_on_calculator_arr);
+    });
 
 </script>
