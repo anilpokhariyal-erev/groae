@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-
-class AddStatusColumnAndForeignKeysToPackageAttributesCostTable extends Migration
+class AddStatusAndForeignKeysToPackageAttributesCostTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +14,10 @@ class AddStatusColumnAndForeignKeysToPackageAttributesCostTable extends Migratio
     public function up()
     {
         Schema::table('package_attributes_cost', function (Blueprint $table) {
-            // Add new status column after max_allowed_qty with default value 1
+            // Add the new column
             $table->tinyInteger('status')->default(1)->after('max_allowed_qty');
 
-            // Add foreign key constraints
+            // Add foreign keys
             $table->foreign('package_id')->references('id')->on('package_headers')->onDelete('cascade');
             $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
         });
@@ -32,11 +31,9 @@ class AddStatusColumnAndForeignKeysToPackageAttributesCostTable extends Migratio
     public function down()
     {
         Schema::table('package_attributes_cost', function (Blueprint $table) {
-            // Drop the foreign keys
+            // Drop the foreign keys and the status column
             $table->dropForeign(['package_id']);
             $table->dropForeign(['attribute_id']);
-
-            // Drop the status column
             $table->dropColumn('status');
         });
     }
