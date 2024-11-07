@@ -19,6 +19,7 @@ class PackageAttributesCost extends Model
         'max_allowed_qty',
         'unit_price',
         'per_unit',
+        'status',
     ];
 
     // Relationships
