@@ -60,15 +60,6 @@ Route::post('upload-file', function (Request $request) {
         return response()->json(['error' => 'File not found.'], 404);
     }
 });
-// return response()->download($url);
-// use Illuminate\Support\Facades\Response;
-// use Illuminate\Http\Response as HttpResponse;
-
-// Route::get('download-file/{path}', function ($path) {
-// return Storage::disk('s3')->url('customer_documents/77bb9608-0793-4df8-a5a7-6dd0924006e0/1710846232_Activity-List.pdf');
-// return Storage::disk('s3')->get('uploads/' . $path);
-// });
-
 
 
 Route::get('{key}/{id}', [ApiController::class, 'getData']);
