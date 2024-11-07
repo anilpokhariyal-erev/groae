@@ -46,6 +46,7 @@ class HomeController extends Controller
 
     public function explore_freezone(Request $request, $id = null)
     {
+
         $selected = null;
 
         // Check if ID is provided and retrieve data from cache
@@ -72,6 +73,10 @@ class HomeController extends Controller
         // Apply attribute filters if they exist
         if (!empty($attributeValues)) {
                 foreach ($attributeValues as $attributeId => $optionId) {
+                    // Check if the optionId is 'any' and skip adding a condition if true
+                    if ($optionId === 'any') {
+                        continue; // Skip this iteration if 'any'
+                    }
                     $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
                     $query->where('package_lines.attribute_id', $attributeId)
                         ->where('package_lines.attribute_option_id', $optionId);
