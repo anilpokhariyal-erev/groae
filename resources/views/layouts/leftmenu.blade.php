@@ -203,6 +203,16 @@
                 </li>
             @endif
 
+            @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-fixed-fees'))
+                <li>
+                    <a href="{{ route('fixed-fee.index') }}" class="{{ Route::is('fixed-fee.index') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon fa-solid fa-money-bill-wave"></i>
+                        Fixed Fees
+                    </a>
+                </li>
+            @endif
+
+
             @if(auth()->user()->hasRole('superadmin') || auth()->user()->can('view-attribute-options'))
                 <li>
                     <a href="{{ route('admin.ai_search_filters') }}" class="{{ Route::is('admin.ai_search_filters') ? 'mm-active' : '' }}">
