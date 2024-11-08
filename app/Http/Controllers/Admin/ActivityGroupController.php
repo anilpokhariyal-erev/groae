@@ -8,6 +8,7 @@ use App\Models\ActivityGroup;
 use App\Models\License;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ActivityGroupController extends Controller
 {
@@ -67,6 +68,7 @@ class ActivityGroupController extends Controller
     /**
      * Update the specified activity group in storage.
      */
+
     public function update(Request $request, ActivityGroup $activityGroup)
     {
         // Validate the incoming request
@@ -75,7 +77,12 @@ class ActivityGroupController extends Controller
             'description' => 'nullable|string',
             'freezone_id' => 'required|exists:freezones,id',
             'licence_id' => 'required|exists:licenses,id',
-            'code' => 'nullable|string|max:20|unique:activity_groups,code',
+            'code' => [
+                'nullable',
+                'string',
+                'max:20',
+                Rule::unique('activity_groups', 'code')->ignore($activityGroup->id), // Ignore the current activityGroup record
+            ],
         ]);
 
         // Update the activity group with the validated data
