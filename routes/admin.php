@@ -31,7 +31,7 @@ use App\Http\Controllers\Admin\ActivityGroupController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\VisaPackageAttributeHeaderController;
 use App\Http\Controllers\Admin\VisaPackageAttributeController;
-
+use App\Http\Controllers\Admin\FixedFeeController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Frontend\FileController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -306,4 +306,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('currencies/{currency}', [CurrencyController::class, 'update'])->name('currency.update');
     Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currency.destroy');
 
+    Route::get('fixed-fees', [FixedFeeController::class, 'index'])->name('fixed-fee.index')->middleware('role_or_permission:view-fixed-fees');
+    Route::get('fixed-fee/create', [FixedFeeController::class, 'create'])->name('fixed-fee.create')->middleware('role_or_permission:create-fixed-fee');
+    Route::post('fixed-fee/store', [FixedFeeController::class, 'store'])->name('fixed-fee.store')->middleware('role_or_permission:store-fixed-fee');
+    Route::get('fixed-fee/edit/{id}', [FixedFeeController::class, 'edit'])->name('fixed-fee.edit')->middleware('role_or_permission:edit-fixed-fee');
+    Route::put('fixed-fee/{id}', [FixedFeeController::class, 'update'])->name('fixed-fee.update')->middleware('role_or_permission:update-fixed-fee');
+    Route::get('fixed-fee/delete/{id}', [FixedFeeController::class, 'destroy'])->name('fixed-fee.delete')->middleware('role_or_permission:delete-fixed-fee');
 });
