@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
 {
@@ -14,16 +15,12 @@ class SettingController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        // Fetching 'min' and 'max' data for 'manage_ai_fields_limit'
-        $ai_field_limits = Setting::where('section_key', 'manage_ai_fields_limit')
-                                  ->pluck('value', 'title') // Fetching 'value' and 'title' fields as key-value pairs
-                                  ->toArray(); // Convert to an array
-
-        $ai_package_limits = Setting::where('section_key', 'manage_package_fields_limit')
-            ->pluck('value', 'title') // Fetching 'value' and 'title' fields as key-value pairs
-            ->toArray();
-
-        return view('admin.setting.setting', compact( 'ai_field_limits', 'ai_package_limits'));
+        $settings = Setting::all();
+        $settings_data = [];
+        foreach ($settings as $setting){
+            $settings_data[$setting->section_key][$setting->title] = $setting->value;
+        }
+        return view('admin.setting.setting', compact('settings_data'));
     }
 
     public function numbers(){
@@ -33,28 +30,71 @@ class SettingController extends Controller
         return view('admin.setting.numbers', compact('groae_number'));
     }
 
-    public function setting_store(Request $request){
-        $request->validate([
+
+    public function setting_store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'ai_field_limit' => 'required|array',
             'ai_field_limit.*.value' => 'nullable|integer',
+            'ai_package_limit' => 'required|array',
+            'ai_package_limit.*.value' => 'nullable|integer',
+            'company_name' => 'required|string|max:255',
+            'company_tin_no' => 'required|string|max:50',
+            'company_address' => 'required|string|max:500',
+            'company_phone' => 'required|string|max:20',
         ]);
-        
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->route('setting.view')->withErrors($validator)->withInput();
+        }
+        $validatedData = $validator->validate();
         try {
-
             // Handling AI Field Limits (min/max)
-            $section_key_ai = $request->ai_field_limit[0]['section_key'];
-            Setting::where('section_key', $section_key_ai)->delete();
-            Setting::insert($request->ai_field_limit);
+            foreach ($request->ai_field_limit as $fieldLimit) {
+                Setting::updateOrCreate(
+                    [
+                        'section_key' => $fieldLimit['section_key'],
+                        'title' => $fieldLimit['title']
+                    ],
+                    [
+                        'value' => $fieldLimit['value']
+                    ]
+                );
+            }
 
-            $section_package_key_ai = $request->ai_package_limit[0]['section_key'];
-            Setting::where('section_key', $section_package_key_ai)->delete();
-            Setting::insert($request->ai_package_limit);
+            foreach ($request->ai_package_limit as $packageLimit) {
+                Setting::updateOrCreate(
+                    [
+                        'section_key' => $packageLimit['section_key'],
+                        'title' => $packageLimit['title']
+                    ],
+                    [
+                        'value' => $packageLimit['value']
+                    ]
+                );
+            }
+           // Assuming you have a Setting model that saves key-value pairs
+            $companyInfo = [
+                'Company Name' => $validatedData['company_name'],
+                'Company TIN No' => $validatedData['company_tin_no'],
+                'Company Address' => $validatedData['company_address'],
+                'Company Phone' => $validatedData['company_phone'],
+            ];
+
+            foreach ($companyInfo as $title => $value) {
+                Setting::updateOrCreate(
+                    ['section_key'=>'company_info', 'title' => $title],
+                    ['value' => $value]
+                );
+            }
 
             return back()->with('success', 'Settings successfully updated');
         } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+            return back()->with('errors', 'Failed to save settings: ' . $e->getMessage());
         }
     }
+
 
     public function numbers_store(Request $request){
         $request->validate([
@@ -75,4 +115,5 @@ class SettingController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
 }
