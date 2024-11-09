@@ -55,6 +55,9 @@ class AuthController extends Controller
     {
         if (Auth::guard('customer')->check())
             return redirect()->route('home');
+        $number1 = random_int(1, 10);
+        $number2 = random_int(1, 10);
+        session(['captcha_question' => "$number1 + $number2", 'captcha_answer' => $number1 + $number2]);
 
         $countries = Country::all();
 
@@ -79,7 +82,15 @@ class AuthController extends Controller
             'address' => ['nullable', 'string', 'max:255'],
             'mobile_number' => ['required', 'string', 'max:15', 'min:7', 'unique:' . Customer::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . Customer::class],
-            'password' => ['required', 'confirmed', RulesPassword::min(6)->mixedCase()->letters()->numbers()]
+            'password' => ['required', 'confirmed', RulesPassword::min(6)->mixedCase()->letters()->numbers()],
+            'captcha' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if ((int) $value !== session('captcha_answer')) {
+                        $fail('The CAPTCHA answer is incorrect.');
+                    }
+                },
+            ],
         ]);
 
 
@@ -121,6 +132,8 @@ class AuthController extends Controller
 
         $previousUrl = Session::pull('previous_url', '/');
         $formInput = Session::pull('form_input');
+        session()->forget(['captcha_question', 'captcha_answer']);
+
         return redirect()->intended($previousUrl)->withInput($formInput)->with('success', ResponseMessage::ACCOUNT_CREATED);
 
     }
