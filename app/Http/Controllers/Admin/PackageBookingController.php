@@ -43,8 +43,8 @@ class PackageBookingController extends Controller
      */
     public function show(PackageBooking $packageBooking, string $id)
     {
-        $packageBookingsDetails = PackageBooking::with('bookingDetails')->where('status',1)->orderBy('created_at','desc')->get();
-        return view('admin.package-booking.booking_details', compact('packageBookingsDetails'));
+        $packageBookingsDetails = PackageBooking::with('bookingDetails')->where('id', $id)->where('status',1)->orderBy('created_at','desc')->get();
+        return view('admin.package-booking.invoice', compact('packageBookingsDetails'));
     }
 
     /**
