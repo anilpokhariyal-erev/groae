@@ -66,13 +66,19 @@
           </tbody>
         </table>
       </div>
+      <div class="row px-14 font-bold">
+        <div class="col-md-9">
+          Package: {{$booking->package->title}}
+        </div>
+        <div class="col-md-2">{{$booking->package->currency}} {{$booking->package->price}}</div>
+      </div>
 
       <div class="px-14 py-10 text-sm text-neutral-700">
         <table class="w-full border-collapse border-spacing-0">
           <thead>
             <tr>
               <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">#</td>
-              <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Product details</td>
+              <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Add-Ons</td>
               <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Price</td>
               <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Qty.</td>
               <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Subtotal</td>
@@ -84,9 +90,9 @@
             <tr>
               <td class="border-b py-3 pl-3">{{$sr++}}</td>
               <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} )</td>
-              <td class="border-b py-3 pl-2 text-right">{{$booking->package->currency}} {{ number_format($detail->price_per_unit, 2) }}</td>
+              <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit, 2) }}</td>
               <td class="border-b py-3 pl-2 text-center">{{ $detail->quantity }}</td>
-              <td class="border-b py-3 pl-2 text-right">{{$booking->package->currency}} {{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
+              <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
             </tr>
           @endforeach
             <tr>
@@ -106,23 +112,35 @@
                                 <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->final_cost,2)}}</div>
                               </td>
                             </tr>
+                            @php($fixedCost = 0)
                             @foreach($fixedFees as $fixedFee)
                             <tr>
                               <td class="p-3">
-                                <div class="whitespace-nowrap text-slate-400" title="{{$fixedFee->description}}">{{$fixedFee->label}}:</div>
+                                <div class="whitespace-nowrap text-slate-400" title="{{$fixedFee->description}}">
+                                  {{$fixedFee->label}} 
+                                  @if($fixedFee->type!='fixed')
+                                  ({{$fixedFee->value}}%)
+                                  @endif
+                                  :</div>
                               </td>
                               <td class="p-3 text-right">
                                 <div class="whitespace-nowrap font-bold text-main">
+                                {{$booking->package->currency}}
                                   @if($fixedFee->type=='fixed')
-                                  {{$booking->package->currency}} 
-                                  @endif
-                                  {{$fixedFee->value}}
-                                  @if($fixedFee->type!='fixed')
-                                  %
+                                   {{$fixedFee->value}}
+                                  @else
+                                  {{$booking->final_cost*($fixedFee->value/100)}}
                                   @endif
                                 </div>
                               </td>
                             </tr>
+                            <?php
+                            if($fixedFee->type=='fixed'){
+                              $fixedCost += $fixedFee->value;
+                            }else{
+                              $fixedCost = $booking->final_cost*($fixedFee->value/100);
+                            }
+                            ?>
                             @endforeach
                             <tr>
                               <td class="bg-main p-3">
@@ -130,13 +148,8 @@
                               </td>
                               <td class="bg-main p-3 text-right">
                                 <div class="whitespace-nowrap font-bold text-white">
-                                  {{$booking->package->currency}} 
-                                  @if($fixedFee->type=='fixed')
-                                  {{number_format($booking->final_cost+$fixedFee->value,2)}}
-                                  @else
-                                  {{number_format($booking->final_cost+($booking->final_cost*$fixedFee->value/100),2)}}
-                                  @endif
-
+                                  {{$booking->package->currency}}
+                                  {{number_format($booking->final_cost+$fixedCost,2)}}
                                 </div>
                               </td>
                             </tr>
