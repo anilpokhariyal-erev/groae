@@ -45,7 +45,7 @@
             <tr>
               <td class="w-1/2 align-top">
                 <div class="text-sm text-neutral-600">
-                  <p class="font-bold">Supplier Company INC</p>
+                  <p class="font-bold">Groae</p>
                   <p>Number: 23456789</p>
                   <p>VAT: 23456789</p>
                   <p>6622 Abshire Mills</p>
@@ -55,12 +55,11 @@
               </td>
               <td class="w-1/2 align-top text-right">
                 <div class="text-sm text-neutral-600">
-                  <p class="font-bold">Customer Company</p>
-                  <p>Number: 123456789</p>
-                  <p>VAT: 23456789</p>
-                  <p>9552 Vandervort Spurs</p>
-                  <p>Paradise, 43325</p>
-                  <p>United States</p>
+                  <p class="font-bold">{{$booking->customer->name}}</p>
+                  <p>Mob: {{$booking->customer->mobile_number}}</p>
+                  <p>{{$booking->customer->address}}</p>
+                  <p>{{$booking->customer->state->name}}</p>
+                  <p>{{$booking->customer->country->name}}</p>
                 </div>
               </td>
             </tr>
@@ -76,9 +75,7 @@
               <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Product details</td>
               <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Price</td>
               <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Qty.</td>
-              <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">VAT</td>
               <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Subtotal</td>
-              <td class="border-b-2 border-main pb-3 pl-2 pr-3 text-right font-bold text-main">Subtotal + VAT</td>
             </tr>
           </thead>
           <tbody>
@@ -89,9 +86,7 @@
               <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} )</td>
               <td class="border-b py-3 pl-2 text-right">{{$booking->package->currency}} {{ number_format($detail->price_per_unit, 2) }}</td>
               <td class="border-b py-3 pl-2 text-center">{{ $detail->quantity }}</td>
-              <td class="border-b py-3 pl-2 text-center">20%</td>
               <td class="border-b py-3 pl-2 text-right">{{$booking->package->currency}} {{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
-              <td class="border-b py-3 pl-2 pr-3 text-right">{{$booking->package->currency}} {{ number_format($detail->total_cost, 2) }}</td>
             </tr>
           @endforeach
             <tr>
@@ -111,20 +106,38 @@
                                 <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->final_cost,2)}}</div>
                               </td>
                             </tr>
+                            @foreach($fixedFees as $fixedFee)
                             <tr>
                               <td class="p-3">
-                                <div class="whitespace-nowrap text-slate-400">VAT total:</div>
+                                <div class="whitespace-nowrap text-slate-400" title="{{$fixedFee->description}}">{{$fixedFee->label}}:</div>
                               </td>
                               <td class="p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-main">$64.00</div>
+                                <div class="whitespace-nowrap font-bold text-main">
+                                  @if($fixedFee->type=='fixed')
+                                  {{$booking->package->currency}} 
+                                  @endif
+                                  {{$fixedFee->value}}
+                                  @if($fixedFee->type!='fixed')
+                                  %
+                                  @endif
+                                </div>
                               </td>
                             </tr>
+                            @endforeach
                             <tr>
                               <td class="bg-main p-3">
                                 <div class="whitespace-nowrap font-bold text-white">Total:</div>
                               </td>
                               <td class="bg-main p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-white">{{$booking->package->currency}} {{number_format($booking->final_cost,2)}}</div>
+                                <div class="whitespace-nowrap font-bold text-white">
+                                  {{$booking->package->currency}} 
+                                  @if($fixedFee->type=='fixed')
+                                  {{number_format($booking->final_cost+$fixedFee->value,2)}}
+                                  @else
+                                  {{number_format($booking->final_cost+($booking->final_cost*$fixedFee->value/100),2)}}
+                                  @endif
+
+                                </div>
                               </td>
                             </tr>
                           </tbody>
@@ -149,14 +162,13 @@
 
       <div class="px-14 py-10 text-sm text-neutral-700">
         <p class="text-main font-bold">Notes</p>
-        <p class="italic">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries
-          for previewing layouts and visual mockups.</p>
+        <pre class="italic">{{ $booking->package->description }} </pre>
         </dvi>
 
         <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
-          Supplier Company
+          Groae
           <span class="text-slate-300 px-2">|</span>
-          info@company.com
+          admin@groae.com
           <span class="text-slate-300 px-2">|</span>
           +1-202-555-0106
         </footer>

@@ -7,7 +7,7 @@ use App\Models\PackageBooking;
 use App\Http\Controllers\Controller;
 use App\Assets\Utils;
 use App\Models\Customer;
-
+use App\Models\FixedFee;
 
 class PackageBookingController extends Controller
 {
@@ -41,10 +41,15 @@ class PackageBookingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PackageBooking $packageBooking, string $id)
+    public function show(int $id)
     {
-        $packageBookingsDetails = PackageBooking::with('bookingDetails')->where('id', $id)->where('status',1)->orderBy('created_at','desc')->get();
-        return view('admin.package-booking.invoice', compact('packageBookingsDetails'));
+        $packageBookingsDetails = PackageBooking::with('bookingDetails')
+                                    ->where('id', $id)
+                                    ->where('status',1)
+                                    ->orderBy('created_at','desc')
+                                    ->get();
+        $fixedFees = FixedFee::where('status',1)->get();
+        return view('admin.package-booking.invoice', compact('packageBookingsDetails', 'fixedFees'));
     }
 
     /**
