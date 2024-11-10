@@ -64,7 +64,7 @@
                                 {{ $package_detail->price > 0 ? $package_detail->currency . ' ' . number_format($package_detail->price, 2) : '' }}
                             </td>
                         </tr>
-                        @php $total_price = $package_detail->price; @endphp
+                        @php $total_price = $package_detail->price; $total_attribute_cost = 0; @endphp
 
                         @foreach ($filtered_package_lines_multiple as $attribute_cost)
                             @php
