@@ -123,6 +123,13 @@
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('company_phone')" />
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="company_phone">Company Invoice Prefix</label>
+                                    <input type="text" name="company_invoice_prefix" value="{{ $settings_data['company_info']['Company Invoice Prefix'] ?? '' }}" class="form-control">
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('company_invoice_prefix')" />
+                                </div>
+                            </div>
                         </div>
                     </fieldset>
                 </div>

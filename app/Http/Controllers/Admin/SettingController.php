@@ -42,6 +42,7 @@ class SettingController extends Controller
             'company_tin_no' => 'required|string|max:50',
             'company_address' => 'required|string|max:500',
             'company_phone' => 'required|string|max:20',
+            'company_invoice_prefix' => 'required|string|max:20',
         ]);
 
         // Check if validation fails
@@ -80,6 +81,7 @@ class SettingController extends Controller
                 'Company TIN No' => $validatedData['company_tin_no'],
                 'Company Address' => $validatedData['company_address'],
                 'Company Phone' => $validatedData['company_phone'],
+                'Company Invoice Prefix' => $validatedData['company_invoice_prefix'],
             ];
 
             foreach ($companyInfo as $title => $value) {

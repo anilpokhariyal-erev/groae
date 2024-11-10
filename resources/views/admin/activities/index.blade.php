@@ -52,6 +52,7 @@
                             <th>#</th>
                             <th>Activity Name</th>
                             <th>Activity Group</th>
+                            <th>Freezone</th>
                             <th>License</th>
                             <th>Price</th>
                             <th>Code</th>
@@ -66,12 +67,13 @@
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucwords($activity->name)}}</td>
                                 <td>{{$activity->activity_group ? ucwords($activity->activity_group->name) : ''}}</td>
+                                <td>{{$activity->freezone->name}}</td>
                                 <td>{{$activity->license?->name}}</td>
                                 <td>{{ $activity->price }}</td>
                                 <td>{{$activity->code}}</td>
                                 <td>{{$activity->created_at->format('Y-m-d')}}</td>
                                 <td>
-                                    <a class="ml-1 mr-1" href="{{route('activity.edit', $activity->id)}}">Edit</a>
+                                    <a class="btn btn-primary btn-sm" href="{{route('activity.edit', $activity->id)}}">Edit</a>
                                 </td>
                             </tr>
                         @endforeach

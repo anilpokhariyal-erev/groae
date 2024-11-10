@@ -25,8 +25,10 @@
                         </td>
                         <td class="pl-4">
                           <div>
-                            <p class="whitespace-nowrap text-slate-400 text-right">Invoice #</p>
-                            <p class="whitespace-nowrap font-bold text-main text-right">BRA-00335</p>
+                            <p class="whitespace-nowrap text-slate-400 text-right">Booking Ref. #</p>
+                            <p class="whitespace-nowrap font-bold text-main text-right">
+                              {{$company_info['Company Invoice Prefix'] ?? null;}}{{ str_pad($booking->id, 5, '0', STR_PAD_LEFT) }}
+                            </p>
                           </div>
                         </td>
                       </tr>
@@ -45,12 +47,10 @@
             <tr>
               <td class="w-1/2 align-top">
                 <div class="text-sm text-neutral-600">
-                  <p class="font-bold">Groae</p>
-                  <p>Number: 23456789</p>
-                  <p>VAT: 23456789</p>
-                  <p>6622 Abshire Mills</p>
-                  <p>Port Orlofurt, 05820</p>
-                  <p>United States</p>
+                  <p class="font-bold">{{$company_info['Company Name'] ?? null;}}</p>
+                  <p>Number: {{$company_info['Company Phone'] ?? null;}}</p>
+                  <p>TIN: {{$company_info['Company TIN No'] ?? null;}}</p>
+                  <p>{{$company_info['Company Address'] ?? null;}}</p>
                 </div>
               </td>
               <td class="w-1/2 align-top text-right">
