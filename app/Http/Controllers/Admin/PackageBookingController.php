@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Assets\Utils;
 use App\Models\Customer;
 use App\Models\FixedFee;
+use App\Models\Setting;
 
 class PackageBookingController extends Controller
 {
@@ -49,7 +50,11 @@ class PackageBookingController extends Controller
                                     ->orderBy('created_at','desc')
                                     ->get();
         $fixedFees = FixedFee::where('status',1)->get();
-        return view('admin.package-booking.invoice', compact('packageBookingsDetails', 'fixedFees'));
+        $company_info = Setting::where('section_key', 'company_info')
+                       ->pluck('value', 'title')
+                       ->toArray();
+
+        return view('admin.package-booking.invoice', compact('packageBookingsDetails', 'fixedFees','company_info'));
     }
 
     /**
