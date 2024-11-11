@@ -196,6 +196,8 @@ class CostCalculatorController extends Controller
             ->whereIn('activity_id', $activityIds)
             ->where('package_id', $package_id)
             ->where('status', 1)
+            ->orderBy('allowed_free', 'desc')
+            ->orderBy('price', 'asc')
             ->get();
     }
 

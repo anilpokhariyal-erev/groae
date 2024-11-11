@@ -7,8 +7,8 @@ const updateActivitiesList = value => {
     fetch(`${url}/api/activity_group/${value}`)
       .then(response => response.json())
       .then(data => {
-        data.activities.forEach(({ name, id }) => {
-          dom_element.append(new Option(name, `activities|${id}|${name}`));
+        data.activities.forEach(({license, name, id }) => {
+          dom_element.append(new Option(`${name} [${license}]`, `activities|${id}|${name}`));
         });
       });
   dom_element.trigger('change');

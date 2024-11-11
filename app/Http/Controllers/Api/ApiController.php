@@ -7,6 +7,7 @@ use App\Models\Package;
 use App\Models\Activity;
 use App\Models\Freezone;
 use App\Http\Controllers\Controller;
+use App\Models\PackageActivity;
 
 class ApiController extends Controller
 {
@@ -36,7 +37,19 @@ class ApiController extends Controller
                 $pattern = '/\|(.*?)\|/';
                 preg_match_all($pattern, $id, $matches);
                 $activityIds = $matches[1];
-                $activities = Activity::whereIn('activity_group_id', $activityIds)->select('id', 'name')->where('status', 1)->get();
+                $activities = PackageActivity::with(['activity' => function ($query) use ($activityIds) {
+                    $query->whereIn('activity_group_id', $activityIds);
+                }, 'activity.license'])
+                ->where('status', 1)
+                ->get()
+                ->map(function ($packageActivity) {
+                    return [
+                        'id' => $packageActivity->activity->id ?? null,
+                        'name' => $packageActivity->activity->name ?? null,
+                        'license' => $packageActivity->activity->license->name ?? null,
+                    ];
+                });
+            
                 return response()->json(compact('activities'));
                 break;
             case 'office':
