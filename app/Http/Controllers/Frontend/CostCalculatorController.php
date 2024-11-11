@@ -145,7 +145,8 @@ class CostCalculatorController extends Controller
         $token = Auth::user()->createToken('InvoiceToken')->plainTextToken;
         // Render the view with compact variables
         return view('frontend.cost_calculator.cost_summary')->with(compact('request', 'token', 'customer',
-            'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses', 'filtered_package_lines','filtered_package_lines_multiple','package_lines',
+            'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses', 
+            'filtered_package_lines','filtered_package_lines_multiple','package_lines',
         ));
     }
 

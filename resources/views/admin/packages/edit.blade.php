@@ -547,12 +547,16 @@
 
     async function saveActivities() {
         const activities = [];
-        
-        // Collect data from the table rows
-        $('.pacakge-activities .table tbody tr').each(function() {
-            const activityId = $(this).find('input[name="activity_id"]').val(); // Get the activity ID
-            const price = $(this).find('input[name="activity_price"]').val(); // Get the activity price
-            const isFree = $(this).find('.free_activity').is(':checked'); // Check if 'Free' checkbox is checked
+
+        // Get all data rows from the DataTable
+        const table = $('.pacakge-activities .table').DataTable();
+        const allRows = table.rows().nodes(); // Get all rows' DOM nodes, avoiding jQuery selectors with special characters
+
+        // Collect data from all rows
+        $(allRows).each(function() {
+            const activityId = $(this).find('input[name="activity_id"]').val();
+            const price = $(this).find('input[name="activity_price"]').val();
+            const isFree = $(this).find('.free_activity').is(':checked');
 
             activities.push({
                 activity_id: activityId,
@@ -560,8 +564,6 @@
                 free_activity: isFree
             });
         });
-
-        const activitiesJson = JSON.stringify(activities);
 
         try {
             const package_id = {{$package->id}}; 
@@ -571,7 +573,7 @@
             const response = await fetch(`${window.location.origin}/api/package/save-activities`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Pass Sanctum token in header
+                    'Authorization': `Bearer ${token}`,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
@@ -594,6 +596,7 @@
             alert('An error occurred while saving activities. Please try again.');
         }
     }
+
 
     
     async function loadActivities(){
