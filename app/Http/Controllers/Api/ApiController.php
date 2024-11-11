@@ -8,9 +8,33 @@ use App\Models\Activity;
 use App\Models\Freezone;
 use App\Http\Controllers\Controller;
 use App\Models\PackageActivity;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+    public function getPackageActivities(Request $request) {
+        $activity_groups = explode("___", $request->activityIds);
+        $activityGroupIds = array_filter(array_map(function($activity_group) {
+            return explode('|', $activity_group)[1] ?? null;
+        }, $activity_groups));
+        $package_id = $request->package_id;
+        
+        $activities = PackageActivity::join('activities','activities.id','=','package_activities.activity_id')
+                                    ->join('licenses','licenses.id','=','activities.licence_id')
+                                    ->where('package_activities.package_id', $package_id)
+                                    ->whereIn('activities.activity_group_id', $activityGroupIds)
+                                    ->where('activities.status', 1)
+                                    // ->groupBy('package_activities.activity_id')
+                                    ->select(
+                                        'package_activities.id as id', 
+                                        'licenses.name as license', 
+                                        'activities.name as name'
+                                        )
+                                    ->get();
+    
+        return response()->json(compact('activities'));
+    }
+    
     function getData($key, $id)
     {
         switch ($key) {
@@ -37,23 +61,7 @@ class ApiController extends Controller
                 $pattern = '/\|(.*?)\|/';
                 preg_match_all($pattern, $id, $matches);
                 $activityIds = $matches[1];
-                $activities = PackageActivity::with(['activity' => function ($query) use ($activityIds) {
-                    $query->whereIn('activity_group_id', $activityIds);
-                }, 'activity.license'])
-                ->where('status', 1)
-                ->get()
-                ->filter(function ($packageActivity) {
-                    // Exclude records where activity is null
-                    return $packageActivity->activity !== null;
-                })
-                ->map(function ($packageActivity) {
-                    return [
-                        'id' => $packageActivity->activity->id,
-                        'name' => $packageActivity->activity->name,
-                        'license' => $packageActivity->activity->license->name ?? null,
-                    ];
-                });
-            
+                $activities = Activity::whereIn('activity_group_id', $activityIds)->select('id', 'name')->where('status', 1)->get();
                 return response()->json(compact('activities'));
                 break;
             case 'office':

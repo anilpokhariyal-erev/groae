@@ -1,18 +1,32 @@
 const updateActivitiesList = value => {
   const dom_element = $('#activities');
-  // dom_element.empty(); // reset activity when activity is changed
-  // dom_element.append(new Option('Choose an Option', ''));
-
-  if (value)
-    fetch(`${url}/api/activity_group/${value}`)
-      .then(response => response.json())
-      .then(data => {
+  let token = $('#costCalculatorForm').data('token');
+  
+  const package_id = $('#package_id').val();
+  if (value && package_id) {
+    fetch(`${url}/api/package/get-activities?package_id=${package_id}&activityIds=${value}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}` // Make sure token is correct
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
         Object.entries(data.activities).forEach(([key, { license, name, id }]) => {
-          dom_element.append(new Option(`${name} [${license}]`, `activities|${id}|${name}`));
+            dom_element.append(new Option(`${name} [${license}]`, `activities|${id}|${name}`));
         });
-      });
+    })
+    .catch(error => console.error('Error:', error));
+}
+
   dom_element.trigger('change');
 };
+
 
 const generate_visa_package = (value, rowCount) => {
   let token = $('#costCalculatorForm').data('token');
