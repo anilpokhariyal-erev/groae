@@ -22,6 +22,7 @@ class HomeController extends Controller
     public function ai_filter_options(){
         // Fetch attributes where is_ai_search_enabled is 1 and order by ai_filter_display_order
         return Attribute::where('is_ai_search_enabled', 1)
+        ->where('status',1)
         ->orderBy('ai_filter_display_order', 'ASC')
         ->with('options') // Assuming you have a relationship called 'options' to fetch the attribute options
         ->get();
