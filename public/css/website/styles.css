@@ -1457,7 +1457,7 @@ button.KnowMoreBtn a {
   height: 192px;
   width: 182px;
   border-radius: 20px;
-  object-fit: cover;
+  object-fit: contain;
 }
 .secondLayer {
   width: 100%;
