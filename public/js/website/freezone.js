@@ -7,7 +7,7 @@ const updateActivitiesList = value => {
     fetch(`${url}/api/activity_group/${value}`)
       .then(response => response.json())
       .then(data => {
-        data.activities.forEach(({license, name, id }) => {
+        Object.entries(data.activities).forEach(([key, { license, name, id }]) => {
           dom_element.append(new Option(`${name} [${license}]`, `activities|${id}|${name}`));
         });
       });
@@ -245,10 +245,10 @@ $(document).ready(function () {
       if (is_changed) dependent.trigger('change');
     }
     const description = $(this).find(':selected').attr('description');
-  if (description) {
     $(this).closest('div').find('p').remove();
-      $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + description + '</p>');
-  }
+    if (description) {
+        $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + description + '</p>');
+    }
   });
 
   $('input[type=hidden]').on('change', function () {

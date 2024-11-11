@@ -42,10 +42,14 @@ class ApiController extends Controller
                 }, 'activity.license'])
                 ->where('status', 1)
                 ->get()
+                ->filter(function ($packageActivity) {
+                    // Exclude records where activity is null
+                    return $packageActivity->activity !== null;
+                })
                 ->map(function ($packageActivity) {
                     return [
-                        'id' => $packageActivity->activity->id ?? null,
-                        'name' => $packageActivity->activity->name ?? null,
+                        'id' => $packageActivity->activity->id,
+                        'name' => $packageActivity->activity->name,
                         'license' => $packageActivity->activity->license->name ?? null,
                     ];
                 });
