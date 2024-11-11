@@ -26,6 +26,7 @@
                       action="{{ route('calculate-licensecosts.store') }}{{ isset($package->id) ? '?package_id=' . encrypt($package->id) : '' }}"  novalidate>
                     @csrf
                     <input type="hidden" name="freezone" id="freezone" value="{{$package->freezone->uuid}}">
+                    <input type="hidden" name="package_id" id="package_id" value="{{$package->id}}">
                     @foreach ($attributes as $attribute)
                         <div class="secondColumn costCalculateForm">
                             <div class="input_wrap w-100">

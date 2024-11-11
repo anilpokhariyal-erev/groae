@@ -34,6 +34,8 @@ Route::get('activity/{activity_group_id}/license', [ActivityController::class, '
 Route::get('activity-group/freezone/{freezoneId}/license', [ActivityController::class, 'getActivityGroupFreezoneLicenses'])->middleware(['auth:sanctum']);
 
 
+Route::get('package/get-activities', [ApiController::class, 'getPackageActivities'])->middleware(['app.api_token']);
+
 
 Route::post('create-customer', [CustomerController::class, 'store'])->middleware(['auth:sanctum', 'role_or_permission:store-customer']);
 
@@ -42,7 +44,6 @@ Route::post('create-lead', [LeadController::class, 'store'])->middleware(['auth:
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-//
 
 use Illuminate\Support\Facades\Storage;
 
