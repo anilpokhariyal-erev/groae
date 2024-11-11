@@ -21,7 +21,7 @@ class Attribute extends Model
     // Relationship: Attribute has many AttributeOptions
     public function options()
     {
-        return $this->hasMany(AttributeOption::class, 'attribute_id');
+        return $this->hasMany(AttributeOption::class, 'attribute_id')->where('status', 1);
     }
 
     public function countInPackage()
@@ -36,7 +36,7 @@ class Attribute extends Model
 
     public function packageAttributesCost()
     {
-        return $this->hasMany(PackageAttributesCost::class, 'attribute_id');
+        return $this->hasMany(PackageAttributesCost::class, 'attribute_id')->where('status',1);
     }
 
 }
