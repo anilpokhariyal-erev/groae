@@ -113,7 +113,7 @@ class CostCalculatorController extends Controller
         $package_lines =$request->input('package_lines');
         $filtered_package_lines = [];
         $filtered_package_lines_multiple = [];
-        if ($package_lines) {
+        if ($package_lines && $package_detail) {
             $filtered_package_lines = $package_detail->packageLines->filter(function ($line) use ($package_lines) {
                 return array_key_exists($line->attribute->name, $package_lines) && $line->attributeOption->id == $package_lines[$line->attribute->name];
             });

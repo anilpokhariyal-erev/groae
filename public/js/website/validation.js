@@ -93,14 +93,23 @@ const validateThisForm = (elements, phoneInput) => {
     if (element.hasAttribute('required')) {
       if (!isRequiredValid(element)) {
         element.style.borderColor = 'red';
-        document.getElementById(`${element.id}_error`).innerHTML =
-          'This field is required';
+        
+        const errorElement = document.getElementById(`${element.id}_error`);
+        if (errorElement) {
+          errorElement.innerHTML = 'This field is required';
+        }
+        
         formerror = true;
       } else {
         element.style.borderColor = '';
-        document.getElementById(`${element.id}_error`).innerHTML = '';
+        
+        const errorElement = document.getElementById(`${element.id}_error`);
+        if (errorElement) {
+          errorElement.innerHTML = '';
+        }
       }
     }
+    
     if (
       element.id === 'mobile_number' &&
       validatePhoneNumber(element, phoneInput)

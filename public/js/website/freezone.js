@@ -261,7 +261,7 @@ $(document).ready(function () {
     const description = $(this).find(':selected').attr('description');
     $(this).closest('div').find('p').remove();
     if (description) {
-        $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + description + '</p>');
+        $(this).closest('div').append('<p style="font-size:14px;">' + description + '</p>');
     }
   });
 
