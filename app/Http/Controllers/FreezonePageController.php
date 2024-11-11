@@ -34,7 +34,7 @@ class FreezonePageController extends Controller
             $freezone_pages = $freezone_pages->whereDate('created_at', '>=', $request->start_date)->whereDate('created_at', '<=', $request->end_date);
         }
 
-        $freezone_pages = $freezone_pages->where('status', 1)->get();
+        $freezone_pages = $freezone_pages->get();
 
         return view('admin.freezone.freezone_page_list', compact('freezone_pages'));
     }
