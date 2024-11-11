@@ -108,7 +108,9 @@ class PackageController extends Controller
     {
         // Fetch the package with related models using eager loading
         $package = PackageHeader::with([
-            'packageLines',
+            'packageLines' => function ($query) {
+                $query->where('status', 1);
+            },
             'packageLines.attribute',
             'packageLines.attributeOption',
             'attributeCosts'
