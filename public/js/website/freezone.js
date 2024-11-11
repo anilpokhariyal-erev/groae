@@ -1,7 +1,7 @@
 const updateActivitiesList = value => {
   const dom_element = $('#activities');
-  dom_element.empty();
-  dom_element.append(new Option('Choose an Option', ''));
+  // dom_element.empty(); // reset activity when activity is changed
+  // dom_element.append(new Option('Choose an Option', ''));
 
   if (value)
     fetch(`${url}/api/activity_group/${value}`)
@@ -246,6 +246,7 @@ $(document).ready(function () {
     }
     const description = $(this).find(':selected').attr('description');
   if (description) {
+    $(this).closest('div').find('p').remove();
       $(this).closest('div').append('<p style="font-size:14px; color:darkred;">' + description + '</p>');
   }
   });
