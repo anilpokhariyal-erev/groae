@@ -10,7 +10,6 @@
 
         <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/style.css') }}?v=0.1" rel="stylesheet" />
-        <link href="{{ asset('css/invoice-style.css') }}?v=0.1" rel="stylesheet" />
     </head>
 
     <body>

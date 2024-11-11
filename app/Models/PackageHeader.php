@@ -12,6 +12,7 @@ class PackageHeader extends Model
     // Fields that can be mass-assigned
     protected $fillable = [
         'title',
+        'package_code',
         'description',
         'freezone_id',
         'price',

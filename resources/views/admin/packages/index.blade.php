@@ -58,6 +58,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Code</th>
                             <th>Name</th>
                             <th>Freezone</th>
                             <th>Price</th>
@@ -73,6 +74,7 @@
                         @foreach($packages as $package)
                             <tr>
                                 <th scope="row">{{ $i++ }}</th>
+                                <td>{{ $package->package_code }}</td>
                                 <td>{{ $package->title }}</td>
                                 <td>{{ $package->freezone->name }}</td>
                                 <td>{{ $package->price }}</td>

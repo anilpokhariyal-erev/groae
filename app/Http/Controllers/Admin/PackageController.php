@@ -43,6 +43,7 @@ class PackageController extends Controller
     {
         $request->validate([
             'freezone_id' => 'required|exists:freezones,id',
+            'package_code' => 'required|string|max:100',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'currency' => 'required|string|max:255',
@@ -57,6 +58,7 @@ class PackageController extends Controller
         // Create the package header
         $package = PackageHeader::create([
             'title' => $request->title,
+            'package_code' => $request->package_code,
             'description' => $request->description,
             'freezone_id' => $request->freezone_id,
             'price' => $request->price,
@@ -148,6 +150,7 @@ class PackageController extends Controller
         try {
             $request->validate([
                 'freezone_id' => 'required|exists:freezones,id',
+                'package_code' => 'required|string|max:100',
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'currency' => 'required|string',
@@ -161,6 +164,7 @@ class PackageController extends Controller
             // If validation passes, update the package
             $package->update([
                 'title' => $request->title,
+                'package_code' => $request->package_code,
                 'description' => $request->description,
                 'freezone_id' => $request->freezone_id,
                 'visa_package' => $request->visa_package,
