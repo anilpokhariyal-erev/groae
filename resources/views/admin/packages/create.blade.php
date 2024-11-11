@@ -83,8 +83,17 @@
                         </div>
                     </div>
 
-                    <!-- Package Name -->
+                    <!-- Package Code -->
                     <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="package_code">Package Code <span class="text-danger">*</span></label>
+                            <input name="package_code" id="package_code" value="{{old('package_code')}}" type="text" class="form-control" required>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('package_code')" />
+                        </div>
+                    </div>
+
+                    <!-- Package Name -->
+                    <div class="col-md-12">
                         <div class="position-relative form-group">
                             <label for="title">Package Name <span class="text-danger">*</span></label>
                             <input name="title" id="title" value="{{old('title')}}" type="text" class="form-control" required>

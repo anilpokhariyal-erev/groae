@@ -1,4 +1,5 @@
 <x-admin-layout>
+<link href="{{ asset('css/invoice-style.css') }}?v=0.1" rel="stylesheet" />
 @foreach ($packageBookingsDetails as $booking)
   <div>
     <div class="py-4">
