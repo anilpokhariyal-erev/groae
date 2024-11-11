@@ -60,7 +60,6 @@
                             <td>{{$freezone_page_val->created_at->format('Y-m-d')}}</td>
                             <td>
                                 <a href="{{route('freezone-page.edit', $freezone_page_val->id)}}" class="{{ $has_role_or_permission('edit-freezone-age', 'disabled_link') }}">&nbsp; Edit &nbsp;</a>
-                               <!-- <a href="#" onclick="confirmDelete('{{route('freezones.delete', $freezone_page_val->id)}}'); return false;" class="text-red {{ $has_role_or_permission('delete-freezone-page', 'disabled_link') }}">&nbsp; Delete &nbsp;</a>-->
                             </td>
                         </tr>
                         @endforeach
