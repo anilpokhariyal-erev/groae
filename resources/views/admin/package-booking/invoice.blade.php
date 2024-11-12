@@ -59,8 +59,8 @@
                   <p class="font-bold">{{$booking->customer->name}}</p>
                   <p>Mob: {{$booking->customer->mobile_number}}</p>
                   <p>{{$booking->customer->address}}</p>
-                  <p>{{$booking->customer->state->name}}</p>
-                  <p>{{$booking->customer->country->name}}</p>
+                  <p>{{$booking->customer->state?->name}}</p>
+                  <p>{{$booking->customer->country?->name}}</p>
                 </div>
               </td>
             </tr>
@@ -113,36 +113,7 @@
                                 <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->final_cost,2)}}</div>
                               </td>
                             </tr>
-                            @php($fixedCost = 0)
-                            @foreach($fixedFees as $fixedFee)
-                            <tr>
-                              <td class="p-3">
-                                <div class="whitespace-nowrap text-slate-400" title="{{$fixedFee->description}}">
-                                  {{$fixedFee->label}} 
-                                  @if($fixedFee->type!='fixed')
-                                  ({{$fixedFee->value}}%)
-                                  @endif
-                                  :</div>
-                              </td>
-                              <td class="p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-main">
-                                {{$booking->package->currency}}
-                                  @if($fixedFee->type=='fixed')
-                                   {{$fixedFee->value}}
-                                  @else
-                                  {{$booking->final_cost*($fixedFee->value/100)}}
-                                  @endif
-                                </div>
-                              </td>
-                            </tr>
-                            <?php
-                            if($fixedFee->type=='fixed'){
-                              $fixedCost += $fixedFee->value;
-                            }else{
-                              $fixedCost = $booking->final_cost*($fixedFee->value/100);
-                            }
-                            ?>
-                            @endforeach
+                            
                             <tr>
                               <td class="bg-main p-3">
                                 <div class="whitespace-nowrap font-bold text-white">Total:</div>
@@ -150,7 +121,7 @@
                               <td class="bg-main p-3 text-right">
                                 <div class="whitespace-nowrap font-bold text-white">
                                   {{$booking->package->currency}}
-                                  {{number_format($booking->final_cost+$fixedCost,2)}}
+                                  {{number_format($booking->final_cost,2)}}
                                 </div>
                               </td>
                             </tr>

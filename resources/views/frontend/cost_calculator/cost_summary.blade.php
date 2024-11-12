@@ -136,10 +136,20 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @if(count($licenses))
+                        <tr>
+                                <td></td>
+                                <td class="tDetailTxt">Cross Platform Fee</td>
+                                <td class="tDetailTxt">
+                                    {{ $package_detail->currency }} {{ $package_detail->freezone->cross_platform_fee }}
+                                    @php $total_price += $package_detail->freezone->cross_platform_fee; @endphp
+                                </td>
+                            </tr>
+                        @endif
 
                         <tr>
                             <td class="tHeadingTxt">Activities</td>
-                            <td class="tDetailTxt">Total {{ count($package_activities) }} in Quantity <span class="info-icon" title="Free Activities with Package: {{$package_detail->allowed_free_packages}}">i</span></td>
+                            <td class="tDetailTxt">Total {{ count($package_activities) }} in Quantity <span class="info-icon" title="Free Activities with Package: {{$package_detail->allowed_free_packages}}, Fixed Free Activities: {{$freeMarkedActivityCount}}, Free Any: {{$package_detail->allowed_free_packages-$freeMarkedActivityCount}}">i</span></td>
                             <td></td>
                         </tr>
                         @php
@@ -150,10 +160,11 @@
                                 <td></td>
                                 <td class="tDetailTxt">{{ $item->activity->name }} ({{ $item->activity->activity_group->name }})</td>
                                 <td class="tDetailTxt">
-                                    @if(($item->allowed_free && $marked_free < ($package_detail->allowed_free_packages - $freeMarkedActivityCount)) 
-                                    || $marked_free <= ($package_detail->allowed_free_packages - $freeMarkedActivityCount))
+                                    @if($item->allowed_free || $marked_free < ($package_detail->allowed_free_packages - $freeMarkedActivityCount))
                                         @php
-                                            $marked_free += 1;
+                                            if($item->allowed_free==0){
+                                                $marked_free += 1;
+                                            }
                                         @endphp
                                         <del>{{ $package_detail->currency }} {!! $item->price !!}</del> <p>Free</p>
                                     @else
@@ -194,7 +205,33 @@
                             </tr>
                         @endforeach
 
+                        <tr>
+                            <td class="totalTitleTxt">Net Cost</td>
+                            <td></td>
+                            <td class="amntTxt">{{ $package_detail->currency }} {{ number_format($total_price, 2) }}</td>
+                        </tr>
                         
+                        @foreach($fixedFee as $fee)
+                        <tr>
+                            <td class="totalTitleTxt">
+                                {{$fee->label}} 
+                                @if($fee->type!='fixed')({{$fee->value}}%)@endif
+                            </td>
+                            <td></td>
+                            <td class="amntTxt">
+                            @php
+                                $fixedCost = 0;
+                                if($fee->type=='fixed'){
+                                    $fixedCost = $fee->value;
+                                }else{
+                                    $fixedCost = $total_price*($fee->value/100);
+                                }
+                                $total_price += $fixedCost;
+                            @endphp
+                            {{ $package_detail->currency }} {{number_format($fixedCost, 2)}}
+                            </td>
+                        </tr>
+                        @endforeach
 
                         <tr>
                             <td class="totalTitleTxt">Total Cost *</td>
