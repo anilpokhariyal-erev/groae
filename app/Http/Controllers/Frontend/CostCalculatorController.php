@@ -139,6 +139,8 @@ class CostCalculatorController extends Controller
                     ->values();
         $licenses = License::whereIn('id', $licenseIds)->get();
 
+        $freeMarkedActivityCount = PackageActivity::where('package_id', $package_id)->where('allowed_free', 1)->count();
+
         // Generate a UUID for the session
         $id = Str::uuid();
 
@@ -148,7 +150,7 @@ class CostCalculatorController extends Controller
         // Render the view with compact variables
         return view('frontend.cost_calculator.cost_summary')->with(compact('request', 'token', 'customer',
             'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses', 
-            'filtered_package_lines','filtered_package_lines_multiple','package_lines',
+            'filtered_package_lines','filtered_package_lines_multiple','package_lines', 'freeMarkedActivityCount',
         ));
     }
 
