@@ -139,16 +139,21 @@
 
                         <tr>
                             <td class="tHeadingTxt">Activities</td>
-                            <td class="tDetailTxt">Total {{ count($package_activities) }} in Quantity</td>
+                            <td class="tDetailTxt">Total {{ count($package_activities) }} in Quantity <span class="info-icon" title="Free Activities with Package: {{$package_detail->allowed_free_packages}}">i</span></td>
                             <td></td>
                         </tr>
-
+                        @php
+                            $marked_free = 0;
+                        @endphp
                         @foreach ($package_activities as $item)
                             <tr>
                                 <td></td>
                                 <td class="tDetailTxt">{{ $item->activity->name }} ({{ $item->activity->activity_group->name }})</td>
                                 <td class="tDetailTxt">
-                                    @if($item->allowed_free)
+                                    @if(($item->allowed_free && $marked_free <= $package_detail->allowed_free_packages) || $marked_free <= $package_detail->allowed_free_packages)
+                                        @php
+                                            $marked_free += 1;
+                                        @endphp
                                         <del>{{ $package_detail->currency }} {!! $item->price !!}</del> <p>Free</p>
                                     @else
                                         {{ $package_detail->currency }} {{ $item->price }}

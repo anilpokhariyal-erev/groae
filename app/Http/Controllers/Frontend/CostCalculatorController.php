@@ -101,11 +101,11 @@ class CostCalculatorController extends Controller
         }
 
         // Extract activity IDs once
-        $activityIds = $this->extractActivityIds($request->activities_selection);
+        $packageActivityIds = $this->extractPackageActivityIds($request->activities_selection);
 
         // Filter by activities if any are provided
-        if (!empty($activityIds)) {
-            $query->whereHas('packageActivities', fn($q) => $q->whereIn('id', $activityIds));
+        if (!empty($packageActivityIds)) {
+            $query->whereHas('packageActivities', fn($q) => $q->whereIn('id', $packageActivityIds));
         }
 
         // Retrieve the matching package
@@ -130,10 +130,10 @@ class CostCalculatorController extends Controller
         $packages_arr = $this->getVisaPackageAttributes($request, $freezone);
 
         // Retrieve package activities
-        $package_activities = $this->getPackageActivities($activityIds, $package_id);
+        $package_activities = $this->getPackageActivities($packageActivityIds, $package_id);
 
         $licenseIds = Activity::join('package_activities','package_activities.activity_id','=','activities.id')
-                    ->whereIn('package_activities.activity_id', $activityIds)
+                    ->whereIn('package_activities.id', $packageActivityIds)
                     ->pluck('activities.licence_id') // Extract only licence_id column
                     ->unique()            // Ensure the IDs are unique
                     ->values();
@@ -155,7 +155,7 @@ class CostCalculatorController extends Controller
     /**
      * Extracts activity IDs from the activities_selection field.
      */
-    private function extractActivityIds(string $activities_selection): array
+    private function extractPackageActivityIds(string $activities_selection): array
     {
         preg_match_all('/\|(.*?)\|/', $activities_selection, $matches);
         return $matches[1] ?? [];
