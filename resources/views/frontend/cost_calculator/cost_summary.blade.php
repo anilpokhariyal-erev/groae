@@ -150,7 +150,8 @@
                                 <td></td>
                                 <td class="tDetailTxt">{{ $item->activity->name }} ({{ $item->activity->activity_group->name }})</td>
                                 <td class="tDetailTxt">
-                                    @if(($item->allowed_free && $marked_free < $package_detail->allowed_free_packages) || $marked_free < $package_detail->allowed_free_packages)
+                                    @if(($item->allowed_free && $marked_free < ($package_detail->allowed_free_packages - $freeMarkedActivityCount)) 
+                                    || $marked_free <= ($package_detail->allowed_free_packages - $freeMarkedActivityCount))
                                         @php
                                             $marked_free += 1;
                                         @endphp
