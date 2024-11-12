@@ -382,13 +382,14 @@ class CostCalculatorController extends Controller
             'customer.id' => 'required|string',
             'freezone.name' => 'required|string',
             'package.id' => 'required|string',
-            'package.price' => 'required|numeric',
+            'package.price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'package.currency' => 'required|string',
-            'totalCost' => 'required|numeric',
+            'totalCost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'inclusions' => 'nullable|array',
             'licenses' => 'nullable|array',
             'activities' => 'nullable|array',
-            'visaDetails' => 'nullable|array'
+            'visaDetails' => 'nullable|array',
+            'fixedFees' => 'nullable|array',
         ]);
 
         try {
@@ -397,7 +398,6 @@ class CostCalculatorController extends Controller
 
             // Fetch customer and package data from their respective models
             $customer = Customer::find($validatedData["customer"]["id"]);
-            // pacakge data
             $package = PackageHeader::find($validatedData['package']['id']);
             
             if (!$customer || !$package) {
@@ -405,7 +405,7 @@ class CostCalculatorController extends Controller
             }
 
             // Calculate final costs, assuming discount if applicable
-            $originalCost = $validatedData['totalCost'];
+            $originalCost = floatval(str_replace(',', '', $validatedData['totalCost']));
             $discountAmount = 0;
             $finalCost = $originalCost - $discountAmount;
 
@@ -471,7 +471,7 @@ class CostCalculatorController extends Controller
                     foreach ($visaDetail['items'] as $item) {
                         $packageBookingDetail = new PackageBookingDetail();
                         $packageBookingDetail->package_booking_id = $packageBooking->id;
-                        $packageBookingDetail->attribute_name = "Visa Detail: " . $item['header'];
+                        $packageBookingDetail->attribute_name = "Visa Detail: " . $item['attribute'];
                         $packageBookingDetail->attribute_value = $item['value'];
                         $packageBookingDetail->quantity = 1;
                         $packageBookingDetail->price_per_unit = $item['price'];
@@ -479,6 +479,21 @@ class CostCalculatorController extends Controller
                         $packageBookingDetail->status = 1;
                         $packageBookingDetail->save();
                     }
+                }
+            }
+
+            // Save fixedFees as package booking details
+            if (!empty($validatedData['fixedFees'])) {
+                foreach ($validatedData['fixedFees'] as $fixedFee) {
+                    $packageBookingDetail = new PackageBookingDetail();
+                    $packageBookingDetail->package_booking_id = $packageBooking->id;
+                    $packageBookingDetail->attribute_name = $fixedFee['label']." ".$fixedFee["type"];
+                    $packageBookingDetail->attribute_value = $fixedFee['value'];
+                    $packageBookingDetail->quantity = 1;
+                    $packageBookingDetail->price_per_unit = $fixedFee['cost'];
+                    $packageBookingDetail->total_cost = $fixedFee['cost'];
+                    $packageBookingDetail->status = 1;
+                    $packageBookingDetail->save();
                 }
             }
 

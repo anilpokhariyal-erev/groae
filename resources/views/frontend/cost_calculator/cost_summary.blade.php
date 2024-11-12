@@ -269,6 +269,7 @@
                 },
                 package: {
                     id: "{{ $package_detail->id }}",
+                    title: "{{ $package_detail->title }}",
                     price: "{{ $package_detail->price > 0 ? $package_detail->price : 0 }}",
                     currency: "{{ $package_detail->currency }}"
                 },
@@ -305,8 +306,8 @@
                     {
                         name: "{{ $item->activity->name }}",
                         group: "{{ $item->activity->activity_group->name }}",
-                        price: "{{ $item->price }}",
-                        isFree: "{{ $item->allowed_free ? 'true' : 'false' }}"
+                        allowedFree: "{{ $item->allowed_free }}",
+                        price: "{{ $item->price }}"
                     },
                     @endforeach
                 ],
@@ -316,7 +317,7 @@
                         items: [
                             @foreach ($items as $item)
                             {
-                                header: "{{ $item->attribute_header->title }}",
+                                attribute: "{{ $item->attribute_header->title }}",
                                 value: "{{ $item->value }}",
                                 price: "{{ $item->price }}"
                             },
@@ -325,9 +326,19 @@
                     },
                     @endforeach
                 ],
+                fixedFees: [
+                    @foreach ($fixedFee as $fee)
+                    {
+                        label: "{{ $fee->label }}",
+                        type: "{{ $fee->type }}",
+                        value: "{{ $fee->value }}",
+                        cost: "{{ $fee->type == 'fixed' ? $fee->value : $total_price * ($fee->value / 100) }}"
+                    },
+                    @endforeach
+                ],
                 totalCost: "{{ $total_price }}"
             };
-            console.log(summaryData);
+
             $('#requestInvoice').on('click', function (e) {
                 e.preventDefault();
 
