@@ -111,16 +111,23 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_logo')" />
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="position-relative form-group">
-                                    <label for="name">Trending </label>
+                                    <label for="trending">Trending </label>
                                     <div class="switch">
                                         <input type="checkbox" id="trendingSwitch" name="trending" {{ $freezone->trending ? 'checked' : '' }}>
                                         <label class="slider" for="trendingSwitch"></label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <div class="position-relative form-group">
+                                    <label for="cross_platform_fee">Cross Platform Fee<span class="text-danger">*</span></label>
+                                    <input name="cross_platform_fee" id="cross_platform_fee" value="{{ old('cross_platform_fee', $freezone->cross_platform_fee) }}" type="number" class="form-control" min="0" required>
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('cross_platform_fee')" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="position-relative form-group">
                                     <label for="status">Status <span class="text-danger">*</span></label>
                                     <select name="status" class="form-control">
