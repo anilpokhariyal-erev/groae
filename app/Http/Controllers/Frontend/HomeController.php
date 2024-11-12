@@ -41,7 +41,11 @@ class HomeController extends Controller
     
     public function trending_freezone()
     {
-        $freezones = Freezone::where('status',1)->select('id', 'name', 'logo', 'about', 'slug', 'created_at', 'freezone_views_count')->orderBy('freezone_views_count', 'DESC')->get();
+        $freezones = Freezone::where('status',1)
+                            ->select('id', 'name', 'logo', 'about', 'slug', 'created_at', 'freezone_views_count')
+                            ->orderBy('freezone_views_count', 'DESC')
+                            ->where('trending', 1)
+                            ->get();
         return view('frontend.trending_freezone', compact('freezones'));
     }
 
