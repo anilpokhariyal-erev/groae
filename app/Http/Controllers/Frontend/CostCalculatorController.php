@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\CostCalculatorSummaryRequest;
+use App\Models\FixedFee;
 use App\Models\FreezoneBooking;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -139,8 +140,9 @@ class CostCalculatorController extends Controller
                     ->values();
         $licenses = License::whereIn('id', $licenseIds)->get();
 
-        $freeMarkedActivityCount = PackageActivity::where('package_id', $package_id)->where('allowed_free', 1)->count();
+        $freeMarkedActivityCount = PackageActivity::where('package_id', $package_id)->where('allowed_free', 1)->where('status',1)->count();
 
+        $fixedFee = FixedFee::whereIn('freezone_id', [$freezone->id, null])->where('status',1)->get();
         // Generate a UUID for the session
         $id = Str::uuid();
 
@@ -151,6 +153,7 @@ class CostCalculatorController extends Controller
         return view('frontend.cost_calculator.cost_summary')->with(compact('request', 'token', 'customer',
             'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses', 
             'filtered_package_lines','filtered_package_lines_multiple','package_lines', 'freeMarkedActivityCount',
+            'fixedFee',
         ));
     }
 
