@@ -92,7 +92,7 @@ class CostCalculatorController extends Controller
 
         // Initialize the Package query with eager loading
         $query = PackageHeader::where('freezone_id', $freezone->id)
-            ->with(['packageLines','attributeCosts', 'freezone.activities']);
+            ->with(['packageLines','attributeCosts', 'packageActivities']);
 
         // Handle package_id if present
         if ($request->filled('package_id')) {
@@ -105,7 +105,7 @@ class CostCalculatorController extends Controller
 
         // Filter by activities if any are provided
         if (!empty($activityIds)) {
-            $query->whereHas('freezone.activities', fn($q) => $q->whereIn('id', $activityIds));
+            $query->whereHas('packageActivities', fn($q) => $q->whereIn('id', $activityIds));
         }
 
         // Retrieve the matching package
@@ -132,8 +132,9 @@ class CostCalculatorController extends Controller
         // Retrieve package activities
         $package_activities = $this->getPackageActivities($activityIds, $package_id);
 
-        $licenseIds = Activity::whereIn('id', $activityIds)
-                    ->pluck('licence_id') // Extract only licence_id column
+        $licenseIds = Activity::join('package_activities','package_activities.activity_id','=','activities.id')
+                    ->whereIn('package_activities.activity_id', $activityIds)
+                    ->pluck('activities.licence_id') // Extract only licence_id column
                     ->unique()            // Ensure the IDs are unique
                     ->values();
         $licenses = License::whereIn('id', $licenseIds)->get();
@@ -142,7 +143,8 @@ class CostCalculatorController extends Controller
         $id = Str::uuid();
 
         $total =0;
-        $token = Auth::user()->createToken('InvoiceToken')->plainTextToken;
+        $user = Auth::guard('customer')->user();
+        $token = $user->createToken('InvoiceToken')->plainTextToken;
         // Render the view with compact variables
         return view('frontend.cost_calculator.cost_summary')->with(compact('request', 'token', 'customer',
             'freezone', 'total', 'id', 'package_detail', 'package_activities', 'packages_arr','licenses', 
@@ -193,7 +195,7 @@ class CostCalculatorController extends Controller
         if (empty($activityIds)) return collect();
 
         return PackageActivity::with(['activity', 'activity.activity_group'])
-            ->whereIn('activity_id', $activityIds)
+            ->whereIn('package_activities.id', $activityIds)
             ->where('package_id', $package_id)
             ->where('status', 1)
             ->orderBy('allowed_free', 'desc')

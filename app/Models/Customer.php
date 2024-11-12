@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\State;
 use App\Models\Country;
 use App\Models\Transaction;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
 use App\Models\FreezoneBooking;
 use App\Models\CustomerDocument;
@@ -20,7 +21,7 @@ use App\Notifications\CustomerResetPasswordNotification;
 class Customer extends Model implements Authenticatable
 {
 
-    use SoftDeletes, Notifiable, CanResetPassword, HasFactory;
+    use HasApiTokens,SoftDeletes, Notifiable, CanResetPassword, HasFactory;
 
     protected $fillable = [
         'type',

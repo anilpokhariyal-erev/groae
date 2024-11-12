@@ -48,4 +48,10 @@ class PackageHeader extends Model
         return PackageLine::where('attribute_id', $attribute_id)->where('package_id', $this->id)->get();
     }
 
+    // Relationship: PackageHeader has many PackageActivities
+    public function packageActivities()
+    {
+        return $this->hasMany(PackageActivity::class, 'package_id', 'id');
+    }
+
 }
