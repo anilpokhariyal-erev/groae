@@ -180,6 +180,7 @@ class FreezoneController extends Controller
             'name' => 'required',
             'freezone_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
             'trending' => 'nullable|in:on',
+            'cross_platform_fee' => 'nullable|numeric|min:0',
             // Freezone default attributes validation
             'freezone_default_attributes.*.attribute_id' => 'required|exists:attributes,id',
             'freezone_default_attributes.*.attribute_option_id' => 'nullable|exists:attribute_options,id',
@@ -208,6 +209,7 @@ class FreezoneController extends Controller
         // Update freezone fields
         $freezone->name = $request->name;
         $freezone->trending = $request->has('trending') && $request->input('trending') === 'on' ? 1 : 0;
+        $freezone->cross_platform_fee = $request->input('cross_platform_fee') ?? 0;
         $freezone->status = $request->status;
 
         // Use a transaction to ensure the consistency of the update
