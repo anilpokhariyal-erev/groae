@@ -1,9 +1,5 @@
 <x-website-layout>
     <!-- banner -->
-    @section('js-imports')
-        <script src="{{ secure_asset('js/website/owl.carousel.min.js') }}" crossorigin="anonymous"></script>
-        <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
-    @endsection
     <section>
         <div class="banner">
             <img class="bannrImg" src="{{ asset('images/709[Converted]-1.png') }}" alt="">
