@@ -130,8 +130,11 @@ class CostCalculatorController extends Controller
          // Retrieve all package attributes, including those not specified in the request
         $all_package_lines = $package_detail->packageLines;
 
-        // Combine specific attributes with all attributes to pass to the view
-        $filtered_package_lines = $all_package_lines->merge($filtered_package_lines);
+        // Filter only the unique package lines that are not already in $filtered_package_lines
+        $unique_package_lines = $all_package_lines->diff($filtered_package_lines);
+
+        // Combine specific attributes with unique attributes from all attributes
+        $filtered_package_lines = $filtered_package_lines->merge($unique_package_lines);
 
         // Fetch Visa package attributes
         $packages_arr = $this->getVisaPackageAttributes($request, $freezone);
