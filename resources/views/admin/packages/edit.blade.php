@@ -256,6 +256,7 @@
                                 @endforeach
 
                                 @foreach($package->attributeCosts as $line)
+                                @if($line->status)
                                     <div class="row package-line-item" data-option="{{ $line->attribute_option_id }}">
                                         <div class="col-lg-3">
                                             <div class="position-relative form-group">
@@ -305,6 +306,7 @@
                                     @php
                                         $costIndex++; // Increment costIndex for the next iteration
                                     @endphp
+                                @endif
                                 @endforeach
                             </div>
 
