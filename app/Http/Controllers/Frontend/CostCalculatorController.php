@@ -93,7 +93,18 @@ class CostCalculatorController extends Controller
 
         // Initialize the Package query with eager loading
         $query = PackageHeader::where('freezone_id', $freezone->id)
-            ->with(['packageLines','attributeCosts', 'packageActivities']);
+                                ->with([
+                                    'packageLines' => function($query) {
+                                        $query->where('status', 1);
+                                    },
+                                    'attributeCosts' => function($query) {
+                                        $query->where('status', 1);
+                                    },
+                                    'packageActivities' => function($query) {
+                                        $query->where('status', 1);
+                                    }
+                                ]);
+
 
         // Handle package_id if present
         if ($request->filled('package_id')) {
