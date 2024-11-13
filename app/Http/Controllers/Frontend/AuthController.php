@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Http\Requests\CostCalculatorSummaryRequest;
 use App\Mail\VerificationCodeMail;
 use App\Models\VerificationCode;
 use DB;
@@ -48,6 +49,15 @@ class AuthController extends Controller
 
         $previousUrl = Session::pull('previous_url', '/');
         $formInput = Session::pull('form_input');
+
+        if (strpos($previousUrl, 'calculate-licensecosts') !== false) {
+            $controller = app(CostCalculatorController::class);
+            $formInput['login'] = 1;
+            // Create an instance of the request class and pass the data
+            $costCalculatorRequest = new CostCalculatorSummaryRequest($formInput);
+
+            return $controller->store($costCalculatorRequest);
+        }
         return redirect()->intended($previousUrl)->withInput($formInput);
     }
 
