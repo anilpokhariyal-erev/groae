@@ -142,7 +142,7 @@
 
                     <div class="col-md-12">
                         <div class="position-relative form-group mt-4 p-2">
-                            <label for="freezone_default_attributes"><b>Freezone Default Attributes</b></label>
+                            <label for="freezone_default_attributes"><b>Freezone Default Attributes <span class="bg-dark attribute-count">0</span></b></label>
                             
                             <div id="freezone-attributes-container">
                                 @foreach ($freezone->defaultAttributes as $key => $attribute)
@@ -306,7 +306,10 @@
         });
     });
 
-    
+    function update_attribute_count(){
+        $('.attribute-count').text($('.remove-attribute-line').length);
+    }
+    update_attribute_count();
 
     // Function to populate options based on selected attribute
    function populateOptions(attributeId, optionsDropdown) {
@@ -393,12 +396,14 @@
                 optionsDropdown.append('<option value="">Select Option</option>');
             }
         });
+        update_attribute_count();
     });
 
 
     // Handle removing an attribute line
     $(document).on('click', '.remove-attribute-line', function() {
         $(this).closest('.freezone-attribute-item').remove();
+        update_attribute_count();
     });
 
     // Function to hide allowed free qty and unit price fields

@@ -136,7 +136,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                        @if(count($licenses))
+                        @if(count($licenses)>1)
                         <tr>
                                 <td></td>
                                 <td class="tDetailTxt">Cross Platform Fee</td>
