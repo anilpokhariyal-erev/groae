@@ -198,6 +198,7 @@ class PackageController extends Controller
                             'max_allowed_qty' => $line['max_allowed_qty'] ?? 0,
                             'unit_price' => $line['unit_price'] ?? 0, // New field handling
                             'per_unit' => 1, // Assuming a default value for per_unit
+                            'status' => 1,
                         ]
                     );
                 } else {
