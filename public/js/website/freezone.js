@@ -4,6 +4,7 @@ const updateActivitiesList = value => {
   
   const package_id = $('#package_id').val();
   if (value && package_id) {
+    dom_element.empty().append(new Option("Activity", ""));
     fetch(`${url}/api/package/get-activities?package_id=${package_id}&activityIds=${value}`, {
         method: 'GET',
         headers: {
@@ -20,11 +21,12 @@ const updateActivitiesList = value => {
         Object.entries(data.activities).forEach(([key, { license, name, id }]) => {
             dom_element.append(new Option(`${name} [${license}]`, `activities|${id}|${name}`));
         });
+        $('#activities').select2();
     })
     .catch(error => console.error('Error:', error));
 }
 
-  dom_element.trigger('change');
+  // dom_element.trigger('change');
 };
 
 
