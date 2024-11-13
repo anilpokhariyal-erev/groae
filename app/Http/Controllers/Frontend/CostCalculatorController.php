@@ -131,7 +131,9 @@ class CostCalculatorController extends Controller
         $all_package_lines = $package_detail->packageLines;
 
         // Filter only the unique package lines that are not already in $filtered_package_lines
-        $unique_package_lines = $all_package_lines->diff($filtered_package_lines);
+        $unique_package_lines = $all_package_lines->filter(function ($line) use ($filtered_package_lines) {
+            return !$filtered_package_lines->contains('attribute_id', $line->attribute_id);
+        });
 
         // Combine specific attributes with unique attributes from all attributes
         $filtered_package_lines = $filtered_package_lines->merge($unique_package_lines);
