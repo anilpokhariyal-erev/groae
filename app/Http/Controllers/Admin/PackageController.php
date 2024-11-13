@@ -50,6 +50,7 @@ class PackageController extends Controller
             'price' => 'required|numeric|min:0',
             'renewable_price' => 'required|numeric|min:0',
             'show_on_calculator' => 'nullable|string',
+            'show_in_summary' => 'nullable|string',
         ]);
 
         // Determine if trending checkbox is checked
@@ -65,6 +66,7 @@ class PackageController extends Controller
             'renewable_price' => $request->renewable_price,
             'currency' => $request->currency,
             'show_on_calculator' => $request->show_on_calculator,
+            'show_in_summary' => $request->show_in_summary,
             'status' => 1,
             'trending' => $isTrending,  // Save the trending value
             'updated_by' => auth()->id(),
@@ -160,6 +162,7 @@ class PackageController extends Controller
                 'renewable_price' => 'required|numeric|min:0',
                 'trending' => 'nullable|boolean',
                 'show_on_calculator' => 'nullable|string',
+                'show_in_summary' => 'nullable|string',
             ]);
 
 
@@ -174,6 +177,7 @@ class PackageController extends Controller
                 'renewable_price' => $request->renewable_price,
                 'currency' => $request->currency,
                 'show_on_calculator' => $request->show_on_calculator,
+                'show_in_summary' => $request->show_in_summary,
                 'trending' => $request->trending ? true : false,
                 'updated_by' => auth()->id(),
                 'allowed_free_packages' => $request->input('activity_limit',0),

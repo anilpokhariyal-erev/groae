@@ -145,6 +145,7 @@
                 </div>
                 <!-- For show on calculator field -->
                 <input type="hidden" name="show_on_calculator" id="show_on_calculator">
+                <input type="hidden" name="show_in_summary" id="show_in_summary">
                 <div class="row">
                     <!-- Package Description -->
                     <div class="col-md-8">
@@ -211,6 +212,7 @@
     <script src="{{ secure_asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
     <script>
         let show_on_calculator_arr = [];
+        let show_in_summary_arr = [];
         function update_attribute_count(){
             $('.attribute-count').text($('.attribute-select').length);
         }
@@ -272,6 +274,7 @@
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button" class="btn btn-warning remove-package-line">Remove</button>
                     <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;"> Show on Calculator
+                    <input type="checkbox" name="show_in_summary_check" class="show_in_summary_check" style="margin-left:1%;"> Show on Summary
                 </div>
             `;
             container.appendChild(newRow);
@@ -302,7 +305,14 @@
                     // Remove attribute_id from the array if it exists
                     show_on_calculator_arr = show_on_calculator_arr.filter(id => id != attributeId);
                 }
+                // for show in summary
+                let show_in_summary_element = $(this).closest('.package-line-item').find('.show_in_summary_check');
+                show_in_summary_element.prop('checked', true);
+                if (!show_in_summary_arr.includes(attributeId)) {
+                    show_in_summary_arr.push(attributeId);
+                }
                 $('#show_on_calculator').val(show_on_calculator_arr);
+                $('#show_in_summary').val(show_in_summary_arr);
 
                 if(allow_multiple =='0'){
                     $(this).closest('.package-line-item').find('.multiple_off').show();
@@ -394,6 +404,28 @@
                 }
                 $('#show_on_calculator').val(show_on_calculator_arr);
             });
+
+             // for show on summary page
+            $(document).on('click', '.show_in_summary_check', function() {
+                let attribute_id = $(this).closest('.package-line-item').find('.attribute-select').val();
+                // Prevent checking if attribute_id is null or 0
+                if (!attribute_id || attribute_id === "0") {
+                    alert("Please select a valid attribute first.");
+                    $(this).prop('checked', false);
+                    return;
+                }
+                if ($(this).is(':checked')) {
+                    // Add attribute_id to the array if it's not already included
+                    if (!show_in_summary_arr.includes(attribute_id)) {
+                        show_in_summary_arr.push(attribute_id);
+                    }
+                } else {
+                    // Remove attribute_id from the array if it exists
+                    show_in_summary_arr = show_in_summary_arr.filter(id => id !== attribute_id);
+                }
+                $('#show_in_summary').val(show_in_summary_arr);
+            });
+
         });
 
     </script>
