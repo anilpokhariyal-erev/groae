@@ -1,6 +1,9 @@
 <x-website-layout>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @section('js-imports')
         <script src="{{ secure_asset('js/website/freezone.js') }}" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @endsection
     <section class="center-section">
         <div class="costCalculateContainer">
@@ -71,7 +74,7 @@
                             <select required name="activity_group" id="activity_group" data-dependent="activities"
                                 data-dependent-selection="activity_group_selection"
                                 class="inputField2 cursor arrowPlace">
-                                <option value="">Choose an Option</option>
+                                <option value="">Activity Group</option>
                                 @if (!empty($freezone_data))
                                     @foreach ($freezone_data['activity_groups'] as $item)
                                         <option value="{{ 'activity_group|' . $item->id . '|' . $item->name }}">
@@ -79,7 +82,7 @@
                                     @endforeach
                                 @endif
                             </select>
-                            <label for="activity_group">Activity Group</label>
+                            <!-- <label for="activity_group">Activity Group</label> -->
                             <p id="activity_group_error" class="errorMessage"></p>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_group')" />
                         </div>
@@ -93,9 +96,9 @@
                         <div class="input_wrap w-100">
                             <select required name="activities" id="activities"
                                 data-dependent-selection="activities_selection" class="inputField2 cursor arrowPlace">
-                                <option value="">Choose an Option</option>
+                                <option value="">Activity</option>
                             </select>
-                            <label for="activities">Activity</label>
+                            <!-- <label for="activities">Activity</label> -->
                             <p id="activities_error" class="errorMessage"></p>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activities')" />
                         </div>
@@ -116,6 +119,11 @@
         </div>
     </section>
     <script>
+
+        $(document).ready(function(){
+            $('#activity_group').select2();
+            $('#activities').select2();
+        });
 
         document.querySelectorAll('.max_check').forEach(function(input) {
             input.addEventListener('change', function() {
