@@ -170,7 +170,7 @@
                     <!-- Package Lines (Attributes and Attribute Options) -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
-                            <label for="package_lines"><b>Package Add-ons</b></label>
+                            <label for="package_lines"><b>Package Add-ons <span class="bg-dark attribute-count">0</span></b></label>
                             <div id="package-lines-container">
                             </div>
                             <button type="button" id="add-package-line" class="btn btn-secondary mt-2">Add More</button>
@@ -211,6 +211,10 @@
     <script src="{{ secure_asset('js/jquery-3.7.1.min.js') }}" crossorigin="anonymous"></script>
     <script>
         let show_on_calculator_arr = [];
+        function update_attribute_count(){
+            $('.attribute-count').text($('.attribute-select').length);
+        }
+        update_attribute_count();
         document.getElementById('add-package-line').addEventListener('click', function() {
             let lineIndex = $('.package-line-item').length +1;
             let container = document.getElementById('package-lines-container');
@@ -272,10 +276,12 @@
             `;
             container.appendChild(newRow);
             $('.package-line-item:last').find('.multiple_off').hide();
+            update_attribute_count();
         });
 
         $(document).on('click', '.remove-package-line', function() {
             $(this).closest('.package-line-item').remove();
+            update_attribute_count();
         });
 
         $(document).ready(function() {
@@ -360,6 +366,7 @@
                                     $(`input[name="package_lines[${line_no}][unit_price]"]`).val(attribute.unit_price);
                                 }
                         });
+                        update_attribute_count();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error: ' + error);

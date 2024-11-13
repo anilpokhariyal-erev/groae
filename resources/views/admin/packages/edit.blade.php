@@ -72,8 +72,6 @@
             padding: 1rem; /* Optional: increase padding */
         }
 
-
-
     </style>
     @if ($errors->any())
         <div class="main-card">
@@ -208,7 +206,7 @@
                     <!-- Package Lines (Attributes and Attribute Options) -->
                     <div class="col-md-12">
                         <div class="position-relative form-group">
-                            <label for="package_lines"><b>Package Add-ons</b></label>
+                            <label for="package_lines"><b>Package Add-ons <span class="bg-dark attribute-count">0</span></b></label>
                             <!-- Multiple rows of package lines to edit existing ones -->
                             <div id="package-lines-container">
                                     <!-- Display existing package lines -->
@@ -398,6 +396,7 @@
         const attributeOptions = @json($attributeOptions);
         $('.package-form').show();
         $('.pacakge-activities').hide();
+
         function populateOptions(attributeId, optionsDropdown) {
             const filteredOptions = attributeOptions.filter(option => option.attribute_id == attributeId);
             optionsDropdown.empty(); // Clear existing options
@@ -407,6 +406,11 @@
                 optionsDropdown.append(`<option value="${option.id}">${option.value}</option>`);
             });
         }
+
+        function update_attribute_count(){
+            $('.attribute-count').text($('.attribute-select').length);
+        }
+        update_attribute_count();
 
         $(document).on('click', '#manage_activity', function(){
             let show_form = $(this).attr('show_form');
@@ -531,12 +535,14 @@
 
             $('#package-lines-container').append(newLine);
             $('.package-line-item:last').find('.multiple_off').hide(); // Hide the multiple_off fields by default
+            update_attribute_count();
         });
 
 
         // Handle remove package line
         $(document).on('click', '.remove-package-line', function() {
             $(this).closest('.package-line-item').remove();
+            update_attribute_count();
         });
 
         $(document).on('click', '.activity_price', function(){
