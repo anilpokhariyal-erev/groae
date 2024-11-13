@@ -138,7 +138,17 @@
                         <p id="password_confirmation_error" class="errorMessage"></p>
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('password_confirmation')" />
                     </div>
+
+                    <div class="secondColumn">
+                        <div class="form-group input_wrap w-100">
+                            <input type="text" name="captcha" id="captcha" class="inputField2" required>
+                            <label for="address">What is {{ session('captcha_question') }}? (captcha)</label>
+                            <p id="captcha_error" class="errorMessage"></p>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('captcha')" />
+                        </div>
+                    </div>
                 </div>
+
 
                 <div class="btns">
                     <button type="submit" id='validate' class="loginBtn">

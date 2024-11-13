@@ -40,6 +40,7 @@ class Customer extends Model implements Authenticatable
         'business_interested',
         'dialCode',
         'iso2',
+        'status',
     ];
 
     protected static function booted()

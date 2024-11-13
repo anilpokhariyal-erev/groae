@@ -113,7 +113,7 @@
                             option.value = license.id;
                             option.textContent = license.name;
                             // Pre-select if it matches the activity's current license
-                            if ({{$license->id}} == license.id) {
+                            if (data.selected_license.id == license.id) {
                                 option.selected = true;
                             }
 
