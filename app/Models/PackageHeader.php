@@ -23,6 +23,7 @@ class PackageHeader extends Model
         'visa_package',
         'allowed_free_packages',
         'show_on_calculator',
+        'show_in_summary',
         'status',
         'updated_by',
     ];
