@@ -178,9 +178,11 @@
                 </div>
                 <!-- For show on calculator field -->
                 @php
-                    $showOnCalculatorArray = explode(',', $package->show_on_calculator);
+                    $showOnCalculatorArray = !empty($package->show_on_calculator) ? explode(',', $package->show_on_calculator) : [];
+                    $showOnSummaryArray = !empty($package->show_in_summary) ? explode(',', $package->show_in_summary) : [];
                 @endphp
                  <input type="hidden" name="show_on_calculator" id="show_on_calculator" value="{{$package->show_on_calculator}}">
+                 <input type="hidden" name="show_in_summary" id="show_in_summary" value="{{$package->show_in_summary}}">
                 <div class="row">
                     <!-- Package Description -->
                     <div class="col-md-8">
@@ -251,6 +253,8 @@
                                             <button type="button" class="btn btn-warning remove-package-line">Remove</button>
                                             <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;" @if(in_array($line->attribute_id, $showOnCalculatorArray)) 
                                             checked @endif> Show on Calculator
+                                            <input type="checkbox" name="show_in_summary_check" class="show_in_summary_check" style="margin-left:1%;" @if(in_array($line->attribute_id, $showOnSummaryArray)) 
+                                            checked @endif> Show on Summary
                                         </div>
                                     </div>
                                 @endforeach
@@ -300,6 +304,9 @@
                                             <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;"
                                             @if(in_array($line->attribute_id, $showOnCalculatorArray)) 
                                             checked @endif> Show on Calculator
+                                            <input type="checkbox" name="show_in_summary_check" class="show_in_summary_check" style="margin-left:1%;"
+                                            @if(in_array($line->attribute_id, $showOnSummaryArray)) 
+                                            checked @endif> Show on Summary
                                         </div>
                                     </div>
 
@@ -394,6 +401,7 @@
 </x-admin-layout>
 <script>
     let show_on_calculator_arr = "{{$package->show_on_calculator}}".split(',');
+    let show_in_summary_arr = "{{$package->show_in_summary}}".split(',');
     $(document).ready(function() {
         const attributeOptions = @json($attributeOptions);
         $('.package-form').show();
@@ -531,6 +539,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <button type="button" class="btn btn-warning remove-package-line">Remove</button>
                             <input type="checkbox" name="show_on_calculator_check" class="show_on_calculator_check" style="margin-left:1%;"> Show on Calculator
+                            <input type="checkbox" name="show_in_summary_check" class="show_in_summary_check" style="margin-left:1%;"> Show on Summary
                         </div>
                     </div>
                 `;
@@ -680,4 +689,33 @@
         $('#show_on_calculator').val(show_on_calculator_arr);
     });
 
+    // for show on summary page
+    $(document).on('click', '.show_in_summary_check', function() {
+        let attribute_id = $(this).closest('.package-line-item').find('.attribute-select').val();
+        // Prevent checking if attribute_id is null or 0
+        if (!attribute_id || attribute_id === "0") {
+            alert("Please select a valid attribute first.");
+            $(this).prop('checked', false);
+            return;
+        }
+        if ($(this).is(':checked')) {
+            // Add attribute_id to the array if it's not already included
+            if (!show_in_summary_arr.includes(attribute_id)) {
+                show_in_summary_arr.push(attribute_id);
+            }
+        } else {
+            // Remove attribute_id from the array if it exists
+            show_in_summary_arr = show_in_summary_arr.filter(id => id !== attribute_id);
+        }
+        $('#show_in_summary').val(show_in_summary_arr);
+    });
+
+    function clickShowOnSummaryElements() {
+        const elements = document.querySelectorAll('.show_in_summary_check');
+        elements.forEach(element => {
+            element.click();
+        });
+    }
+
+    clickShowOnSummaryElements();
 </script>
