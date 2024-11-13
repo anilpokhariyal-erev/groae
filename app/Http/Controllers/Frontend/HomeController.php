@@ -68,8 +68,11 @@ class HomeController extends Controller
             $selected = json_decode($data)->uuid;
         }
 
-        // Initialize package query with active status
-        $packagesQuery = PackageHeader::where('status', 1);
+        // Initialize package query with active status and freezone status check
+        $packagesQuery = PackageHeader::where('status', 1)
+            ->whereHas('freezone', function ($query) {
+                $query->where('status', 1); // Ensure freezone status is 1
+            });
 
         $attributeValues = $request->input('attribute_value', []);
 
@@ -82,16 +85,17 @@ class HomeController extends Controller
 
         // Apply attribute filters if they exist
         if (!empty($attributeValues)) {
-                foreach ($attributeValues as $attributeId => $optionId) {
-                    // Check if the optionId is 'any' and skip adding a condition if true
-                    if ($optionId === 'any') {
-                        continue; // Skip this iteration if 'any'
-                    }
-                    $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
+            foreach ($attributeValues as $attributeId => $optionId) {
+                // Check if the optionId is 'any' and skip adding a condition if true
+                if ($optionId === 'any') {
+                    continue; // Skip this iteration if 'any'
+                }
+                $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
+
                     $query->where('package_lines.attribute_id', $attributeId)
                         ->where('package_lines.attribute_option_id', $optionId);
-                    });
-                }
+                });
+            }
         }
 
         // Load related data and order the packages
@@ -103,7 +107,6 @@ class HomeController extends Controller
         // Pass data to the view
         return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
     }
-
     
 
     public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
@@ -147,7 +150,7 @@ class HomeController extends Controller
     {
         $freezone_id = $request->freezone_id;
         if ($freezone_id) {
-            $freezone_data = Freezone::select('id', 'uuid', 'name', 'logo')->whereIn('id', $freezone_id);
+            $freezone_data = Freezone::select('id', 'uuid', 'name', 'logo')->whereIn('id', $freezone_id)->where('status', 1);
             $f_count = $freezone_data->count();
             $freezones = $freezone_data->get();
             $uuids = implode(',', $freezone_data->pluck('uuid')->toArray());
