@@ -16,11 +16,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ secure_asset('js/website/app.js') }}" crossorigin="anonymous"></script>
+    @yield('js-imports')
     @yield('ai-js-imports')
     <script src="{{ secure_asset('js/website/validation.js') }}" crossorigin="anonymous"></script>
     <script src="{{ secure_asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
-    <script src="{{ secure_asset('js/website/owl.carousel.min.js') }}" crossorigin="anonymous"></script>
-    <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
+    @yield('js-owl-imports')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
 </head>
