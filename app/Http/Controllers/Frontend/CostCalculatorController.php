@@ -127,6 +127,12 @@ class CostCalculatorController extends Controller
             return redirect()->back()->withErrors(['freezone' => 'No package found matching your request.'])->withInput();
         }
 
+         // Retrieve all package attributes, including those not specified in the request
+        $all_package_lines = $package_detail->packageLines;
+
+        // Combine specific attributes with all attributes to pass to the view
+        $filtered_package_lines = $all_package_lines->merge($filtered_package_lines);
+
         // Fetch Visa package attributes
         $packages_arr = $this->getVisaPackageAttributes($request, $freezone);
 
