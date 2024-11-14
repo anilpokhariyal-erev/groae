@@ -108,7 +108,10 @@ class CostCalculatorController extends Controller
 
         // Handle package_id if present
         if ($request->filled('package_id')) {
-            $package_id = Crypt::decrypt($request->get('package_id'));
+            $package_id = $request->get('package_id');
+            if ($request->input('package_id') && !$request->has('login') ) {
+                $package_id = Crypt::decrypt($request->get('package_id'));
+            }
             $query->where('id', $package_id);
         }
 
