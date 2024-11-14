@@ -63,7 +63,7 @@ class StaticPageController extends Controller
         $static_page = StaticPage::where('id', $id)->first();
 
         if($static_page){
-            $pages = StaticPage::where('id','!=', $id)->get();
+            $pages = StaticPage::where('id','!=', $id)->whereNull('parent_id')->get();
             return view('admin.static-page.static_page_edit', compact('static_page', 'pages'));
         }
         return abort(404);
@@ -80,14 +80,14 @@ class StaticPageController extends Controller
 
         $request->validate([
             'page_name' => 'required|string|max:100',
-            'parent_id' => 'required|integer|exists:static_pages,id',
+            'parent_id' => 'nullable|integer|exists:static_pages,id',
             'visible_in_footer' => 'nullable|in:on',
             'description' => 'required|string',
         ]);
 
         try{
             $static_page->page_name = $request->page_name;
-            $static_page->parent_id = $request->parent_id;
+            $static_page->parent_id = $request->parent_id ?? null;
             $static_page->visible_in_footer = $request->has('visible_in_footer') ? 1 : 0;
             $static_page->description = $request->description;
             $static_page->save();
