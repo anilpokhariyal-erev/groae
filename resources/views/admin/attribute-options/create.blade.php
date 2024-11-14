@@ -38,6 +38,14 @@
 
                     <div class="col-md-6">
                         <div class="position-relative form-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('description')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
                             <label for="status">Status <span class="text-danger">*</span></label>
                             <select name="status" id="status" class="form-control">
                                 <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>

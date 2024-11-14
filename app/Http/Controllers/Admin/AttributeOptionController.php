@@ -47,6 +47,7 @@ class AttributeOptionController extends Controller
             'attribute_id' => 'required|exists:attributes,id',
             'value' => 'required|string|max:255',
             'status' => 'required|boolean',
+            'description' => 'nullable|string|max:255',
         ]);
         if (AttributeOption::where('attribute_id', $validatedData['attribute_id'])
             ->where('value', $validatedData['value'])
@@ -80,14 +81,15 @@ class AttributeOptionController extends Controller
             'attribute_id' => 'required|exists:attributes,id',
             'value' => 'required|string|max:255',
             'status' => 'required|boolean',
+            'description' => 'nullable|string|max:255',
         ]);
 
         $attributeOption = AttributeOption::findOrFail($id);
 
         // Check if the attribute option is used in any packages
-        if ($attributeOption->countInPackage()) {
-            return redirect()->back()->withErrors(['status' => 'The attribute option is already used in a package.'])->withInput();
-        }
+        // if ($attributeOption->countInPackage()) {
+        //     return redirect()->back()->withErrors(['status' => 'The attribute option is already used in a package.'])->withInput();
+        // }
 
         // Check for duplicate attribute option with the same value and status
         $duplicate = AttributeOption::where('attribute_id', $validatedData['attribute_id'])

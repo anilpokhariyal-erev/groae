@@ -32,13 +32,23 @@
                         </div>
 
                         <div class="position-relative form-group">
-                            <label for="value">Value <span class="text-danger">*</span></label>
-                            <input name="value" id="value" type="text" value="{{ old('value', $attributeOption->value) }}" class="form-control">
+                            <label for="value">Value [Readonly]<span class="text-danger">*</span></label>
+                            <input name="value_display" id="value_display" type="text" value="{{ old('value', $attributeOption->value) }}" class="form-control" readonly>
+                            <input name="value" id="value" type="hidden" value="{{ old('value', $attributeOption->value) }}" class="form-control">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('value')" />
                         </div>
                     </div>
 
                     <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" class="form-control">{{ old('description', $attributeOption->description) }}</textarea>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('description')" />
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6" style="display: none;">
                         <div class="position-relative form-group">
                             <label for="status">Status <span class="text-danger">*</span></label>
                             <select name="status" id="status" class="form-control">

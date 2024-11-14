@@ -112,7 +112,11 @@
 
                             <tr>
                                 <td class="tHeadingTxt">{{ $item->attribute->label }}</td>
-                                <td class="tDetailTxt">{{ $item->attributeOption->value }}</td>
+                                <td class="tDetailTxt">{{ $item->attributeOption->value }} 
+                                    @if($item->attributeOption->description)
+                                     <span class="info-icon" title="{{ $item->attributeOption->description }}">i</span>
+                                    @endif
+                                </td>
                                 <td class="tDetailTxt">
                                     {{ $item->addon_cost > 0 ? $package_detail->currency . ' ' . $item->addon_cost : '-' }}
                                     @php $total_price += $item->addon_cost; @endphp

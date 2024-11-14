@@ -10,6 +10,7 @@ class AttributeOption extends Model
     protected $fillable = [
         'attribute_id',
         'value',
+        'description',
         'status'
     ];
 
