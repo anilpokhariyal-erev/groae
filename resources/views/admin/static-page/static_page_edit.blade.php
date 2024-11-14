@@ -31,6 +31,7 @@
                         <div class="position-relative form-group">                            
                             <label for="page_type">Parent</label>
                             <select name="parent_id" class="custom-select">
+                                <option value="">Make it Parent</option>
                                 @foreach($pages as $page)
                                 <option value="{{$page->id}}" 
                                 @if($page->id==$static_page->parent_id) selected @endif>
