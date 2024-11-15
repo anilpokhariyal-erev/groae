@@ -279,7 +279,7 @@
                 package: {
                     id: "{{ $package_detail->id }}",
                     title: "{{ $package_detail->title }}",
-                    price: "{{ $package_detail->price > 0 ? $package_detail->price : 0 }}",
+                    price: "{{ $package_detail->discounted_price > 0 ? $package_detail->discounted_price : $package_detail->price }}",
                     currency: "{{ $package_detail->currency }}"
                 },
                 attributes: [
