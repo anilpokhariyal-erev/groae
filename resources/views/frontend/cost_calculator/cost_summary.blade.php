@@ -69,7 +69,7 @@
                                 @endif
                             </td>
                         </tr>
-                        @php $total_price = $package_detail->price; $total_attribute_cost = 0; @endphp
+                        @php $total_price = $package_detail->discounted_price>0 ? $package_detail->discounted_price : $package_detail->price; $total_attribute_cost = 0; @endphp
 
                         @foreach ($filtered_package_lines_multiple as $attribute_cost)
                             @php
@@ -332,16 +332,6 @@
                             },
                             @endforeach
                         ]
-                    },
-                    @endforeach
-                ],
-                fixedFees: [
-                    @foreach ($fixedFee as $fee)
-                    {
-                        label: "{{ $fee->label }}",
-                        type: "{{ $fee->type }}",
-                        value: "{{ $fee->value }}",
-                        cost: "{{ $fee->type == 'fixed' ? $fee->value : $total_price * ($fee->value / 100) }}"
                     },
                     @endforeach
                 ],

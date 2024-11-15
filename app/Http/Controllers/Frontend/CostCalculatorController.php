@@ -414,7 +414,6 @@ class CostCalculatorController extends Controller
             'licenses' => 'nullable|array',
             'activities' => 'nullable|array',
             'visaDetails' => 'nullable|array',
-            'fixedFees' => 'nullable|array',
         ]);
 
         try {
@@ -504,21 +503,6 @@ class CostCalculatorController extends Controller
                         $packageBookingDetail->status = 1;
                         $packageBookingDetail->save();
                     }
-                }
-            }
-
-            // Save fixedFees as package booking details
-            if (!empty($validatedData['fixedFees'])) {
-                foreach ($validatedData['fixedFees'] as $fixedFee) {
-                    $packageBookingDetail = new PackageBookingDetail();
-                    $packageBookingDetail->package_booking_id = $packageBooking->id;
-                    $packageBookingDetail->attribute_name = $fixedFee['label']." ".$fixedFee["type"];
-                    $packageBookingDetail->attribute_value = $fixedFee['value'];
-                    $packageBookingDetail->quantity = 1;
-                    $packageBookingDetail->price_per_unit = $fixedFee['cost'];
-                    $packageBookingDetail->total_cost = $fixedFee['cost'];
-                    $packageBookingDetail->status = 1;
-                    $packageBookingDetail->save();
                 }
             }
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Assets\Utils;
 use App\Models\Customer;
 use App\Models\FixedFee;
+use App\Models\PackageBookingDetail;
 use App\Models\Setting;
 
 class PackageBookingController extends Controller
@@ -53,8 +54,12 @@ class PackageBookingController extends Controller
         $company_info = Setting::where('section_key', 'company_info')
                        ->pluck('value', 'title')
                        ->toArray();
-
-        return view('admin.package-booking.invoice', compact('packageBookingsDetails', 'fixedFees','company_info'));
+        $packageBookingId = $id;
+        $adjustments = PackageBookingDetail::where('package_booking_id', $id)
+        ->where('attribute_name', 'Adjustments')
+        ->first();
+        return view('admin.package-booking.invoice', compact('packageBookingsDetails', 
+        'fixedFees','company_info', 'packageBookingId', 'adjustments'));
     }
 
     /**
@@ -81,5 +86,36 @@ class PackageBookingController extends Controller
         //
     }
 
+    public function adjustments(Request $request)
+    {
+        // Validate the input
+        $validatedData = $request->validate([
+            'package_booking_id' => 'required|numeric|exists:package_bookings,id',
+            'adjustments' => 'required|numeric',
+            'description' => 'nullable|string|max:250',
+        ]);
+
+        // Check if an adjustment already exists for the booking
+        $packageDetail = PackageBookingDetail::where('package_booking_id', $validatedData['package_booking_id'])
+            ->where('attribute_name', 'Adjustments')
+            ->first();
+
+        // If no existing adjustment, create a new one
+        if (!$packageDetail) {
+            $packageDetail = new PackageBookingDetail();
+            $packageDetail->package_booking_id = $validatedData['package_booking_id'];
+            $packageDetail->attribute_name = 'Adjustments';
+        }
+
+        // Update the adjustment details
+        $packageDetail->attribute_value = $validatedData['adjustments'];
+        $packageDetail->price_per_unit = $validatedData['adjustments'];
+        $packageDetail->total_cost = $validatedData['adjustments'];
+        $packageDetail->description = $validatedData['description'] ?? null;
+        $packageDetail->save();
+
+        // Return a response with success message
+        return redirect()->back()->with('success', 'Adjustments successfully updated!');
+    }
     
 }
