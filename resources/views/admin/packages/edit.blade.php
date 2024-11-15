@@ -132,24 +132,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <!-- Package Price -->
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="price">Price <span class="text-danger">*</span></label>
-                            <input name="price" id="price" value="{{ old('price', $package->price) }}" type="number" class="form-control" min="0" required>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('price')" />
-                        </div>
-                    </div>
-
-                    <!-- Renewable Price -->
-                    <div class="col-md-6">
-                        <div class="position-relative form-group">
-                            <label for="renewable_price">Renewable Price<span class="text-danger">*</span></label>
-                            <input name="renewable_price" id="renewable_price" value="{{ old('renewable_price', $package->renewable_price) }}" type="number" class="form-control" min="0" required>
-                            <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
-                        </div>
-                    </div>
-
                     <!-- Currency -->
                     <div class="col-md-6">
                         <div class="position-relative form-group">
@@ -165,6 +147,34 @@
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('currency')" />
                         </div>
                     </div>
+
+                    <!-- Package Price -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="price">Price <span class="text-danger">*</span></label>
+                            <input name="price" id="price" value="{{ old('price', $package->price) }}" type="number" class="form-control" min="0" required>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('price')" />
+                        </div>
+                    </div>
+
+                    <!-- Discounted Price -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="discounted_price">Discounted Price</label>
+                            <input name="discounted_price" id="discounted_price" value="{{ old('renewable_price', $package->discounted_price) }}" type="number" class="form-control" min="0">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('discounted_price')" />
+                        </div>
+                    </div>
+
+                    <!-- Renewable Price -->
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="renewable_price">Renewable Price<span class="text-danger">*</span></label>
+                            <input name="renewable_price" id="renewable_price" value="{{ old('renewable_price', $package->renewable_price) }}" type="number" class="form-control" min="0" required>
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('renewable_price')" />
+                        </div>
+                    </div>
+
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="activity_limit">Number of Free Activities Allowed<span class="text-danger">*</span></label>
