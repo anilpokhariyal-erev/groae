@@ -61,7 +61,12 @@
                             <td class="tHeadingTxt">Package</td>
                             <td class="tDetailTxt">{{ $package_detail->title }}</td>
                             <td class="tDetailTxt">
+                                @if($package_detail->discounted_price)
+                                <del>{{ $package_detail->price > 0 ? $package_detail->currency . ' ' . number_format($package_detail->price, 2) : '' }}</del><br>
+                                {{ $package_detail->discounted_price > 0 ? $package_detail->currency . ' ' . number_format($package_detail->discounted_price, 2) : '' }}
+                                @else
                                 {{ $package_detail->price > 0 ? $package_detail->currency . ' ' . number_format($package_detail->price, 2) : '' }}
+                                @endif
                             </td>
                         </tr>
                         @php $total_price = $package_detail->price; $total_attribute_cost = 0; @endphp
