@@ -18,7 +18,7 @@ class PackageBookingController extends Controller
      */
     public function index(Request $request)
     {  
-        $packageBookings = PackageBooking::where("status", 1)->orderBy("created_at","desc")->get();  
+        $packageBookings = PackageBooking::orderBy("created_at","desc")->get();  
         
         return view('admin.package-booking.bookings', compact('packageBookings'));
     }
@@ -45,21 +45,19 @@ class PackageBookingController extends Controller
      */
     public function show(int $id)
     {
-        $packageBookingsDetails = PackageBooking::with('bookingDetails')
+        $booking = PackageBooking::with('bookingDetails')
                                     ->where('id', $id)
-                                    ->where('status',1)
                                     ->orderBy('created_at','desc')
-                                    ->get();
+                                    ->first();
         $fixedFees = FixedFee::where('status',1)->get();
         $company_info = Setting::where('section_key', 'company_info')
                        ->pluck('value', 'title')
                        ->toArray();
-        $packageBookingId = $id;
         $adjustments = PackageBookingDetail::where('package_booking_id', $id)
         ->where('attribute_name', 'Adjustments')
         ->first();
-        return view('admin.package-booking.invoice', compact('packageBookingsDetails', 
-        'fixedFees','company_info', 'packageBookingId', 'adjustments'));
+        return view('admin.package-booking.invoice', compact('booking', 
+        'fixedFees','company_info', 'adjustments'));
     }
 
     /**
@@ -117,5 +115,35 @@ class PackageBookingController extends Controller
         // Return a response with success message
         return redirect()->back()->with('success', 'Adjustments successfully updated!');
     }
+
+    public function update_status(Request $request)
+    {
+        // Validate the input
+        $validatedData = $request->validate([
+            'package_booking_id' => 'required|exists:package_bookings,id',
+            'status' => 'required|integer|in:0,1,2', // 0: Cancel Request, 1: Pending Invoice, 2: Generate Invoice
+        ]);
+    
+        try {
+            // Retrieve the package booking record
+            $packageBooking = PackageBooking::findOrFail($validatedData['package_booking_id']);
+    
+            // Update the status
+            $packageBooking->status = $validatedData['status'];
+            $packageBooking->save();
+    
+            // Return a success response
+            return response()->json([
+                'message' => 'Package booking status updated successfully.',
+                'status' => $packageBooking->status,
+            ], 200);
+        } catch (\Exception $e) {
+            // Handle errors
+            return response()->json([
+                'message' => 'Failed to update package booking status.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }    
     
 }

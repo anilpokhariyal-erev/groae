@@ -48,6 +48,7 @@
                             <th>Original Cost (AED)</th>
                             <th>Discount (AED)</th>
                             <th>Final Cost (AED)</th>
+                            <th>Status</th>
                             <th>Payment Status</th>
                             <th>Payment Method</th>
                             <th>Transaction ID</th>
@@ -65,6 +66,15 @@
                                 <td>{{ number_format($booking->original_cost, 2) }}</td>
                                 <td>{{ number_format($booking->discount_amount, 2) }}</td>
                                 <td>{{ number_format($booking->final_cost, 2) }}</td>
+                                <td>
+                                    @if($booking->status == '0')
+                                        <span class="badge badge-warning">Cancelled</span>
+                                    @elseif($booking->status == '1')
+                                        <span class="badge badge-success">Invoice Requested</span>
+                                    @elseif($booking->status == '2')
+                                        <span class="badge badge-success">Invoice Generated</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($booking->payment_status == 0)
                                         <span class="badge badge-warning">Pending</span>
