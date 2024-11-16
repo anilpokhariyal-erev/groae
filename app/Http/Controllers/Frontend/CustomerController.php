@@ -149,14 +149,14 @@ class CustomerController extends Controller
         return back()->with('success', 'Document deleted successfully.');
     }
 
-    function view_businessSetup()
+    function view_business_setup()
     {
         $customer =  Auth::guard('customer')->user();
         $freezones = $customer->freezone_bookings->load('freezone', 'license');
 
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
-        return view('frontend.customer.my_businessSetup')->with(compact('pending_detail_count', 'pending_document_count', 'freezones'));
+        return view('frontend.customer.my_business_setup')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones'));
     }
 
     function view_transactions(Request $request)

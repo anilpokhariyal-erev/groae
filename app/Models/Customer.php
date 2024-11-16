@@ -118,4 +118,8 @@ class Customer extends Model implements Authenticatable
         return $this->belongsTo(State::class);
     }
 
+    public function package_bookings(){
+        return $this->hasMany(PackageBooking::class);
+    }
+
 }

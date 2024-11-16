@@ -21,18 +21,15 @@
                                 <h3>License Status: <span>{{ ucfirst($item->client_status) }}</span></h3>
                             </div>
                         @endforeach
+                        
+                        @foreach($customer->package_bookings as $package_booking)
                         <div class="addPersonalDoc">
-                            <h3>Add Personal Information</h3>
-                            <a href="{{ route('customer.detail.view') }}">
-                                <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
-                            </a>
-                        </div>
-                        <div class="addPersonalDoc">
-                            <h3>Uploads General documents</h3>
+                            <h3>{{$package_booking->package->title}}</h3>
                             <a href="{{ route('customer.upload.view') }}">
                                 <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
                             </a>
                         </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
