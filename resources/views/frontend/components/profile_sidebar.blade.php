@@ -4,9 +4,9 @@
             <a href="{{ route('customer.profile.view') }}">
                 <img src="{{ secure_asset('images/profile-icon.png') }}" alt="">Profile</a>
         </li>
-        <li class="sidebarInnrTxt {{ Request::is('my_businessSetup') ? 'activeBar2' : '' }}" id="business">
-            <a href="{{ route('customer.my_businessSetup.view') }}">
-                <img src="{{ secure_asset('images/license-icon.png') }}" alt="">Business Setup
+        <li class="sidebarInnrTxt {{ Request::is('my_business_setup') ? 'activeBar2' : '' }}" id="business">
+            <a href="{{ route('customer.my_business_setup.view') }}">
+                <img src="{{ secure_asset('images/license-icon.png') }}" alt="">My Booking Requests
                 {!! $pending_detail_count + $pending_document_count > 0
                     ? '<p class="messageCountTxt">' . ($pending_detail_count + $pending_document_count) . '</p>'
                     : '' !!}

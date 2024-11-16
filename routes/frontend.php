@@ -66,9 +66,10 @@ Route::middleware(['auth.customer'])->group(function () {
     Route::get('/my_uploads', [CustomerController::class, 'view_uploads'])->name('customer.upload.view');
     Route::patch('/my_uploads', [CustomerController::class, 'update_uploads'])->name('customer.upload.update');
     Route::get('/my_uploads/delete/{id}', [CustomerController::class, 'delete_uploads'])->name('customer.upload.delete');
-    Route::get('/my_businessSetup', [CustomerController::class, 'view_businessSetup'])->name('customer.my_businessSetup.view');
+    Route::get('/my_business_setup', [CustomerController::class, 'view_business_setup'])->name('customer.my_business_setup.view');
     Route::get('/my_transactions', [CustomerController::class, 'view_transactions'])->name('customer.my_transactions.view');
     Route::get('/my_downloads', [CustomerController::class, 'view_downloads'])->name('customer.my_downloads.view');
+    Route::get('/view_invoice/{id}', [CustomerController::class, 'view_invoice'])->name('customer.view_invoice.view');
     Route::post('customer-logout', [CustomerController::class, 'logout'])->name('customer.logout');
 
     //added by brij

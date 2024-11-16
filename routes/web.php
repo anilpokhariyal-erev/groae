@@ -104,25 +104,8 @@ Route::get('/payment_method', [PageController::class, 'payment_method'])->name('
 
 Route::get('/payment_confirmation', [PageController::class, 'payment_confirmation'])->name('payment_confirmation');
 
-// Route::get('/my_profile', [PageController::class, 'my_profile'])->name('my_profile');
-
-// Route::get('/my_profile', [PageController::class, 'my_profile'])->name('my_profile');
-
-// Route::get('/my_businessSetup', [PageController::class, 'my_businessSetup'])->name('my_businessSetup');
-
-// Route::get('/my_uploads', [PageController::class, 'my_uploads'])->name('my_uploads');
-
-// Route::get('/my_transactions', [PageController::class, 'my_transactions'])->name('my_transactions');
-
-// Route::get('/my_downloads', [PageController::class, 'my_downloads'])->name('my_downloads');
-
-//Route::get('/my_settings', [PageController::class, 'my_settings'])->name('my_settings');
-
 Route::get('/pre_postinfo', [PageController::class, 'pre_postinfo'])->name('pre_postinfo');
 
 Route::get('/pre_postdetail', [PageController::class, 'pre_postdetail'])->name('pre_postdetail');
-
-// Route::post('/customer-signup', [CustomerController::class, 'register_customer'])->name('customer.register');
-// Route::post('/customer-login', [CustomerController::class, 'login'])->name('customer.post.login');
 
 require __DIR__ . '/auth.php';

@@ -1,48 +1,5 @@
 <x-admin-layout>
 <link href="{{ asset('css/invoice-style.css') }}?v=0.1" rel="stylesheet" />
-@if($booking->status=='1')
-<form method="POST" action="{{ route('package-bookings.adjustments') }}" class="d-flex align-items-center">
-  <div class="row p-2" style="background-color: white; color: black;">
-      @csrf
-      <div class="col-lg-3">
-        Adjustments (+/- adjustments on final price)
-      </div>
-      <div class="col-lg-3">
-        <input type="hidden" name="package_booking_id" value="{{$booking->id}}">
-        <input type="number" class="form-control" name="adjustments" placeholder="Adjustment Amount" value="{{$adjustments?->total_cost}}">
-      </div>
-      <div class="col-lg-3">
-        <textarea class="form-control" name="description" placeholder="Description">{{$adjustments?->description}}</textarea>
-      </div>
-      <div class="col-lg-3">
-        <button type="submit" class="btn btn-primary" style="background:blue">Add</button>
-      </div>
-  </div>
-</form>
-<div class="row" style="background-color: white; color: black; padding-bottom:15px;">
-  <div class="col-lg-3">
-    <select class="form-control" name="invoice_status" id="invoice_status">
-      <option value="1" @if($booking->status=='1') selected @endif>Pending Invoice</option>
-      <option value="2" @if($booking->status=='2') selected @endif>Generate Invoice</option>
-      <option value="0" @if($booking->status=='0') selected @endif>Cancel Request</option>
-    </select>
-  </div>
-  <div class="col-lg-3">
-  <button type="button" class="btn btn-primary" id="update_invoice" style="background:blue">Update Invoice</button>
-  </div>
-</div>
-@else
-<div class="col-lg-12">
-  <p style="padding: 12px 15px;
-    background: lightblue;
-    color: black;
-    font-weight: 800;
-    font-size: 17px;">
-    @if($booking->status=='2') Invoice Generated @endif
-    @if($booking->status=='0') Request Cancelled @endif
-  </p>
-</div>
-@endif
   <div>
     <div class="py-4">
       <div class="px-14 py-6">

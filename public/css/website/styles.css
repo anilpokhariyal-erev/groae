@@ -4691,3 +4691,22 @@ p.footerTitle {
   margin-top: 10px;
   cursor: pointer;
 }
+
+.p-l-2 {
+  padding-left: 2px;
+}
+.p-r-2 {
+  padding-right: 2px;
+}
+.p-2 {
+  padding: 2px;
+}
+.p-l-4 {
+  padding-left: 4px;
+}
+.p-r-4 {
+  padding-right: 4px;
+}
+.p-4 {
+  padding: 4px;
+}
