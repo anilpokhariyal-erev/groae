@@ -76,9 +76,12 @@ Route::middleware(['auth.customer'])->group(function () {
     Route::get('/my_settings', [CustomerController::class, 'settings'])->name('customer.profile.settings');
     Route::patch('/my_settings', [CustomerController::class, 'change_password'])->name('customer.profile.updatepassword');
     Route::get('protected-file/{path}', [FileController::class, 'download'])->name('protected-file.download');
-});
 
-Route::post('/payment', [PaymentController::class, 'pay']);
+    // for package payments
+    Route::post('/payment-checkout', [PaymentController::class, 'createPaymentCheckout']);
+    Route::get('/checkout-success', [PaymentController::class, 'checkoutSuccess']);
+    Route::get('/checkout-fail', [PaymentController::class, 'checkoutFail']);
+});
 
 Route::resource('contact-us', ContactUsController::class)->only(['index', 'store']);
 

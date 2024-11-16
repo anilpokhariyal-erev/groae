@@ -134,6 +134,43 @@
                     </fieldset>
                 </div>
 
+                <!-- Company Bank Information Section -->
+                <div class="form-group">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Company Bank Information</legend>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="bank_name">Bank Name</label>
+                                    <input type="text" name="bank_name" value="{{ $settings_data['company_info']['Bank Name'] ?? '' }}" class="form-control">
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('bank_name')" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="bank_code">Bank Code</label>
+                                    <input type="text" name="bank_code" value="{{ $settings_data['company_info']['Bank Code'] ?? '' }}" class="form-control">
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('bank_code')" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="account_number">Account Number</label>
+                                    <input type="text" name="account_number" value="{{ $settings_data['company_info']['Account Number'] ?? '' }}" class="form-control">
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('account_number')" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="position-relative form-group">
+                                    <label for="account_holder">Name On Account</label>
+                                    <input type="text" name="account_holder" value="{{ $settings_data['company_info']['Account Holder'] ?? '' }}" class="form-control">
+                                    <x-input-error class="mt-2 text-red" :messages="$errors->get('account_holder')" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
 
                 <div class="ba_flex align_items_center">
                     <button class="mt-1 btn btn-primary">Save</button>

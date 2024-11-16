@@ -235,11 +235,11 @@
       </div>
 
       <div class="px-14 text-sm text-neutral-700">
-        <p class="text-main font-bold">PAYMENT DETAILS</p>
-        <p>Banks of Banks</p>
-        <p>Bank/Sort Code: 1234567</p>
-        <p>Account Number: 123456678</p>
-        <p>Payment Reference: BRA-00335</p>
+          <p class="text-main font-bold">PAYMENT DETAILS</p>
+          <p>{{ $company_info['Bank Name'] ?? 'N/A' }}</p>
+          <p>Bank/Sort Code: {{ $company_info['Bank Code'] ?? 'N/A' }}</p>
+          <p>Account Number: {{ $company_info['Account Number'] ?? 'N/A' }}</p>
+          <p>Payment Reference:  {{$company_info['Company Invoice Prefix'] ?? null;}}{{ str_pad($booking->id, 5, '0', STR_PAD_LEFT) }}</p>
       </div>
 
       <div class="px-14 py-10 text-sm text-neutral-700">

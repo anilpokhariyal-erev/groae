@@ -1,6 +1,9 @@
-<x-admin-layout>
+<x-website-layout>
 <link href="{{ asset('css/invoice-style.css') }}?v=0.1" rel="stylesheet" />
-  <div>
+@php(
+    $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT)
+)
+  <div class="container">
     <div class="py-4">
       <div class="px-14 py-6">
         <table class="w-full border-collapse border-spacing-0">
@@ -27,7 +30,7 @@
                           <div>
                             <p class="whitespace-nowrap text-slate-400 text-right">Booking Ref. #</p>
                             <p class="whitespace-nowrap font-bold text-main text-right">
-                              {{$company_info['Company Invoice Prefix'] ?? null;}}{{ str_pad($booking->id, 5, '0', STR_PAD_LEFT) }}
+                              {{$ref_num}}
                             </p>
                           </div>
                         </td>
@@ -192,11 +195,19 @@
       </div>
 
       <div class="px-14 text-sm text-neutral-700">
-        <p class="text-main font-bold">PAYMENT DETAILS</p>
-        <p>Banks of Banks</p>
-        <p>Bank/Sort Code: 1234567</p>
-        <p>Account Number: 123456678</p>
-        <p>Payment Reference: BRA-00335</p>
+          <p class="text-main font-bold">PAYMENT DETAILS</p>
+          <p>{{ $company_info['Bank Name'] ?? 'N/A' }}</p>
+          <p>Bank/Sort Code: {{ $company_info['Bank Code'] ?? 'N/A' }}</p>
+          <p>Account Number: {{ $company_info['Account Number'] ?? 'N/A' }}</p>
+          <p>Payment Reference:   {{$ref_num}}</p>
+          @if($booking->status == 2)
+          <p class="p-4">
+            <form id="checkout-form">
+                @csrf
+                <button type="button" id="checkout-button">Pay Now</button>
+            </form>
+           </p>
+           @endif
       </div>
 
       <div class="px-14 py-10 text-sm text-neutral-700">
@@ -217,6 +228,30 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function () {
+        const checkoutButton = document.getElementById('checkout-button');
+        checkoutButton.addEventListener('click', async () => {
+            const response = await fetch('/payment-checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({
+                    amount: "{{$booking->final_cost}}", 
+                    order_id: "{{$ref_num}}",
+                    booking_id: "{{$booking->id}}"
+                }),
+            });
+ 
+            const session = await response.json();
+ 
+            if (session.url) {
+                window.location.href = session.url; // Redirect to Stripe Checkout
+            } else {
+                console.error(session.error);
+            }
+        });
+
         $('#update_invoice').on('click', function () {
             // Get the selected status and package booking ID
             const status = $('#invoice_status').val();
@@ -244,4 +279,4 @@
         });
     });
 </script>
-</x-admin-layout>
+</x-website-layout>

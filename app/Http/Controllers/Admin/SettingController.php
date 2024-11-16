@@ -43,6 +43,10 @@ class SettingController extends Controller
             'company_address' => 'required|string|max:500',
             'company_phone' => 'required|string|max:20',
             'company_invoice_prefix' => 'required|string|max:20',
+            'bank_name' => 'required|string|max:255',
+            'bank_code' => 'required|string|max:50',
+            'account_number' => 'required|string|max:20',
+            'account_holder' => 'required|string|max:255',
         ]);
 
         // Check if validation fails
@@ -82,6 +86,10 @@ class SettingController extends Controller
                 'Company Address' => $validatedData['company_address'],
                 'Company Phone' => $validatedData['company_phone'],
                 'Company Invoice Prefix' => $validatedData['company_invoice_prefix'],
+                'Bank Name' => $validatedData['bank_name'],
+                'Bank Code' => $validatedData['bank_code'],
+                'Account Number' => $validatedData['account_number'],
+                'Account Holder' => $validatedData['account_holder'],
             ];
 
             foreach ($companyInfo as $title => $value) {
