@@ -160,7 +160,7 @@
                                 <div class="whitespace-nowrap text-slate-400">Net total:</div>
                               </td>
                               <td class="border-b p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->final_cost,2)}}</div>
+                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->original_cost,2)}}</div>
                               </td>
                             </tr>
                             @if($adjustments && $adjustments->total_cost<>0)
@@ -195,7 +195,7 @@
                                   @if($fixedFee->type=='fixed')
                                    {{$fixedFee->value}}
                                   @else
-                                  {{$booking->final_cost*($fixedFee->value/100)}}
+                                  {{$booking->original_cost*($fixedFee->value/100)}}
                                   @endif
                                 </div>
                               </td>
@@ -204,10 +204,13 @@
                             if($fixedFee->type=='fixed'){
                               $fixedCost += $fixedFee->value;
                             }else{
-                              $fixedCost = $booking->final_cost*($fixedFee->value/100);
+                              $fixedCost = $booking->original_cost*($fixedFee->value/100);
                             }
                             ?>
                             @endforeach
+                            @if($booking->status == 2)
+                              @php($fixedCost = 0)
+                            @endif
                             <tr>
                               <td class="bg-main p-3">
                                 <div class="whitespace-nowrap font-bold text-white">Total:</div>

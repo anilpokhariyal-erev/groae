@@ -130,6 +130,28 @@ class PackageBookingController extends Controller
     
             // Update the status
             $packageBooking->status = $validatedData['status'];
+            $fixedCostTotal = 0;
+            if($validatedData['status'] == 2){
+                $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status',1)->get();
+                foreach ($fixedFees as $fixedFee) {
+                    $fixedCost = $fixedFee->value;
+                    if($fixedFee->type!="fixed"){
+                        $fixedCost = ($packageBooking->final_cost * $fixedFee->value/100);
+                    }
+                    $packageBookingDetail = new PackageBookingDetail();
+                    $packageBookingDetail->package_booking_id = $packageBooking->id;
+                    $packageBookingDetail->attribute_name = $fixedFee->label." ".$fixedFee->type;
+                    $packageBookingDetail->attribute_value = $fixedFee->value;
+                    $packageBookingDetail->quantity = 1;
+                    $packageBookingDetail->price_per_unit = $fixedCost;
+                    $packageBookingDetail->total_cost = $fixedCost;
+                    $packageBookingDetail->status = 1;
+                    $packageBookingDetail->save();
+                    $fixedCostTotal += $fixedCost;
+                }
+            }
+
+            $packageBooking->final_cost = $packageBooking->original_cost + $fixedCostTotal;
             $packageBooking->save();
     
             // Return a success response
