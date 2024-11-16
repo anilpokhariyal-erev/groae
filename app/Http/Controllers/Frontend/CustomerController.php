@@ -17,6 +17,10 @@ use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\UploadUpdateRequest;
 use App\Rules\NewPasswordNotMatchPrevious;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\FixedFee;
+use App\Models\PackageBooking;
+use App\Models\PackageBookingDetail;
+use App\Models\Setting;
 
 class CustomerController extends Controller
 {
@@ -201,51 +205,22 @@ class CustomerController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function view_invoice($id)
     {
-        //
+        $booking = PackageBooking::with('bookingDetails')
+                    ->where('id', $id)
+                    ->orderBy('created_at','desc')
+                    ->first();
+        $fixedFees = FixedFee::where('status',1)->get();
+        $company_info = Setting::where('section_key', 'company_info')
+                        ->pluck('value', 'title')
+                        ->toArray();
+        $adjustments = PackageBookingDetail::where('package_booking_id', $id)
+                        ->where('attribute_name', 'Adjustments')
+                        ->first();
+
+        return view('frontend.customer.invoice', compact('booking', 'fixedFees','company_info', 'adjustments'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

@@ -25,7 +25,7 @@
                         @foreach($customer->package_bookings as $package_booking)
                         <div class="addPersonalDoc">
                             <h3>{{$package_booking->package->title}}</h3>
-                            <a href="{{ route('customer.view_invoice.view') }}">
+                            <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                                 <span class="p-r-4">
                                     @if($package_booking->original_cost!=$package_booking->final_cost)
                                     <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>

@@ -69,7 +69,7 @@ Route::middleware(['auth.customer'])->group(function () {
     Route::get('/my_business_setup', [CustomerController::class, 'view_business_setup'])->name('customer.my_business_setup.view');
     Route::get('/my_transactions', [CustomerController::class, 'view_transactions'])->name('customer.my_transactions.view');
     Route::get('/my_downloads', [CustomerController::class, 'view_downloads'])->name('customer.my_downloads.view');
-    Route::get('/view_invoice', [CustomerController::class, 'view_invoice'])->name('customer.view_invoice.view');
+    Route::get('/view_invoice/{id}', [CustomerController::class, 'view_invoice'])->name('customer.view_invoice.view');
     Route::post('customer-logout', [CustomerController::class, 'logout'])->name('customer.logout');
 
     //added by brij

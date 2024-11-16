@@ -60,30 +60,6 @@ class PackageBookingController extends Controller
         'fixedFees','company_info', 'adjustments'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PackageBooking $packageBooking)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PackageBooking $packageBooking)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PackageBooking $packageBooking)
-    {
-        //
-    }
-
     public function adjustments(Request $request)
     {
         // Validate the input
