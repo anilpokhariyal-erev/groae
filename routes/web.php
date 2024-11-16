@@ -92,17 +92,6 @@ Route::get('/activities_information', [PageController::class, 'activities_inform
 Route::get('/view_lowestprice', [PageController::class, 'view_lowestprice'])->name('view_lowestprice');
 
 Route::get('/calculate_licensecost', [PageController::class, 'calculate_licensecost'])->name('calculate_licensecost');
-//Route::get('/calculate_licensecost', [CostCalculator::class,'calculate_licensecost'])->name('calculate_licensecost');
-
-// Route::get('/cost_summary', [PageController::class, 'cost_summary'])->name('cost_summary');
-
-Route::get('/payment', [PageController::class, 'payment'])->name('payment');
-
-// Route::get('/payment_mode', [PageController::class, 'payment_mode'])->name('payment_mode');
-
-Route::get('/payment_method', [PageController::class, 'payment_method'])->name('payment_method');
-
-Route::get('/payment_confirmation', [PageController::class, 'payment_confirmation'])->name('payment_confirmation');
 
 Route::get('/pre_postinfo', [PageController::class, 'pre_postinfo'])->name('pre_postinfo');
 
