@@ -218,7 +218,11 @@ class CustomerController extends Controller
         $adjustments = PackageBookingDetail::where('package_booking_id', $id)
                         ->where('attribute_name', 'Adjustments')
                         ->first();
-
+        
+        $customer =  Auth::guard('customer')->user();
+        if($customer->id != $booking->customer_id) {
+            return abort(401);
+        }
         return view('frontend.customer.invoice', compact('booking', 'fixedFees','company_info', 'adjustments'));
     }
 
