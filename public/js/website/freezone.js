@@ -1,32 +1,3 @@
-const updateActivitiesList = value => {
-  const dom_element = $('#activities');
-  let token = $('#costCalculatorForm').data('token');
-  
-  const package_id = $('#package_id').val();
-  if (value && package_id) {
-    fetch(`${url}/api/package/get-activities?package_id=${package_id}&activityIds=${value}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}` // Make sure token is correct
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        Object.entries(data.activities).forEach(([key, { license, name, id }]) => {
-            dom_element.append(new Option(`${name} [${license}]`, `activities|${id}|${name}`));
-        });
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-  dom_element.trigger('change');
-};
-
 
 const generate_visa_package = (value, rowCount) => {
   let token = $('#costCalculatorForm').data('token');
@@ -164,6 +135,63 @@ const applyFirstRowSelection = (rowIndex) => {
   });
 };
 
+// for activities group and activities
+const updateActivitiesList = value => {
+  const dom_element = $('#activities');
+  let token = $('#costCalculatorForm').data('token');
+  const activitiesSelection = $('#activities_selection').val(); 
+  const selectedValues = activitiesSelection ? activitiesSelection.split('___') : [];
+  dom_element.empty().trigger('change');
+  dom_element.append(new Option('Loading...', '', true, true)).trigger('change');
+  const package_id = $('#package_id').val();
+  if (value && package_id) {
+    fetch(`${url}/api/package/get-activities?package_id=${package_id}&activityIds=${value}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Ensure token is correct
+            'Content-Type': 'application/json' // Optional but good practice
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Clear existing options in the dropdown
+        dom_element.empty().trigger('change');
+
+        // Check if activities are returned in the response
+        if (data && data.activities && data.activities.length > 0) {
+            dom_element.append(new Option('Select an activity', '', false, false));
+            // Iterate over the activities and add them as options
+            data.activities.forEach(({ id, name, license }) => {
+                const optionValue = `activities|${id}|${name}`;
+                const isSelected = selectedValues.includes(optionValue); // Check if it should be selected
+                const newOption = new Option(`${name} [${license}]`, optionValue, false, isSelected);
+                dom_element.append(newOption);
+                dom_element.trigger('change');
+            });
+
+            // Trigger change to update the dropdown visually
+            dom_element.trigger('change');
+        } else {
+            // Handle no activities case
+            dom_element.append(new Option('No activities available', '', true, true)).trigger('change');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching activities:', error);
+
+        // Optionally show an error in the dropdown
+        dom_element.empty().trigger('change');
+        dom_element.append(new Option('Error loading activities', '', true, true)).trigger('change');
+    });
+}
+
+  dom_element.trigger('change');
+};
 
 const refreshSelectionDiv = (div, value) => {
   const display_div = $(`#${div}_display`);
@@ -173,9 +201,11 @@ const refreshSelectionDiv = (div, value) => {
 
     for (const item of items) {
       const [div_dom_id, div_id, div_value] = item.split('|');
-      display_div.append(
-        `<div class="activitySelct"><h3>${div_value}</h3><img onclick="removeThis('${div}','${item}')" src="../../images/close-blackicon.png"></div>`
-      );
+      if(div_value!==undefined){
+        display_div.append(
+          `<div class="activitySelct"><h3>${div_value}</h3><img onclick="removeThis('${div}','${item}')" src="../../images/close-blackicon.png"></div>`
+        );
+      }
     }
   }
 };

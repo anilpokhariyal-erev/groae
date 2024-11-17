@@ -1,4 +1,54 @@
 <x-website-layout>
+<style>
+        /* Adjust the select input fields to look good with Select2 */
+        .select2-container--default .select2-selection--single {
+            height: 40px;
+            font-size: 16px;
+            border-radius: 4px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+        }
+
+        .select2-container--default .select2-selection__arrow {
+            height: 32px;
+        }
+
+        .select2-container--default .select2-selection__rendered {
+            padding-top: 5px;
+        }
+
+        .inputField2 {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .input_wrap {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input_wrap label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background-color: #fff;
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        .input_wrap .errorMessage {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .errorMessage {
+            color: red;
+        }
+    </style>
     @section('js-imports')
         <script src="{{ secure_asset('js/website/freezone.js') }}" crossorigin="anonymous"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
@@ -147,55 +197,4 @@
             });
         });
     </script>
-
-    <style>
-        /* Adjust the select input fields to look good with Select2 */
-        .select2-container--default .select2-selection--single {
-            height: 40px;
-            font-size: 16px;
-            border-radius: 4px;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-        }
-
-        .select2-container--default .select2-selection__arrow {
-            height: 32px;
-        }
-
-        .select2-container--default .select2-selection__rendered {
-            padding-top: 5px;
-        }
-
-        .inputField2 {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .input_wrap {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .input_wrap label {
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            background-color: #fff;
-            font-size: 14px;
-            padding: 0 5px;
-        }
-
-        .input_wrap .errorMessage {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        .errorMessage {
-            color: red;
-        }
-    </style>
 </x-website-layout>

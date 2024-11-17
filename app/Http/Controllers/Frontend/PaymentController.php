@@ -33,6 +33,9 @@ class PaymentController extends Controller
                 'mode' => 'payment',
                 'success_url' => url('/checkout-success') . '?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => url('/checkout-cancel'),
+                'metadata' => [
+                    'reference_id' => $request->order_id,
+                ],
             ]);
  
             return response()->json(['url' => $checkoutSession->url]);
