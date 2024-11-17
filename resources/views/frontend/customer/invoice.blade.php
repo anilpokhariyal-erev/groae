@@ -4,7 +4,7 @@
     $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT)
 )
   <div class="container">
-    <div class="py-4">
+    <div class="py-4 @if($booking->payment_status == 1) watermarked @endif">
       <div class="px-14" style="padding-top: 11%;">
         <table class="w-full border-collapse border-spacing-0">
           <tbody>
