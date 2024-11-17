@@ -178,6 +178,7 @@ class FreezoneController extends Controller
         // Validate the incoming request
         $request->validate([
             'name' => 'required',
+            'freezone_background_image'=> 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
             'freezone_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5000',
             'trending' => 'nullable|in:on',
             'cross_platform_fee' => 'nullable|numeric|min:0',
@@ -204,6 +205,21 @@ class FreezoneController extends Controller
 
             // Save the new logo path
             $freezone->logo = $path;
+        }
+        if ($request->file('freezone_background_image')) {
+            // Delete the old logo if it exists
+            if ($freezone->background_image) {
+                Storage::disk('public')->delete($freezone->background_image);
+            }
+
+            // Generate a unique file name
+            $fileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_background_image')->getClientOriginalName());
+
+            // Store the uploaded file in 'freezones'
+            $path = $request->file('freezone_background_image')->storeAs('freezones', $fileName, 'public');
+
+            // Save the new logo path
+            $freezone->background_image = $path;
         }
 
         // Update freezone fields
