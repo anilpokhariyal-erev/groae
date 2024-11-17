@@ -51,14 +51,21 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                     <div class="position-relative form-group">
                             <label for="visible_in_footer">Visible In Footer</label>
                             <input type="checkbox" name="visible_in_footer" @if($static_page->visible_in_footer) checked @endif>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('visible_in_footer')" />
                         </div>
                     </div>
-
+                    <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        <label for="visible_in_header">Visible In Header</label>
+                        <input type="checkbox" name="visible_in_header" @if($static_page->visible_in_header) checked @endif>
+                        <x-input-error class="mt-2 text-red" :messages="$errors->get('visible_in_header')" />
+                    </div>
+                    </div>
+                </div>
 
                 </div>
 

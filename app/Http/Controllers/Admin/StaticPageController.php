@@ -82,6 +82,7 @@ class StaticPageController extends Controller
             'page_name' => 'required|string|max:100',
             'parent_id' => 'nullable|integer|exists:static_pages,id',
             'visible_in_footer' => 'nullable|in:on',
+            'visible_in_header' => 'nullable|in:on',
             'description' => 'required|string',
         ]);
 
@@ -89,6 +90,7 @@ class StaticPageController extends Controller
             $static_page->page_name = $request->page_name;
             $static_page->parent_id = $request->parent_id ?? null;
             $static_page->visible_in_footer = $request->has('visible_in_footer') ? 1 : 0;
+            $static_page->visible_in_header = $request->has('visible_in_header') ? 1 : 0;
             $static_page->description = $request->description;
             $static_page->save();
 
