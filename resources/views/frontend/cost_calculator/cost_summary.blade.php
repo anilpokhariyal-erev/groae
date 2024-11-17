@@ -198,7 +198,7 @@
                             <tr>
                                 <td class="tHeadingTxt lightTxt"></td>
                                 <td class="tDetailTxt">
-                                    @foreach ($items as $key => $item)
+                                    @foreach ($items as $item)
                                         <span title="{{ $item->attribute_header->title }}">{{ $item->value }} ({{$item->attribute_header->title}})@if (!$loop->last),@endif</span>
                                         @php
                                             $total_attr_cost += $item->price;
