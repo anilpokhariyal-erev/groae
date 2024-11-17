@@ -74,15 +74,15 @@
                         <div class="position-relative form-group">
                             <label for="attribute_values">Attribute Options</label>
                             <div id="attribute-options-container">
-                                @if(old('attribute_options', $attribute->options))
-                                    @foreach(old('attribute_options', $attribute->options) as $key => $option)
+                                @if($attribute_options)
+                                    @foreach($attribute_options as $option)
                                         <div class="attribute-option-item d-flex mb-2">
                                             @if($option->status==1)
                                                 <input type="text" name="attribute_options[]" class="form-control mr-2" value="{{ $option->value }}" placeholder="Enter option value">
                                                 <button type="button" class="btn btn-danger" onclick="removeOption(this)" title="Disable">X</button>
                                             @else
                                                 <input type="text" name="attribute_del_options[]" class="form-control mr-2 del_option" value="{{ $option->value }}" placeholder="Enter option value">
-                                                <button type="button" class="btn btn-danger" onclick="addOption(this)" title="Enable"><i class="fa fa-check"></i></button>
+                                                <button type="button" class="btn btn-success" onclick="addOption(this)" title="Enable"><i class="fa fa-check"></i></button>
                                             @endif
                                         </div>
                                     @endforeach

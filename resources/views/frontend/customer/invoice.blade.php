@@ -5,7 +5,7 @@
 )
   <div class="container">
     <div class="py-4">
-      <div class="px-14 py-6">
+      <div class="px-14" style="padding-top: 11%;">
         <table class="w-full border-collapse border-spacing-0">
           <tbody>
             <tr>
@@ -44,7 +44,7 @@
         </table>
       </div>
 
-      <div class="bg-slate-100 px-14 py-6 text-sm">
+      <div class="px-14 text-sm">
         <table class="w-full border-collapse border-spacing-0">
           <tbody>
             <tr>
@@ -66,14 +66,24 @@
                 </div>
               </td>
             </tr>
+            <tr>
+              <td class="w-1/2 align-top">
+                <div class="col-md-9 px-2 font-bold">
+                  Package: {{$booking->package->title}}
+                </div>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="w-1/2 align-top">
+                <div class="col-md-9 px-2 font-bold">
+                {{$booking->package->currency}} {{$booking->package->price}}
+                </div>
+              </td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
-      </div>
-      <div class="row px-14 font-bold">
-        <div class="col-md-9">
-          Package: {{$booking->package->title}}
-        </div>
-        <div class="col-md-2">{{$booking->package->currency}} {{$booking->package->price}}</div>
       </div>
 
       <div class="px-14 py-10 text-sm text-neutral-700">
@@ -193,7 +203,7 @@
           </tbody>
         </table>
       </div>
-
+      @if($booking->payment_status != 1)
       <div class="px-14 text-sm text-neutral-700">
           <p class="text-main font-bold">PAYMENT DETAILS</p>
           <p>{{ $company_info['Bank Name'] ?? 'N/A' }}</p>
@@ -209,6 +219,7 @@
            </p>
            @endif
       </div>
+      @endif
 
       <div class="px-14 py-10 text-sm text-neutral-700">
         <p class="text-main font-bold">Notes</p>

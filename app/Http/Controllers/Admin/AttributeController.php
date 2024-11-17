@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\Attribute;
+use App\Models\AttributeOption;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -64,8 +65,8 @@ class AttributeController extends Controller
     public function edit($id)
     {
         $attribute = Attribute::findOrFail($id);
-
-        return view('admin.attributes.edit', compact('attribute'));
+        $attribute_options = AttributeOption::where('attribute_id', $id)->get();
+        return view('admin.attributes.edit', compact('attribute', 'attribute_options'));
     }
 
     /**
@@ -104,10 +105,14 @@ class AttributeController extends Controller
 
         // Insert or update attribute options
         foreach ($request->input('attribute_options', []) as $option) {
-            $attribute->options()->updateOrCreate(
-                ['value' => $option], // Condition to check for existing option
-                ['status' => 1] // Fields to update or create
-            );
+            $attribute_option = AttributeOption::where('attribute_id', $id)->where('value', $option)->first();
+            if (!$attribute_option) {
+                $attribute_option = new AttributeOption();
+                $attribute_option->attribute_id = $id;
+                $attribute_option->value = $option;
+            }
+            $attribute_option->status = 1;
+            $attribute_option->save();
         }
 
         // Redirect back with success message
