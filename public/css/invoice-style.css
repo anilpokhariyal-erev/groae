@@ -165,6 +165,34 @@ Payment Button
   padding: 10px;
   border-radius: 4%;
 }
+
+/**
+Watermark on page for Paid
+*/
+.watermarked {
+  position: relative;
+  padding: 20px; /* Add padding for content */
+  /* background-color: #f9f9f9; Optional background color */
+  overflow: hidden; /* Ensures the watermark doesn't overflow the div */
+}
+
+.watermarked::before {
+  content: "Invoice Paid"; /* Your watermark text */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg); /* Rotate the text to make it diagonal */
+  font-size: 36px; /* Adjust font size */
+  color: rgba(0, 0, 0, 0.1); /* Light color for watermark effect */
+  white-space: nowrap; /* Prevent text wrapping */
+  pointer-events: none; /* Ensure it doesn't block interactions */
+  z-index: 1; /* Place it behind other content */
+  user-select: none; /* Prevent text selection */
+  font-weight: bold; /* Make it bold for visibility */
+  text-transform: uppercase; /* Make text uppercase */
+  letter-spacing: 3px; /* Optional: Space letters for effect */
+}
+
 /*
 1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
 2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
