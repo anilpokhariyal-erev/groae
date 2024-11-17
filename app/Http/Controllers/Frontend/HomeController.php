@@ -93,7 +93,8 @@ class HomeController extends Controller
                 $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
 
                     $query->where('package_lines.attribute_id', $attributeId)
-                        ->where('package_lines.attribute_option_id', $optionId);
+                        ->where('package_lines.attribute_option_id', $optionId)
+                    ->where('package_lines.status', 1);
                 });
             }
         }

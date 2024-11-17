@@ -31,13 +31,15 @@
                     @else
                         @foreach ($packages as $item)
                             <div class="searchBlogLayer">
-                                <div class="firstLayer">
+                                <div class="firstLayer"><a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
                                     <img src='{{ $item->freezone->logo ? Storage::url($item->freezone->logo) : asset('images/placeholder.png') }}' alt="">
+                                    </a>
                                 </div>
                                 <div class="secondLayer">
                                     <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
-                                        <h3 class="blogHeading text-left">{{ $item->freezone->name }} <br>{{ $item->title }}</h3>
+                                        <h3 class="signupBtn">{{ $item->freezone->name }} </h3>
                                     </a>
+                                    <h3 class="blogHeading text-left">{{ $item->title }}</h3>
                                     <p class="blogDetail text-left">{{ $item->description }}</p>
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
 
@@ -46,7 +48,7 @@
                                         @if($item->packageLines && count($item->packageLines) > 0)
                                             <div style="margin-top: 5px">
                                                 @foreach ($item->packageLines as $key => $package_line)
-                                                    @if($package_line->attributeOption->price == 0)
+                                                    @if($package_line->attributeOption->price == 0 and $package_line->status==1)
                                                         <div class="attrHead">{{ $package_line->attribute->label}}</div>
                                                         <div> - {{ $package_line->attributeOption->value }}</div>
                                                     @endif
