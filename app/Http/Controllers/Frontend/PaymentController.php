@@ -4,10 +4,12 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\PackageBooking;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
+use Illuminate\Support\Facades\Crypt;
 
 class PaymentController extends Controller
 {
@@ -16,31 +18,48 @@ class PaymentController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $booking = PackageBooking::where("id", $request->booking_id)->first();
-        try {
-            // Create a new Stripe Checkout Session
-            $checkoutSession = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => $booking->package->currency,
-                        'product_data' => [
-                            'name' => $request->order_id." - " .$booking->package->title,
-                        ],
-                        'unit_amount' => $request->amount * 100, // Amount in least amount unit
-                    ],
-                    'quantity' => 1,
-                ]],
-                'mode' => 'payment',
-                'success_url' => url('/checkout-success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => url('/checkout-cancel'),
-                'metadata' => [
-                    'reference_id' => $request->order_id,
-                ],
+        if($booking){        
+            // Create the Transaction entry
+            $transaction = Transaction::create([
+                'transaction_id' => "Pending",
+                'amount' => $booking->final_cost,
+                'reference_id' => $request->order_id,
+                'customer_id' => $booking->customer_id,
+                'payment_status' => 'pending',
+                'message' => 'Payment requested for package booking',
+                'package_booking_id' => $booking->id,
+                'response_obj' => null,
             ]);
- 
-            return response()->json(['url' => $checkoutSession->url]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            try {
+                // Create a new Stripe Checkout Session
+                $checkoutSession = Session::create([
+                    'payment_method_types' => ['card'],
+                    'line_items' => [[
+                        'price_data' => [
+                            'currency' => $booking->package->currency,
+                            'product_data' => [
+                                'name' => $request->order_id." - " .$booking->package->title,
+                            ],
+                            'unit_amount' => $request->amount * 100, // Amount in least amount unit
+                        ],
+                        'quantity' => 1,
+                    ]],
+                    'mode' => 'payment',
+                    'success_url' => url('/checkout-success') . '?session_id={CHECKOUT_SESSION_ID}',
+                    'cancel_url' => url('/checkout-cancel'),
+                    'metadata' => [
+                        'reference_id' => $request->order_id,
+                        'transaction_ref' => Crypt::encrypt($transaction->id),
+                        'booking_ref' => Crypt::encrypt($booking->id),
+                    ],
+                ]);
+    
+                return response()->json(['url' => $checkoutSession->url]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+        } else {
+            return response()->json(['error'=> 'Invalid Package Booking for Payment.'], 500);
         }
     }
 
@@ -54,7 +73,20 @@ class PaymentController extends Controller
             // Fetch the session details from Stripe
             $session = Session::retrieve($sessionId);
             $paymentIntent = PaymentIntent::retrieve($session->payment_intent);
- 
+            // Retrieve the reference ID from metadata
+            $referenceId = $session->metadata->reference_id;
+            $transaction_id = Crypt::decrypt($session->metadata->transaction_ref);
+            $booking_id = Crypt::decrypt($session->metadata->booking_ref);
+            $transaction = Transaction::where('id', $transaction_id)->first();
+            $transaction->transaction_id =  $sessionId;
+            $transaction->response_obj = $request;
+            $transaction->payment_status = "successful";
+            $transaction->save();
+            $package_booking = PackageBooking::where("id", $booking_id)->first();
+            $package_booking->transaction_id = $transaction_id;
+            $package_booking->payment_status = 1;
+            $package_booking->payment_method = "card";
+            $package_booking->save();
             // Return the session data to the view
             return view('frontend.customer.checkout-success', [
                 'session' => $session,
