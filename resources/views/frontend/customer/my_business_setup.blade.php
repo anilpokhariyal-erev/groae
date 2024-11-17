@@ -32,12 +32,16 @@
                                     @endif
                                     {{$package_booking->package->currency}} {{$package_booking->final_cost}}
                                     <br>
-                                    @if($package_booking->status == 0)
-                                        <em style="color:red">Cancelled/Rejected</em>
-                                    @elseif($package_booking->status == 1)
-                                        Waiting for Invoice
-                                    @elseif($package_booking->status == 2)
-                                        Invoice Generated
+                                    @if($package_booking->payment_status==1)
+                                        View Receipt
+                                    @else
+                                        @if($package_booking->status == 0)
+                                            <em style="color:red">Cancelled/Rejected</em>
+                                        @elseif($package_booking->status == 1)
+                                            Waiting for Invoice
+                                        @elseif($package_booking->status == 2)
+                                            Invoice Generated
+                                        @endif
                                     @endif
                                 </span>
                                 <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">

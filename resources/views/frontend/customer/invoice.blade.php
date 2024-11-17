@@ -204,7 +204,7 @@
           <p class="p-4">
             <form id="checkout-form">
                 @csrf
-                <button type="button" id="checkout-button">Pay Now</button>
+                <button type="button" class="btn btn-primary paynow-btn" id="checkout-button">Pay Now</button>
             </form>
            </p>
            @endif
@@ -230,6 +230,9 @@
     $(document).ready(function () {
         const checkoutButton = document.getElementById('checkout-button');
         checkoutButton.addEventListener('click', async () => {
+            // Disable the button
+            checkoutButton.disabled = true;
+            checkoutButton.textContent = 'Processing...';
             const response = await fetch('/payment-checkout', {
                 method: 'POST',
                 headers: {

@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Models\Customer;
-use App\Models\Freezone;
-use App\Models\FreezoneBooking;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,17 +16,23 @@ class Transaction extends Model
         'customer_id',
         'payment_status',
         'message',
-        'freezone_booking_id',
+        'package_booking_id',
+        'response_obj',
     ];
 
+    /**
+     * Define a relationship with the Customer model.
+     */
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function freezone_booked()
+    /**
+     * Define a relationship with the PackageBooking model
+     */
+    public function packageBooking()
     {
-        return $this->belongsTo(FreezoneBooking::class, 'freezone_booking_id'); // Specify the foreign key if it's not 'freezone_booking_id'
+        return $this->belongsTo(PackageBooking::class);
     }
 }
-
