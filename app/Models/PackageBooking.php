@@ -19,38 +19,56 @@ class PackageBooking extends Model
         'payment_status',
         'status',
         'payment_method',
-        'transaction_id'
+        'transaction_id',
     ];
 
     // Relationships
 
-    // A PackageBooking belongs to a Customer
+    /**
+     * A PackageBooking belongs to a Customer.
+     */
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
-    // A PackageBooking belongs to a PackageHeader
+    /**
+     * A PackageBooking belongs to a PackageHeader.
+     */
     public function package()
     {
         return $this->belongsTo(PackageHeader::class);
     }
 
-    // A PackageBooking has many PackageBookingDetails
+    /**
+     * A PackageBooking has many PackageBookingDetails.
+     */
     public function bookingDetails()
     {
         return $this->hasMany(PackageBookingDetail::class);
     }
 
+    /**
+     * A PackageBooking may have a related Transaction.
+     */
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'package_booking_id');
+    }
+
     // Accessors/Mutators
 
-    // Example accessor for payment status
+    /**
+     * Get a human-readable label for the payment status.
+     */
     public function getPaymentStatusLabelAttribute()
     {
         return $this->payment_status ? 'Completed' : 'Pending';
     }
 
-    // Example accessor for status
+    /**
+     * Get a human-readable label for the status.
+     */
     public function getStatusLabelAttribute()
     {
         return $this->status ? 'Active' : 'Inactive';
