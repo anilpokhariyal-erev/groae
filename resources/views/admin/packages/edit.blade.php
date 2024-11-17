@@ -368,6 +368,7 @@
                                     <input type="hidden" name="activity_price" value="{{$activity->price}}">
                                 </td>
                                 <td>
+                                    <span style="display: none">{{ $activity->allowed_free == 1 ? 'Yes' : 'No' }}</span>
                                 <input type="checkbox" class="free_activity" {{ $activity->allowed_free == 1 ? 'checked' : '' }}>
                                 </td>
                                 <td>
