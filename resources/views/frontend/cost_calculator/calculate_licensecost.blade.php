@@ -169,6 +169,40 @@
     </section>
 
     <script>
+        $(document).ready(function() {
+            // Safely pass the PHP variable into JavaScript.
+            let data = @json($formInput ?? ''); // Converts the PHP variable to a JSON object.
+            if (data) {
+                // Loop through the `data` object and fill the form fields with corresponding values
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        // Find the corresponding input/select field by its name or id
+                        let inputElement = document.querySelector(`[name="${key}"], [id="${key}"]`);
+
+                        if (inputElement) {
+                            // For text inputs, number inputs, and hidden inputs
+                            if (inputElement.tagName.toLowerCase() === 'input' && inputElement.type !== 'file') {
+                                inputElement.value = data[key];
+                            }
+
+                            // For select elements
+                            else if (inputElement.tagName.toLowerCase() === 'select') {
+                                // Set selected value for <select> element
+                                let options = inputElement.querySelectorAll('option');
+                                options.forEach(option => {
+                                    if (option.value === data[key]) {
+                                        option.selected = true;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+                // Submit the form normally
+                document.getElementById('costCalculatorForm').submit();
+            }
+        });
+
         document.querySelectorAll('.max_check').forEach(function(input) {
             input.addEventListener('change', function() {
                 const maxValue = parseInt(this.getAttribute('data-max'));

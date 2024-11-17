@@ -36,7 +36,8 @@ class CostCalculatorController extends Controller
     public function index(Request $request)
     {
         $package_id = null;
-
+        $formInput = $request->input('form_input', session('form_input', null));
+        Session::pull('form_input');
         if ($request->has('package_id')) {
             try {
                 $package_id = Crypt::decrypt($request->get('package_id'));
@@ -44,6 +45,9 @@ class CostCalculatorController extends Controller
                 // Handle decryption failure, e.g. log the error or show a message
                 return redirect()->back()->withErrors('Invalid package ID.');
             }
+        }
+        if($formInput){
+            $package_id = $formInput['package_id'];
         }
         $selected_freezone = $request->get('freezone');
         $package = null;
@@ -71,7 +75,7 @@ class CostCalculatorController extends Controller
 
         $token = config('auth.app_api_token');
 
-        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezone_data', 'attributes', 'token'));
+        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezone_data', 'attributes', 'token','formInput'));
     }
 
     /**
