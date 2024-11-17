@@ -20,7 +20,7 @@
             max-width: 100%; /* Ensure logo scales responsively */
         }
         .settingList.listScroll{
-            padding-top: 10%;
+            padding-top: 8%;
         }
     </style>
     <!-- About Us Container -->

@@ -121,19 +121,28 @@ class FreezoneController extends Controller
                 return $query->whereNull('deleted_at');
             })],
             'freezone_logo' => 'required|image|mimes:jpeg,png,jpg,svg|max:5000',
+            'freezone_background_image' => 'image|mimes:jpeg,png,jpg,svg|max:5000',
         ]);
 
         DB::beginTransaction();
         try {
             // Handle file upload for logo
-            $originalName = 'freezones/' . time() . '_' . str_replace(' ', '_', $request->file('freezone_logo')->getClientOriginalName());
-            Storage::put($originalName, file_get_contents($request->file('freezone_logo')), 'public');
+            $logoFileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_logo')->getClientOriginalName());
+            $logoPath = $request->file('freezone_logo')->storeAs('freezones', $logoFileName, 'public');
 
-            // Creating the Freezone
+            // Handle file upload for background image (if present)
+            $backgroundImagePath = null;
+            if ($request->hasFile('freezone_background_image')) {
+                $backgroundImageFileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_background_image')->getClientOriginalName());
+                $backgroundImagePath = $request->file('freezone_background_image')->storeAs('freezones', $backgroundImageFileName, 'public');
+            }
+
+            // Create the Freezone
             $name = $request->name;
             $freezone = new Freezone;
             $freezone->name = $name;
-            $freezone->logo = $originalName;
+            $freezone->logo = $logoPath;
+            $freezone->background_image = $backgroundImagePath; // Only if the background image is provided
             $freezone->slug = trim(str_replace(' ', '-', $name));
             $freezone->status = 1;
 
@@ -149,6 +158,7 @@ class FreezoneController extends Controller
             return back()->with('error', ResponseMessage::WrongMsg);
         }
     }
+
 
 
     public function edit(string $uuid)
