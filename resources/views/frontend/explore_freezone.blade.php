@@ -31,13 +31,15 @@
                     @else
                         @foreach ($packages as $item)
                             <div class="searchBlogLayer">
-                                <div class="firstLayer">
+                                <div class="firstLayer"><a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
                                     <img src='{{ $item->freezone->logo ? Storage::url($item->freezone->logo) : asset('images/placeholder.png') }}' alt="">
+                                    </a>
                                 </div>
                                 <div class="secondLayer">
                                     <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
-                                        <h3 class="blogHeading text-left">{{ $item->freezone->name }} <br>{{ $item->title }}</h3>
+                                        <h3 class="signupBtn">{{ $item->freezone->name }} </h3>
                                     </a>
+                                    <h3 class="blogHeading text-left">{{ $item->title }}</h3>
                                     <p class="blogDetail text-left">{{ $item->description }}</p>
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
 

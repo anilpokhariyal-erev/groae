@@ -106,7 +106,7 @@
                                                 });
                                             @endphp
                                             <option data-val="{{ $option->attributeOption->value }}" value="{{ $option->attributeOption->id }}"
-                                                    {{ $selectedOption || old($attribute->name) == $option->attributeOption->id ? 'selected' : '' }}>
+                                                    {{ $selectedOption}}>
                                                 {{ $option->attributeOption->value }}
                                             </option>
                                         @endforeach

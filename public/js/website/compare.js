@@ -20,4 +20,28 @@ $(document).ready(function () {
       .toString();
     window.location.href = `${origin}${pathname}?freezones=${newParams}`;
   });
+
+
+  // Get all the table rows
+  const rows = document.querySelectorAll('tr');
+
+// Loop through each row
+  rows.forEach(row => {
+    // Check if the row contains any td with class 'blackTxt'
+    const cells = row.querySelectorAll('td');
+    let hasBlackTxt = false;
+
+    // Check each cell in the row
+    cells.forEach(cell => {
+      if (cell.classList.contains('blackTxt')) {
+        hasBlackTxt = true;
+      }
+    });
+
+    // If no td contains 'blackTxt', remove the row
+    if (!hasBlackTxt) {
+      row.remove();
+    }
+  });
+
 });
