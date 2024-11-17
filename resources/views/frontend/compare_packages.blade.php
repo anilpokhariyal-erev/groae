@@ -49,12 +49,12 @@
                                 <div class="freezone_name">{{ $package->freezone->name }}</div>
                                 <p class="rupeesTxt">Starting from <br>{{ $package->currency }}  {{ $package->price }}* </p>
                                 </td>
-                            @endforeach                                
+                            @endforeach
                             </tr>
                         </tbody>
                     </table>
 
-                    
+
                 </div>
             </div>
             <a class="submitBtn whiteTxt" href="{{ route('contact-us.index') }}">Book a Consultation</a>
@@ -87,7 +87,7 @@
         }
 
         .whiteTxt {
-            color: #fff; 
+            color: #fff;
         }
     </style>
 </x-website-layout>

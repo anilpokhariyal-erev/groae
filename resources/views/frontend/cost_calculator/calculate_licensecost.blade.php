@@ -105,8 +105,7 @@
                                                     return $line->attribute_id == $attribute->id && $line->attribute_option_id == $option->attributeOption->id;
                                                 });
                                             @endphp
-                                            <option data-val="{{ $option->attributeOption->value }}" value="{{ $option->attributeOption->id }}"
-                                                    {{ $selectedOption || old($attribute->name) == $option->attributeOption->id ? 'selected' : '' }}>
+                                            <option data-val="{{ $option->attributeOption->value }}" value="{{ $option->attributeOption->id }}">
                                                 {{ $option->attributeOption->value }}
                                             </option>
                                         @endforeach
