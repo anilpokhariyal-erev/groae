@@ -165,7 +165,14 @@ Payment Button
   padding: 10px;
   border-radius: 4%;
 }
-
+.download-btn{
+  background: #5c6ac4 !important;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 4%;
+}
 /**
 Watermark on page for Paid
 */
