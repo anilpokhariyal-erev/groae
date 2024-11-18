@@ -90,8 +90,16 @@
                 <div class="row">
                     <div class="ba_flex align_items_center pl-3 pr-3">
                         <div class="position-relative form-group">
-                            <img id="ba_current_image" width="150"
+                            <img id="ba_current_image" width="150" title="logo"
                                 src="{{ $freezone->logo ? Storage::url($freezone->logo) : asset('images/placeholder.png') }}" alt="Freezone Logo">
+                            <p style="text-align: center">Logo</p>
+                        </div>
+                    </div>
+                    <div class="ba_flex align_items_center pl-3 pr-3">
+                        <div class="position-relative form-group">
+                            <img id="bi_current_image" width="150" title="background-image"
+                                 src="{{ $freezone->background_image ? Storage::url($freezone->background_image) : asset('images/placeholder.png') }}" alt="Freezone Logo">
+                            <p style="text-align: center">Background-image</p>
                         </div>
                     </div>
 
@@ -109,6 +117,14 @@
                             <input name="freezone_logo" type="file" id="ba_input_image" class="ba_display_none"
                                 accept="image/*" onchange="displayImage(this, 'ba_current_image')">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_logo')" />
+                        </div>
+
+                        <div class="image-container">
+                            <label for="bi_input_image" id="change-image-btn">Change Background Image</label>
+                            <div id="bi_input_image_name">{{ basename($freezone->background_image) }}</div>
+                            <input name="freezone_background_image" type="file" id="bi_input_image" class="ba_display_none"
+                                   accept="image/*" onchange="displayImage(this, 'bi_current_image')">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_background_image')" />
                         </div>
                         <div class="row">
                             <div class="col-md-4">

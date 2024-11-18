@@ -94,12 +94,16 @@
             reader.readAsDataURL(file);
 
             var ba_dynamic_input_image_name = document.getElementById(imageTag+'_name');
-
             if(ba_dynamic_input_image_name){
                 ba_dynamic_input_image_name.textContent = input.files[0].name;
             } else {
-                var ba_input_image_name = document.getElementById('ba_input_image_name');
-                ba_input_image_name.textContent = input.files[0].name;
+                if(imageTag == 'bi_current_image'){
+                    var ba_input_image_name = document.getElementById('bi_input_image_name');
+                    ba_input_image_name.textContent = input.files[0].name;
+                }else {
+                    var ba_input_image_name = document.getElementById('ba_input_image_name');
+                    ba_input_image_name.textContent = input.files[0].name;
+                }
             }
 
         }

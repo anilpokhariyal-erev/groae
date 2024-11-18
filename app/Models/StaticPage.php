@@ -15,6 +15,7 @@ class StaticPage extends Model
         'slug',
         'visible_in_footer',
         'parent_id',
+        'visible_in_header',
     ];
 
     protected static function booted()

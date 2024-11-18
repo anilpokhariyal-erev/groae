@@ -50,20 +50,17 @@
                         <li class="nav-item">
                             <a href="javascript:void(0)" class="nav-link" id="nav-more-btn">More <img
                                     src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            @php
+                                $pages = \App\Models\StaticPage::where('visible_in_header',1)->get();
+                            @endphp
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
-                                    <li class="subInnrLinks">
-                                        <a href="{{ route('page.content', 'about-us') }}">About us</a>
-                                    </li>
-                                    <li class="subInnrLinks">
-                                        <a href="{{ route('page.content', 'why-groae') }}">Why GroAe</a>
-                                    </li>
-                                    <!--<li class="subInnrLinks">
-                                        <a href="{{ route('pre_postinfo') }}">Pre and Post Incorporation Services</a>
-                                    </li> -->
-                                    <li class="subInnrLinks">
-                                        <a href="{{ route('contact-us.index') }}">Contact us</a>
-                                    </li>
+                                    @foreach($pages as $page)
+                                        <li class="subInnrLinks">
+                                            <a href="{{ route('page.content', $page->slug) }}">{{$page->page_name}}</a>
+                                        </li>
+                                    @endforeach
+
                                 </ul>
                             </div>
                         </li>

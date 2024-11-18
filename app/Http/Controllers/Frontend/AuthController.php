@@ -49,14 +49,9 @@ class AuthController extends Controller
 
         $previousUrl = Session::pull('previous_url', '/');
         $formInput = Session::pull('form_input');
-
-        if (strpos($previousUrl, 'calculate-licensecosts') !== false) {
-            $controller = app(CostCalculatorController::class);
-            $formInput['login'] = 1;
-            // Create an instance of the request class and pass the data
-            $costCalculatorRequest = new CostCalculatorSummaryRequest($formInput);
-
-            return $controller->store($costCalculatorRequest);
+        Session::put('form_input', $formInput);
+        if ($formInput) {
+            return redirect()->route('calculate-licensecosts.index');
         }
         return redirect()->intended($previousUrl)->withInput($formInput);
     }
