@@ -13,7 +13,7 @@
   <div class="container">
     <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint" style="margin: 0; padding: 0;">
       <div class="px-14" style="padding-top: 11%;">
-        <table class="w-full border-collapse border-spacing-0">
+        <table class="w-full border-collapse border-spacing-0" id="pdfHeader">
           <tbody>
             <tr>
               <td class="w-full align-top">
@@ -111,7 +111,7 @@
               <td class="border-b py-3 pl-3">{{$sr++}}</td>
               <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} ) 
                 @if($detail->description)
-                <span title="{{$detail->description}}" 
+                <span class="infomation" title="{{$detail->description}}" 
                       style="background-color: black; color: white; border-radius: 50%; padding: 0px 5px; display: inline-block; text-align: center; cursor: pointer;">
                   i
                 </span>
@@ -332,15 +332,31 @@
               button.remove();
           }
 
+          // Remove Info icons
+          const infomation = element.querySelector('.infomation');
+          if (infomation) {
+            infomation.remove();
+          }
+
           const options = {
               margin: 0,
               filename: 'invoice_{{$ref_num}}.pdf',
               image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 1 },
-              jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+              html2canvas: { scale: 2, useCORS: true },
+              jsPDF: { 
+                  unit: 'in', 
+                  format: 'letter', 
+                  orientation: 'portrait' 
+              },
+              pagebreak: {mode: ['css', 'legacy']}
           };
-          html2pdf().set(options).from(element).save();
-        });
+
+          html2pdf().set(options).from(element).toPdf().get('pdf').save();
+          setTimeout(function(){
+            location.reload();
+          },500);
+      });
+
     });
 
 </script>
