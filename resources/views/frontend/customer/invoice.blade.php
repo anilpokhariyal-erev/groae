@@ -1,58 +1,52 @@
 <x-website-layout>
 <link href="{{ asset('css/invoice-style.css') }}?v=0.1" rel="stylesheet" />
-<style>
-    @media print {
-        #downloadPdf {
-            display: none; /* Hide the download button */
-        }
-    }
-</style>
 @php(
     $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT)
 )
-  <div class="container">
-    <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint" style="margin: 0; padding: 0;">
-      <div class="px-14" style="padding-top: 11%;">
-        <table class="w-full border-collapse border-spacing-0" id="pdfHeader">
-          <tbody>
-            <tr>
-              <td class="w-full align-top">
-                <div>
-                  <img src="{{ secure_asset('images/GroAE_Logo.png') }}" class="h-12">
-                </div>
-              </td>
-
-              <td class="align-top">
-                <div class="text-sm">
-                  <table class="border-collapse border-spacing-0">
-                    <tbody>
-                      <tr>
-                        <td class="border-r pr-4">
-                          <div>
-                            <p class="whitespace-nowrap text-slate-400 text-right">Date</p>
-                            <p class="whitespace-nowrap font-bold text-main text-right">{{ $booking->created_at->format('F d, Y') }}</p>
-                          </div>
-                        </td>
-                        <td class="pl-4">
-                          <div>
-                            <p class="whitespace-nowrap text-slate-400 text-right">Booking Ref. #</p>
-                            <p class="whitespace-nowrap font-bold text-main text-right">
-                              {{$ref_num}}
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<section class="center-section">
+  <div class="container invoice_page myProfileContainer">
+    <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint">
+    <div class="px-14 pdf-adjust">
+      <table class="w-full border-collapse border-spacing-0" id="pdfHeader" style="width: 100% !important;">
+        <tbody>
+          <tr>
+            <td class="w-full align-top">
+              <div>
+                <img src="{{ secure_asset('images/GroAE_Logo.png') }}" class="h-12" 
+                style="max-height: 4rem; max-width: 100%; height: auto; width: auto;">
+              </div>
+            </td>
+            <td class="align-top">
+              <div class="text-sm">
+                <table class="border-collapse border-spacing-0">
+                  <tbody>
+                    <tr>
+                      <td class="border-r pr-4">
+                        <div>
+                          <p class="whitespace-nowrap text-slate-400 text-right">Date</p>
+                          <p class="whitespace-nowrap font-bold text-main text-right">{{ $booking->created_at->format('F d, Y') }}</p>
+                        </div>
+                      </td>
+                      <td class="pl-4">
+                        <div>
+                          <p class="whitespace-nowrap text-slate-400 text-right">Booking Ref. #</p>
+                          <p class="whitespace-nowrap font-bold text-main text-right">
+                            {{$ref_num}}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
       <div class="px-14 text-sm">
-        <table class="w-full border-collapse border-spacing-0">
+        <table class="w-full border-collapse border-spacing-0"  style="width: 100% !important;">
           <tbody>
             <tr>
               <td class="w-1/2 align-top">
@@ -232,9 +226,11 @@
         <p class="text-main font-bold">Notes</p>
         <pre class="italic">{{ $booking->package->description }} </pre>
       </div>
-      <div class="row">
+      @if($booking->payment_status == 1)
+      <div class="px-14 py-10 text-sm text-neutral-700">
         <button class="btn btn-primay download-btn" id="downloadPdf">Download Invoice</button>
       </div>
+      @endif
       <div>
         <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
           Groae
@@ -245,6 +241,7 @@
         </footer>
       </div>
     </div>
+  </section>
  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -339,7 +336,7 @@
           }
 
           const options = {
-              margin: 0,
+              margin: 0.2,
               filename: 'invoice_{{$ref_num}}.pdf',
               image: { type: 'jpeg', quality: 0.98 },
               html2canvas: { scale: 2, useCORS: true },
