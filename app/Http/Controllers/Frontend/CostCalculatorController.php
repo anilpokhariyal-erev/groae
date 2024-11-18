@@ -10,9 +10,13 @@ use App\Models\Customer;
 use App\Models\PackageActivity;
 use App\Models\PackageHeader;
 use App\Models\Freezone;
+use App\Models\Setting;
 use App\Models\VisaPackageAttribute;
 use App\Models\PackageBooking;
 use App\Models\PackageBookingDetail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Assets\ResponseMessage;
@@ -148,13 +152,14 @@ class CostCalculatorController extends Controller
          // Retrieve all package attributes, including those not specified in the request
         $all_package_lines = $package_detail->packageLines;
 
-        // Filter only the unique package lines that are not already in $filtered_package_lines
-        $unique_package_lines = $all_package_lines->filter(function ($line) use ($filtered_package_lines) {
-            return !$filtered_package_lines->contains('attribute_id', $line->attribute_id);
-        });
-
-        // Combine specific attributes with unique attributes from all attributes
-        $filtered_package_lines = $filtered_package_lines->merge($unique_package_lines);
+        if ($filtered_package_lines){
+            // Filter only the unique package lines that are not already in $filtered_package_lines
+            $unique_package_lines = $all_package_lines->filter(function ($line) use ($filtered_package_lines) {
+                return !$filtered_package_lines->contains('attribute_id', $line->attribute_id);
+            });
+            // Combine specific attributes with unique attributes from all attributes
+            $filtered_package_lines = $filtered_package_lines->merge($unique_package_lines);
+        }
 
         // Fetch Visa package attributes
         $packages_arr = $this->getVisaPackageAttributes($request, $freezone);
@@ -404,6 +409,78 @@ class CostCalculatorController extends Controller
     }
 
 
+    public function generateAndSendPdf($booking)
+    {
+        // Fetch additional data for the PDF view
+        $fixedFees = FixedFee::where('status', 1)->get();
+        $company_info = Setting::where('section_key', 'company_info')
+            ->pluck('value', 'title')
+            ->toArray();
+        $adjustments = PackageBookingDetail::where('package_booking_id', $booking->id)
+            ->where('attribute_name', 'Adjustments')
+            ->first();
+
+        // Define the original file name
+        $originalName = 'invoices/' . time() . '_' . 'invoice_' . $booking->id . '.pdf'; // Customize this as needed
+
+        // Generate the PDF
+        $pdf = PDF::loadView('frontend.email.invoice', [
+            'booking' => $booking,
+            'fixedFees' => $fixedFees,
+            'company_info' => $company_info,
+            'adjustments' => $adjustments,
+        ]);
+        $pdf->setOption('isHtml5ParserEnabled', true); // Enable HTML5 parsing
+        $pdf->setOption('isPhpEnabled', true);         // Allow PHP inside HTML (not recommended for security)
+        $pdf->setOption('isCssFloatEnabled', true);
+
+        // Convert PDF to string and store it
+        $pdfContent = $pdf->output(); // Get the PDF content as a string
+
+        // Save the PDF to the storage directory (public disk)
+        $path = Storage::put('public/' . $originalName, $pdfContent); // Save the PDF in the public disk
+
+        if ($path) {
+            // Get the public URL of the saved PDF file (optional)
+            $pdfUrl = Storage::url($originalName); // This will return the public URL, e.g. /storage/invoices/1731958492_invoice_13.pdf
+
+            // Now pass the data to send the email with the PDF attachment
+            $this->sendEmailWithAttachment(storage_path('app/public/' . $originalName), $booking, $fixedFees, $company_info, $adjustments);
+
+            // Return success response after PDF is saved and email is sent
+            return response()->json(['message' => 'Invoice generated and email sent successfully.'], 200);
+        } else {
+            // Handle error if the PDF couldn't be saved
+            Log::error('Failed to save the generated PDF.');
+            return response()->json(['message' => 'Failed to generate invoice'], 500);
+        }
+    }
+
+
+
+    public function sendEmailWithAttachment($filePath, $booking, $fixedFees, $company_info, $adjustments)
+    {
+        $toEmail = $booking->customer->email; // Change to recipient's email address
+        $subject = 'Your PDF Invoice';
+        $data = [
+            'message' => 'Please find your PDF invoice attached.',
+            'booking' => $booking,
+            'fixedFees' => $fixedFees,
+            'company_info' => $company_info,
+            'adjustments' => $adjustments
+        ];
+
+        // Send email with attachment
+        Mail::send('frontend.email.invoice', $data, function ($message) use ($toEmail, $subject, $filePath) {
+            $message->to($toEmail)
+                ->subject($subject)
+                ->attach($filePath); // Attach the generated PDF
+        });
+    }
+
+
+
+
     public function raisePackageInvoice(Request $request)
     {
         // Validate the core parts of the request data
@@ -512,6 +589,14 @@ class CostCalculatorController extends Controller
 
             // Commit the transaction
             DB::commit();
+
+            $booking = PackageBooking::with('bookingDetails')
+                ->where('id', $packageBooking->id)
+                ->first();
+
+            // Generate and send the PDF
+            $this->generateAndSendPdf($booking);
+
 
             // Return success message
             return response()->json(['message' => 'Invoice successfully created'], 200);

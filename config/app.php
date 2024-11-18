@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-
+use Barryvdh\DomPDF\Facade as PDF;
 return [
 
     /*
@@ -173,6 +173,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
         App\Providers\AwsSecretsServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -190,6 +191,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Redis' => Illuminate\Support\Facades\Redis::class,
+        'PDF' => PDF::class,
     ])->toArray(),
 
 ];
