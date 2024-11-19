@@ -74,9 +74,6 @@ class BlogController extends Controller
 
         try {
 
-            //$originalName = time().'_'.$request->file('image')->getClientOriginalName();
-            //$image_path = $request->file('image')->storeAs('public/freezone/blog', $originalName);
-
             $originalName = 'blogs/' . time() . '_' . str_replace(' ', '_', $request->file('image')->getClientOriginalName());
             $imagePath = $request->file('image')->storeAs('public', $originalName);
             $url = Storage::url($imagePath);
