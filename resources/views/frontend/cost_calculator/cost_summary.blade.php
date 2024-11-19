@@ -338,30 +338,55 @@
                 totalCost: "{{ $total_price }}"
             };
 
-            $('#requestInvoice').on('click', function (e) {
-                e.preventDefault();
+            $(document).ready(function() {
+                var requestInProgress = false;  // Flag to prevent multiple requests
 
-                $.ajax({
-                    url: `/api/package/raise-invoice`,  // Update with the appropriate endpoint
-                    type: 'POST',
-                    data: JSON.stringify(summaryData),
-                    contentType: 'application/json',
-                    headers: {
-                        'Authorization': 'Bearer {{$token}}', // Use your Sanctum token
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    success: function (response) {
-                        // Handle success response here
-                        location.href = "/package-raised-success"
-                    },
-                    error: function (error) {
-                        // Handle error response here
-                        alert('There was an error requesting the invoice. Please try again.');
+                $('#requestInvoice').on('click', function (e) {
+                    e.preventDefault();
+
+                    // Check if a request is already in progress
+                    if (requestInProgress) {
+                        return;  // Prevent further clicks if a request is in progress
                     }
+
+                    // Set the flag to true to indicate a request is in progress
+                    requestInProgress = true;
+
+                    // Disable the button to prevent further clicks
+                    var $button = $(this);
+                    $button.attr('disabled', true);
+                    $button.text('Processing...');  // Optionally, change button text to indicate processing
+
+                    $.ajax({
+                        url: `/api/package/raise-invoice`,  // Update with the appropriate endpoint
+                        type: 'POST',
+                        data: JSON.stringify(summaryData),
+                        contentType: 'application/json',
+                        headers: {
+                            'Authorization': 'Bearer {{$token}}', // Use your Sanctum token
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function (response) {
+                            // Handle success response
+                            location.href = "/package-raised-success";
+                        },
+                        error: function (error) {
+                            // Handle error response
+                            alert('There was an error requesting the invoice. Please try again.');
+                            // Re-enable the button and restore its text
+                            $button.attr('disabled', false);
+                            $button.text('Request Invoice');
+                        },
+                        complete: function () {
+                            // Reset the request flag after the request is complete
+                            requestInProgress = false;
+                        }
+                    });
                 });
             });
-            
+
+
         });
 
     </script>
