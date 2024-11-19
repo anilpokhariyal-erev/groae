@@ -78,7 +78,8 @@ class BlogController extends Controller
             //$image_path = $request->file('image')->storeAs('public/freezone/blog', $originalName);
 
             $originalName = 'blogs/' . time() . '_' . str_replace(' ', '_', $request->file('image')->getClientOriginalName());
-            Storage::put($originalName, file_get_contents($request->file('image')), 'public');
+            $imagePath = $request->file('image')->storeAs('public', $originalName);
+            $url = Storage::url($imagePath);
 
             $title = strtolower($request->title);
 
@@ -86,7 +87,7 @@ class BlogController extends Controller
             $blog->title = $title;
             $blog->short_description = $request->short_description;
             $blog->youtube_link = $request->youtube_link;
-            $blog->image = $originalName;
+            $blog->image = $imagePath;
             $blog->description = $request->description;
             $blog->slug = trim(str_replace(' ', '-', $title));
             $blog->save();
@@ -97,7 +98,6 @@ class BlogController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return back()->with('error', $e->getMessage());
-            //return back()->with('error', ResponseMessage::WrongMsg);
         }
     }
 
@@ -140,14 +140,17 @@ class BlogController extends Controller
         DB::beginTransaction();
         try {
             if ($request->file('image')) {
-                Storage::delete($blog->image);
-                // $originalName = time().'_'.$request->file('image')->getClientOriginalName();
-                // $image_path = $request->file('image')->storeAs('public/freezone/blog', $originalName);
-                // $blog->image = $image_path;
-
+                Storage::delete($blog->image);                
+                 // Generate the file path
                 $originalName = 'blogs/' . time() . '_' . str_replace(' ', '_', $request->file('image')->getClientOriginalName());
-                Storage::put($originalName, file_get_contents($request->file('image')), 'public');
-                $blog->image = $originalName;
+
+                // Store the file
+                $imagePath = $request->file('image')->storeAs('public', $originalName);
+
+                // Generate the public URL to access the image
+                $url = Storage::url($imagePath);
+
+                $blog->image = $imagePath;
             }
 
             $blog->title = $request->title;
