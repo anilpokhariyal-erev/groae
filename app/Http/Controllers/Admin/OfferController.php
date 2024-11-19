@@ -69,9 +69,6 @@ class OfferController extends Controller
 
         try {
 
-            // $originalName = time().'_'.$request->file('image')->getClientOriginalName();
-            // $image_path = $request->file('image')->storeAs('public/freezone/offer', $originalName);
-
             $offer = Offer::where('freezone_id', $request->freezone)->first();
 
             if($offer){
@@ -79,13 +76,13 @@ class OfferController extends Controller
             }
 
             $originalName = 'offers/' . time() . '_' . str_replace(' ', '_', $request->file('image')->getClientOriginalName());
-            Storage::put($originalName, file_get_contents($request->file('image')), 'public');
-
+            $imagePath = $request->file('image')->storeAs('public', $originalName);
+            Storage::url($imagePath);
             $offer = new Offer;
             $offer->title = $request->title;
             $offer->discount = isset($request->discount) ? $request->discount : 0;
             $offer->description = $request->description;
-            $offer->image = $originalName;
+            $offer->image = $imagePath;
             $offer->freezone_id = $request->freezone;
             $offer->save();
 
@@ -142,12 +139,10 @@ class OfferController extends Controller
         try {
             if ($request->file('image')) {
                 $offer->image ? Storage::delete($offer->image) : '';
-                // $originalName = time().'_'.$request->file('image')->getClientOriginalName();
-                // $image_path = $request->file('image')->storeAs('public/freezone/offer', $originalName);
-
                 $originalName = 'offers/' . time() . '_' . str_replace(' ', '_', $request->file('image')->getClientOriginalName());
-                Storage::put($originalName, file_get_contents($request->file('image')), 'public');
-                $offer->image = $originalName;
+                $imagePath = $request->file('image')->storeAs('public', $originalName);
+                Storage::url($imagePath);
+                $offer->image = $imagePath;
             }
 
             $offer->title = $request->title;
