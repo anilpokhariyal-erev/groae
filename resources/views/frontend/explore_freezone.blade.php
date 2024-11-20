@@ -48,7 +48,7 @@
                                         @if($item->packageLines && count($item->packageLines) > 0)
                                             <div style="margin-top: 5px">
                                                 @foreach ($item->packageLines as $key => $package_line)
-                                                    @if($package_line->attributeOption->price == 0 and $package_line->status==1)
+                                                    @if($package_line->addon_cost == 0 and $package_line->status==1)
                                                         <div class="attrHead">{{ $package_line->attribute->label}}</div>
                                                         <div> - {{ $package_line->attributeOption->value }}</div>
                                                     @endif
