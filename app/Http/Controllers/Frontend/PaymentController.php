@@ -46,7 +46,7 @@ class PaymentController extends Controller
                     ]],
                     'mode' => 'payment',
                     'success_url' => url('/checkout-success') . '?session_id={CHECKOUT_SESSION_ID}',
-                    'cancel_url' => url('/checkout-cancel'),
+                    'cancel_url' => url('/checkout-cancel'). '?session_id={CHECKOUT_SESSION_ID}',
                     'metadata' => [
                         'reference_id' => $request->order_id,
                         'transaction_ref' => Crypt::encrypt($transaction->id),
@@ -96,10 +96,48 @@ class PaymentController extends Controller
             return view('frontend.customer.checkout-fail', ['error' => $e->getMessage()]);
         }
     }
- 
+
     public function checkoutCancel(Request $request)
     {
-        dd($request);
-        return view('checkout-cancel');
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        // Retrieve session ID from query parameters
+        $sessionId = $request->query('session_id');
+        
+        try {
+            // Fetch the session details from Stripe
+            $session = Session::retrieve($sessionId);
+            $transaction_id = Crypt::decrypt($session->metadata->transaction_ref ?? null);
+            $booking_id = Crypt::decrypt($session->metadata->booking_ref ?? null);
+
+            // Update the transaction as failed
+            if ($transaction_id) {
+                $transaction = Transaction::where('id', $transaction_id)->first();
+                $transaction->transaction_id = $sessionId;
+                $transaction->response_obj = $request;
+                $transaction->payment_status = "failed";
+                $transaction->save();
+            }
+
+            // Update the booking as payment failed
+            if ($booking_id) {
+                $package_booking = PackageBooking::where('id', $booking_id)->first();
+                $package_booking->transaction_id = $transaction_id ?? null;
+                $package_booking->payment_status = 0; // Failed status
+                $package_booking->payment_method = "card";
+                $package_booking->save();
+            }
+
+            // Redirect to the failure view with relevant details
+            return view('frontend.customer.checkout-fail', [
+                'session' => $session,
+                'error_message' => 'Your payment could not be processed. Please try again.',
+            ]);
+        } catch (\Exception $e) {
+            // Handle unexpected errors
+            return view('frontend.customer.checkout-fail', [
+                'error_message' => $e->getMessage(),
+            ]);
+        }
     }
+
 }

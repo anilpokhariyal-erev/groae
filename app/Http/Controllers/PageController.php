@@ -90,9 +90,9 @@ class PageController extends Controller
     {
         return view('page.my_account.my_profile');
     }
-    public function my_business_setup()
+    public function my_booking_requests()
     {
-        return view('page.my_account.my_business_setup');
+        return view('page.my_account.my_booking_requests');
     }
     public function my_uploads()
     {

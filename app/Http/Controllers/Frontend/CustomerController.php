@@ -47,6 +47,7 @@ class CustomerController extends Controller
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
         return view('frontend.customer.my_settings')->with(compact('customer', 'pending_detail_count', 'pending_document_count'));
     }
+    
     public function change_password(Request $request)
     {
         $user = auth()->guard('customer')->user();
@@ -153,14 +154,14 @@ class CustomerController extends Controller
         return back()->with('success', 'Document deleted successfully.');
     }
 
-    function view_business_setup()
+    function view_booking_requests()
     {
         $customer =  Auth::guard('customer')->user();
         $freezones = $customer->freezone_bookings->load('freezone', 'license');
 
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
-        return view('frontend.customer.my_business_setup')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones'));
+        return view('frontend.customer.my_booking_requests')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones'));
     }
 
     function view_transactions(Request $request)
