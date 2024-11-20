@@ -16,10 +16,10 @@
                         <input type="radio" id="cutomer" value="customer" name="type" checked>
                         <label for="cutomer">Customer</label>
                     </p>
-                    <p>
-                        <input type="radio" id="partner" value="partner" name="type">
-                        <label for="partner">Partner</label>
-                    </p>
+{{--                    <p>--}}
+{{--                        <input type="radio" id="partner" value="partner" name="type">--}}
+{{--                        <label for="partner">Partner</label>--}}
+{{--                    </p>--}}
                 </div>
 
                 <div class="firstColumn">
