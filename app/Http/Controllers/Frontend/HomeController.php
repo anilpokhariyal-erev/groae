@@ -40,8 +40,8 @@ class HomeController extends Controller
         $blogs = Blog::select('id', 'title', 'short_description', 'image', 'slug', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(3)->get();
         $groae_number = Setting::where('section_key', 'groae_number')->get();
         $attributes = $this->ai_filter_options();
-
-        return view('frontend.home', compact('blogs', 'freezones',  'offer', 'groae_number', 'attributes'));
+        $background_video = config('view.home_video_id');
+        return view('frontend.home', compact('blogs', 'freezones',  'offer', 'groae_number', 'attributes', 'background_video'));
     }
     
     public function trending_freezone()

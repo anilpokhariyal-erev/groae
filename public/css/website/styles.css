@@ -935,10 +935,10 @@ li {
   height: 100px;
 }
 
-.banner {
-  position: relative;
-  padding-top: 150px;
-}
+/* .banner { */
+  /* position: relative; */
+  /* padding-top: 150px; */
+/* } */
 
 img.bannrImg {
   width: 100%;

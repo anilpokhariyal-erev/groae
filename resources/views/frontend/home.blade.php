@@ -1,4 +1,20 @@
 <x-website-layout>
+    <style>
+        .video-container {
+            position: relative;
+            padding-bottom: 46.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+        }
+    </style>
     <!-- banner -->
     @section('js-imports')
         <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
@@ -8,14 +24,16 @@
     @endsection
     <section>
         <div class="banner">
-            <img class="bannrImg" src="{{ asset('images/709[Converted]-1.png') }}" alt="">
-            <div class="bannerHeading">
-                <h2 class="headingTxt" id='greeting'>GROAE, for all your business needs</h2>
-                {{-- <p class="paragraphTxt" id='greeting'>Set up of your business is just a few steps away</p> --}}
-                <div class="bannerBtns">
-                    <a class="bookConsBtn" href="{{ route('contact-us.index') }}">Book a Consultation</a>
-                </div>
+
+            <div class="video-container bannrImg">
+                 <iframe 
+                    src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&loop=1&playlist={{$background_video}}&rel=0&vq=hd1080"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
             </div>
+
             <div class="bannerLayer">
                 <div class="innrLayer">
                     <img src="{{ secure_asset('images/bot1.png') }}" alt="">

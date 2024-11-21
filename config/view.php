@@ -33,4 +33,10 @@ return [
         realpath(storage_path('framework/views'))
     ),
 
+    /*
+    Home Video Link to be displayed in the backgroud of home page
+    */
+
+    'home_video_id'=> env('HOME_VIDEO_ID')
+
 ];
