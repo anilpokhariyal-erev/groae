@@ -41,19 +41,9 @@ class Freezone extends Model
         return $this->hasMany(License::class);
     }
 
-    public function packages(): HasMany
-    {
-        return $this->hasMany(Package::class);
-    }
-
     public function packageheader(): HasMany
     {
         return $this->hasMany(PackageHeader::class);
-    }
-
-    public function min_package(): HasOne
-    {
-        return $this->hasOne(Package::class, 'id', 'min_package_id');
     }
 
     public function activity_groups()

@@ -45,8 +45,9 @@
                                 Freezones </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('calculate-licensecosts.index') }}" class="nav-link">Cost Calculator </a>
+                            <a href="{{ route('freezone.packages.index') }}" class="nav-link">Freezone Packages</a>
                         </li>
+
                         <li class="nav-item">
                             <a href="javascript:void(0)" class="nav-link" id="nav-more-btn">More <img
                                     src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
