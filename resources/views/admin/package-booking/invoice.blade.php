@@ -201,9 +201,9 @@
                                 <div class="whitespace-nowrap font-bold text-main">
                                 {{$booking->package->currency}}
                                   @if($fixedFee->type=='fixed')
-                                   {{$fixedFee->value}}
+                                   {{number_format($fixedFee->value, 2)}}
                                   @else
-                                  {{$booking->original_cost*($fixedFee->value/100)}}
+                                  {{number_format($booking->original_cost*($fixedFee->value/100), 2)}}
                                   @endif
                                 </div>
                               </td>
