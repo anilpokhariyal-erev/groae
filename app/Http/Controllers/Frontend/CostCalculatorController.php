@@ -611,5 +611,27 @@ class CostCalculatorController extends Controller
         }
     }
 
+    public function freezone_packages(Request $request)
+    {
+        // Fetch all active Freezones for the dropdown
+        $freezones = Freezone::where('status', 1)->get();
+
+        // Check if a Freezone UUID is provided
+        $selectedFreezone = null;
+        $packages = collect(); // Empty collection for packages if no Freezone is selected
+
+        if ($request->has('uuid') && !empty($request->uuid)) {
+            // Find the selected Freezone
+            $selectedFreezone = Freezone::where('uuid', $request->uuid)->first();
+
+            if ($selectedFreezone) {
+                // Fetch the packages for the selected Freezone
+                $packages = $selectedFreezone->packageheader()->where('status', 1)->get();
+            }
+        }
+
+        return view('frontend.cost_calculator.freezone_packages', compact('freezones', 'packages', 'selectedFreezone'));
+    }
+
 
 }
