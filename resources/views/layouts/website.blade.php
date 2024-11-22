@@ -39,11 +39,7 @@
                         <li class="nav-item">
                             <a href="{{ route('explore-freezone') }}" class="nav-link">Explore Freezones </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('compare-freezone') }}" class="nav-link"
-                                id="compare-freezone-btn">Compare
-                                Freezones </a>
-                        </li>
+                       
                         <li class="nav-item">
                             <a href="{{ route('freezone.packages.index') }}" class="nav-link">Freezone Packages</a>
                         </li>
@@ -153,7 +149,8 @@
 
             </div>
             <div class="footerBottom">
-                <h3>©{{ date('Y') }} GroAE. All Rights Reserved.</h3>
+                <p>A Unit of Falcon International Consulting & Auditing L.L.C</p>
+                <p>Copyright© Falcon International Consulting & Auditing L.L.C {{ date('Y') }}. All rights reserved.</p>
             </div>
         </footer>
     @endif

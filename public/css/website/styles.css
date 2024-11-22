@@ -4221,17 +4221,19 @@ p.footerTitle {
 }
 
 .footerBottom {
-  background: #638cc0;
-  padding: 15px 0px;
-}
-.footerBottom h3 {
-  font-size: 14px;
-  line-height: 21px;
+  background-color: #333;
+  opacity: 0.8;
   color: #fff;
-  font-weight: 600;
-  font-family: 'Poppins';
+  padding: 20px;
   text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
 }
+
+.footerBottom p {
+  margin: 5px 0;
+}
+
 .pTitle {
   text-align: center;
   color: #fff;
