@@ -45,6 +45,9 @@ Watermark on page for Paid
   letter-spacing: 3px; /* Optional: Space letters for effect */
 }
 
+.groae-admin-logo{
+  height: 5rem !important;
+}
 /*
 Table and layout fixes
 */

@@ -4,7 +4,7 @@
   @endsection
 @if($booking->status=='1')
 <form method="POST" action="{{ route('package-bookings.adjustments') }}" class="d-flex align-items-center">
-  <div class="row p-2" style="background-color: white; color: black;">
+  <div class="row p-2" style="background-color: white; color: black;border-bottom: 3px solid #d9d1d1">
     <div class="col-md-6 p-2">
       @csrf
       <div class="col-md-12 p-2">
@@ -53,7 +53,7 @@
   </p>
 </div>
 @endif
-  <div class="invoice_page">
+  <div class="invoice_page" style="width: 90%;margin:auto;background:#fff;">
     <div class="py-4">
       <div class="px-14 py-6">
         <table class="w-full border-collapse border-spacing-0">
@@ -61,7 +61,7 @@
             <tr>
               <td class="w-full align-top">
                 <div>
-                  <img src="{{ secure_asset('images/GroAE_Logo.png') }}" class="h-12">
+                  <img src="{{ secure_asset('images/GroAE_Logo.png') }}" class="groae-admin-logo">
                 </div>
               </td>
 
@@ -94,7 +94,7 @@
         </table>
       </div>
 
-      <div class="bg-slate-100 px-14 py-6 text-sm">
+      <div class="bg-slate-100 px-14 py-6 text-sm" style="background: #fff;">
         <table class="w-full border-collapse border-spacing-0">
           <tbody>
             <tr>
