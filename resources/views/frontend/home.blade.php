@@ -1,19 +1,28 @@
 <x-website-layout>
     <style>
         .video-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            position: relative;    /* Helps in maintaining aspect ratio */
+            width: 100%;           /* Ensures full width */
+            height: 0;             /* Start with 0 height */
+            padding-bottom: 56.50%; /* This sets the aspect ratio to 16:9 */
+            overflow: hidden;      /* Hides anything outside the container */
         }
+
         .video-container iframe {
-            position: absolute;
+            position: absolute;   /* Positions iframe inside the container */
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
+            width: 100%;
+            height: 100%;
         }
+        .searchFields{
+            margin-top: -1%;
+        }
+        .bannerLayer{
+            padding-bottom: 19%;
+            top: 75%;
+        }
+
     </style>
     <!-- banner -->
     @section('js-imports')
@@ -26,12 +35,12 @@
         <div class="banner">
 
             <div class="video-container bannrImg">
-                 <iframe 
-                    src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&loop=1&playlist={{$background_video}}&rel=0&vq=hd1080"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+                <iframe
+                        src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&loop=1&playlist={{$background_video}}&rel=0&vq=hd1080&controls=0"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="width: 100%; height: 100%;"></iframe>
             </div>
 
             <div class="bannerLayer">
@@ -46,8 +55,8 @@
     </section>
 
     <!-- Trending Freezones  -->
-    <section>
-        <div class="trendingContainer">
+    <section style="margin-top: -1%">
+        <div class="trendingContainer" >
             <div class="topHeading">
                 <h2 class="trendTxt">Trending Freezones</h2>
                 <p class="trendDetails">Look up the Freezones that meets your needs </p>

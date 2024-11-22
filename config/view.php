@@ -37,6 +37,6 @@ return [
     Home Video Link to be displayed in the backgroud of home page
     */
 
-    'home_video_id'=> env('HOME_VIDEO_ID')
+    'home_video_id'=> env('HOME_VIDEO_ID','ud20mLWRqhQ')
 
 ];
