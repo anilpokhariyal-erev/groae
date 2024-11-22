@@ -1,5 +1,7 @@
 <x-admin-layout>
-<link href="{{ asset('css/invoice-style.css') }}?v=0.1" rel="stylesheet" />
+  @section('css_includes')
+    <link href="{{ asset('css/invoice-style.css') }}?v=0.2" rel="stylesheet" />
+  @endsection
 @if($booking->status=='1')
 <form method="POST" action="{{ route('package-bookings.adjustments') }}" class="d-flex align-items-center">
   <div class="row p-2" style="background-color: white; color: black;">
@@ -51,7 +53,7 @@
   </p>
 </div>
 @endif
-  <div>
+  <div class="invoice_page">
     <div class="py-4">
       <div class="px-14 py-6">
         <table class="w-full border-collapse border-spacing-0">
