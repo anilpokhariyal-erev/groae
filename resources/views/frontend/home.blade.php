@@ -2,7 +2,7 @@
     <style>
         .video-container {
             position: relative;
-            padding-bottom: 46.25%; /* 16:9 aspect ratio */
+            padding-bottom: 68.25%; /* 16:9 aspect ratio */
             height: 0;
             overflow: hidden;
         }

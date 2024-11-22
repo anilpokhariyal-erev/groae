@@ -3,8 +3,8 @@
         /* Custom styles for Select2 to override defaults */
         .searchingForm .ai_filter_options.select2-hidden-accessible {
             border-radius: 15px !important;
-            width: 263px !important;
-            height: 55px !important;
+            /* width: 263px !important; */
+            /* height: 55px !important; */
             padding: 0 16px !important;
             color: #304a6f !important;
             outline: none !important;
@@ -64,11 +64,11 @@
                 </select>
             </div>
         @endforeach
-        <div class="formContainer" id="searchBtn" style="height:1px">
+        <div class="formContainer" id="searchBtn" style="margin-top:25px">
             <a class="searchAnchor"> <input type="button" class="searchInput" value=""><img
                     class="seatcIcon" src="{{ asset('images/seatc.png') }}" alt=""></a>
         </div>
-        <div class="formContainer" id="clearSearchBtn" style="height:1px">
+        <div class="formContainer" id="clearSearchBtn" style="margin-top:25px">
             <img class="cursor" src="{{ asset('images/cross-icon.png') }}" alt="">
         </div>
     </form>
