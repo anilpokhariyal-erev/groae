@@ -77,7 +77,7 @@
                     @endforeach
                 </div>
                 <div class="commonViewMoreBtn">
-                    <button class="viwBtn"><a href="{{ route('trending-freezone') }}" class="viewMoreTxt">View
+                    <button class="viwBtn"><a href="{{ route('explore-freezone') }}" class="viewMoreTxt">View
                             More</a></button>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                 <p class="bTitle">Use the GROAE Cost Calculator to find out the cost of your business setup.
                     It’s the number one question we get asked. </p>
                 <h4 class="bInnrTitle">Find out in an instant.</h4>
-                <button class="CostBtn"> <a href="/calculate-licensecosts">Calculate Cost</a></button>
+                <button class="CostBtn"> <a href="/freezone-packages">Calculate Cost</a></button>
             </div>
         </div>
     </section>
