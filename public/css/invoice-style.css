@@ -45,6 +45,9 @@ Watermark on page for Paid
   letter-spacing: 3px; /* Optional: Space letters for effect */
 }
 
+.groae-admin-logo{
+  height: 5rem !important;
+}
 /*
 Table and layout fixes
 */
@@ -263,4 +266,20 @@ Table and layout fixes
   #downloadPdf {
     display: none; /* Hide the download button */
   }
+}
+
+@media (max-width: 600px) {
+  .invoice_page .paynow-btn, .invoice_page .download-btn {
+    font-size: 16px; /* Adjust button font size for mobile */
+    padding: 8px;    /* Reduce padding for smaller screens */
+  }
+}
+
+.invoice_page .paynow-btn:hover, .invoice_page .download-btn:hover {
+  background-color: #4b5ea6;
+  cursor: pointer;
+}
+
+.invoice_page .paynow-btn:focus, .invoice_page .download-btn:focus {
+  outline: 2px solid #3a4a8e;
 }
