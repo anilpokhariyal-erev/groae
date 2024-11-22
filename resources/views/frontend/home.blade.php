@@ -23,6 +23,44 @@
             top: 75%;
         }
 
+             /* Custom styles for the GROAE In Numbers section */
+         .groaeNumbers {
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             margin: 50px 0;
+         }
+
+        .numberCount {
+            display: flex;
+            gap: 30px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .innrCount {
+            text-align: center;
+            opacity: 0;
+        }
+
+        .innrCount h3 {
+            font-size: 40px;
+            font-weight: bold;
+            color: #304a6f;
+            margin: 0;
+            transition: all 1s ease-in-out;
+        }
+
+        .innrCount p {
+            font-size: 18px;
+            color: #6f6f6f;
+        }
+
+        .countImg {
+            width: 100%;
+            height: auto;
+        }
+
     </style>
     <!-- banner -->
     @section('js-imports')
@@ -33,6 +71,14 @@
     @endsection
     <section>
         <div class="banner">
+{{--            <div class="bannerLayer" style="width: 20%;top: 0%;left: 80% !important;height: 100vh;">--}}
+{{--                <div class="innrLayer" style="margin-top: 50%;">--}}
+{{--                    <button type="button">--}}
+{{--                        <a href="https://localhost/signup" class="signupBtn">Book a consultation</a>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+
+{{--            </div>--}}
 
             <div class="video-container bannrImg">
                 <iframe
@@ -49,6 +95,9 @@
                     <h3>AI search to help you find the best Freezone.</h3>
                 </div>
                 @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
+
+                        <a href="contact-us" class="signupBtn book" style="position: absolute;top: 63%;left: 40%;background: #fff; color: #304a6f !important">Book a consultation</a>
+
             </div>
         </div>
 
@@ -67,7 +116,7 @@
                         @if($item->trending)
                             <div class="blogLayer">
                                 <div class="topLayer">
-                                    <img src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}'
+                                    <img style="height: 174px" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}'
                                         alt="">
                                 </div>
                                 <div class="bottomLayer">
@@ -172,3 +221,52 @@
         </div>
     </section>
 </x-website-layout>
+<script>
+    $(document).ready(function() {
+        var hasAnimated = false; // Prevent multiple animations
+
+        // Function to animate numbers
+        function animateNumbers() {
+            if (hasAnimated) return; // Prevent repeated animations
+
+            $('.innrCount').each(function() {
+                var $this = $(this);
+                var targetValue = parseInt($this.find('h3').text().replace(/,/g, '')); // Get the target number
+                $this.css('opacity', 1); // Make it visible
+
+                // Animate number counting up to the target value
+                $({ countNum: 0 }).animate(
+                    { countNum: targetValue },
+                    {
+                        duration: 2000, // Duration of the animation (2 seconds)
+                        easing: 'swing', // Easing function for smooth animation
+                        step: function() {
+                            $this.find('h3').text(Math.ceil(this.countNum).toLocaleString());
+                        },
+                        complete: function() {
+                            $this.find('h3').text(targetValue.toLocaleString()); // Final value after animation
+                        }
+                    }
+                );
+            });
+
+            hasAnimated = true; // Ensure the animation happens only once
+        }
+
+        // Check when the section comes into view
+        $(window).on('scroll', function() {
+            var sectionOffset = $('.groaeNumbers').offset().top;
+            var windowHeight = $(window).height();
+            var scrollTop = $(window).scrollTop();
+
+            if (scrollTop + windowHeight > sectionOffset) {
+                animateNumbers();
+            }
+        });
+
+        // Trigger on page load if already in view
+        if ($(window).scrollTop() + $(window).height() > $('.groaeNumbers').offset().top) {
+            animateNumbers();
+        }
+    });
+</script>
