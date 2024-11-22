@@ -77,7 +77,7 @@
                     @endforeach
                 </div>
                 <div class="commonViewMoreBtn">
-                    <button class="viwBtn"><a href="{{ route('trending-freezone') }}" class="viewMoreTxt">View
+                    <button class="viwBtn"><a href="{{ route('explore-freezone') }}" class="viewMoreTxt">View
                             More</a></button>
                 </div>
             </div>
