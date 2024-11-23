@@ -83,6 +83,37 @@
             position: relative; /* Ensure content stays on top */
             z-index: 2; /* Place content above the overlay */
         }
+
+        .video-banner {
+            position: relative;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 50%;
+            display: none; /* Hide play icon by default */
+        }
+
+        .video-thumbnail .play-icon {
+            display: block; /* Show play icon on hover */
+        }
+
+        #video-container {
+            display: none; /* Hidden initially */
+        }
+
     </style>
     <!-- banner -->
     @section('js-imports')
@@ -170,6 +201,23 @@
     @include('frontend.components.offers_home')
 
     <!-- Business Cost?  -->
+    <section>
+        <div class="container">
+            <div class="video-banner">
+                <!-- Thumbnail image -->
+                <div class="video-thumbnail" onclick="playVideo()" >
+                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="1138px" height="395px">
+                    <div class="play-icon">▶</div> <!-- Play button -->
+                </div>
+
+                <!-- The iframe will be inserted here on click -->
+                <div id="video-container" style="display:none;">
+                    <iframe width="1138px" height="395px" src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&controls=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section>
         <div class="businessCost">
             <img class="graphImg" src="{{ asset('images/Mask group.png') }}" alt="">
@@ -292,4 +340,12 @@
             animateNumbers();
         }
     });
+
+
+    function playVideo() {
+        // Hide the thumbnail and show the iframe
+        document.querySelector('.video-thumbnail').style.display = 'none';
+        document.getElementById('video-container').style.display = 'block';
+    }
+
 </script>
