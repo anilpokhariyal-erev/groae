@@ -224,8 +224,7 @@
     @endif
 
     <!-- GROAE In Numbers -->
-    <section>
-        <div class="container">
+    <section style="margin-bottom:-3.8%">
             <div class="groaeNumbers">
                 <img class="countImg" src="{{ asset('images/groaenumber.png') }}" alt="">
                 <div class="numberLayer">
@@ -242,7 +241,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 </x-website-layout>
 <script>
