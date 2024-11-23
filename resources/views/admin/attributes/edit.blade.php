@@ -40,6 +40,20 @@
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('status')" />
                         </div>
+                        <div class="position-relative form-group">
+                            <label for="sort_order">Sort Order <span class="text-danger">*</span></label>
+                            <input 
+                                name="sort_order" 
+                                id="sort_order" 
+                                type="number" 
+                                value="{{ old('sort_order', $attribute->sort_order) }}" 
+                                class="form-control" 
+                                min="0" 
+                                step="0.01"
+                            >
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('sort_order')" />
+                        </div>
+
                     </div>
                 </div>
                 <div class="row">

@@ -68,6 +68,7 @@ class CostCalculatorController extends Controller
                     ->with(['options', 'packageAttributesCost' => function($query) use ($package_id) {
                         $query->where('package_id', $package_id);
                     }])
+                    ->orderBy('sort_order','asc')
                     ->get();
 
 

@@ -47,7 +47,8 @@ class AttributeController extends Controller
             'show_in_calculator' => 'boolean',
             'allow_any' => 'boolean',
             'allow_multiple' => 'boolean',
-        ]);
+            'sort_order' => 'required|numeric|min:0',
+        ]);           
 
         if (Attribute::where('name', $validatedData['name'])
             ->exists()) {
@@ -79,7 +80,9 @@ class AttributeController extends Controller
         $validatedData = $request->validate([
             'label' => 'required|string|max:255',
             'status' => 'required|boolean',
+            'sort_order' => 'required|numeric|min:0',
         ]);
+
         if ($request->has('allow_any')){
             $validatedData['allow_any'] = $request->input('allow_any');
         }
