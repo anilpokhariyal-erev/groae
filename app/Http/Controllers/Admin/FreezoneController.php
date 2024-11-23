@@ -136,6 +136,11 @@ class FreezoneController extends Controller
                 $backgroundImageFileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_background_image')->getClientOriginalName());
                 $backgroundImagePath = $request->file('freezone_background_image')->storeAs('freezones', $backgroundImageFileName, 'public');
             }
+            $backgroundImageLogoPath=null;
+            if ($request->hasFile('freezone_background_image_logo')) {
+                $backgroundImageLogoFileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_background_image_logo')->getClientOriginalName());
+                $backgroundImageLogoPath = $request->file('freezone_background_image_logo')->storeAs('freezones', $backgroundImageLogoFileName, 'public');
+            }
 
             // Create the Freezone
             $name = $request->name;
@@ -143,6 +148,7 @@ class FreezoneController extends Controller
             $freezone->name = $name;
             $freezone->logo = $logoPath;
             $freezone->background_image = $backgroundImagePath; // Only if the background image is provided
+            $freezone->background_image_logo = $backgroundImageLogoPath;
             $freezone->slug = trim(str_replace(' ', '-', $name));
             $freezone->status = 1;
 
@@ -230,6 +236,21 @@ class FreezoneController extends Controller
 
             // Save the new logo path
             $freezone->background_image = $path;
+        }
+        if ($request->file('freezone_background_image_logo')) {
+            // Delete the old logo if it exists
+            if ($freezone->background_image_logo) {
+                Storage::disk('public')->delete($freezone->background_image_logo);
+            }
+
+            // Generate a unique file name
+            $fileName = time() . '_' . str_replace(' ', '_', $request->file('freezone_background_image_logo')->getClientOriginalName());
+
+            // Store the uploaded file in 'freezones'
+            $path = $request->file('freezone_background_image_logo')->storeAs('freezones', $fileName, 'public');
+
+            // Save the new logo path
+            $freezone->background_image_logo = $path;
         }
 
         // Update freezone fields

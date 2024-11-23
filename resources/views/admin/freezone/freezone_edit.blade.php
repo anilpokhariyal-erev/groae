@@ -102,6 +102,13 @@
                             <p style="text-align: center">Background-image</p>
                         </div>
                     </div>
+                    <div class="ba_flex align_items_center pl-3 pr-3">
+                        <div class="position-relative form-group">
+                            <img id="bg_current_image" width="150" title="background-image-logo"
+                                 src="{{ $freezone->background_image_logo ? Storage::url($freezone->background_image_logo) : asset('images/placeholder.png') }}" alt="Freezone Logo">
+                            <p style="text-align: center">Background-image-logo</p>
+                        </div>
+                    </div>
 
                     <div class="col-md-6">
                         <div class="position-relative form-group">
@@ -125,6 +132,14 @@
                             <input name="freezone_background_image" type="file" id="bi_input_image" class="ba_display_none"
                                    accept="image/*" onchange="displayImage(this, 'bi_current_image')">
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_background_image')" />
+                        </div>
+
+                        <div class="image-container">
+                            <label for="bg_input_image" id="change-image-btn">Change Logo Background Image</label>
+                            <div id="bg_input_image_name">{{ basename($freezone->background_image_logo) }}</div>
+                            <input name="freezone_background_image_logo" type="file" id="bg_input_image" class="ba_display_none"
+                                   accept="image/*" onchange="displayImage(this, 'bg_current_image')">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_background_image_logo')" />
                         </div>
                         <div class="row">
                             <div class="col-md-4">

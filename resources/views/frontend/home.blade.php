@@ -1,18 +1,86 @@
 <x-website-layout>
     <style>
         .video-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            position: relative;    /* Helps in maintaining aspect ratio */
+            width: 100%;           /* Ensures full width */
+            height: 0;             /* Start with 0 height */
+            padding-bottom: 56.50%; /* This sets the aspect ratio to 16:9 */
+            overflow: hidden;      /* Hides anything outside the container */
         }
+
         .video-container iframe {
+            position: absolute;   /* Positions iframe inside the container */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .searchFields{
+            margin-top: -1%;
+        }
+        .bannerLayer{
+            padding-bottom: 19%;
+            top: 75%;
+        }
+
+             /* Custom styles for the GROAE In Numbers section */
+         .groaeNumbers {
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             margin: 50px 0;
+         }
+
+        .numberCount {
+            display: flex;
+            gap: 30px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .innrCount {
+            text-align: center;
+            opacity: 0;
+        }
+
+        .innrCount h3 {
+            font-size: 40px;
+            font-weight: bold;
+            color: #304a6f;
+            margin: 0;
+            transition: all 1s ease-in-out;
+        }
+
+        .innrCount p {
+            font-size: 18px;
+            color: #6f6f6f;
+        }
+
+        .countImg {
+            width: 100%;
+            height: auto;
+        }
+        .blogLayer {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .blogLayer::after {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2); /* Black with opacity for overlay */
+            z-index: 1; /* Position overlay behind content */
+        }
+
+        .blogLayer .topLayer,
+        .blogLayer .bottomLayer {
+            position: relative; /* Ensure content stays on top */
+            z-index: 2; /* Place content above the overlay */
         }
     </style>
     <!-- banner -->
@@ -24,14 +92,22 @@
     @endsection
     <section>
         <div class="banner">
+{{--            <div class="bannerLayer" style="width: 20%;top: 0%;left: 80% !important;height: 100vh;">--}}
+{{--                <div class="innrLayer" style="margin-top: 50%;">--}}
+{{--                    <button type="button">--}}
+{{--                        <a href="https://localhost/signup" class="signupBtn">Book a consultation</a>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+
+{{--            </div>--}}
 
             <div class="video-container bannrImg">
-                 <iframe 
-                    src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&loop=1&playlist={{$background_video}}&rel=0&vq=hd1080"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+                <iframe
+                        src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&loop=1&playlist={{$background_video}}&rel=0&vq=hd1080&controls=0"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="width: 100%; height: 100%;"></iframe>
             </div>
 
             <div class="bannerLayer">
@@ -40,13 +116,16 @@
                     <h3>AI search to help you find the best Freezone.</h3>
                 </div>
                 @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
+
+                        <a href="contact-us" class="signupBtn book" style="position: absolute;top: 63%;left: 40%;background: #fff; color: #304a6f !important">Book a consultation</a>
+
             </div>
         </div>
 
     </section>
 
     <!-- Trending Freezones  -->
-    <section>
+    <section style="margin-top: -1%">
         <div class="trendingContainer">
             <div class="topHeading">
                 <h2 class="trendTxt">Trending Freezones</h2>
@@ -56,18 +135,18 @@
                 <div class="trendingBlog">
                     @foreach ($freezones as $item)
                         @if($item->trending)
-                            <div class="blogLayer">
+                            <div class="blogLayer" style="background-image: url('{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/default-bg.jpg') }}');">
                                 <div class="topLayer">
-                                    <img src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}'
-                                        alt="">
+                                    <img style="height: 174px" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
                                 </div>
                                 <div class="bottomLayer">
-                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
-                                    class="viewInnrTxt"><h3 class="blogHeading">{{ $item->name }}</h3></a>
+                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
+                                        <h3 class="blogHeading">{{ $item->name }}</h3>
+                                    </a>
                                     <p class="blogDetail">{{ $item->about }}</p>
-                                    <button class="viewDetailBtn"><a target="_blank"
-                                            href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
-                                            class="viewInnrTxt">View Details
+                                    <button class="viewDetailBtn">
+                                        <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
+                                            View Details
                                             <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
@@ -77,12 +156,15 @@
                     @endforeach
                 </div>
                 <div class="commonViewMoreBtn">
-                    <button class="viwBtn"><a href="{{ route('explore-freezone') }}" class="viewMoreTxt">View
-                            More</a></button>
+                    <button class="viwBtn">
+                        <a href="{{ route('explore-freezone') }}" class="viewMoreTxt">View More</a>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
+
+
 
     @include('frontend.components.offers_home')
 
@@ -142,8 +224,7 @@
     @endif
 
     <!-- GROAE In Numbers -->
-    <section>
-        <div class="container">
+    <section style="margin-bottom:-3.8%">
             <div class="groaeNumbers">
                 <img class="countImg" src="{{ asset('images/groaenumber.png') }}" alt="">
                 <div class="numberLayer">
@@ -160,6 +241,54 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 </x-website-layout>
+<script>
+    $(document).ready(function() {
+        var hasAnimated = false; // Prevent multiple animations
+
+        // Function to animate numbers
+        function animateNumbers() {
+            if (hasAnimated) return; // Prevent repeated animations
+
+            $('.innrCount').each(function() {
+                var $this = $(this);
+                var targetValue = parseInt($this.find('h3').text().replace(/,/g, '')); // Get the target number
+                $this.css('opacity', 1); // Make it visible
+
+                // Animate number counting up to the target value
+                $({ countNum: 0 }).animate(
+                    { countNum: targetValue },
+                    {
+                        duration: 2000, // Duration of the animation (2 seconds)
+                        easing: 'swing', // Easing function for smooth animation
+                        step: function() {
+                            $this.find('h3').text(Math.ceil(this.countNum).toLocaleString());
+                        },
+                        complete: function() {
+                            $this.find('h3').text(targetValue.toLocaleString()); // Final value after animation
+                        }
+                    }
+                );
+            });
+
+            hasAnimated = true; // Ensure the animation happens only once
+        }
+
+        // Check when the section comes into view
+        $(window).on('scroll', function() {
+            var sectionOffset = $('.groaeNumbers').offset().top;
+            var windowHeight = $(window).height();
+            var scrollTop = $(window).scrollTop();
+
+            if (scrollTop + windowHeight > sectionOffset) {
+                animateNumbers();
+            }
+        });
+
+        // Trigger on page load if already in view
+        if ($(window).scrollTop() + $(window).height() > $('.groaeNumbers').offset().top) {
+            animateNumbers();
+        }
+    });
+</script>

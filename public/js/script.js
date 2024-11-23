@@ -100,6 +100,9 @@
                 if(imageTag == 'bi_current_image'){
                     var ba_input_image_name = document.getElementById('bi_input_image_name');
                     ba_input_image_name.textContent = input.files[0].name;
+                }else if (imageTag == 'bg_current_image'){
+                    var bg_input_image_name = document.getElementById('bg_input_image_name');
+                    bg_input_image_name.textContent = input.files[0].name;
                 }else {
                     var ba_input_image_name = document.getElementById('ba_input_image_name');
                     ba_input_image_name.textContent = input.files[0].name;

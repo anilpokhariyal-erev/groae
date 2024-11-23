@@ -31,7 +31,7 @@ class HomeController extends Controller
     public function home()
     {
         $freezones = Freezone::where('status',1)
-                            ->select('id', 'name', 'logo', 'about', 'slug', 'trending', 'created_at')
+                            ->select('id', 'name', 'logo', 'about', 'slug', 'trending', 'created_at','background_image_logo')
                             ->where('trending', 1)
                             ->skip(0)
                             ->take(4)
