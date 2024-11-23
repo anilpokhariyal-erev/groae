@@ -14,6 +14,7 @@ class Attribute extends Model
         'allow_multiple',
         'is_ai_search_enabled',
         'ai_filter_display_order',
+        'sort_order',
         'show_in_calculator',
         'status',
     ];
