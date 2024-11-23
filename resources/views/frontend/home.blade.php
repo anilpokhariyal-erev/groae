@@ -60,7 +60,28 @@
             width: 100%;
             height: auto;
         }
+        .blogLayer {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
 
+        .blogLayer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2); /* Black with opacity for overlay */
+            z-index: 1; /* Position overlay behind content */
+        }
+
+        .blogLayer .topLayer,
+        .blogLayer .bottomLayer {
+            position: relative; /* Ensure content stays on top */
+            z-index: 2; /* Place content above the overlay */
+        }
     </style>
     <!-- banner -->
     @section('js-imports')
@@ -105,7 +126,7 @@
 
     <!-- Trending Freezones  -->
     <section style="margin-top: -1%">
-        <div class="trendingContainer" >
+        <div class="trendingContainer">
             <div class="topHeading">
                 <h2 class="trendTxt">Trending Freezones</h2>
                 <p class="trendDetails">Look up the Freezones that meets your needs </p>
@@ -114,18 +135,18 @@
                 <div class="trendingBlog">
                     @foreach ($freezones as $item)
                         @if($item->trending)
-                            <div class="blogLayer">
+                            <div class="blogLayer" style="background-image: url('{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/default-bg.jpg') }}');">
                                 <div class="topLayer">
-                                    <img style="height: 174px" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}'
-                                        alt="">
+                                    <img style="height: 174px" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
                                 </div>
                                 <div class="bottomLayer">
-                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
-                                    class="viewInnrTxt"><h3 class="blogHeading">{{ $item->name }}</h3></a>
+                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
+                                        <h3 class="blogHeading">{{ $item->name }}</h3>
+                                    </a>
                                     <p class="blogDetail">{{ $item->about }}</p>
-                                    <button class="viewDetailBtn"><a target="_blank"
-                                            href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
-                                            class="viewInnrTxt">View Details
+                                    <button class="viewDetailBtn">
+                                        <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
+                                            View Details
                                             <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                         </a>
                                     </button>
@@ -135,12 +156,15 @@
                     @endforeach
                 </div>
                 <div class="commonViewMoreBtn">
-                    <button class="viwBtn"><a href="{{ route('explore-freezone') }}" class="viewMoreTxt">View
-                            More</a></button>
+                    <button class="viwBtn">
+                        <a href="{{ route('explore-freezone') }}" class="viewMoreTxt">View More</a>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
+
+
 
     @include('frontend.components.offers_home')
 

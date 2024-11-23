@@ -39,6 +39,14 @@
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="position-relative form-group">
+                            <label for="freezone_background_image_logo">Background-image-logo</label>
+                            <input name="freezone_background_image_logo" id="freezone_background_image_logo" type="file" class="form-control">
+                            <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_background_image_logo')" />
+                        </div>
+                    </div>
+
                 </div>               
 
                 <div class="ba_flex align_items_center">
