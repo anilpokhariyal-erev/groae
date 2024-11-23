@@ -53,13 +53,14 @@
 
         .innrCount p {
             font-size: 18px;
-            color: #6f6f6f;
+            color: #fff;
         }
 
         .countImg {
             width: 100%;
-            height: auto;
+            height: 355px;
         }
+
         .blogLayer {
             position: relative;
             background-size: cover;
