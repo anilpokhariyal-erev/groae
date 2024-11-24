@@ -16,7 +16,7 @@ class PaymentController extends Controller
 
     public function createPaymentCheckout(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(config('services.stripe.secret'));
         $booking = PackageBooking::where("id", $request->booking_id)->first();
         if($booking){        
             // Create the Transaction entry
