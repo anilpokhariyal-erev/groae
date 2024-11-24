@@ -81,7 +81,7 @@ Route::middleware(['auth.customer'])->group(function () {
 
     // for package payments
     Route::post('/payment-checkout', [PaymentController::class, 'createPaymentCheckout']);
-    Route::get('/checkout-success', [PaymentController::class, 'checkoutSuccess']);
+    Route::any('/checkout_success', [PaymentController::class, 'checkoutSuccess']);
 });
 
 Route::resource('contact-us', ContactUsController::class)->only(['index', 'store']);
