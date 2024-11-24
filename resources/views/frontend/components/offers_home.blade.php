@@ -23,11 +23,29 @@
 </section>
 <style>
     .sliderContent {
-        background-image: url('{{ $offer_val->image ? Storage::url($offer_val->image) : asset('images/placeholder.png') }}');
         background-size: cover;
         background-position: center;
         height: 100%;
-        opacity: 0.8; /* Adjust opacity as needed */
+        display: flex; /* Flexbox for easier content centering */
+        justify-content: center;
+        overflow: hidden; /* Prevent any unwanted overflow */
     }
+
+    .sliderContent::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6); /* Black with opacity */
+        z-index: 1; /* Place above the background but below content */
+    }
+
+    .sliderContent > * {
+        position: relative; /* Ensure content is above the overlay */
+        z-index: 2; /* Ensure content is above the overlay */
+    }
+
 
 </style>
