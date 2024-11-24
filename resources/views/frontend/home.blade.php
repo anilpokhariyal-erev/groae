@@ -1,120 +1,4 @@
 <x-website-layout>
-    <style>
-        .video-container {
-            position: relative;    /* Helps in maintaining aspect ratio */
-            width: 100%;           /* Ensures full width */
-            height: 0;             /* Start with 0 height */
-            padding-bottom: 56.50%; /* This sets the aspect ratio to 16:9 */
-            overflow: hidden;      /* Hides anything outside the container */
-        }
-
-        .video-container iframe {
-            position: absolute;   /* Positions iframe inside the container */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .searchFields{
-            margin-top: -1%;
-        }
-        .bannerLayer{
-            padding-bottom: 19%;
-            top: 75%;
-        }
-
-             /* Custom styles for the GROAE In Numbers section */
-         .groaeNumbers {
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             margin: 50px 0;
-         }
-
-        .numberCount {
-            display: flex;
-            gap: 30px;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .innrCount {
-            text-align: center;
-            opacity: 0;
-        }
-
-        .innrCount h3 {
-            font-size: 40px;
-            font-weight: bold;
-            color: #304a6f;
-            margin: 0;
-            transition: all 1s ease-in-out;
-        }
-
-        .innrCount p {
-            font-size: 18px;
-            color: #fff;
-        }
-
-        .countImg {
-            width: 100%;
-            height: 355px;
-        }
-
-        .blogLayer {
-            position: relative;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .blogLayer::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.2); /* Black with opacity for overlay */
-            z-index: 1; /* Position overlay behind content */
-        }
-
-        .blogLayer .topLayer,
-        .blogLayer .bottomLayer {
-            position: relative; /* Ensure content stays on top */
-            z-index: 2; /* Place content above the overlay */
-        }
-
-        .video-banner {
-            position: relative;
-        }
-
-        .video-thumbnail {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .play-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 48px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 50%;
-            display: none; /* Hide play icon by default */
-        }
-
-        .video-thumbnail .play-icon {
-            display: block; /* Show play icon on hover */
-        }
-
-        #video-container {
-            display: none; /* Hidden initially */
-        }
-
-    </style>
     <!-- banner -->
     @section('js-imports')
         <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
@@ -124,15 +8,6 @@
     @endsection
     <section>
         <div class="banner">
-{{--            <div class="bannerLayer" style="width: 20%;top: 0%;left: 80% !important;height: 100vh;">--}}
-{{--                <div class="innrLayer" style="margin-top: 50%;">--}}
-{{--                    <button type="button">--}}
-{{--                        <a href="https://localhost/signup" class="signupBtn">Book a consultation</a>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-
-{{--            </div>--}}
-
             <div class="video-container bannrImg">
                 <iframe
                         src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&loop=1&playlist={{$background_video}}&rel=0&vq=hd1080&controls=0"
@@ -148,9 +23,6 @@
                     <h3>AI search to help you find the best Freezone.</h3>
                 </div>
                 @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
-
-                        <a href="contact-us" class="signupBtn book" style="position: absolute;top: 63%;left: 40%;background: #fff; color: #304a6f !important">Book a consultation</a>
-
             </div>
         </div>
 
