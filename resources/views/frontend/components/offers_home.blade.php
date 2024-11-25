@@ -3,7 +3,7 @@
         <div id="homePageSlider" class="owl-carousel owl-theme">
             @if ($offer)
                 @foreach ($offer as $offer_val)
-                    <div class="item">
+                    <div class="item" style="margin-top: -20px !important;">
                         <div class="sliderContent" style="background-image:url('{{ $offer_val->image ? Storage::url($offer_val->image) : asset('images/placeholder.png') }}')">
                             <h2 class="sliderInnrHeading">{{ $offer_val->title }}</h2>
                             <div class="cutoutDiv">
