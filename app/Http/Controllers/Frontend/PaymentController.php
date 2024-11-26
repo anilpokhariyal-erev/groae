@@ -65,7 +65,7 @@ class PaymentController extends Controller
 
     public function checkoutSuccess(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(config('services.stripe.secret'));
         // Retrieve session ID from query parameters
         $sessionId = $request->query('session_id');
         
@@ -99,7 +99,7 @@ class PaymentController extends Controller
 
     public function checkoutCancel(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(config('services.stripe.secret'));
         // Retrieve session ID from query parameters
         $sessionId = $request->query('session_id');
         
