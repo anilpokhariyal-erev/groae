@@ -622,6 +622,7 @@ li {
     height: 100%;
     background: rgba(0, 0, 0, 0.2); /* Black with opacity for overlay */
     z-index: 1; /* Position overlay behind content */
+    border-radius:25px;
   }
 
   .blogLayer .topLayer,
@@ -938,7 +939,7 @@ li {
 
 .blogLayer {
   border-radius: 25px;
-  background: rgba(237, 245, 255, 0.7);
+  background: rgba(0, 0, 0, 0.2);
   padding: 25px;
   display: flex;
   justify-content: space-between;

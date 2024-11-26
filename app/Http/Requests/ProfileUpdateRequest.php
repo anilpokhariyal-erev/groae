@@ -17,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['email', 'max:255', Rule::unique(Customer::class)->ignore(auth()->guard('customer')->user()->id)],
+//            'email' => ['email', 'max:255', Rule::unique(Customer::class)->ignore(auth()->guard('customer')->user()->id)],
             'iso2' => ['required', 'string'],
             'dialCode' => ['required', 'string'],
             'mobile_number' => ['nullable', 'string', 'min:7', 'max:15'],
