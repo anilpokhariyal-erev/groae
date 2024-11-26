@@ -202,7 +202,7 @@ class AuthController extends Controller
         $status = '';
 
         if ($exists) {
-            $customer = Customer::select('password')->where('email', $exists->email)->first();
+            $customer = Customer::where('email', $exists->email)->first();
             if ($customer) {
                 if (Hash::check($request->new_password, $customer->password)) {
                     $message = ResponseMessage::SAME_OLD_PASSWORD;

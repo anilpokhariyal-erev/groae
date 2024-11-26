@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\FreezoneBooking;
 use Illuminate\Http\Request;
 use App\Models\PackageBooking;
 use App\Http\Controllers\Controller;
@@ -56,8 +57,14 @@ class PackageBookingController extends Controller
         $adjustments = PackageBookingDetail::where('package_booking_id', $id)
         ->where('attribute_name', 'Adjustments')
         ->first();
+        $booking_detail= $booking;
+        $documents = [];
+        if($booking_detail){
+            $documents = $booking_detail->customer->customer_documents()->get();
+        }
+
         return view('admin.package-booking.invoice', compact('booking', 
-        'fixedFees','company_info', 'adjustments'));
+        'fixedFees','company_info', 'adjustments','booking_detail','documents'));
     }
 
     public function adjustments(Request $request)

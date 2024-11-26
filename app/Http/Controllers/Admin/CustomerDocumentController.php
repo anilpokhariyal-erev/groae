@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use App\Models\PackageBooking;
 use Illuminate\Http\Request;
 use App\Assets\ResponseMessage;
 use App\Models\FreezoneBooking;
@@ -17,7 +18,7 @@ class CustomerDocumentController extends Controller
 
     public function send_document_request(string $booking_id)
     {
-        $booking_detail = FreezoneBooking::where('id', $booking_id)->first();
+        $booking_detail = PackageBooking::where('id', $booking_id)->first();
 
         if (!$booking_detail) {
             return abort(404);
@@ -43,7 +44,7 @@ class CustomerDocumentController extends Controller
                 $request->merge(['document_format' => array_merge($request->input('document_format'), ['docx'])]);
             }
 
-            $booking_detail = FreezoneBooking::select('customer_id')->where('id', $request->booking_id)->first();
+            $booking_detail = PackageBooking::select('customer_id')->where('id', $request->booking_id)->first();
 
             if (!$booking_detail) {
                 return abort(404);
@@ -57,7 +58,7 @@ class CustomerDocumentController extends Controller
             $customerDocument->customer_id = $booking_detail->customer_id;
             $customerDocument->save();
 
-            return redirect()->route('booking.show', $request->booking_id)->with('success', 'Document submitted successfully');
+            return redirect()->route('package-bookings.show', $request->booking_id)->with('success', 'Document submitted successfully');
         } catch (\Exception $e) {
             return back()->with('error', ResponseMessage::WrongMsg);
         }
@@ -110,7 +111,7 @@ class CustomerDocumentController extends Controller
 
     public function upload_document($booking_id)
     {
-        $booking_detail = FreezoneBooking::where('id', $booking_id)->first();
+        $booking_detail = PackageBooking::where('id', $booking_id)->first();
         $customerdownloads = CustomerDownload::where('customer_id', $booking_detail->customer_id)->get();
 
         return view('admin.process-document.upload_documents', compact('booking_detail', 'customerdownloads'));
