@@ -169,6 +169,21 @@
     </section>
 
     <script>
+        // Assuming `bookConsBtn` is the button you want to add the event listener to
+        document.querySelector('.bookConsBtn').addEventListener('click', function() {
+            // Select all inputs of type number within the parent class (or any specific container)
+            let inputs = document.querySelectorAll('.signupFormItems input[type="number"]');
+
+            // Loop through each input
+            inputs.forEach(function(input) {
+                // Check if the value is less than 0
+                if (parseFloat(input.value) < 0) {
+                    // Update the value to 0 if it is less than 0
+                    input.value = 0;
+                }
+            });
+        });
+
         $(document).ready(function() {
             // Safely pass the PHP variable into JavaScript.
             let data = @json($formInput ?? ''); // Converts the PHP variable to a JSON object.

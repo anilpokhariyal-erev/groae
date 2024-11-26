@@ -47,7 +47,7 @@
                             <div class="secondColumn">
                                 <div class="form-group input_wrap w-100">
                                     <input class="inputField2" value="{{ $customer->email }}" name="email"
-                                        id="email" type="text" placeholder="" required>
+                                        id="email" type="text" placeholder="" required readonly>
                                     <label for="email">Email*</label>
                                     <p id="email_error" class="errorMessage"></p>
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('email')" />

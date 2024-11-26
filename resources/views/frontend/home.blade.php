@@ -78,13 +78,13 @@
             <div class="video-banner">
                 <!-- Thumbnail image -->
                 <div class="video-thumbnail" onclick="playVideo()" >
-                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="1138px" height="395px">
+                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="1138px" height="395px" style="border-radius:35px" >
                     <div class="play-icon">▶</div> <!-- Play button -->
                 </div>
 
                 <!-- The iframe will be inserted here on click -->
                 <div id="video-container" style="display:none;">
-                    <iframe width="1138px" height="395px" src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&controls=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe width="1138px" height="395px" src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&controls=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:35px"></iframe>
                 </div>
             </div>
         </div>
