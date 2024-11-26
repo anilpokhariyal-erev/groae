@@ -1,4 +1,4 @@
-<x-admin-layout>
+
 
     <div class="main-card mb-3 card">
         <div class="card-body">
@@ -105,4 +105,3 @@
         </div>
     @endif
 
-</x-admin-layout>

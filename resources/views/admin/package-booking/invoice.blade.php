@@ -2,6 +2,7 @@
   @section('css_includes')
     <link href="{{ asset('css/invoice-style.css') }}?v=0.2" rel="stylesheet" />
   @endsection
+  @include('admin.freezone-booking.booking_detail')
 @if($booking->status=='1')
 <form method="POST" action="{{ route('package-bookings.adjustments') }}" class="d-flex align-items-center">
   <div class="row p-2" style="background-color: white; color: black;border-bottom: 3px solid #d9d1d1">
