@@ -69,7 +69,7 @@
                                             <div class="compareInput">
                                                 <label class="labelcontainer">Compare
                                                     <input class="checkbox" id="package_{{ $item->id }}"
-                                                           data-checkbox="{{ $item->id . '|' . $item->freezone->name . '<br>' . $item->title . '|' . ($item->logo ? Storage::url($item->logo) : asset('images/placeholder.png')) }}"
+                                                           data-checkbox="{{ $item->id . '|' . $item->freezone->name . '<br>' . $item->title . '|' . ($item->freezone->logo ? Storage::url($item->freezone->logo) : asset('images/placeholder.png')) }}"
                                                            type="checkbox">
                                                     <span class="checkmark"></span>
                                                 </label>
