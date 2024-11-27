@@ -66,6 +66,24 @@ class PackageBookingController extends Controller
         return view('admin.package-booking.invoice', compact('booking', 
         'fixedFees','company_info', 'adjustments','booking_detail','documents'));
     }
+    public function documents(int $id)
+    {
+        $booking_detail = PackageBooking::with('bookingDetails')
+            ->where('id', $id)
+            ->orderBy('created_at','desc')
+            ->first();
+        $fixedFees = FixedFee::where('status',1)->get();
+        $company_info = Setting::where('section_key', 'company_info')
+            ->pluck('value', 'title')
+            ->toArray();
+        $documents = [];
+        if($booking_detail){
+            $documents = $booking_detail->customer->customer_documents()->get();
+        }
+
+        return view('admin.package-booking.booking-document', compact(
+            'fixedFees','company_info','booking_detail','documents'));
+    }
 
     public function adjustments(Request $request)
     {

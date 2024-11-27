@@ -22,7 +22,34 @@
     <script src="{{ secure_asset('js/website/main_groae.js') }}" crossorigin="anonymous"></script>
     @yield('js-owl-imports')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<style>
+    .footerTop {
+        position: relative;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 110%; /* Slight stretch: width 100%, height 110% */
+        max-width: 100%;  /* Ensures it doesn't exceed container's width */
+        max-height: 400px; /* Set a max height to keep the image small */
+        height: auto; /* Optional: ensures the image height adjusts proportionally */
+    }
 
+    .footerTop::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Optional overlay */
+        z-index: 0; /* Ensure it's below the content */
+    }
+
+    .footerLeft, .footerNav {
+        position: relative;
+        z-index: 1; /* Ensure content stays above the overlay */
+    }
+
+</style>
 </head>
 
 <body>
@@ -115,7 +142,7 @@
 
     @if (!request()->routeIs(['customer.login', 'customer.forgotpassword', 'customer.signup', 'customer.password.reset']))
         <footer class="mainFooter">
-            <div class="footerTop">
+            <div class="footerTop" style="background-image: url('{{ asset('images/footerbg.png') }}');">
                 <div class="footerLeft">
                     <div>
                         <img class="footerLogo" src="{{ asset('images/GroAE_Logo_Main.png') }}" alt="">
