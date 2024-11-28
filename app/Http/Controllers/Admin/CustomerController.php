@@ -57,7 +57,7 @@ class CustomerController extends Controller
             return Excel::download(new ExportCustomer($customers), 'customers.xlsx');
         }
 
-        $customers = $customers->paginate(Utils::itemPerPage);
+        $customers = $customers->get();
 
         return view('admin.customer.customer_index', compact('customers'));
     }

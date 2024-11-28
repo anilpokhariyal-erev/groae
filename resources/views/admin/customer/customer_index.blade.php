@@ -81,11 +81,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="mt-3 pagination">
-                {{ $customers->links() }}
-            </div>
-
         </div>
     </div>
 </x-admin-layout>
