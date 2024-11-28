@@ -60,11 +60,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="mt-3 pagination">
-                {{ $transaction->links() }}
-            </div>
-
         </div>
     </div>
 </x-admin-layout>

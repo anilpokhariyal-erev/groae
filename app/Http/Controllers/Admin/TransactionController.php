@@ -14,7 +14,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transaction = Transaction::with(['customer'])->paginate(Utils::itemPerPage);
+        $transaction = Transaction::with(['customer'])->get();
         return view('admin.transaction.transaction_list',compact('transaction'));
     }
 
