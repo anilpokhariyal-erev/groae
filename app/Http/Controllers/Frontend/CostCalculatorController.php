@@ -600,7 +600,7 @@ class CostCalculatorController extends Controller
 
 
             // Return success message
-            return response()->json(['message' => 'Invoice successfully created'], 200);
+            return response()->json(['message' => 'Quote successfully created'], 200);
 
         } catch (\Exception $e) {
             // Rollback transaction on error
@@ -608,7 +608,7 @@ class CostCalculatorController extends Controller
 
             // Log error and return response
             Log::error("Error creating package invoice: " . $e->getMessage());
-            return response()->json(['message' => 'Failed to create invoice', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Failed to create Quote', 'error' => $e->getMessage()], 500);
         }
     }
 
