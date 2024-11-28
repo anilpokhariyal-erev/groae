@@ -144,8 +144,8 @@ class PackageBookingController extends Controller
                     $packageBookingDetail->attribute_name = $fixedFee->label." ".$fixedFee->type;
                     $packageBookingDetail->attribute_value = $fixedFee->value;
                     $packageBookingDetail->quantity = 1;
-                    $packageBookingDetail->price_per_unit = $fixedCost;
-                    $packageBookingDetail->total_cost = $fixedCost;
+                    $packageBookingDetail->price_per_unit = number_format($fixedCost, 2, '.', '');
+                    $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');                    
                     $packageBookingDetail->status = 1;
                     $packageBookingDetail->save();
                     $fixedCostTotal += $fixedCost;
