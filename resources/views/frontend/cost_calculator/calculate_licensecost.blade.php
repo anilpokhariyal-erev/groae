@@ -22,7 +22,7 @@
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 8px;
         }
 
         .input_wrap {
