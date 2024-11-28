@@ -462,9 +462,9 @@ class CostCalculatorController extends Controller
     public function sendEmailWithAttachment($filePath, $booking, $fixedFees, $company_info, $adjustments)
     {
         $toEmail = $booking->customer->email; // Change to recipient's email address
-        $subject = 'Your PDF Invoice';
+        $subject = 'Groae Package Quotation';
         $data = [
-            'message' => 'Please find your PDF invoice attached.',
+            'message' => 'Please find your PDF quote attached.',
             'booking' => $booking,
             'fixedFees' => $fixedFees,
             'company_info' => $company_info,
