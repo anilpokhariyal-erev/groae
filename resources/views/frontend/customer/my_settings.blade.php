@@ -1,4 +1,26 @@
 <x-website-layout>
+    <style>
+        /* Success Message */
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        /* Error Message */
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+    </style>
     <section>
         <div class="container">
             <div class="myProfileContainer">
@@ -8,7 +30,7 @@
                     <h2 class="backTxt">Back</h2>
                 </div>
                 <div class="topHeading">
-                    <h2 class="trendTxt">My Account</h2>
+                    <h2 class="trendTxt">Reset Password</h2>
                 </div>
                 <div class="profileWrapper">
                     @include('frontend.components.profile_sidebar')
@@ -17,6 +39,19 @@
                             <h3>Change Password</h3>
                             <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
                         </div> --}}
+                        {{-- Success Message --}}
+                        @if(session('success'))
+                            <div class="alert alert-success" id="successMessage">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        {{-- Error Message --}}
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
                         <form id="signupFormItems" style="margin-top: 0px;" class="signupFormItems" method="POST"
                             action="{{ route('customer.profile.updatepassword') }}" novalidate>

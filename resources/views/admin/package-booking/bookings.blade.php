@@ -87,6 +87,7 @@
                                 <td>{{ $booking->created_at ? $booking->created_at->format('Y-m-d') : '' }}</td>
                                 <td>
                                     <a class="btn btn-primary btn-sm" href="{{ route('package-bookings.show', $booking->id) }}">View</a>
+                                    <a class="btn btn-primary btn-sm" href="{{ route('package-bookings.documents', $booking->id) }}">Documents</a>
                                 </td>
                             </tr>
                         @endforeach
