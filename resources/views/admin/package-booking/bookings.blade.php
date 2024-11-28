@@ -70,9 +70,9 @@
                                     @if($booking->status == '0')
                                         <span class="badge badge-warning">Cancelled</span>
                                     @elseif($booking->status == '1')
-                                        <span class="badge badge-success">Invoice Requested</span>
+                                        <span class="badge badge-success">Quote Requested</span>
                                     @elseif($booking->status == '2')
-                                        <span class="badge badge-success">Invoice Generated</span>
+                                        <span class="badge badge-success">Quote Generated</span>
                                     @endif
                                 </td>
                                 <td>

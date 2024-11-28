@@ -256,7 +256,7 @@
                 </div>
 
                 <div class="bannerBtns">
-                    <a class="bookConsBtn" id="requestInvoice" href="#">Request Invoice</a>
+                    <a class="bookConsBtn" id="requestInvoice" href="#">Request Quote</a>
                 </div>
             </div>
         </div>

@@ -17,7 +17,22 @@
                         </div>
                         <div class="blogContnt">
                             <h2 class="articleHeadingTxt">{{ $blog_detail->title }}</h2>
-                            {!! $blog_detail->description !!}
+                            @php
+                                if (preg_match('/<oembed url="([^"]+)"><\/oembed>/', $blog_detail->description, $matches)) {
+                                    $url = $matches[1]; // Extracted URL
+                                    $embedUrl = str_replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/', $url); // Convert to embed URL
+
+                                    $iframe = '<iframe width="560" height="315" src="' . $embedUrl . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+                                    // Replace <oembed> tag with the constructed <iframe>
+                                    $description = str_replace($matches[0], $iframe, $blog_detail->description);
+                                } else {
+                                    // If no <oembed> tag is found, use the original description
+                                    $description = $blog_detail->description;
+                                }
+                            @endphp
+
+                            {!! $description !!}
                         </div>
                     </div>
                     <div class="detailContainer2">
@@ -56,7 +71,7 @@
                                             </li>
                                         @endforeach
                                     @endif
-                                    </u>
+                                </ul>
                             </div>
                         </div>
                     </div>

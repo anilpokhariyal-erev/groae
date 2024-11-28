@@ -23,17 +23,17 @@
     </div>
     <div class="col-md-6 p-2">
       <div class="col-md-12 p-2">
-          Invoice Status
+          Quote Status
       </div>
       <div class="col-lg-12">
         <select class="form-control" name="invoice_status" id="invoice_status">
-          <option value="1" @if($booking->status=='1') selected @endif>Pending Invoice</option>
-          <option value="2" @if($booking->status=='2') selected @endif>Generate Invoice</option>
+          <option value="1" @if($booking->status=='1') selected @endif>Pending Quote</option>
+          <option value="2" @if($booking->status=='2') selected @endif>Generate Quote</option>
           <option value="0" @if($booking->status=='0') selected @endif>Cancel Request</option>
         </select>
       </div>
       <div class="col-lg-12 p-2">
-        <button type="button" class="btn btn-primary" id="update_invoice" style="background:blue">Update Invoice</button>
+        <button type="button" class="btn btn-primary" id="update_invoice" style="background:blue">Update Quote</button>
       </div>
     </div>
   </div>
@@ -48,7 +48,7 @@
     color: black;
     font-weight: 800;
     font-size: 17px;">
-    @if($booking->status=='2') Invoice Generated @endif
+    @if($booking->status=='2') Quote Generated @endif
     @if($booking->status=='0') Request Cancelled @endif
   </p>
 </div>
@@ -80,7 +80,7 @@
                           <div>
                             <p class="whitespace-nowrap text-slate-400 text-right">Booking Ref. #</p>
                             <p class="whitespace-nowrap font-bold text-main text-right">
-                              {{$company_info['Company Invoice Prefix'] ?? null;}}{{ str_pad($booking->id, 5, '0', STR_PAD_LEFT) }}
+                              {{$company_info['Company Invoice Prefix'] ?? null}}{{ str_pad($booking->id, 5, '0', STR_PAD_LEFT) }}
                             </p>
                           </div>
                         </td>
@@ -286,12 +286,12 @@
                 },
                 success: function (response) {
                     // Handle success response
-                    alert(response.message || 'Invoice status updated successfully!');
+                    alert(response.message || 'Quote status updated successfully!');
                     location.reload();
                 },
                 error: function (xhr) {
                     // Handle error response
-                    alert(xhr.responseJSON.message || 'An error occurred while updating the invoice status.');
+                    alert(xhr.responseJSON.message || 'An error occurred while updating the Quote status.');
                 },
             });
         });
