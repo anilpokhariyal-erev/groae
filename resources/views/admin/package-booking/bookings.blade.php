@@ -49,6 +49,7 @@
                             <th>Discount (AED)</th>
                             <th>Final Cost (AED)</th>
                             <th>Status</th>
+                            <th>Cancel Reason</th>
                             <th>Payment Status</th>
                             <th>Payment Method</th>
                             <th>Transaction ID</th>
@@ -68,13 +69,14 @@
                                 <td>{{ number_format($booking->final_cost, 2) }}</td>
                                 <td>
                                     @if($booking->status == '0')
-                                        <span class="badge badge-warning">Cancelled</span>
+                                        <span class="badge badge-danger">Cancelled</span>
                                     @elseif($booking->status == '1')
-                                        <span class="badge badge-success">Quote Requested</span>
+                                        <span class="badge badge-warning">Quote Requested</span>
                                     @elseif($booking->status == '2')
                                         <span class="badge badge-success">Quote Generated</span>
                                     @endif
                                 </td>
+                                <td>{{$booking->cancel_reason ?? ''}}</td>
                                 <td>
                                     @if($booking->payment_status == 0)
                                         <span class="badge badge-warning">Pending</span>

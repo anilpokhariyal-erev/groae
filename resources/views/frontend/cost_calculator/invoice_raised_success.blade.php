@@ -1,4 +1,5 @@
 <x-website-layout>
+
     <section class="center-section">
         <div class="blogDetailContainer">
             <div class="container" style="text-align: center">
@@ -15,7 +16,7 @@
                         <p style="margin-bottom: 0;">Click below to check all Booking Requests.</p>
                     </div>
 
-                    <a href="/my_booking_requests"><button type="button" class="btn btn-primary mb-2 custom-btn">Click Here</button></a>
+                    <a href="/my_booking_requests"><button type="button" class="btn btn-primary mb-2 custom-btn">Booking Requests</button></a>
                 @endif
             </div>
         </div>
@@ -23,22 +24,16 @@
 
     <style>
         .custom-btn {
-            padding: 12px 25px;
+            background: #304a6f;
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: Poppins;
             font-size: 18px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 50px;
-            border: 2px solid #007bff;
-            font-weight: bold;
-            transition: all 0.3s ease;
+            font-weight: 500;
         }
-
-        .custom-btn:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
         .alert {
             border-radius: 8px;
         }

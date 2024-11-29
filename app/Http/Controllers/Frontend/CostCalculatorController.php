@@ -499,11 +499,18 @@ class CostCalculatorController extends Controller
         ]);
 
         try {
+            $customer = Customer::find($validatedData["customer"]["id"]);
+            if ($customer){
+                $get_data =PackageBooking::where('customer_id', $customer->id)->where('status',1)->first();
+                if ($get_data){
+                    return response()->json(['message' => 'Failed to create Quote', 'error' => 'There is already Pending Quote in Process.'], 500);
+                }
+            }
+
             // Begin transaction to ensure data integrity
             DB::beginTransaction();
 
             // Fetch customer and package data from their respective models
-            $customer = Customer::find($validatedData["customer"]["id"]);
             $package = PackageHeader::find($validatedData['package']['id']);
             
             if (!$customer || !$package) {
