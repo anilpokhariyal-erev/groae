@@ -49,6 +49,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Country Code</th>
                             <th>Mobile Number</th>
                             <th>Country</th>
                             <th>State</th>
@@ -63,6 +64,7 @@
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucfirst($customer->name)}}</td>
                                 <td>{{ucfirst($customer->email)}}</td>
+                                <td>@if ($customer->dialCode) {{$customer->iso2}}--{{$customer->dialCode}}@endif</td>
                                 <td>{{$customer->mobile_number}}</td>
                                 <td>{{$customer->country ? $customer->country->name : ''}}</td>
                                 <td>{{$customer->state ? $customer->state->name : ''}}</td>

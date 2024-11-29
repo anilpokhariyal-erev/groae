@@ -21,7 +21,7 @@
                     </tr>
                     <tr>
                         <th>Freezone</th>
-                        <td>{{ ucwords(optional($transaction->freezone_booked->freezone)->name ?? 'N/A') }}</td>
+                        <td>{{ ucwords(optional($transaction->packageBooking->package->freezone)->name ?? 'N/A') }}</td>
                     </tr>
                     <tr>
                         <th>Amount</th>

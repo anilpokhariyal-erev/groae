@@ -73,7 +73,7 @@ li {
   justify-content: space-between;
   gap: 30px;
   padding: 40px 0px;
-  height: 100%;
+  height: auto;
   /* max-width: 525px; */
   width: 100%;
 }
