@@ -371,11 +371,16 @@
                             location.href = "/package-raised-success";
                         },
                         error: function (error) {
-                            // Handle error response
-                            alert('There was an error requesting the invoice. Please try again.');
+                            if (error.responseJSON && error.responseJSON.message) {
+                                alert(error.responseJSON.message +':' + error.responseJSON.error);
+                            } else if (error.responseText) {
+                                alert('Error: ' + error.responseText);
+                            } else {
+                                alert('There was an unexpected error.');
+                            }
                             // Re-enable the button and restore its text
                             $button.attr('disabled', false);
-                            $button.text('Request Invoice');
+                            $button.text('Request Quote');
                         },
                         complete: function () {
                             // Reset the request flag after the request is complete
