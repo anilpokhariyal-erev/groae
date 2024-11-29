@@ -163,61 +163,62 @@
                 </div>
             </div>
     </section>
-</x-website-layout>
-<script>
-    $(document).ready(function() {
-        var hasAnimated = false; // Prevent multiple animations
+    <script>
+        $(document).ready(function() {
+            var hasAnimated = false; // Prevent multiple animations
 
-        // Function to animate numbers
-        function animateNumbers() {
-            if (hasAnimated) return; // Prevent repeated animations
+            // Function to animate numbers
+            function animateNumbers() {
+                if (hasAnimated) return; // Prevent repeated animations
 
-            $('.innrCount').each(function() {
-                var $this = $(this);
-                var targetValue = parseInt($this.find('h3').text().replace(/,/g, '')); // Get the target number
-                $this.css('opacity', 1); // Make it visible
+                $('.innrCount').each(function() {
+                    var $this = $(this);
+                    var targetValue = parseInt($this.find('h3').text().replace(/,/g, '')); // Get the target number
+                    $this.css('opacity', 1); // Make it visible
 
-                // Animate number counting up to the target value
-                $({ countNum: 0 }).animate(
-                    { countNum: targetValue },
-                    {
-                        duration: 2000, // Duration of the animation (2 seconds)
-                        easing: 'swing', // Easing function for smooth animation
-                        step: function() {
-                            $this.find('h3').text(Math.ceil(this.countNum).toLocaleString());
-                        },
-                        complete: function() {
-                            $this.find('h3').text(targetValue.toLocaleString()); // Final value after animation
+                    // Animate number counting up to the target value
+                    $({ countNum: 0 }).animate(
+                        { countNum: targetValue },
+                        {
+                            duration: 2000, // Duration of the animation (2 seconds)
+                            easing: 'swing', // Easing function for smooth animation
+                            step: function() {
+                                $this.find('h3').text(Math.ceil(this.countNum).toLocaleString());
+                            },
+                            complete: function() {
+                                $this.find('h3').text(targetValue.toLocaleString()); // Final value after animation
+                            }
                         }
-                    }
-                );
+                    );
+                });
+
+                hasAnimated = true; // Ensure the animation happens only once
+            }
+
+            // Check when the section comes into view
+            $(window).on('scroll', function() {
+                var sectionOffset = $('.groaeNumbers').offset().top;
+                var windowHeight = $(window).height();
+                var scrollTop = $(window).scrollTop();
+
+                if (scrollTop + windowHeight > sectionOffset) {
+                    animateNumbers();
+                }
             });
 
-            hasAnimated = true; // Ensure the animation happens only once
-        }
-
-        // Check when the section comes into view
-        $(window).on('scroll', function() {
-            var sectionOffset = $('.groaeNumbers').offset().top;
-            var windowHeight = $(window).height();
-            var scrollTop = $(window).scrollTop();
-
-            if (scrollTop + windowHeight > sectionOffset) {
+            // Trigger on page load if already in view
+            if ($(window).scrollTop() + $(window).height() > $('.groaeNumbers').offset().top) {
                 animateNumbers();
             }
         });
 
-        // Trigger on page load if already in view
-        if ($(window).scrollTop() + $(window).height() > $('.groaeNumbers').offset().top) {
-            animateNumbers();
+
+        function playVideo() {
+            // Hide the thumbnail and show the iframe
+            document.querySelector('.video-thumbnail').style.display = 'none';
+            document.getElementById('video-container').style.display = 'block';
         }
-    });
 
+    </script>
 
-    function playVideo() {
-        // Hide the thumbnail and show the iframe
-        document.querySelector('.video-thumbnail').style.display = 'none';
-        document.getElementById('video-container').style.display = 'block';
-    }
-
-</script>
+</x-website-layout>
