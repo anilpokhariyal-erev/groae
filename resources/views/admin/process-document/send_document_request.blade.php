@@ -42,9 +42,10 @@
                             <label for="document_format">Document Format <span class="text-danger">*</span></label>
                             <select name="document_format[]" class="custom-select ba_select2_document_format" multiple>
                                 <option value="pdf">PDF</option>
-                                <!--<option value="png">PNG</option>
+                                <option value="png">PNG</option>
                                     <option value="jpeg">JPEG</option>
-                                    <option value="doc">WORD DOC</option> -->
+                                <option value="jpg">JPG</option>
+                                    <option value="doc">WORD DOC</option>
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('document_format')" />
                         </div>
