@@ -29,7 +29,7 @@
                             </div>
                         @endforeach
                         
-                        @foreach($customer->package_bookings as $package_booking)
+                        @foreach($customer->package_bookings->sortByDesc('id') as $package_booking)
                         <div class="addPersonalDoc">
                             <h3>{{$package_booking->package->title}}</h3>
                             <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
