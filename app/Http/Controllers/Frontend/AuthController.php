@@ -150,13 +150,16 @@ class AuthController extends Controller
 
         return view('frontend.auth.forgot_password');
     }
+
     public function submit_forgot_password(Request $request)
     {
         if (Auth::guard('customer')->check())
             return redirect()->route('home');
 
         $request->validate([
-            'email' => 'required|email|exists:customers',
+            'email' => 'required|email|exists:customers,email',
+        ], [
+            'email.exists' => 'Account with this email does not exist.',
         ]);
         try {
             $token = Str::random(64);
@@ -175,6 +178,7 @@ class AuthController extends Controller
             return back()->with('error', ResponseMessage::WrongMsg);
         }
     }
+
     public function reset_password($token)
     {
         if (Auth::guard('customer')->check())
@@ -186,6 +190,7 @@ class AuthController extends Controller
 
         return view('frontend.auth.reset_password', ['token' => $token]);
     }
+
     public function reset_password_store(Request $request)
     {
         if (Auth::guard('customer')->check())
