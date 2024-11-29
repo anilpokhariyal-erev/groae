@@ -69,7 +69,7 @@ class ApiController extends Controller
                 return response()->json(compact('packages'));
                 break;
             case 'country':
-                $states = State::where('country_id', $id)->select('id', 'name')->get();
+                $states = State::where('country_id', $id)->select('id', 'name')->orderBy('name')->get();
                 return response()->json(compact('states'));
                 break;
             default:

@@ -87,8 +87,9 @@
             <div class="blogDetailContainer">
                 <div class="container">
                     <div class="backBtn ">
-                        <a class="backAnchor" href="{{route('article_blogs')}}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
+                        <a class="backAnchor" href="{{route('article_blogs')}}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt="">
                         <h2 class="backTxt">Back</h2>
+                        </a>
                     </div>
                     <div class="blogDetailWrapper">
                         <div class="detailContainer1">

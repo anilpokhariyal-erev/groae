@@ -5,8 +5,9 @@
             <div class="container">
                 <div class="backBtn ">
                     <a class="backAnchor" href="{{ route('article-blogs') }}"><img
-                            src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
-                    <h2 class="backTxt">Back</h2>
+                            src="{{ asset('images/cheveron-right.png') }}" alt="">
+                        <h2 class="backTxt">Back</h2>
+                    </a>
                 </div>
                 <div class="blogDetailWrapper">
                     <div class="detailContainer1">
