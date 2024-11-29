@@ -123,14 +123,19 @@ class PackageBookingController extends Controller
         $validatedData = $request->validate([
             'package_booking_id' => 'required|exists:package_bookings,id',
             'status' => 'required|integer|in:0,1,2', // 0: Cancel Request, 1: Pending Invoice, 2: Generate Invoice
+            'cancel_reason' => 'required_if:status,0|string', // Required if status is 0
         ]);
-    
+
+
         try {
             // Retrieve the package booking record
             $packageBooking = PackageBooking::findOrFail($validatedData['package_booking_id']);
     
             // Update the status
             $packageBooking->status = $validatedData['status'];
+            if($validatedData['cancel_reason']){
+                $packageBooking->cancel_reason = $validatedData['cancel_reason'];
+            }
             $fixedCostTotal = 0;
             if($validatedData['status'] == 2){
                 $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status',1)->get();

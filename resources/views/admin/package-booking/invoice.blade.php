@@ -32,6 +32,9 @@
           <option value="0" @if($booking->status=='0') selected @endif>Cancel Request</option>
         </select>
       </div>
+      <div class="col-md-12 p-2" id="cancel_reason_container" style="display: none;">
+        <textarea class="form-control"  id="cancel_reason" name="cancel_reason" placeholder="cancel reason">{{$booking->cancel_reason??''}}</textarea>
+      </div>
       <div class="col-lg-12 p-2">
         <button type="button" class="btn btn-primary" id="update_invoice" style="background:blue">Update Quote</button>
       </div>
@@ -43,14 +46,17 @@
 </div>
 @else
 <div class="col-lg-12">
-  <p style="padding: 12px 15px;
+    @if($booking->status=='2')  <p style="padding: 12px 15px;
     background: lightblue;
     color: black;
     font-weight: 800;
-    font-size: 17px;">
-    @if($booking->status=='2') Quote Generated @endif
-    @if($booking->status=='0') Request Cancelled @endif
-  </p>
+    font-size: 17px;"> Quote Generated </p> @endif
+
+    @if($booking->status=='0')   <p style="padding: 12px 15px;
+    background: #d92550;
+    color: black;
+    font-weight: 800;
+    font-size: 17px;">Request Cancelled </p> @endif
 </div>
 @endif
   <div class="invoice_page" style="width: 90%;margin:auto;background:#fff;">
@@ -274,16 +280,20 @@
             // Get the selected status and package booking ID
             const status = $('#invoice_status').val();
             const packageBookingId = $('input[name="package_booking_id"]').val();
-
+            data = {
+              _token: "{{ csrf_token() }}", // CSRF token for security
+              status: status,
+              package_booking_id: packageBookingId,
+            }
+          if (status === '0'){
+            reason = $('#cancel_reason').val();
+            data['cancel_reason'] = reason;
+          }
             // Make an AJAX POST request
             $.ajax({
                 url: "{{ route('package-bookings.update_status') }}", // Route for the AJAX call
                 type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}", // CSRF token for security
-                    status: status,
-                    package_booking_id: packageBookingId,
-                },
+                data: data,
                 success: function (response) {
                     // Handle success response
                     alert(response.message || 'Quote status updated successfully!');
@@ -296,5 +306,26 @@
             });
         });
     });
-</script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      // Get the invoice status dropdown and cancel reason container
+      const invoiceStatus = document.getElementById('invoice_status');
+      const cancelReasonContainer = document.getElementById('cancel_reason_container');
+
+      // Function to check the selected value and show/hide the cancel reason field
+      function checkInvoiceStatus() {
+        if (invoiceStatus.value === "0") {
+          cancelReasonContainer.style.display = 'block'; // Show the cancel reason field
+        } else {
+          cancelReasonContainer.style.display = 'none'; // Hide the cancel reason field
+        }
+      }
+
+      // Initial check when the page loads
+      checkInvoiceStatus();
+
+      // Add an event listener to check when the dropdown value changes
+      invoiceStatus.addEventListener('change', checkInvoiceStatus);
+    });
+
+  </script>
 </x-admin-layout>
