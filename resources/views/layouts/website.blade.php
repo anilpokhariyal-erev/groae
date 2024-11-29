@@ -72,6 +72,10 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('article-blogs') }}" class="nav-link">Article & Blogs</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="javascript:void(0)" class="nav-link" id="nav-more-btn">More <img
                                     src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
                             @php
@@ -91,6 +95,9 @@
                     </div>
 
                     <div class="rightHeader">
+                        <button type="button" class="navItems sigBtn">
+                            <a class="signupBtn" href="{{ route('contact-us.index') }}">Contact Us</a>
+                        </button>
                         @if (Auth::guard('customer')->check())
                             <a id="showProfileDropDown" class="signupBtn"
                                 style="border-radius: 27.5px;padding: 13px;">{{ strtoupper(implode('', array_map(fn($word) => $word[0], explode(' ', auth('customer')->user()->name)))) }}</a>
@@ -119,11 +126,11 @@
                                 </ul>
                             </div>
                         @else
-                            <button type="button" class="navItems sigBtn">
-                                <a class="signInBtn" href="{{ route('customer.login') }}">Login</a>
-                            </button>
                             <button type="button" class="navItems createBtn">
                                 <a href="{{ route('customer.signup') }}" class="signupBtn">Create Account </a>
+                            </button>
+                            <button type="button" class="navItems sigBtn">
+                                <a class="signInBtn" href="{{ route('customer.login') }}">Login</a>
                             </button>
                         @endif
                     </div>

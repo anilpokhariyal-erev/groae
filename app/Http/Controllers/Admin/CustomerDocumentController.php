@@ -35,7 +35,7 @@ class CustomerDocumentController extends Controller
             'document_name' => 'required|string|max:100',
             'document_type' => 'required|string|max:100',
             // 'document_format' => ['required_if:booking_type,document', 'array', Rule::in(['pdf','doc']),],
-            'document_format' => ['required_if:booking_type,document', 'array', Rule::in(['pdf']),],
+            'document_format' => ['required_if:booking_type,document', 'array', Rule::in(['pdf','doc','jpeg','png','jpg']),],
         ]);
 
         try {

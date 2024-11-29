@@ -2,7 +2,20 @@
     @section('js-imports')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     @endsection
-    <!-- blog details sec -->
+    <style>
+             #successMessage {
+                 color: green; /* Text color */
+                 background-color: #d4edda; /* Light green background */
+                 border: 1px solid #c3e6cb; /* Border color */
+                 border-radius: 5px; /* Rounded corners */
+                 padding: 10px 15px; /* Padding around the text */
+                 font-size: 16px; /* Font size */
+                 display: inline-block; /* Ensure it's displayed inline */
+                 margin: 10px 0; /* Margin around the message */
+             }
+    </style>
+
+        <!-- blog details sec -->
     <section class="center-section">
         <div class="blogDetailContainer">
             <div class="container">
@@ -11,6 +24,9 @@
                 </div>
                 <form class="signupFormItems contactFormItems" method="post" action="" novalidate>
                     @csrf
+                    @if (session('success'))
+                        <div class="text-success ml-2" id="successMessage">{{ session('success') }}</div>
+                    @endif
                     <div class="form-group input_wrap w-100">
                         <input class="inputField2" id="first_name" name="first_name" type="text" placeholder=""
                             required>

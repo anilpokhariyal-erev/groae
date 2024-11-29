@@ -28,6 +28,11 @@ class FileTypeValidationRule implements ValidationRule
         if (in_array('doc', $extensions)) array_push($validationMimeTypes, 'application/msword');
         if (in_array('docx', $extensions)) array_push($validationMimeTypes, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
 
+        if (in_array('jpeg', $extensions)) array_push($validationMimeTypes, 'image/jpeg');
+        if (in_array('jpg', $extensions)) array_push($validationMimeTypes, 'image/jpeg');
+        if (in_array('png', $extensions)) array_push($validationMimeTypes, 'image/png');
+
+
         if (!in_array($mimeType, $validationMimeTypes)) {
             flash()->addError('The selected file format is not supported.');
             $fail('The selected file must be either a PDF, DOC, or DOCX document.');
