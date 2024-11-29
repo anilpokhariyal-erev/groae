@@ -56,19 +56,6 @@
             text-align: center;
         }
 
-        .backHomeBtn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #1e88e5;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .backHomeBtn:hover {
-            background-color: #1565c0;
-        }
 
     </style>
     <section class="container">
@@ -97,9 +84,13 @@
                         <p class="noReceipt">No receipt available.</p>
                     @endif
                 </div>
+                
                 <div class="actionButtons">
-                    <a class="backHomeBtn" href="{{ route('customer.my_booking_requests.view') }}">Back to Home</a>
+                    <a href="{{ route('customer.my_booking_requests.view') }}" class="loginBtn">
+                        <span class="buttonText">Back to Home</span>
+                    </a>
                 </div>
+
             </div>
         </div>
     </section>
