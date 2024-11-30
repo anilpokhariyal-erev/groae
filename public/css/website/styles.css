@@ -616,6 +616,10 @@ li {
     background-size: cover;
     background-position: center;
   }
+  .new_layer::after {
+    position: unset !important;
+    content: unset !important;
+  }
 
   .blogLayer::after {
     content: '';

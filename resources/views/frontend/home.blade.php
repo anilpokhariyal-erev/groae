@@ -39,7 +39,8 @@
                 <div class="trendingBlog">
                     @foreach ($freezones as $item)
                         @if($item->trending)
-                            <div class="blogLayer" style="background-image: url('{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/default-bg.jpg') }}');">
+                            <div class="blogLayer  {{ $item->background_image_logo ? '' : 'new_layer' }}" style="background-image: url('{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/default-bg.jpg') }}'); background-color: {{ $item->background_image_logo ? 'rgba(0, 0, 0, 0.2)' : 'rgba(237, 245, 255, 0.7)' }};">
+
                                 <div class="topLayer">
                                     <img style="height: 174px" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
                                 </div>
@@ -117,7 +118,7 @@
                 <div class="container">
                     <div class="trendingBlog">
                         @foreach ($blogs as $blog_val)
-                            <div class="blogLayer">
+                            <div class="blogLayer new_layer" style="background-color: rgba(237, 245, 255, 0.7)">
                                 <div class="topLayer">
                                     <img src='{{ $blog_val->image ? Storage::url($blog_val->image) : asset('images/placeholder.png') }}'
                                         alt="">
