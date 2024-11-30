@@ -34,7 +34,7 @@ Watermark on page for Paid
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-45deg); /* Rotate the text to make it diagonal */
-  font-size: 36px; /* Adjust font size */
+  font-size: 46px; /* Adjust font size */
   color: rgba(0, 0, 0, 0.1); /* Light color for watermark effect */
   white-space: nowrap; /* Prevent text wrapping */
   pointer-events: none; /* Ensure it doesn't block interactions */
@@ -42,7 +42,7 @@ Watermark on page for Paid
   user-select: none; /* Prevent text selection */
   font-weight: bold; /* Make it bold for visibility */
   text-transform: uppercase; /* Make text uppercase */
-  letter-spacing: 3px; /* Optional: Space letters for effect */
+  letter-spacing: 15px; /* Optional: Space letters for effect */
 }
 
 
