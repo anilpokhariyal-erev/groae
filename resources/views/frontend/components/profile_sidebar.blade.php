@@ -35,7 +35,7 @@
         </li>
         <li class="sidebarInnrTxt {{ Request::is('my_settings') ? 'activeBar3' : '' }}" id="setting">
             <a href="{{ route('customer.profile.settings') }}">
-                <img src="{{ secure_asset('images/cogwheel-icon.png') }}" alt="">Setting</a>
+                <img src="{{ secure_asset('images/cogwheel-icon.png') }}" alt="">Reset Password</a>
         </li>
     </ul>
 </div>
