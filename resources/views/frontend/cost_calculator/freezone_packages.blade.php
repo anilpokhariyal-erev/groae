@@ -29,12 +29,12 @@
                             @foreach ($packages as $item)
                                 <div class="searchBlogLayer">
                                     <div class="firstLayer">
-                                        <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
+                                        <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->slug]) }}">
                                             <img src='{{ $item->freezone->logo ? Storage::url($item->freezone->logo) : asset('images/placeholder.png') }}' alt="">
                                         </a>
                                     </div>
                                     <div class="secondLayer">
-                                        <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
+                                        <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->slug]) }}">
                                             <h3 class="signupBtn">{{ $item->freezone->name }} </h3>
                                         </a>
                                         <h3 class="blogHeading text-left">{{ $item->title }}</h3>
