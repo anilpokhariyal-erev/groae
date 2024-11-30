@@ -1,28 +1,25 @@
 <x-website-layout>
     <div class="center-section">
-        <section style="padding-top: 1%;">
-            <div class="filterItemContainer">
-                <form method="GET" action="{{ route('freezone.packages.index') }}">
-                    <select class="inputField2" id="freezone-select" name="uuid" onchange="this.form.submit()">
-                        <option value="" disabled selected>Select a Freezone</option>
-                        @foreach ($freezones as $freezone)
-                            <option value="{{ $freezone->uuid }}" 
-                                    {{ isset($selectedFreezone) && $selectedFreezone->uuid === $freezone->uuid ? 'selected' : '' }}>
-                                {{ $freezone->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </form>
-            </div>
-        </section>
-
-        <section>
+        <section style="padding-top: 4%;">
             <div class="exploreItemsContainer">
                 <div class="AIHeader">
                     <div class="hTxt">
                         <img src="{{ secure_asset('images/bot-2.png') }}" alt="">
                         <h3>Explore packages tailored to your preferred Freezone.</h3>
                     </div>
+                </div>
+                <div class="filterItemContainer" style="padding-top: 0px !important;">
+                    <form method="GET" action="{{ route('freezone.packages.index') }}">
+                        <select class="inputField2" id="freezone-select" name="uuid" onchange="this.form.submit()">
+                            <option value="" disabled selected>Select a Freezone</option>
+                            @foreach ($freezones as $freezone)
+                                <option value="{{ $freezone->uuid }}" 
+                                        {{ isset($selectedFreezone) && $selectedFreezone->uuid === $freezone->uuid ? 'selected' : '' }}>
+                                    {{ $freezone->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
                 </div>
                 <div class="container">
                     <div class="searchInnrWrapper">
