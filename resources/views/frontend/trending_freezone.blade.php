@@ -4,8 +4,9 @@
             <div class="trendingFreezoneContainer">
                 <div class="backBtn">
                     <a class="backAnchor" href="{{ url()->previous() }}"><img
-                            src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                            src="{{ asset('images/cheveron-right.png') }}" alt="">
                     <h2 class="backTxt">Back</h2>
+                    </a>
                 </div>
                 <div class="topHeading">
                     <h2 class="trendTxt">Trending Freezones</h2>

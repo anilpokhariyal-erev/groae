@@ -36,8 +36,9 @@
                 <div class="container">
                     <div class="backBtn">
                         <a class="backAnchor" href="{{ route('explore-freezone') }}"><img
-                                src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                                src="{{ asset('images/cheveron-right.png') }}" alt="">
                         <h2 class="backTxt">Back</h2>
+                        </a>
                     </div>
                     <h3 class="bannrTxt"> {{ ucwords($freezone_detail->name) }}
                         <div class="logo">

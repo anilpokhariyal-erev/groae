@@ -91,7 +91,7 @@
                                 @endphp
                                 @if(!$attribute->allow_multiple)
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('attribute_' . $attribute->id)" />
-                                    <input type="number"  name="package_lines[{{ $attribute->name }}]" value="" class="inputField2 cursor arrowPlace max_check" id="{{ $attribute->name }}" min="0" @if($max_value>0) data-max="{{$max_value}}" max="{{$max_value}}" @endif>
+                                    <input type="number"  name="package_lines[{{ $attribute->name }}]" value="" class="inputField2 cursor arrowPlace max_check" id="{{ $attribute->name }}" min="0" @if($max_value>0) data-max="{{$max_value}}" max="{{$max_value}}" @endif required>
                                     <label for="package_lines[{{ $attribute->name }}]">{{ $attribute->label }}</label>
                                     <p id="{{ $attribute->name }}_error" class="errorMessage"></p>
                                 @else

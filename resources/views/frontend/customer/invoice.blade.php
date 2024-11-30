@@ -5,7 +5,11 @@
 )
 <section class="center-section">
   <div class="container invoice_page myProfileContainer">
-    @if($booking->status ==0) <p style="text-align: center;background:#f44336">Cancellation Reason: {{$booking->cancel_reason}}</p> @endif
+    @if($booking->status ==0) 
+    <p style="text-align: center;color: red;font-size:22px; font-weight:700;">
+      Cancellation Reason: {{$booking->cancel_reason}}
+    </p>
+     @endif
     <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint" style="--watermark-text:' Invoice Paid'">
       <div class="py-4 @if($booking->status == 0) watermarked @endif" id="contentToPrint" style="--watermark-text:'Cancelled'">
     <div class="px-14 pdf-adjust">
