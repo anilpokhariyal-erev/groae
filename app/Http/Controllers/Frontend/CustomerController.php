@@ -156,13 +156,18 @@ class CustomerController extends Controller
 
     function view_booking_requests()
     {
-        $customer =  Auth::guard('customer')->user();
+        $customer = Auth::guard('customer')->user();
         $freezones = $customer->freezone_bookings->load('freezone', 'license');
 
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
-        return view('frontend.customer.my_booking_requests')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones'));
+
+        // Paginate the package bookings (e.g., 10 per page)
+        $package_bookings = $customer->package_bookings()->orderBy('id', 'desc')->paginate(5);
+
+        return view('frontend.customer.my_booking_requests')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones', 'package_bookings'));
     }
+
 
     function view_transactions(Request $request)
     {

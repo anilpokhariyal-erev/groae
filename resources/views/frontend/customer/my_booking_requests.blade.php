@@ -1,10 +1,11 @@
 <x-website-layout>
+
     <section class="center-section">
         <div class="container">
             <div class="myProfileContainer">
                 <div class="backBtn">
                     <a class="backAnchor" href="{{ url()->previous() }}"><img
-                            src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
+                                src="{{ asset('images/cheveron-right.png') }}" alt=""></a>
                     <h2 class="backTxt">Back</h2>
                 </div>
                 <div class="topHeading">
@@ -13,13 +14,13 @@
 
                 <div class="profileWrapper">
                     @include('frontend.components.profile_sidebar')
-                        @if ($customer->package_bookings->count() == 0)
-                            <span class="noRecordFound">
-                                <h3 class="transactionIdTxt">
-                                    No Bookings found
-                                </h3>
-                            </span>
-                        @endif
+                    @if ($customer->package_bookings->count() == 0)
+                        <span class="noRecordFound">
+                            <h3 class="transactionIdTxt">
+                                No Bookings found
+                            </h3>
+                        </span>
+                    @endif
                     <div class="profileDetailWrapper">
                         @foreach ($freezones as $item)
                             <div class="requestDocBox">
@@ -28,34 +29,39 @@
                                 <h3>License Status: <span>{{ ucfirst($item->client_status) }}</span></h3>
                             </div>
                         @endforeach
-                        
-                        @foreach($customer->package_bookings->sortByDesc('id') as $package_booking)
-                        <div class="addPersonalDoc">
-                            <h3>{{$package_booking->package->title}}</h3>
-                            <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
-                                <span class="p-r-4">
-                                    @if($package_booking->original_cost!=$package_booking->final_cost && $package_booking->payment_status!=1)
-                                    <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>
-                                    @endif
-                                    {{$package_booking->package->currency}} {{$package_booking->final_cost}}
-                                    <br>
-                                    @if($package_booking->payment_status==1)
-                                        Invoice Paid
-                                    @else
-                                        @if($package_booking->status == 0)
-                                            <em style="color:red">Cancelled/Rejected</em>
-                                        @elseif($package_booking->status == 1)
-                                            Waiting for Invoice
-                                        @elseif($package_booking->status == 2)
-                                            Invoice Generated
-                                        @endif
-                                    @endif
-                                </span>
-                                <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
-                            </a>
-                        </div>
 
+                        @foreach ($package_bookings as $package_booking)
+                            <div class="addPersonalDoc">
+                                <h3>{{$package_booking->package->title}}</h3>
+                                <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
+                                    <span class="p-r-4">
+                                        @if($package_booking->original_cost != $package_booking->final_cost && $package_booking->payment_status != 1)
+                                            <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>
+                                        @endif
+                                        {{$package_booking->package->currency}} {{$package_booking->final_cost}}
+                                        <br>
+                                        @if($package_booking->payment_status == 1)
+                                            Invoice Paid
+                                        @else
+                                            @if($package_booking->status == 0)
+                                                <em style="color:red">Cancelled/Rejected</em>
+                                            @elseif($package_booking->status == 1)
+                                                Waiting for Invoice
+                                            @elseif($package_booking->status == 2)
+                                                Invoice Generated
+                                            @endif
+                                        @endif
+                                    </span>
+                                    <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
+                                </a>
+                            </div>
                         @endforeach
+
+                        <!-- Add pagination links -->
+                        <div class="pagination-links">
+                            {{ $package_bookings->links('pagination::bootstrap-4') }}
+
+                        </div>
                     </div>
                 </div>
             </div>

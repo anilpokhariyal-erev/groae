@@ -4,7 +4,7 @@
         .select2-container--default .select2-selection--single {
             height: 40px;
             font-size: 16px;
-            border-radius: 4px;
+            border-radius: 8px;
             padding: 5px 10px;
             border: 1px solid #ccc;
         }
@@ -28,6 +28,7 @@
         .input_wrap {
             position: relative;
             margin-bottom: 20px;
+            border-radius: 8px;
         }
 
         .input_wrap label {

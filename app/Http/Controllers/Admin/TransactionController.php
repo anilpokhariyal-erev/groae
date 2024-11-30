@@ -61,7 +61,7 @@ class TransactionController extends Controller
     public function show(Transaction $transaction)
     {
         // Ensure you are eager loading the related models
-        $transaction->load('customer', 'freezone_booked.freezone');
+        $transaction->load('customer', 'packageBooking.package.freezone');
         return view('admin.transaction.transaction_detail', compact('transaction'));
     }
     

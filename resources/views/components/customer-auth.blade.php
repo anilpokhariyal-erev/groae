@@ -8,8 +8,8 @@
             </div>
         </section>
         <section class="rightBoard">
+            {{ $slot }}
             <div class="signupInnerContent">
-                {{ $slot }}
                 <footer class="loginFooter">
                     <a class="loginFooterItem" href="#">Terms &amp; conditions</a>
                     <p class="andItem">&</p>

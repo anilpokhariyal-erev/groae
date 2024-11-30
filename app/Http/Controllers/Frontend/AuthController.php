@@ -114,6 +114,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'status' => 0,
+            'iso2' => $request->iso2,
+            'dialCode'=> $request->dialCode,
         ]);
 
         $verificationCode = rand(100000, 999999);
