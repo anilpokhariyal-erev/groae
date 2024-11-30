@@ -57,7 +57,7 @@
 
                 </div>
             </div>
-            <a class="submitBtn whiteTxt" href="{{ route('contact-us.index') }}">Book a Consultation</a>
+            <a class="signupBtn book_consultation" href="{{ route('contact-us.index') }}">Book a Consultation</a>
         </div>
     </section>
 
@@ -73,7 +73,8 @@
         }
 
         .compareTable th {
-            background-color: #f2f2f2; /* Optional: Add a background color for headers */
+            background-color: #304a6f; /* Optional: Add a background color for headers */
+            color: #fff;
         }
 
         .freezone_name {
@@ -86,8 +87,10 @@
             color: #000;
         }
 
-        .whiteTxt {
+        .book_consultation {
             color: #fff;
+            font-weight: 700;
+            font-size: 18px;
         }
     </style>
 </x-website-layout>
