@@ -23,7 +23,7 @@
     @yield('js-owl-imports')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 <style>
-    .footerTop {
+    .mainFooter {
         position: relative;
         background-position: center;
         background-repeat: no-repeat;
@@ -33,7 +33,7 @@
         height: auto; /* Optional: ensures the image height adjusts proportionally */
     }
 
-    .footerTop::after {
+    .mainFooter::after {
         content: '';
         position: absolute;
         top: 0;
@@ -148,8 +148,8 @@
     {{ $slot }}
 
     @if (!request()->routeIs(['customer.login', 'customer.forgotpassword', 'customer.signup', 'customer.password.reset']))
-        <footer class="mainFooter">
-            <div class="footerTop" style="background-image: url('{{ asset('images/footerbg.png') }}');">
+        <footer class="mainFooter" style="background-image: url('{{ asset('images/footerbg.png') }}');">
+            <div class="footerTop" >
                 <div class="footerLeft">
                     <div>
                         <img class="footerLogo" src="{{ asset('images/GroAE_Logo_Main.png') }}" alt="">
