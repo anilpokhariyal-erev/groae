@@ -172,6 +172,12 @@
     <script>
         // Assuming `bookConsBtn` is the button you want to add the event listener to
         document.querySelector('.bookConsBtn').addEventListener('click', function() {
+            if ({{$customer->status}} ===0){
+                event.preventDefault();
+                $('.bookConsBtn').attr('disabled','true');
+                $('.bannerBtns').before('<div style="text-align: center">To Continue Firstly Verify Your Email By <a href="/my_profile">Click Here</a></div>');
+                return false;
+            }
             // Select all inputs of type number within the parent class (or any specific container)
             let inputs = document.querySelectorAll('.signupFormItems input[type="number"]');
 

@@ -40,6 +40,7 @@ class CostCalculatorController extends Controller
     public function index(Request $request)
     {
         $package_id = null;
+        $customer = Auth::guard('customer')->user();
         $formInput = $request->input('form_input', session('form_input', null));
         Session::pull('form_input');
         if ($request->has('package_id')) {
@@ -80,7 +81,7 @@ class CostCalculatorController extends Controller
 
         $token = config('auth.app_api_token');
 
-        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezone_data', 'attributes', 'token','formInput'));
+        return view('frontend.cost_calculator.calculate_licensecost',  compact('package', 'selected_freezone', 'freezone_data', 'attributes', 'token','customer','formInput'));
     }
 
     /**

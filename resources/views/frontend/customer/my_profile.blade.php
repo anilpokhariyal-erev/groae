@@ -14,14 +14,20 @@
                 <div class="topHeading">
                     <h2 class="trendTxt">My Account</h2>
                 </div>
-
                 <div class="profileWrapper">
+                    @php $notification = ($customer->status == 0) ? 1 : 0; @endphp
                     @include('frontend.components.profile_sidebar')
                     <div class="profileDetailWrapper">
+
                         <form class="signupFormItems" id="profileUpdateFormItems" style="margin-top: 0px;"
                             method="post" action="{{ route('customer.profile.update') }}" novalidate>
                             @csrf
                             @method('patch')
+                            @if (session('success'))
+                                <div style="color: #4caf50;">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                             <div class="firstColumn">
                                 <div class="form-group input_wrap w-100">
                                     <input class="inputField2" id="first_name" value="{{ $customer->first_name }}"
@@ -51,6 +57,7 @@
                                         id="email" type="text" placeholder="" required readonly>
                                     <label for="email">Email*</label>
                                     <p id="email_error" class="errorMessage"></p>
+                                    @if ($customer->status == 1) <p id="successMessage" style="color: #4caf50;">Email verified !</p> @else <p id="email_error email_verify">click here to <a href="verify/email/customer/{{$customer->id}}" style="color: #f51f1f;cursor: pointer">Verify Email</a></p> @endif
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('email')" />
                                 </div>
                                 <div class="input_wrap w-100">
