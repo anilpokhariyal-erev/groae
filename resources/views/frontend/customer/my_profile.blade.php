@@ -28,6 +28,11 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
+                            @if (session('error'))
+                                <div style="color: #f51f1f;">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                             <div class="firstColumn">
                                 <div class="form-group input_wrap w-100">
                                     <input class="inputField2" id="first_name" value="{{ $customer->first_name }}"

@@ -100,6 +100,9 @@ class CostCalculatorController extends Controller
 
         // customer data
         $customer = Auth::guard('customer')->user();
+        if($customer->status ==0){
+           return redirect('/my_profile')->with('error','Complete Email Verification First.');
+        }
 
         // Initialize the Package query with eager loading
         $query = PackageHeader::where('freezone_id', $freezone->id)
