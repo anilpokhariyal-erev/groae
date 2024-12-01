@@ -60,3 +60,4 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('verify/{email}/{code}', [VerifyEmailController::class,'verify']);
+Route::get('verify/email/customer/{id}', [VerifyEmailController::class,'request_link']);
