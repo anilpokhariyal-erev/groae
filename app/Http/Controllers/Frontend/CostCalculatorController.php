@@ -504,9 +504,9 @@ class CostCalculatorController extends Controller
 
         try {
             $customer = Customer::find($validatedData["customer"]["id"]);
-            if ($customer && app()->environment() == 'production'){
-                $get_data =PackageBooking::where('customer_id', $customer->id)->where('status',1)->first();
-                if ($get_data){
+            if ($customer){
+                $get_data =PackageBooking::where('customer_id', $customer->id)->where('status',1)->get();
+                if ($get_data->count() >= 5){
                     return response()->json(['message' => 'Failed to create Quote', 'error' => 'There is already Pending Quote in Process.'], 500);
                 }
             }

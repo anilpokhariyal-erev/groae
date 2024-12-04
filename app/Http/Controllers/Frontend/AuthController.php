@@ -125,7 +125,7 @@ class AuthController extends Controller
             'mobile'=>$request->input('mobile_number'),
             'email' => $request->input('email'),
             'code' => $verificationCode,
-            'expires_at' => now()->addHours(24),
+            'expires_at' => now()->addHours(4),
         ]);
 
         $link = config('app.url') . '/verify/' . encrypt($request->input('email')).'/'. encrypt($verificationCode);
