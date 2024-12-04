@@ -2,9 +2,7 @@
     <ul class="sidebarWrapp">
         <li class="sidebarInnrTxt {{ Request::is('my_profile') ? 'activeBar' : '' }}" id="profile">
             <a href="{{ route('customer.profile.view') }}">
-                <img src="{{ secure_asset('images/profile-icon.png') }}" alt="">Profile {!! $notification == 1
-                    ? '<p class="messageCountTxt">' . 1 . '</p>'
-                    : '' !!}
+                <img src="{{ secure_asset('images/profile-icon.png') }}" alt="">Profile 
         </li>
         <li class="sidebarInnrTxt {{ Request::is('my_booking_requests') ? 'activeBar2' : '' }}" id="business">
             <a href="{{ route('customer.my_booking_requests.view') }}">
