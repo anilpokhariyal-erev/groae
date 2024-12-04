@@ -24,23 +24,29 @@ $(document).ready(function () {
 
   // Get all the table rows
 
-    const tbody = document.querySelector('tbody');
-    const rows = tbody.querySelectorAll('tr');
+  const tbody = document.querySelector('tbody');
+  const rows = tbody.querySelectorAll('tr');
 
-    rows.forEach(row => {
+  rows.forEach(row => {
     const cells = row.querySelectorAll('td');
     let hasBlackTxt = false;
+    let hasItemLogo = false;
 
     cells.forEach(cell => {
-    if (cell.classList.contains('blackTxt')) {
-    hasBlackTxt = true;
-  }
+      if (cell.classList.contains('blackTxt')) {
+        hasBlackTxt = true;
+      }
+      if (cell.querySelector('.itemLogo')) {
+        hasItemLogo = true;
+      }
+    });
+
+    // Only remove the row if it doesn't contain 'blackTxt' and also doesn't have 'itemLogo'
+    if (!hasBlackTxt  && !hasItemLogo) {
+      row.remove();
+    }
   });
 
-    if (!hasBlackTxt) {
-    row.remove();
-  }
-  });
 
 
 
