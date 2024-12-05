@@ -57,12 +57,6 @@
                                 </a>
                             </div>
                         @endforeach
-
-                        <!-- Add pagination links -->
-                        <div class="pagination-links">
-                            {{ $package_bookings->links('pagination::bootstrap-4') }}
-
-                        </div>
                     </div>
                 </div>
             </div>
