@@ -25,7 +25,9 @@
                 <form class="signupFormItems contactFormItems" method="post" action="" novalidate>
                     @csrf
                     @if (session('success'))
-                        <div class="text-success ml-2" id="successMessage">{{ session('success') }}</div>
+                        <div class="text-success ml-2" id="successMessage" style="font-weight: 500; text-align:center;">
+                            {!! session('success') !!}
+                        </div>
                     @endif
                     <div class="form-group input_wrap w-100">
                         <input class="inputField2" id="first_name" name="first_name" type="text" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
