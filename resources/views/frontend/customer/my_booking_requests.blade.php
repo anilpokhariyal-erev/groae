@@ -33,7 +33,11 @@
 
                         @foreach ($package_bookings as $package_booking)
                             <div class="addPersonalDoc">
-                                <h3>{{$package_booking->package->title}}</h3>
+                            <h3>
+                                {{$package_booking->package->title}}<br>
+                                {{$package_booking->created_at->format('d/m/Y')}}
+                            </h3>
+
                                 <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                                     <span class="p-r-4">
                                         @if($package_booking->original_cost != $package_booking->final_cost && $package_booking->payment_status != 1)
@@ -42,16 +46,19 @@
                                         {{$package_booking->package->currency}} {{$package_booking->final_cost}}
                                         <br>
                                         @if($package_booking->payment_status == 1)
-                                            Invoice Paid
+                                            <em style="color:green">Invoice Paid</em>
                                         @else
                                             @if($package_booking->status == 0)
-                                                <em style="color:red">Cancelled/Rejected</em>
+                                                <em style="color:gray">Cancelled/Rejected</em>
                                             @elseif($package_booking->status == 1)
-                                                Waiting for Invoice
+                                                <em style="color:yellow">Waiting for Invoice</em>
                                             @elseif($package_booking->status == 2)
-                                                Invoice Generated
+                                                <em style="color:orange">Invoice Generated</em>
+                                            @elseif($package_booking->status == 3)
+                                                <em style="color:green">Refund</em>
                                             @endif
                                         @endif
+                                        
                                     </span>
                                     <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
                                 </a>
