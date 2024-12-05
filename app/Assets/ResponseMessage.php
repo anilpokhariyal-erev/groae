@@ -24,7 +24,7 @@ abstract class ResponseMessage
     const SAME_OLD_PASSWORD = 'The password must not be the same as the previous password';
     const SESSION_LINK_EXPIRED = 'Session expired, Please try again';
     const INVALID_REQUEST = 'Invalid request, Please try again';
-    const CONTACT_US_SUBMIT = 'We have received your message. We will get back to you shortly.';
+    const CONTACT_US_SUBMIT = 'Thank you for reaching out to us!! <br> We have received your message. We will get back to you shortly.';
     const LOGIN_FIRST_COST_CALCULATOR = 'Please login first to calculate cost';
     const PROFILE_UPDATED = 'Profile has been updated successfully';
     const RECALCULATE = 'Please re-calculate the freezone cost';
