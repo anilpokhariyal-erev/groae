@@ -30,10 +30,12 @@
           <option value="1" @if($booking->status=='1') selected @endif>Pending Quote</option>
           <option value="2" @if($booking->status=='2') selected @endif>Generate Quote</option>
           <option value="0" @if($booking->status=='0') selected @endif>Cancel Request</option>
+          <option value="0" @if($booking->status=='3') selected @endif>Refunded</option>
+          <option value="0" @if($booking->status=='4') selected @endif>Paid</option>
         </select>
       </div>
       <div class="col-md-12 p-2" id="cancel_reason_container" style="display: none;">
-        <textarea class="form-control"  id="cancel_reason" name="cancel_reason" placeholder="cancel reason">{{$booking->cancel_reason??''}}</textarea>
+        <textarea class="form-control"  id="cancel_reason" name="cancel_reason" placeholder="Remarks">{{$booking->cancel_reason??''}}</textarea>
       </div>
       <div class="col-lg-12 p-2">
         <button type="button" class="btn btn-primary" id="update_invoice" style="background:blue">Update Quote</button>

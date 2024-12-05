@@ -122,7 +122,7 @@ class PackageBookingController extends Controller
         // Validate the input
         $validatedData = $request->validate([
             'package_booking_id' => 'required|exists:package_bookings,id',
-            'status' => 'required|integer|in:0,1,2', // 0: Cancel Request, 1: Pending Invoice, 2: Generate Invoice
+            'status' => 'required|integer|in:0,1,2,3,4', // 0: Cancel Request, 1: Pending Invoice, 2: Generate Invoice, 3: Refunded, 4: Paid
             'cancel_reason' => 'required_if:status,0|string', // Required if status is 0
         ]);
 
@@ -132,7 +132,13 @@ class PackageBookingController extends Controller
             $packageBooking = PackageBooking::findOrFail($validatedData['package_booking_id']);
     
             // Update the status
-            $packageBooking->status = $validatedData['status'];
+            if($validatedData['status']==4){
+                $packageBooking->status = 2;
+                $packageBooking->payment_status = 1;
+            }else{
+                $packageBooking->status = $validatedData['status'];
+            }
+            
             if($validatedData['cancel_reason']){
                 $packageBooking->cancel_reason = $validatedData['cancel_reason'];
             }
