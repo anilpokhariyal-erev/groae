@@ -36,7 +36,7 @@
                                     </a>
                                 </div>
                                 <div class="secondLayer">
-                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->name]) }}">
+                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->freezone->slug]) }}">
                                         <h3 class="signupBtn">{{ $item->freezone->name }} </h3>
                                     </a>
                                     <h3 class="blogHeading text-left">{{ $item->title }}</h3>
