@@ -28,14 +28,14 @@
                         <div class="text-success ml-2" id="successMessage">{{ session('success') }}</div>
                     @endif
                     <div class="form-group input_wrap w-100">
-                        <input class="inputField2" id="first_name" name="first_name" type="text" placeholder=""
+                        <input class="inputField2" id="first_name" name="first_name" type="text" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                             required>
                         <label for="first_name">First Name*</label>
                         <p id="first_name_error" class="errorMessage"></p>
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('first_name')" />
                     </div>
                     <div class="form-group input_wrap w-100">
-                        <input class="inputField2" id="last_name" name="last_name" type="text" placeholder=""
+                        <input class="inputField2" id="last_name" name="last_name" type="text" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                             required>
                         <label for="last_name">Last Name*</label>
                         <p id="last_name_error" class="errorMessage"></p>
