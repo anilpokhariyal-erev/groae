@@ -58,18 +58,20 @@ class VerifyEmailController extends Controller
     {
         $customer = Customer::where('id', $id)->first();
         $verify =VerificationCode::where('email', $customer->email)->first();
-        if($verify->expires_at < now()){
+        if($verify->expires_at > now()){
             return redirect()->back()->with('success', 'Verification code Already Sent!');
         }
         $verificationCode = rand(100000, 999999);
 
         // Store the verification code with expiration (e.g., 10 minutes)
-        VerificationCode::create([
-            'mobile'=>$customer->mobile_number,
-            'email' => $customer->email,
-            'code' => $verificationCode,
-            'expires_at' => now()->addHours(24),
-        ]);
+        VerificationCode::updateOrCreate(
+            ['email' => $customer->email],
+            [
+                'mobile' => $customer->mobile_number,
+                'code' => $verificationCode,
+                'expires_at' => now()->addHours(4),
+            ]
+        );
 
         $link = config('app.url') . '/verify/' . encrypt($customer->email).'/'. encrypt($verificationCode);
         $fullName = trim("{$customer->first_name} {$customer->middle_name} {$customer->last_name}");
