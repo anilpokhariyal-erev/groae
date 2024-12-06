@@ -178,6 +178,10 @@ class PackageBookingController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-    }    
+    }  
+    
+    public function get_requested_quote_count(){
+        return PackageBooking::where('status',1)->count();
+    }
     
 }

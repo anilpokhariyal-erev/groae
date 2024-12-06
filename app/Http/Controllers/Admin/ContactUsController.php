@@ -111,4 +111,8 @@ class ContactUsController extends Controller
 
     }
 
+    public function get_unread_count(){
+        return ContactUs::where('status', 'unread')->count();
+    }
+
 }
