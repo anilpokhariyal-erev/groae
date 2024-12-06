@@ -44,6 +44,17 @@ class AuthController extends Controller
     {
         if (Auth::guard('customer')->check())
             return redirect()->route('home');
+        
+         // Fetch the customer based on the credentials provided
+         $customer = Customer::where('email', $request->email)->first();
+         if (!$customer) {
+             return back()->withErrors(['email' => 'User does not exists.']);
+         }
+ 
+         if ($customer->status == 0) {
+             return back()->withErrors(['email' => 'User is blocked.']);
+         }
+         
         $request->authenticate();
         $request->session()->regenerate();
 
