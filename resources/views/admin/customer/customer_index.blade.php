@@ -1,5 +1,22 @@
 <x-admin-layout>
-
+    <style>
+        #successMessage {
+            width: 100% !important;
+            color: green; /* Text color */
+            background-color: #d4edda; /* Light green background */
+            border: 1px solid #c3e6cb; /* Border color */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px 15px; /* Padding around the text */
+            font-size: 16px; /* Font size */
+            display: inline-block; /* Ensure it's displayed inline */
+            margin: 10px 0; /* Margin around the message */
+        }
+    </style>    
+    @if (session('success'))
+        <div class="text-success ml-2" id="successMessage" style="font-weight: 500; text-align:center;">
+            {!! session('success') !!}
+        </div>
+    @endif
     <div class="main-card mb-3 card">
         <div class="card-body">
 
@@ -38,7 +55,7 @@
 
         </div>
     </div>
-
+    
     <div class="main-card mb-3 card mt-2">
         <div class="card-body">
             <h5 class="card-heading">Customers</h5>
