@@ -148,7 +148,7 @@
     {{ $slot }}
 
     @if (!request()->routeIs(['customer.login', 'customer.forgotpassword', 'customer.signup', 'customer.password.reset']))
-        <footer class="mainFooter" style="background-image: url('{{ asset('images/footerbg.png') }}');">
+        <footer class="mainFooter" style="background-image: url('{{ asset('images/footer_bg.png') }}');">
             <div class="footerTop" >
                 <div class="footerLeft">
                     <div>
