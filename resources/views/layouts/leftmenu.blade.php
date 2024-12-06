@@ -45,7 +45,7 @@
             <li class="{{ $has_role_or_permission('view-contact', 'ba_display_none') }}">
                 <a href="{{route('contact.index')}}" class="{{ Route::is('contact.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
-                     Manage Contact Us
+                     Manage Contact Us <em title="Unread">({{(new App\Http\Controllers\Admin\ContactUsController())->get_unread_count()}})</em>
                 </a>
             </li>
 
@@ -66,9 +66,10 @@
                         
 
             <li class="{{ $has_role_or_permission('view-process-document', 'ba_display_none') }}">
-                <a href="{{route('package-bookings.index')}}" class="{{ Route::is('booking.*') ? 'mm-active' : '' }}">
+                <a href="{{route('package-bookings.index')}}" class="{{ Route::is('package-bookings.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon fa-solid fa-users"></i>
-                    Manage Package Booking Requests
+                    Manage Package Booking Requests 
+                    <em title="Quote Requested">({{(new App\Http\Controllers\Admin\PackageBookingController())->get_requested_quote_count()}})</em>
                 </a>
             </li>
 
