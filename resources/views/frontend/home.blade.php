@@ -6,27 +6,21 @@
     @section('js-owl-imports')
         <script src="{{ secure_asset('js/website/owl.carousel.min.js') }}" crossorigin="anonymous"></script>
     @endsection
-    <section>
-        <div class="banner">
-            <div class="video-container bannrImg">
-                <iframe
-                        src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&loop=1&playlist={{$background_video}}&rel=0&vq=hd1080&controls=0"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        style="width: 100%; height: 100%;"></iframe>
-            </div>
+    <section class="video-section">
+        <video autoplay muted loop class="background-video">
+            <source src="{{ secure_asset('images/groae_banner.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
 
-            <div class="bannerLayer">
-                <div class="innrLayer">
-                    <img src="{{ secure_asset('images/bot1.png') }}" alt="">
-                    <h3>AI search to help you find the best Freezone.</h3>
-                </div>
-                @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
+        <div class="bannerLayer">
+            <div class="innrLayer">
+                <img src="{{ secure_asset('images/bot1.png') }}" alt="">
+                <h3>AI search to help you find the best Freezone.</h3>
             </div>
+            @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
         </div>
-
     </section>
+
 
     <!-- Trending Freezones  -->
     <section style="margin-top: -1%">
@@ -79,7 +73,7 @@
             <div class="video-banner">
                 <!-- Thumbnail image -->
                 <div class="video-thumbnail" onclick="playVideo()" >
-                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="1138px" height="395px" style="border-radius:35px" >
+                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="100%" height="395px" style="border-radius:35px" >
                     <div class="play-icon">▶</div> <!-- Play button -->
                 </div>
 
