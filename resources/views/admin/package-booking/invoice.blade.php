@@ -48,17 +48,29 @@
 </div>
 @else
 <div class="col-lg-12">
-    @if($booking->status=='2')  <p style="padding: 12px 15px;
+  @if($booking->payment_status==1)
+  <p style="padding: 12px 15px;
     background: lightblue;
     color: black;
     font-weight: 800;
-    font-size: 17px;"> Quote Generated </p> @endif
+    font-size: 17px;"> Invoice Paid </p> 
+  @else
+    @if($booking->status=='2') 
+     <p style="padding: 12px 15px;
+    background: lightblue;
+    color: black;
+    font-weight: 800;
+    font-size: 17px;"> Quote Generated </p> 
+    @endif
 
-    @if($booking->status=='0')   <p style="padding: 12px 15px;
+    @if($booking->status=='0')  
+     <p style="padding: 12px 15px;
     background: #d92550;
     color: black;
     font-weight: 800;
-    font-size: 17px;">Request Cancelled </p> @endif
+    font-size: 17px;">Request Cancelled </p> 
+    @endif
+  @endif
 </div>
 @endif
   <div class="invoice_page" style="width: 90%;margin:auto;background:#fff;">
