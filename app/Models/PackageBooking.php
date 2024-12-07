@@ -20,7 +20,7 @@ class PackageBooking extends Model
         'status',
         'payment_method',
         'transaction_id',
-        'cancel_reason'
+        'remarks'
     ];
 
     // Relationships
