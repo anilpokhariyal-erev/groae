@@ -30,12 +30,12 @@
           <option value="1" @if($booking->status=='1') selected @endif>Pending Quote</option>
           <option value="2" @if($booking->status=='2') selected @endif>Generate Quote</option>
           <option value="0" @if($booking->status=='0') selected @endif>Cancel Request</option>
-          <option value="0" @if($booking->status=='3') selected @endif>Refunded</option>
-          <option value="0" @if($booking->status=='4') selected @endif>Paid</option>
+          <option value="3" @if($booking->status=='3') selected @endif>Refunded</option>
+          <option value="4" @if($booking->status=='4') selected @endif>Paid</option>
         </select>
       </div>
-      <div class="col-md-12 p-2" id="cancel_reason_container" style="display: none;">
-        <textarea class="form-control"  id="cancel_reason" name="cancel_reason" placeholder="Remarks">{{$booking->cancel_reason??''}}</textarea>
+      <div class="col-md-12 p-2" id="remarks_container" style="display: none;">
+        <textarea class="form-control"  id="remarks" name="remarks" placeholder="Remarks">{{$booking->remarks??''}}</textarea>
       </div>
       <div class="col-lg-12 p-2">
         <button type="button" class="btn btn-primary" id="update_invoice" style="background:blue">Update Quote</button>
@@ -48,17 +48,29 @@
 </div>
 @else
 <div class="col-lg-12">
-    @if($booking->status=='2')  <p style="padding: 12px 15px;
+  @if($booking->payment_status==1)
+  <p style="padding: 12px 15px;
     background: lightblue;
     color: black;
     font-weight: 800;
-    font-size: 17px;"> Quote Generated </p> @endif
+    font-size: 17px;"> Invoice Paid </p> 
+  @else
+    @if($booking->status=='2') 
+     <p style="padding: 12px 15px;
+    background: lightblue;
+    color: black;
+    font-weight: 800;
+    font-size: 17px;"> Quote Generated </p> 
+    @endif
 
-    @if($booking->status=='0')   <p style="padding: 12px 15px;
+    @if($booking->status=='0')  
+     <p style="padding: 12px 15px;
     background: #d92550;
     color: black;
     font-weight: 800;
-    font-size: 17px;">Request Cancelled </p> @endif
+    font-size: 17px;">Request Cancelled </p> 
+    @endif
+  @endif
 </div>
 @endif
   <div class="invoice_page" style="width: 90%;margin:auto;background:#fff;">
@@ -287,9 +299,9 @@
               status: status,
               package_booking_id: packageBookingId,
             }
-          if (status === '0'){
-            reason = $('#cancel_reason').val();
-            data['cancel_reason'] = reason;
+          if (status === '0' || status == '3' || status == '4'){
+            reason = $('#remarks').val();
+            data['remarks'] = reason;
           }
             // Make an AJAX POST request
             $.ajax({
@@ -311,11 +323,11 @@
     document.addEventListener('DOMContentLoaded', (event) => {
       // Get the invoice status dropdown and cancel reason container
       const invoiceStatus = document.getElementById('invoice_status');
-      const cancelReasonContainer = document.getElementById('cancel_reason_container');
+      const cancelReasonContainer = document.getElementById('remarks_container');
 
       // Function to check the selected value and show/hide the cancel reason field
       function checkInvoiceStatus() {
-        if (invoiceStatus.value === "0") {
+        if (invoiceStatus.value === "0" || invoiceStatus.value === "3" || invoiceStatus.value === "4") {
           cancelReasonContainer.style.display = 'block'; // Show the cancel reason field
         } else {
           cancelReasonContainer.style.display = 'none'; // Hide the cancel reason field

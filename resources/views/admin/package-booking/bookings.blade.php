@@ -49,7 +49,7 @@
                             <th>Discount (AED)</th>
                             <th>Final Cost (AED)</th>
                             <th>Status</th>
-                            <th>Cancel Reason</th>
+                            <th>Remarks</th>
                             <th>Payment Status</th>
                             <th>Payment Method</th>
                             <th>Transaction ID</th>
@@ -76,7 +76,7 @@
                                         <span class="badge badge-success">Quote Generated</span>
                                     @endif
                                 </td>
-                                <td>{{$booking->cancel_reason ?? ''}}</td>
+                                <td>{{$booking->remarks ?? ''}}</td>
                                 <td>
                                     @if($booking->payment_status == 0)
                                         <span class="badge badge-warning">Pending</span>

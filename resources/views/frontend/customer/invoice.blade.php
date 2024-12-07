@@ -7,7 +7,7 @@
   <div class="container invoice_page myProfileContainer">
     @if($booking->status ==0) 
     <p style="text-align: center;color: red;font-size:22px; font-weight:700;">
-      Cancellation Reason: {{$booking->cancel_reason}}
+      Cancellation Reason: {{$booking->remarks}}
     </p>
      @endif
     <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint" style="--watermark-text:' Invoice Paid'">
