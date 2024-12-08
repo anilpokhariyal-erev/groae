@@ -139,7 +139,7 @@ class PackageBookingController extends Controller
                 $packageBooking->status = $validatedData['status'];
             }
             
-            if($validatedData['remarks']){
+            if (isset($validatedData['remarks'])) {
                 $packageBooking->remarks = $validatedData['remarks'];
             }
             $fixedCostTotal = 0;
