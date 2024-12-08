@@ -43,7 +43,7 @@
                             @endif
                             @foreach ($transactions as $item)
                                 <div class="transactionBox">
-                                    <h3 class="transactionIdTxt">#{{ $item->transaction_id }}</h3>
+                                    <h3 class="transactionIdTxt" style="overflow-wrap: break-word;max-width: 90%">Transaction ID : #{{ $item->transaction_id }}</h3>
                                     <div class="transactionInnrBox1">
                                         <h2>{{ $item->message }}</h2>
                                         {{-- <a href="#">View Details</a> --}}

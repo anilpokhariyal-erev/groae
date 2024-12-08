@@ -163,7 +163,7 @@ class CustomerController extends Controller
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
 
         // Paginate the package bookings (e.g., 10 per page)
-        $package_bookings = $customer->package_bookings()->orderBy('id', 'desc')->get();
+        $package_bookings = $customer->package_bookings()->orderBy('id', 'desc')->paginate(5);
 
         return view('frontend.customer.my_booking_requests')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones', 'package_bookings'));
     }
