@@ -6,6 +6,7 @@
             <h1 class="loginTxt">Forgot Password</h1>
             <p class="detailTxt">To reset your password, enter your registered email ID </p>
             <x-auth-session-status class="mb-4 txt-green" :status="session('success')" />
+            <x-auth-session-status class="mb-4 txt-red"  :status="session('error')" />
             @if (!session('success'))
                 <form class="signupFormItems" method="POST" action="{{ route('customer.post.forgotpassword') }}"
                     novalidate onsubmit="handleSubmit(event)">

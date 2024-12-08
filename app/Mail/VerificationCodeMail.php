@@ -14,12 +14,12 @@ class VerificationCodeMail extends Mailable
     use Queueable, SerializesModels;
 
     public $verificationCode;
-    private mixed $name;
+    public $name;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($verificationCode,$name)
+    public function __construct($verificationCode, $name)
     {
         $this->verificationCode = $verificationCode;
         $this->name = $name;
@@ -40,11 +40,25 @@ class VerificationCodeMail extends Mailable
      */
     public function content(): Content
     {
+        // Set the header and body content for the template
+        $headerText = "Welcome To GroAE!";
+        $bodyText = "Hi {$this->name},<br><br>";
+        $bodyText .= "Thank you for joining Groae! We are thrilled to<br>";
+        $bodyText .= "have you with us. To Complete your registration,<br>";
+        $bodyText .= "please verify your email address by clicking the <br>";
+        $bodyText .= "button below:<br><br>";
+        $bodyText .= "<a href='{$this->verificationCode}'><button style=\"background-color: #304a6f; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;\">Verify My Email</button></a><br>";
+        $bodyText .= "If you did not create an account, no action is<br>";
+        $bodyText .= "required, and you can safely ignore this email<br>";
+        $bodyText .= "Need help ? Feel free to contact us anytime.<br>";
+        $bodyText .= "<b>Regards</b>,<br>";
+        $bodyText .= "<b>Team GroAE</b>";
+
         return new Content(
-            view: 'emails.verification_code', // Replace with the path to your view file
+            view: 'frontend.email.email_template', // Ensure this points to your template
             with: [
-                'code' => $this->verificationCode,
-                'name' => $this->name,
+                'headerText' => $headerText,
+                'bodyText' => $bodyText,
             ],
         );
     }

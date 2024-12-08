@@ -174,23 +174,44 @@ class AuthController extends Controller
         ], [
             'email.exists' => 'Account with this email does not exist.',
         ]);
+
         try {
             $token = Str::random(64);
+            $customer = Customer::where('email', $request->email)->first();
+
+            // Store the token in the database or update it if already present
             CustomerPasswordReset::updateOrInsert(
                 ['email' => $request->email],
                 ['email' => $request->email, 'token' => $token]
             );
 
-            Mail::send('frontend.email.forgetPassword', ['email' => $request->email, 'token' => $token], function ($message) use ($request) {
+            // Email content
+            $headerText = "Password Reset Request";
+            $bodyText = "Hi {$customer->first_name} {$customer->last_name},<br><br>";
+            $bodyText .= "We received a request to reset your password. You<br>";
+            $bodyText .= "can reset it by clicking the button below.<br><br>";
+            $bodyText .= "<a href=\"" . route('customer.password.reset', $token) . "\"><button style=\"background-color: #304a6f; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;\">Reset My Password</button></a><br><br>";
+            $bodyText .= "If you did not request this, you can safely ignore this<br>";
+            $bodyText .= "email. Your password will remain unchanged.<br><br>";
+            $bodyText .= "<b>Regards</b>,<br>";
+            $bodyText .= "<b>Team GroAE</b>";
+
+            // Send the email
+            Mail::send('frontend.email.email_template', [
+                'headerText' => $headerText,
+                'bodyText' => $bodyText,
+            ], function ($message) use ($request) {
                 $message->to($request->email);
                 $message->subject('Reset Password');
             });
+
             return back()->with('success', ResponseMessage::CUSTOMER_PASSWORD_RESET_MESSAGE);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return back()->with('error', ResponseMessage::WrongMsg);
         }
     }
+
 
     public function reset_password($token)
     {
