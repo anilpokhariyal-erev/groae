@@ -186,7 +186,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- For show on calculator field -->
+                <!-- For show on calculator field --> 
                 @php
                     $showOnCalculatorArray = !empty($package->show_on_calculator) ? explode(',', $package->show_on_calculator) : [];
                     $showOnSummaryArray = !empty($package->show_in_summary) ? explode(',', $package->show_in_summary) : [];
@@ -721,12 +721,12 @@
         $('#show_in_summary').val(show_in_summary_arr);
     });
 
-    function clickShowOnSummaryElements() {
-        const elements = document.querySelectorAll('.show_in_summary_check');
-        elements.forEach(element => {
-            element.click();
-        });
-    }
+    // function clickShowOnSummaryElements() {
+    //     const elements = document.querySelectorAll('.show_in_summary_check');
+    //     elements.forEach(element => {
+    //         element.click();
+    //     });
+    // }
 
-    clickShowOnSummaryElements();
+    // clickShowOnSummaryElements();
 </script>
