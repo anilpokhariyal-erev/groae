@@ -1,12 +1,11 @@
 <x-website-layout>
-
     <section class="center-section">
         <div class="container">
             <div class="myProfileContainer">
                 <div class="backBtn">
-                    <a class="backAnchor" href="{{ url()->previous() }}"><img
-                                src="{{ asset('images/cheveron-right.png') }}" alt="">
-                    <h2 class="backTxt">Back</h2>
+                    <a class="backAnchor" href="{{ url()->previous() }}">
+                        <img src="{{ asset('images/cheveron-right.png') }}" alt="">
+                        <h2 class="backTxt">Back</h2>
                     </a>
                 </div>
                 <div class="topHeading">
@@ -17,9 +16,7 @@
                     @include('frontend.components.profile_sidebar')
                     @if ($customer->package_bookings->count() == 0)
                         <span class="noRecordFound">
-                            <h3 class="transactionIdTxt">
-                                No Bookings found
-                            </h3>
+                            <h3 class="transactionIdTxt">No Bookings found</h3>
                         </span>
                     @endif
                     <div class="profileDetailWrapper">
@@ -33,10 +30,10 @@
 
                         @foreach ($package_bookings as $package_booking)
                             <div class="addPersonalDoc">
-                            <h3>
-                                {{$package_booking->package->title}}<br>
-                                {{$package_booking->created_at->format('d/m/Y')}}
-                            </h3>
+                                <h3>
+                                    {{$package_booking->package->title}}<br>
+                                    {{$package_booking->created_at->format('d/m/Y')}}
+                                </h3>
 
                                 <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                                     <span class="p-r-4">
@@ -58,12 +55,37 @@
                                                 <em style="color:green">Refund</em>
                                             @endif
                                         @endif
-                                        
                                     </span>
                                     <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
                                 </a>
                             </div>
                         @endforeach
+                            <!-- Pagination Links -->
+                            <div class="pagination">
+                                <!-- Pagination Links -->
+                                @if (count($package_bookings))
+                                    <div class="commonViewMoreBtn">
+                                        <ul class="pager">
+                                            <!-- "Previous" button -->
+                                            <li>
+                                                <a class="{{ $package_bookings->currentPage() > 1 ? 'neTxt' : 'preTxt' }}"
+                                                   href="{{ $package_bookings->currentPage() > 1 ? $package_bookings->previousPageUrl() : 'javascript:void(0);' }}">
+                                                    Previous
+                                                </a>
+                                            </li>
+                                            <!-- "Next" button -->
+                                            <li>
+                                                <a class="{{ $package_bookings->hasMorePages() ? 'neTxt' : 'preTxt' }}"
+                                                   href="{{ $package_bookings->hasMorePages() ? $package_bookings->nextPageUrl() : 'javascript:void(0);' }}">
+                                                    Next
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
+
+                            </div>
+
                     </div>
                 </div>
             </div>
