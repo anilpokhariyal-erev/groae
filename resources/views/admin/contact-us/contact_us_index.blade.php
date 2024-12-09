@@ -96,11 +96,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="mt-3 pagination">
-                {{ $contact_us->links() }}
-            </div>
-
         </div>
     </div>
 </x-admin-layout>

@@ -54,7 +54,7 @@ class ContactUsController extends Controller
             $contact_us = $contact_us->where('status', $request->status);
         }
 
-        $contact_us = $contact_us->paginate(Utils::itemPerPage);
+        $contact_us = $contact_us->get();
 
         return view('admin.contact-us.contact_us_index', compact('contact_us'));
     }
