@@ -255,7 +255,7 @@ class CostCalculatorController extends Controller
     public function package_raise_success()
     {
         // Define the success message
-        $successMessage = 'Invoice request successfully raised. You can check your profile section for the update. This may take a few hours to reflect in your profile.';
+        $successMessage = 'A draft quotation has been sent to your email. The final quotation will be shared within 2-3 business days once we confirm details with the freezone.';
 
         // Return the view with the success message
         return view('frontend.cost_calculator.invoice_raised_success', compact('successMessage'));
