@@ -30,8 +30,6 @@
           <option value="1" @if($booking->status=='1') selected @endif>Pending Quote</option>
           <option value="2" @if($booking->status=='2') selected @endif>Generate Quote</option>
           <option value="0" @if($booking->status=='0') selected @endif>Cancel Request</option>
-          <option value="3" @if($booking->status=='3') selected @endif>Refunded</option>
-          <option value="4" @if($booking->status=='4') selected @endif>Paid</option>
         </select>
       </div>
       <div class="col-md-12 p-2" id="remarks_container" style="display: none;">
@@ -53,22 +51,28 @@
     background: lightblue;
     color: black;
     font-weight: 800;
-    font-size: 17px;"> Invoice Paid </p> 
+    font-size: 17px; text-align: center;"> Invoice Paid </p> 
   @else
     @if($booking->status=='2') 
      <p style="padding: 12px 15px;
     background: lightblue;
     color: black;
     font-weight: 800;
-    font-size: 17px;"> Quote Generated </p> 
+    font-size: 17px; text-align: center;"> Quote Generated </p> 
     @endif
-
+    @if($booking->status=='3') 
+     <p style="padding: 12px 15px;
+    background: lightblue;
+    color: black;
+    font-weight: 800;
+    font-size: 17px; text-align: center;"> Payment Refunded </p> 
+    @endif
     @if($booking->status=='0')  
      <p style="padding: 12px 15px;
     background: #d92550;
     color: black;
     font-weight: 800;
-    font-size: 17px;">Request Cancelled </p> 
+    font-size: 17px; text-align: center;">Request Cancelled </p> 
     @endif
   @endif
 </div>

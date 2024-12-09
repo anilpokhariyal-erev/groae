@@ -227,7 +227,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index')->middleware('role_or_permission:view-transaction');
     Route::get('transaction/{transaction}', [TransactionController::class, 'show'])->name('transaction.show')->middleware('role_or_permission:show-transaction');
-    
+    Route::put('/transactions/{id}/update-status', [TransactionController::class, 'updateStatus'])->name('transactions.updateStatus');
+    Route::put('/transactions/{id}/refund', [TransactionController::class, 'markRefunded'])->name('transactions.markRefunded');
+
+
     Route::get('freezone/bookings', [FreezoneBookingController::class, 'index'])->name('booking.index')->middleware('role_or_permission:view-booking');
     Route::get('freezone/bookings/{id}', [FreezoneBookingController::class, 'show'])->name('booking.show')->middleware('role_or_permission:view-booking-detail');
     Route::get('document/send-document-request/{booking_id}', [CustomerDocumentController::class, 'send_document_request'])->name('document.send-document-request')->middleware('role_or_permission:send-document-request');

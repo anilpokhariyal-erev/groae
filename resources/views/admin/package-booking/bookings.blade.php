@@ -74,6 +74,8 @@
                                         <span class="badge badge-warning">Quote Requested</span>
                                     @elseif($booking->status == '2')
                                         <span class="badge badge-success">Quote Generated</span>
+                                    @elseif($booking->status == '3')
+                                        <span class="badge badge-success">Payment Refunded</span>
                                     @endif
                                 </td>
                                 <td>{{$booking->remarks ?? ''}}</td>

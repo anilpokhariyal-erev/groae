@@ -89,4 +89,67 @@ class TransactionController extends Controller
     {
         //
     }
+
+
+    public function updateStatus(Request $request, $id)
+    {
+        $transaction = Transaction::findOrFail($id);
+    
+        if ($transaction->payment_status === 'pending') {
+            // Generate new transaction ID
+            $transaction->transaction_id = 'GROAE_' . substr(bin2hex(random_bytes(16)), 0, 26);
+            $transaction->payment_status = 'successful';
+    
+            // Retrieve existing remarks
+            $existingRemarks = $transaction->packageBooking->remarks ?? '';
+            $newRemark = $existingRemarks 
+                ? $existingRemarks . " | Paid Marked Manually on " . now()->format('Y-m-d H:i:s') 
+                : "Paid Marked Manually on " . now()->format('Y-m-d H:i:s');
+    
+            // Update package booking details
+            $transaction->packageBooking->update([
+                'remarks' => $newRemark,
+                'payment_status' => 1,
+                'payment_method' => 'manually',
+            ]);
+    
+            // Save the transaction
+            $transaction->save();
+    
+            return redirect()->back()->with('success', 'Transaction status updated to Paid.');
+        }
+    
+        return redirect()->back()->with('error', 'Transaction status cannot be updated.');
+    }
+    
+
+    public function markRefunded($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        if ($transaction->payment_status !== 'successful') {
+            return redirect()->back()->with('error', 'Only successful transactions can be refunded.');
+        }
+
+        $transaction->update([
+            'payment_status' => 'refunded',
+        ]);
+
+        // Append new remark to the existing remarks
+        $existingRemarks = $transaction->packageBooking->remarks ?? '';
+        $newRemark = $existingRemarks 
+            ? $existingRemarks . " | Refunded Manually on " . now()->format('Y-m-d H:i:s') 
+            : "Refunded Manually on " . now()->format('Y-m-d H:i:s');
+
+        // Update package booking status and remarks
+        $transaction->packageBooking->update([
+            'status' => 3,
+            'payment_status' => 2,
+            'remarks' => $newRemark,
+        ]);
+
+        return redirect()->back()->with('success', 'Transaction marked as refunded.');
+    }
+
+
 }
