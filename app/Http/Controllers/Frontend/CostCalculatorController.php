@@ -465,10 +465,22 @@ class CostCalculatorController extends Controller
 
     public function sendEmailWithAttachment($filePath, $booking, $fixedFees, $company_info, $adjustments)
     {
-        $toEmail = $booking->customer->email; // Change to recipient's email address
+        $toEmail = $booking->customer->email; // Recipient's email address
         $subject = 'Groae Package Quotation';
+
+        // Create header and body text content with <br> for line breaks
+        $headerText = "Quotation Request Received";
+        $bodyText = "Hi {$booking->customer->name},<br><br>";
+        $bodyText .= "Thank you for reaching out to us. We have received your request for a Quotation for {$booking->package->title}.<br>";
+        $bodyText .= "Our team is reviewing your request and will get back to you shortly.<br><br>";
+        $bodyText .= "If you have any additional information or documents to share, feel free to reply to this email.<br><br>";
+        $bodyText .= "<b>Regards</b>,<br>";
+        $bodyText .= "<b>Team GroAE</b>";
+
         $data = [
             'message' => 'Please find your PDF quote attached.',
+            'headerText' => $headerText,
+            'bodyText' => $bodyText,
             'booking' => $booking,
             'fixedFees' => $fixedFees,
             'company_info' => $company_info,
@@ -476,12 +488,13 @@ class CostCalculatorController extends Controller
         ];
 
         // Send email with attachment
-        Mail::send('frontend.email.invoice', $data, function ($message) use ($toEmail, $subject, $filePath) {
+        Mail::send('frontend.email.email_template', $data, function ($message) use ($toEmail, $subject, $filePath) {
             $message->to($toEmail)
                 ->subject($subject)
                 ->attach($filePath); // Attach the generated PDF
         });
     }
+
 
 
 

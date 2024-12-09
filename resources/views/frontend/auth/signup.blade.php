@@ -9,6 +9,15 @@
             <p class="detailTxt">Create account to start your business with us</p>
 
             <form class="signupFormItems" method="post" action="{{ route('customer.register') }}" novalidate>
+                @if(session('success'))
+                    <div class="main-card">
+                        <div class="card-body">
+                            <div class="custom-alert" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 @csrf
                 <h3 class="representTxt">You're representing:</h3>
                 <div class="radioForm">
