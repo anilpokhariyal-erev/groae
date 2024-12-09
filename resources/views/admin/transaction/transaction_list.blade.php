@@ -38,8 +38,8 @@
                                 @endif    
                                 </td>
                                 <td>
-                                    @if($transaction_val->freezone_booked)
-                                        {{ ucwords($transaction_val->freezone_booked->freezone->name) ?? 'N/A' }}
+                                    @if($transaction_val?->packageBooking?->package?->freezone?->name)
+                                        {{ ucwords($transaction_val->packageBooking->package->freezone->name) ?? 'N/A' }}
                                     @else
                                         N/A
                                     @endif
