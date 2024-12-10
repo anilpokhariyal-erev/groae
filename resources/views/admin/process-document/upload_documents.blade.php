@@ -13,7 +13,7 @@
             <form method="post" action="{{ route('document.store-upload-document', $booking_detail->customer_id)}}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="customer_id" value="{{$booking_detail->customer_id}}">
-
+                <input type="hidden" name="package_booking_id" value="{{$booking_detail->id}}">
                 <div class="row">
 
                     <div class="col-md-6">
@@ -46,6 +46,7 @@
                 <thead>
                     <th>Sn.</th>
                     <th>Document Name</th>
+                    <th>Package Name</th>
                     <th>Attachment</th>
                     <th>Uploaded Date</th>
                 </thead>
@@ -56,6 +57,7 @@
                             <tr class="table-active">
                                 <th>{{$i}}</th>
                                 <td>{{ucwords($docx_val->name)}}</td>
+                                <td>{{$docx_val?->package_booking?->package?->title}}</td>
                                 <td>
                                     @if($docx_val->value)
                                         <a target="_blank" href="{{ route('admin-protected-file.download', ['path' => $docx_val->value]) }}">download</a>
