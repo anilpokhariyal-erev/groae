@@ -14,11 +14,17 @@ class CustomerDownload extends Model
         'size',
         'value',
         'customer_id',
+        'package_booking_id',
         'status'
     ];
 
     function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    function package_booking()
+    {
+        return $this->belongsTo(PackageBooking::class);
     }
 }

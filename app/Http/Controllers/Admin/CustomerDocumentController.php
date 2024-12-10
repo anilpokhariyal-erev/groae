@@ -135,7 +135,8 @@ class CustomerDocumentController extends Controller
             $user->customer_downloads()->create([
                 'name' => $request->document_name,
                 'size' => $upload->getSize(),
-                'value' => 'customer_downloads|' . str_replace('/', '|', $filePath)
+                'value' => 'customer_downloads|' . str_replace('/', '|', $filePath),
+                'package_booking_id' => $request->package_booking_id,
             ]);
 
             return back()->with('success', 'Documents uploaded successfully.');
