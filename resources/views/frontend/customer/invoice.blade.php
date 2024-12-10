@@ -10,6 +10,13 @@
       Cancellation Reason: {{$booking->remarks}}
     </p>
      @endif
+     @if($booking->status=='3') 
+      <p style="padding: 12px 15px;
+      background: lightblue;
+      color: black;
+      font-weight: 800;
+      font-size: 17px; text-align: center;"> Payment Refunded </p> 
+    @endif
     <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint" style="--watermark-text:' Invoice Paid'">
       <div class="py-4 @if($booking->status == 0) watermarked @endif" id="contentToPrint" style="--watermark-text:'Cancelled'">
       <div class="py-4 @if($booking->status == 3) watermarked @endif" id="contentToPrint" style="--watermark-text:'Refunded'">
