@@ -48,11 +48,11 @@
                                             @if($package_booking->status == 0)
                                                 <em style="color:gray">Cancelled/Rejected</em>
                                             @elseif($package_booking->status == 1)
-                                                <em style="color:yellow">Waiting for Invoice</em>
+                                                <em style="color:purple">Waiting for Invoice</em>
                                             @elseif($package_booking->status == 2)
                                                 <em style="color:orange">Invoice Generated</em>
                                             @elseif($package_booking->status == 3)
-                                                <em style="color:green">Refund</em>
+                                                <em style="color:green">Refunded</em>
                                             @endif
                                         @endif
                                     </span>
