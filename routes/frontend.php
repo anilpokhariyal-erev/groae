@@ -73,6 +73,7 @@ Route::middleware(['auth.customer'])->group(function () {
     Route::get('/my_downloads', [CustomerController::class, 'view_downloads'])->name('customer.my_downloads.view');
     Route::get('/view_invoice/{id}', [CustomerController::class, 'view_invoice'])->name('customer.view_invoice.view');
     Route::post('customer-logout', [CustomerController::class, 'logout'])->name('customer.logout');
+    Route::get('downloads/{id}', [CustomerController::class, 'download_document'])->name('downloads.show');
 
     //added by brij
     Route::get('/my_settings', [CustomerController::class, 'settings'])->name('customer.profile.settings');

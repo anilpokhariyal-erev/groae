@@ -74,4 +74,12 @@ class PackageBooking extends Model
     {
         return $this->status ? 'Active' : 'Inactive';
     }
+
+    /**
+     * A PackageBooking has many CustomerDownloads.
+     */
+    public function downloads()
+    {
+        return $this->hasMany(CustomerDownload::class, 'package_booking_id');
+    }
 }
