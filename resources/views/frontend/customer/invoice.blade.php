@@ -241,10 +241,21 @@
         <pre class="italic">{{ $booking->package->description }} </pre>
       </div>
       @if($booking->payment_status == 1)
-      <div class="px-14 py-10 text-sm text-neutral-700">
-        <button class="btn btn-primay download-btn" id="downloadPdf">Download Invoice</button>
-      </div>
+          <div class="px-14 py-10 text-sm text-neutral-700">
+              <button class="btn btn-primary download-btn" id="downloadPdf">Download Invoice</button>
+          </div>
+          @if($booking->downloads->isNotEmpty())
+              <div class="px-14 py-10 text-sm text-neutral-700">
+                  <p class="font-bold">Related Downloads:</p>
+                  @foreach($booking->downloads as $download)
+                      <button class="btn btn-primary download-btn mt-2" onclick="window.location.href='{{ route('downloads.show', $download->id) }}'">
+                          Download {{ $download->name }}
+                      </button>
+                  @endforeach
+              </div>
+          @endif
       @endif
+      
       <div>
         <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
           Groae

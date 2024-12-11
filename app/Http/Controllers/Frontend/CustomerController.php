@@ -17,6 +17,7 @@ use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\UploadUpdateRequest;
 use App\Rules\NewPasswordNotMatchPrevious;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\CustomerDownload;
 use App\Models\FixedFee;
 use App\Models\PackageBooking;
 use App\Models\PackageBookingDetail;
@@ -230,6 +231,22 @@ class CustomerController extends Controller
             return abort(401);
         }
         return view('frontend.customer.invoice', compact('booking', 'fixedFees','company_info', 'adjustments'));
+    }
+
+
+    public function download_document($id)
+    {
+        $download = CustomerDownload::findOrFail($id);
+
+        // Construct the file path based on your storage structure
+        $filePath = 'customer_downloads/' . $download->customer->uuid . '/' . $download->value;
+        
+        // Use Laravel's Storage facade to locate the file
+        if (Storage::exists($filePath)) {
+            return Storage::download($filePath, $download->name);
+        }
+
+        return redirect()->back()->with('error', 'File not found.');
     }
 
 

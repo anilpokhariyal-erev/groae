@@ -117,7 +117,7 @@ class CustomerDocumentController extends Controller
         return view('admin.process-document.upload_documents', compact('booking_detail', 'customerdownloads'));
     }
 
-    function save_upload_documents(Request $request)
+    public function save_upload_documents(Request $request)
     {
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
@@ -129,13 +129,17 @@ class CustomerDocumentController extends Controller
         $upload = $request->file('uploads');
 
         if ($upload) {
+            // Construct the file path
             $filePath = $user->uuid . '/' . time() . '_' . str_replace(' ', '_', $upload->getClientOriginalName());
+            
+            // Store the file
             $upload->storeAs('customer_downloads', $filePath);
 
+            // Save the relative file path to the database
             $user->customer_downloads()->create([
                 'name' => $request->document_name,
                 'size' => $upload->getSize(),
-                'value' => 'customer_downloads|' . str_replace('/', '|', $filePath),
+                'value' => $filePath, // Save only the relative path
                 'package_booking_id' => $request->package_booking_id,
             ]);
 
@@ -144,4 +148,5 @@ class CustomerDocumentController extends Controller
 
         return back()->with('error', 'Something went wrong.');
     }
+
 }
