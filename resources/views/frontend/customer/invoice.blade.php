@@ -17,6 +17,16 @@
       font-weight: 800;
       font-size: 17px; text-align: center;"> Payment Refunded </p> 
     @endif
+    @if($booking->downloads->isNotEmpty())
+          <div class="px-14 py-10 text-sm text-neutral-700">
+              <p class="font-bold">Related Downloads:</p>
+              @foreach($booking->downloads as $download)
+                  <button class="btn btn-primary download-btn mt-2" onclick="window.location.href='{{ route('downloads.show', $download->id) }}'">
+                      Download {{ $download->name }}
+                  </button>
+              @endforeach
+          </div>
+      @endif
     <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint" style="--watermark-text:' Invoice Paid'">
       <div class="py-4 @if($booking->status == 0) watermarked @endif" id="contentToPrint" style="--watermark-text:'Cancelled'">
       <div class="py-4 @if($booking->status == 3) watermarked @endif" id="contentToPrint" style="--watermark-text:'Refunded'">
@@ -244,16 +254,6 @@
           <div class="px-14 py-10 text-sm text-neutral-700">
               <button class="btn btn-primary download-btn" id="downloadPdf">Download Invoice</button>
           </div>
-          @if($booking->downloads->isNotEmpty())
-              <div class="px-14 py-10 text-sm text-neutral-700">
-                  <p class="font-bold">Related Downloads:</p>
-                  @foreach($booking->downloads as $download)
-                      <button class="btn btn-primary download-btn mt-2" onclick="window.location.href='{{ route('downloads.show', $download->id) }}'">
-                          Download {{ $download->name }}
-                      </button>
-                  @endforeach
-              </div>
-          @endif
       @endif
       
       <div>
