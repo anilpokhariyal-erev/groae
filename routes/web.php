@@ -49,7 +49,7 @@ use App\Http\Controllers\PcAdditionalActivityController;
 
 /** End Dynamic routes by brij**/
 
-
+Route::middleware(['check.customer.status'])->group(function () {
 
 //Route::get('/', [PageController::class, 'home'])->name('home');
 
@@ -98,3 +98,5 @@ Route::get('/pre_postinfo', [PageController::class, 'pre_postinfo'])->name('pre_
 Route::get('/pre_postdetail', [PageController::class, 'pre_postdetail'])->name('pre_postdetail');
 
 require __DIR__ . '/auth.php';
+
+});

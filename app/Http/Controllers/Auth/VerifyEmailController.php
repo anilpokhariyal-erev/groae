@@ -44,7 +44,7 @@ class VerifyEmailController extends Controller
                     ->where('expires_at', '>', now())
                     ->first();
                 if($verify){
-                    Customer::where('email', $email_decrypt)->update(['status' => 1]);
+                    Customer::where('email', $email_decrypt)->update(['email_verified_at' => now()]);
                     return redirect(RouteServiceProvider::HOME);
                 }
             }

@@ -110,14 +110,19 @@ class CustomerController extends Controller
         // Get the authenticated user
         $customer = Auth::guard('customer')->user()->load('customer_documents');
 
+        // Count pending details and document requests
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
 
-        // return response()->json($customer);
+        // Paginate documents (3 per page as an example)
+        $customer_documents = $customer->customer_documents()
+            ->where('request_type', 'document')
+            ->paginate(3); // You can adjust the pagination count here
 
-        // Return the customer uploads page
-        return view('frontend.customer.my_uploads')->with(compact('customer', 'pending_detail_count', 'pending_document_count'));
+        // Return the customer uploads page with paginated data
+        return view('frontend.customer.my_uploads')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'customer_documents'));
     }
+
 
     function update_uploads(UploadUpdateRequest $request)
     {
@@ -191,7 +196,7 @@ class CustomerController extends Controller
     {
         $customer =  Auth::guard('customer')->user();
 
-        $downloads = $customer->customer_downloads()->where('status', 1)->get();
+        $downloads = $customer->customer_downloads()->where('status', 1)->paginate(3);
 
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();

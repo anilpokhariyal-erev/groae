@@ -62,7 +62,7 @@
                                         id="email" type="text" placeholder="" required readonly>
                                     <label for="email">Email*</label>
                                     <p id="email_error" class="errorMessage"></p>
-                                    @if ($customer->status == 1) <p id="successMessage" style="color: #4caf50;">Email verified !</p> @else <p id="email_error email_verify">click here to <a href="verify/email/customer/{{$customer->id}}" style="color: #f51f1f;cursor: pointer">Verify Email</a></p> @endif
+                                    @if ($customer->email_verified_at) <p id="successMessage" style="color: #4caf50;">Email verified !</p> @else <p id="email_error email_verify">click here to <a href="verify/email/customer/{{$customer->id}}" style="color: #f51f1f;cursor: pointer">Verify Email</a></p> @endif
                                     <x-input-error class="mt-2 text-red" :messages="$errors->get('email')" />
                                 </div>
                                 <div class="input_wrap w-100">
