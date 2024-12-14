@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\CheckCustomerStatus::class,
         ],
 
         'api' => [
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'role_or_permission' => \App\Http\Middleware\CheckRoleOrPermission::class,
         'auth.customer' => \App\Http\Middleware\RedirectIfCustomerNotLogin::class,
         'app.api_token' => \App\Http\Middleware\AuthenticateApiToken::class,
+        'check.customer.status' => \App\Http\Middleware\CheckCustomerStatus::class,
     ];
 }

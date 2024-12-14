@@ -46,6 +46,20 @@
                                 </div>
                             @endforeach
                         </div>
+                        @if ($downloads->hasPages())
+                            <div class="commonViewMoreBtn">
+                                <ul class="pager">
+                                    <li>
+                                        <a class="{{ $downloads->currentPage() > 1 ? 'neTxt' : 'preTxt' }}"
+                                           href="{{ $downloads->previousPageUrl() }}">Previous</a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ $downloads->hasMorePages() ? 'neTxt' : 'preTxt' }}"
+                                           href="{{ $downloads->nextPageUrl() }}">Next</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

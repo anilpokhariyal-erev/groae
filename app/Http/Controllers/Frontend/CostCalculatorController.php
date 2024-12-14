@@ -100,7 +100,7 @@ class CostCalculatorController extends Controller
 
         // customer data
         $customer = Auth::guard('customer')->user();
-        if($customer->status ==0){
+        if($customer->status ==0 || $customer->email_verified_at == null ){
            return redirect('/my_profile')->with('error','Complete Email Verification First.');
         }
 

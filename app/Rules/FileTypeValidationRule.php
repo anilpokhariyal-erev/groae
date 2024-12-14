@@ -34,8 +34,8 @@ class FileTypeValidationRule implements ValidationRule
 
 
         if (!in_array($mimeType, $validationMimeTypes)) {
-            flash()->addError('The selected file format is not supported.');
-            $fail('The selected file must be either a PDF, DOC, or DOCX document.');
+//            flash()->addError('The selected file format is not supported.');
+            $fail('The selected file format is not supported.');
         }
     }
 }
