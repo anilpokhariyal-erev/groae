@@ -48,37 +48,26 @@
   
 </div>
 @else
-<div class="col-lg-12">
-  @if($booking->payment_status==1)
-  <p style="padding: 12px 15px;
-    background: lightblue;
-    color: black;
-    font-weight: 800;
-    font-size: 17px; text-align: center;"> Invoice Paid </p> 
-  @else
-    @if($booking->status=='2') 
-     <p style="padding: 12px 15px;
-    background: lightblue;
-    color: black;
-    font-weight: 800;
-    font-size: 17px; text-align: center;"> Quote Generated </p> 
-    @endif
-    @if($booking->status=='3') 
-     <p style="padding: 12px 15px;
-    background: lightblue;
-    color: black;
-    font-weight: 800;
-    font-size: 17px; text-align: center;"> Payment Refunded </p> 
-    @endif
-    @if($booking->status=='0')  
-     <p style="padding: 12px 15px;
-    background: #d92550;
-    color: black;
-    font-weight: 800;
-    font-size: 17px; text-align: center;">Request Cancelled </p> 
-    @endif
-  @endif
-</div>
+      <div class="col-lg-12">
+        @if($booking->payment_status==1)
+          <p style="padding: 12px 15px; background: lightblue; color: black; font-weight: 800; font-size: 17px; text-align: center;"> Invoice Paid </p>
+        @else
+          @if($booking->status=='2')
+            <p style="padding: 12px 15px; background: lightblue; color: black; font-weight: 800; font-size: 17px; text-align: center;"> Quote Generated </p>
+          @endif
+          @if($booking->status=='3')
+            <p style="padding: 12px 15px; background: lightblue; color: black; font-weight: 800; font-size: 17px; text-align: center;"> Payment Refunded </p>
+          @endif
+          @if($booking->status=='0')
+            <p style="padding: 12px 15px; background: #d92550; color: black; font-weight: 800; font-size: 17px; text-align: center;">
+              Request Cancelled
+              <br>
+              <span style="font-weight: normal; text-align: left; display: block;">Remarks: {{$booking->remarks}}</span>
+            </p>
+          @endif
+        @endif
+      </div>
+
 @endif
   <div class="invoice_page" style="width: 90%;margin:auto;background:#fff;">
     <div class="py-4">
