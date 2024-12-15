@@ -51,8 +51,8 @@
                                                                     View Details
                                                                     <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                                                 </a>
-                                                                <a target="_blank" href="{{ route('freezone-packages', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                                                    View Packages
+                                                                <a target="_blank" href="{{ route('freezone.packages.index', ['uuid' => $item->uuid]) }}" class="viewInnrTxt">
+                                                                View Packages
                                                                     <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                                                 </a>
                                                             </button>
