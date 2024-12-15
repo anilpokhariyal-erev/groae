@@ -30,6 +30,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('trending-freezone', [HomeController::class, 'trending_freezone'])->name('trending-freezone');
 Route::get('compare-freezone', [HomeController::class, 'compare_freezone'])->name('compare-freezone');
 Route::any('explore-freezone/{id?}', [HomeController::class, 'explore_freezone'])->name('explore-freezone');
+Route::any('explore-freezones/{id?}', [HomeController::class, 'explore_freezones'])->name('explore-freezones');
 Route::post('get-freezones', [HomeController::class, 'get_freezone'])->name('get-freezones');
 Route::get('freezone-detail/{slug}/{name?}', [HomeController::class, 'freezone_detail'])->name('freezone-detail');
 Route::get('freezone-package-detail/{id}', [HomeController::class, 'freezone_package_detail'])->name('freezone-package-detail');

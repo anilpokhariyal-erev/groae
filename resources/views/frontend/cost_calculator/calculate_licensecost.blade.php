@@ -160,7 +160,12 @@
                     <input type="hidden" id="activities_selection" name="activities_selection" />
 
                     <div id="visa_section"></div>
-
+                    <div id="activityGroupNote" style="display: none; color: red; text-align: center; margin-bottom: 20px;">
+                        Note - You have selected multiple activity groups, License cost shown in the Cost Summary may differ from the actual cost provided by the Freezone.
+                    </div>
+                    <div id="activityNote" style="display: none; color: red; text-align: center; margin-bottom: 20px;">
+                        Note - You have selected multiple activities, Acitvity cost and License cost shown in the Cost Summary may differ from the actual cost provided by the Freezone.
+                    </div>
                     <div class="bannerBtns">
                         <button type="submit" class="bookConsBtn">Calculate Now</button>
                     </div>
@@ -252,6 +257,7 @@
                 allowClear: true,
                 width: '100%'
             });
+
         });
     </script>
 </x-website-layout>

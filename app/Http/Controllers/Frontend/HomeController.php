@@ -108,6 +108,62 @@ class HomeController extends Controller
         // Pass data to the view
         return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
     }
+
+    public function explore_freezones(Request $request, $id = null)
+    {
+
+        $selected = null;
+
+        // Check if ID is provided and retrieve data from cache
+        if ($id) {
+            $data = Cache::get($id);
+            if (!$data) {
+                return redirect()->route('explore-freezone');
+            }
+            $selected = json_decode($data)->uuid;
+        }
+
+        // Initialize package query with active status and freezone status check
+        $packagesQuery = PackageHeader::where('status', 1)
+            ->whereHas('freezone', function ($query) {
+                $query->where('status', 1); // Ensure freezone status is 1
+            });
+
+        $attributeValues = $request->input('attribute_value', []);
+
+        // Redirect if POST request has no attribute values
+        if ($request->isMethod('post') && empty($attributeValues)) {
+            return redirect()->route('explore-freezone');
+        }
+
+        $selectedAttributes = $attributeValues ?? [];
+
+        // Apply attribute filters if they exist
+        if (!empty($attributeValues)) {
+            foreach ($attributeValues as $attributeId => $optionId) {
+                // Check if the optionId is 'any' and skip adding a condition if true
+                if ($optionId === 'any') {
+                    continue; // Skip this iteration if 'any'
+                }
+                $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
+
+                    $query->where('package_lines.attribute_id', $attributeId)
+                        ->where('package_lines.attribute_option_id', $optionId)
+                        ->where('package_lines.status', 1);
+                });
+            }
+        }
+
+        // Load related data and order the packages
+        $packages = $packagesQuery->with(['packageLines', 'freezone'])->orderBy('price')->get();
+        $freezones = Freezone::get();
+
+        // Retrieve attributes for filter options
+        $attributes = $this->ai_filter_options();
+
+        // Pass data to the view
+        return view('frontend.explore_freezones', compact('packages', 'selected', 'attributes', 'selectedAttributes','freezones'));
+    }
     
 
     public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)

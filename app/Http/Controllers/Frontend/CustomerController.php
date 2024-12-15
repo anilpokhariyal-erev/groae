@@ -31,7 +31,9 @@ class CustomerController extends Controller
         $countries = Country::all();
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
-        return view('frontend.customer.my_profile')->with(compact('customer', 'countries', 'pending_detail_count', 'pending_document_count'));
+        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
+
+        return view('frontend.customer.my_profile')->with(compact('customer', 'countries', 'pending_detail_count', 'pending_document_count','package_bookings_count'));
     }
 
     public function update_profile(ProfileUpdateRequest $request): RedirectResponse
@@ -46,7 +48,8 @@ class CustomerController extends Controller
         $customer =  Auth::guard('customer')->user();
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
-        return view('frontend.customer.my_settings')->with(compact('customer', 'pending_detail_count', 'pending_document_count'));
+        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
+        return view('frontend.customer.my_settings')->with(compact('customer', 'pending_detail_count', 'pending_document_count','package_bookings_count'));
     }
     
     public function change_password(Request $request)
@@ -76,13 +79,14 @@ class CustomerController extends Controller
         $verified = $customer->customer_documents()->where('request_type', 'detail')->where('status', 'approved')->get();
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
+        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
 
         // return response()->json(compact('not_verified', 'verified', 'pending_detail_count'));
 
         // return response()->json($customer);
 
         // Return the customer details page
-        return view('frontend.customer.my_details')->with(compact('customer', 'not_verified', 'verified', 'pending_detail_count', 'pending_document_count'));
+        return view('frontend.customer.my_details')->with(compact('customer', 'not_verified', 'verified', 'pending_detail_count', 'pending_document_count', 'package_bookings_count'));
     }
 
     function update_details(Request $request)
@@ -119,8 +123,10 @@ class CustomerController extends Controller
             ->where('request_type', 'document')
             ->paginate(3); // You can adjust the pagination count here
 
+        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
+
         // Return the customer uploads page with paginated data
-        return view('frontend.customer.my_uploads')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'customer_documents'));
+        return view('frontend.customer.my_uploads')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'customer_documents', 'package_bookings_count'));
     }
 
 
@@ -170,8 +176,9 @@ class CustomerController extends Controller
 
         // Paginate the package bookings (e.g., 10 per page)
         $package_bookings = $customer->package_bookings()->orderBy('id', 'desc')->paginate(5);
+        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
 
-        return view('frontend.customer.my_booking_requests')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones', 'package_bookings'));
+        return view('frontend.customer.my_booking_requests')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones', 'package_bookings','package_bookings_count'));
     }
 
 
@@ -188,8 +195,9 @@ class CustomerController extends Controller
 
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
+        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
 
-        return view('frontend.customer.my_transactions')->with(compact('pending_detail_count', 'pending_document_count', 'transactions'));
+        return view('frontend.customer.my_transactions')->with(compact('pending_detail_count', 'pending_document_count', 'transactions', 'package_bookings_count'));
     }
 
     function view_downloads()
@@ -200,8 +208,9 @@ class CustomerController extends Controller
 
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
+        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
 
-        return view('frontend.customer.my_downloads')->with(compact('pending_detail_count', 'pending_document_count', 'downloads'));
+        return view('frontend.customer.my_downloads')->with(compact('pending_detail_count', 'pending_document_count', 'downloads','package_bookings_count'));
     }
 
 

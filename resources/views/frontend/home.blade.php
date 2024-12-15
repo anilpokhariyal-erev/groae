@@ -36,7 +36,9 @@
                             <div class="blogLayer  {{ $item->background_image_logo ? '' : 'new_layer' }}" style="background-image: url('{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/default-bg.jpg') }}'); background-color: {{ $item->background_image_logo ? 'rgba(0, 0, 0, 0.2)' : 'rgba(237, 245, 255, 0.7)' }};">
 
                                 <div class="topLayer">
+                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
                                     <img style="height: 174px" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
+                                    </a>
                                 </div>
                                 <div class="bottomLayer">
                                     <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
