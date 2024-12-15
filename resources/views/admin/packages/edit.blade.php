@@ -231,7 +231,7 @@
                                         <div class="col-md-4">
                                             <div class="position-relative form-group">
                                                 <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                                                <select name="package_lines[{{ $lineIndex }}][attribute_id]" class="custom-select attribute-select" data-line="{{ $lineIndex }}">
+                                                <select name="package_lines[{{ $lineIndex }}][attribute_id]" class="custom-select attribute-select" data-line="{{ $lineIndex }}" required>
                                                     <option value="">Select Attribute</option>
                                                     @foreach($attributes as $attribute)
                                                         <option value="{{ $attribute->id }}"
@@ -246,7 +246,7 @@
                                         <div class="col-md-4 ">
                                             <div class="position-relative form-group">
                                                 <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                                                <select name="package_lines[{{ $lineIndex }}][attribute_option_id]" class="custom-select option-select" id="option-select-{{ $lineIndex }}">
+                                                <select name="package_lines[{{ $lineIndex }}][attribute_option_id]" class="custom-select option-select" id="option-select-{{ $lineIndex }}" required>
                                                     <option value="">Select Option</option>
                                                 </select>
                                             </div>
@@ -255,7 +255,7 @@
                                         <div class="col-md-4">
                                             <div class="position-relative form-group">
                                                 <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                                                <input name="package_lines[{{ $lineIndex }}][addon_cost]" value="{{ old('package_lines.' . $lineIndex . '.addon_cost', $line->addon_cost) }}" type="number" class="form-control" min="0">
+                                                <input name="package_lines[{{ $lineIndex }}][addon_cost]" value="{{ old('package_lines.' . $lineIndex . '.addon_cost', $line->addon_cost) }}" type="number" class="form-control" min="0" required>
                                             </div>
                                         </div>
 
@@ -275,7 +275,7 @@
                                         <div class="col-lg-3">
                                             <div class="position-relative form-group">
                                                 <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                                                <select name="package_lines[{{ $costIndex }}][attribute_id]" class="custom-select attribute-select" data-line="{{ $costIndex }}">
+                                                <select name="package_lines[{{ $costIndex }}][attribute_id]" class="custom-select attribute-select" data-line="{{ $costIndex }}" required>
                                                     <option value="">Select Attribute</option>
                                                     @foreach($attributes as $attribute)
                                                         <option value="{{ $attribute->id }}" data-allow-multiple="{{ $attribute->allow_multiple }}"
@@ -339,6 +339,9 @@
                     <button class="mt-1 btn btn-primary">Update</button>
                     @if (session('success'))
                         <div class="text-success ml-2" id="successMessage">{{session('success')}}</div>
+                    @endif
+                    @if (session('error'))
+                        <div class="text-success ml-2" id="successMessage">{{session('error')}}</div>
                     @endif
                 </div>
             </form>
@@ -514,7 +517,7 @@
                         <div class="col-md-4 multiple_on">
                             <div class="position-relative form-group">
                                 <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                                <select name="package_lines[${index}][attribute_option_id]" class="custom-select option-select" id="option-select-${index}">
+                                <select name="package_lines[${index}][attribute_option_id]" class="custom-select option-select" id="option-select-${index}" required>
                                     <option value="">Select Option</option>
                                 </select>
                                 <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.attribute_option_id')" />
@@ -523,7 +526,7 @@
                         <div class="col-md-4 multiple_on">
                             <div class="position-relative form-group">
                                 <label for="addon_cost">Add-on Cost <span class="text-danger">*</span></label>
-                                <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0">
+                                <input name="package_lines[${index}][addon_cost]" type="number" class="form-control" min="0" required>
                                 <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${index}.addon_cost')" />
                             </div>
                         </div>

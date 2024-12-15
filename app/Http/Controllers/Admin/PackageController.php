@@ -194,34 +194,36 @@ class PackageController extends Controller
 
             // Loop through the package lines and handle based on attribute_option_id
             foreach ($request->input('package_lines', []) as $line) {
-                if (empty($line['attribute_option_id'])) {
-                    // Store in package_attributes_cost if attribute_option_id is empty
-                    PackageAttributesCost::updateOrCreate(
-                        [
-                            'package_id' => $package->id,
-                            'attribute_id' => $line['attribute_id'] ?? null,
-                        ],
-                        [
-                            'allowed_free_qty' => $line['allowed_free_qty'] ?? 0, // New field handling
-                            'max_allowed_qty' => $line['max_allowed_qty'] ?? 0,
-                            'unit_price' => $line['unit_price'] ?? 0, // New field handling
-                            'per_unit' => 1, // Assuming a default value for per_unit
-                            'status' => 1,
-                        ]
-                    );
-                } else {
-                    // Otherwise, store in the package_lines table
-                    PackageLine::updateOrCreate(
-                        [
-                            'package_id' => $package->id,
-                            'attribute_id' => $line['attribute_id'] ?? null,
-                            'attribute_option_id' => $line['attribute_option_id'] ?? null,
-                        ],
-                        [
-                            'addon_cost' => $line['addon_cost'] ?? 0, // If addon_cost is nullable
-                            'status' => 1,
-                        ]
-                    );
+                if (!empty($line['attribute_id'])) {
+                    if (empty($line['attribute_option_id'])) {
+                        // Store in package_attributes_cost if attribute_option_id is empty
+                        PackageAttributesCost::updateOrCreate(
+                            [
+                                'package_id' => $package->id,
+                                'attribute_id' => $line['attribute_id'] ?? null,
+                            ],
+                            [
+                                'allowed_free_qty' => $line['allowed_free_qty'] ?? 0, // New field handling
+                                'max_allowed_qty' => $line['max_allowed_qty'] ?? 0,
+                                'unit_price' => $line['unit_price'] ?? 0, // New field handling
+                                'per_unit' => 1, // Assuming a default value for per_unit
+                                'status' => 1,
+                            ]
+                        );
+                    } else {
+                        // Otherwise, store in the package_lines table
+                        PackageLine::updateOrCreate(
+                            [
+                                'package_id' => $package->id,
+                                'attribute_id' => $line['attribute_id'] ?? null,
+                                'attribute_option_id' => $line['attribute_option_id'] ?? null,
+                            ],
+                            [
+                                'addon_cost' => $line['addon_cost'] ?? 0, // If addon_cost is nullable
+                                'status' => 1,
+                            ]
+                        );
+                    }
                 }
             }
 
