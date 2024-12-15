@@ -64,7 +64,7 @@
                             <a href="{{ route('home') }}" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('explore-freezone') }}" class="nav-link">Explore Freezones </a>
+                            <a href="{{ route('explore-freezones') }}" class="nav-link">Explore Freezones </a>
                         </li>
                        
                         <li class="nav-item">
