@@ -27,7 +27,9 @@
       </div>
       <div class="col-lg-12">
         <select class="form-control" name="invoice_status" id="invoice_status">
-          <option value="1" @if($booking->status=='1') selected @endif>Pending Quote</option>
+          <option value="" disabled selected>Select Option</option>
+
+{{--          <option value="1" @if($booking->status=='1') selected @endif>Pending Quote</option>--}}
           <option value="2" @if($booking->status=='2') selected @endif>Generate Quote</option>
           <option value="0" @if($booking->status=='0') selected @endif>Cancel Request</option>
         </select>
