@@ -295,12 +295,31 @@ $(document).ready(function () {
     }
   });
 
+  function checkMultipleActivityGroups() {
+    const selectedActivityGroups = $('#activity_group_selection_display .activitySelct').length
+    if (selectedActivityGroups > 1) {
+      $('#activityGroupNote').show(); // Show the note if multiple groups are selected
+    } else {
+      $('#activityGroupNote').hide(); // Hide the note if only one or no group is selected
+    }
+  }
+  function checkMultipleActivity() {
+    const selectedActivity = $('#activities_selection_display .activitySelct').length
+    if (selectedActivity > 3) {
+      $('#activityNote').show(); // Show the note if multiple groups are selected
+    } else {
+      $('#activityNote').hide(); // Hide the note if only one or no group is selected
+    }
+  }
+
   $('input[type=hidden]').on('change', function () {
     const current = $(this);
     refreshSelectionDiv(current.attr('id'), current.val());
     if (current.attr('id') == 'activity_group_selection') {
       updateActivitiesList(current.val());
+      checkMultipleActivityGroups();
     }
+    checkMultipleActivity();
   });
 
   $('#freezone').on('change', function ({ target: { value } }) {
