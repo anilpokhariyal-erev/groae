@@ -31,6 +31,9 @@
                         @foreach ($package_bookings as $package_booking)
                             <div class="addPersonalDoc">
                                 <h3>
+                                    <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 3%;">
+                                        {{$package_booking?->package?->freezone?->name}}
+                                    </span><br><br>
                                     {{$package_booking->package->title}}<br>
                                     {{$package_booking->created_at->format('d/m/Y')}}
                                 </h3>

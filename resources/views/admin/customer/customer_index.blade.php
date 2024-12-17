@@ -70,6 +70,7 @@
                             <th>Mobile Number</th>
                             <th>Country</th>
                             <th>State</th>
+                            <th>Status</th>
                             <th>Created Date</th>
                             <th>Action</th>
                         </tr>
@@ -80,11 +81,24 @@
                             <tr>
                                 <th scope="row">{{$i++}}</th>
                                 <td>{{ucfirst($customer->name)}}</td>
-                                <td>{{ucfirst($customer->email)}}</td>
+                                <td>
+                                    @if($customer->email_verified_at)
+                                        <div class="d-flex align-items-center">
+                                            <i class="text-success fas fa-check-circle me-2"></i>
+                                            <span>{{ ucfirst($customer->email) }}</span>
+                                        </div>
+                                    @else
+                                        <div class="d-flex align-items-center">
+                                            <i class="text-danger fas fa-exclamation-circle me-2"></i>
+                                            <span>{{ ucfirst($customer->email) }}</span>
+                                        </div>
+                                    @endif
+                                </td>
                                 <td>@if ($customer->dialCode) {{$customer->iso2}}--{{$customer->dialCode}}@endif</td>
                                 <td>{{$customer->mobile_number}}</td>
                                 <td>{{$customer->country ? $customer->country->name : ''}}</td>
                                 <td>{{$customer->state ? $customer->state->name : ''}}</td>
+                                <td>{{$customer->status?'Active':'Inactive'}}</td>
                                 <td>{{$customer->created_at->format('Y-m-d')}}</td>
                                 <td>
                                     <a href="{{route('customer.show', $customer->uuid)}}">View &nbsp;</a>

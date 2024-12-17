@@ -566,6 +566,13 @@
 
         // Handle remove package line
         $(document).on('click', '.remove-package-line', function() {
+            if ($(this).closest('.package-line-item').find('.show_on_calculator_check').prop('checked')) {
+                $(this).closest('.package-line-item').find('.show_on_calculator_check').trigger('click');
+            }
+
+            if($(this).closest('.package-line-item').find('.show_in_summary_check').prop('checked')){
+                $(this).closest('.package-line-item').find('.show_in_summary_check').trigger('click');
+            }
             $(this).closest('.package-line-item').remove();
             update_attribute_count();
         });

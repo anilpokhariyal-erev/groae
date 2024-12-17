@@ -102,12 +102,16 @@ class StaticPageController extends Controller
     }
 
 
-    public function destroy(int $id)
+    public function destroy(string $id)
     {
-        $static_page = StaticPage::where('id', $id)->first();
+        $static_page = StaticPage::where('uuid', $id)->first();
 
         if(!$static_page){
             return abort(404);
+        }
+
+        if(StaticPage::where('parent_id', $static_page->id)->count()){
+            return redirect()->route('static-page.index')->with('errors', ['Static Page can not be deleted as it has child pages.']);
         }
 
         $static_page->delete();

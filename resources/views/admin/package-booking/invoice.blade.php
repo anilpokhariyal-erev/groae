@@ -136,6 +136,7 @@
         </table>
       </div>
       <div class="row px-14 font-bold">
+        <div class="col-md-12">Freezone: {{$booking?->package?->freezone?->name}}</div>
         <div class="col-md-9">
           Package: {{$booking->package->title}}
         </div>

@@ -19,12 +19,19 @@
                             <select name="activity_group_id" class="custom-select" id="activity_group">
                                 <option value="">Select Activity Group</option>
                                 @foreach($activityGroups as $activityGroup)
-                                    <option value="{{ $activityGroup->id }}">
+                                    <option value="{{ $activityGroup->id }}" data-freezone="{{$activityGroup?->freezone?->name}}">
                                         {{ $activityGroup->name }}
                                     </option>
                                 @endforeach
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_group_id')" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="position-relative form-group">
+                            <label for="freezone">Freezone</label>
+                            <input name="freezone" id="freezone" value="" type="text" class="form-control" readonly>
                         </div>
                     </div>
 
@@ -82,6 +89,9 @@
         document.getElementById('activity_group').addEventListener('change', function () {
             const activityGroupId = this.value;
             const licenseSelect = document.getElementById('license');
+            const selectedOption = this.options[this.selectedIndex];
+            const freezone = selectedOption.dataset.freezone; 
+            $('#freezone').val(freezone);
 
             // Clear previous options
             licenseSelect.innerHTML = '<option value="">Select License</option>';

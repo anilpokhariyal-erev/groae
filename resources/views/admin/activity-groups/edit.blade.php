@@ -41,7 +41,7 @@
                             <select name="licence_id" class="custom-select">
                                 <option value="">Select License</option>
                                 @foreach($licenses as $license)
-                                    <option value="{{ $license->id }}" 
+                                    <option value="{{ $license->id }}" freezone="{{$license->freezone_id}}" 
                                         {{ old('licence_id', $activityGroup->licence_id) == $license->id ? 'selected' : '' }}>
                                         {{ $license->name }}
                                     </option>
@@ -93,4 +93,30 @@
             @endif
         </div>
     </div>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const freezoneSelect = document.querySelector('select[name="freezone_id"]');
+            const licenseSelect = document.querySelector('select[name="licence_id"]');
+
+            // Save original license options for re-filtering
+            const allLicenseOptions = Array.from(licenseSelect.options);
+
+            // Event listener for Freezone dropdown
+            freezoneSelect.addEventListener('change', function () {
+                const selectedFreezoneId = this.value;
+
+                // Clear current License dropdown
+                licenseSelect.innerHTML = '';
+
+                // Filter licenses matching the selected Freezone ID
+                const filteredOptions = allLicenseOptions.filter(option => {
+                    return option.getAttribute('freezone') == selectedFreezoneId || option.value === "";
+                });
+
+                // Append filtered options to License dropdown
+                filteredOptions.forEach(option => licenseSelect.appendChild(option));
+            });
+        });
+
+    </script>
 </x-admin-layout>

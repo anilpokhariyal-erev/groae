@@ -93,6 +93,7 @@
             </tr>
             <tr>
               <td class="w-1/2 align-top">
+              <div class="col-md-12 font-bold">Freezone: {{$booking?->package?->freezone?->name}}</div>
                 <div class="col-md-9 px-2 font-bold">
                   Package: {{$booking->package->title}}
                 </div>
