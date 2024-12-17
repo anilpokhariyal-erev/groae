@@ -44,7 +44,7 @@
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
 
                                     <!-- Display package attributes -->
-                                    <div class="packageAttributes">
+                                    <!-- <div class="packageAttributes">
                                         @if($item->packageLines && count($item->packageLines) > 0)
                                             <div style="margin-top: 5px">
                                                 @foreach ($item->packageLines as $key => $package_line)
@@ -58,7 +58,7 @@
                                         @else
                                             <p>No attributes available.</p>
                                         @endif
-                                    </div>
+                                    </div> -->
 
                                     <div class="compareSearchOption">
                                         <button class="viewDetailBtn" style="width: auto;">
