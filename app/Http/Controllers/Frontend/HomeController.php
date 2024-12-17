@@ -156,7 +156,7 @@ class HomeController extends Controller
 
         // Load related data and order the packages
         $packages = $packagesQuery->with(['packageLines', 'freezone'])->orderBy('price')->get();
-        $freezones = Freezone::get();
+        $freezones = Freezone::where('status',1)->get();
 
         // Retrieve attributes for filter options
         $attributes = $this->ai_filter_options();
