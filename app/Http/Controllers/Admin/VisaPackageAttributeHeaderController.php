@@ -27,7 +27,7 @@ class VisaPackageAttributeHeaderController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:visa_package_attribute_header,name',
             'title' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
@@ -43,6 +43,7 @@ class VisaPackageAttributeHeaderController extends Controller
         return redirect()->route('visa-package-attribute-headers.index')->with('success', 'Visa Package Attribute Header created successfully.');
     }
 
+
     // Show the form for editing the specified resource
     public function edit($id)
     {
@@ -54,7 +55,7 @@ class VisaPackageAttributeHeaderController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:visa_package_attribute_header,name,' . $id,
             'title' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
@@ -70,6 +71,7 @@ class VisaPackageAttributeHeaderController extends Controller
 
         return redirect()->route('visa-package-attribute-headers.index')->with('success', 'Visa Package Attribute Header updated successfully.');
     }
+
 
     // Remove the specified resource from storage
     public function destroy($id)
