@@ -133,16 +133,21 @@ const getStates = (id, selected_state = null) => {
   dom_element.empty();
   dom_element.append(new Option('Choose an Option', ''));
   if (!id) return;
+
   fetch(`${url}/api/country/${id}`)
-    .then(response => response.json())
-    .then(data => {
-      data.states.forEach(({ name, id }) => {
-        if (selected_state == id)
-          dom_element.append(new Option(name, id, true, true));
-        else dom_element.append(new Option(name, id));
+      .then(response => response.json())
+      .then(data => {
+        data.states.forEach(({ name, id }) => {
+          // Check if the state is selected (using the selected_state parameter)
+          if (selected_state == id) {
+            dom_element.append(new Option(name, id, true, true));
+          } else {
+            dom_element.append(new Option(name, id));
+          }
+        });
       });
-    });
 };
+
 
 $(document).ready(function () {
   const mobileNumberId = document.getElementById('mobile_number');

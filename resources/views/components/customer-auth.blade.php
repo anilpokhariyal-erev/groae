@@ -10,11 +10,11 @@
         <section class="rightBoard">
             {{ $slot }}
             <div class="signupInnerContent">
-                <footer class="loginFooter">
-                    <a class="loginFooterItem" href="#">Terms &amp; conditions</a>
-                    <p class="andItem">&</p>
-                    <a class="loginFooterItem" href="#">Privacy Policy</a>
-                </footer>
+{{--                <footer class="loginFooter">--}}
+{{--                    <a class="loginFooterItem" href="#">Terms &amp; conditions</a>--}}
+{{--                    <p class="andItem">&</p>--}}
+{{--                    <a class="loginFooterItem" href="#">Privacy Policy</a>--}}
+{{--                </footer>--}}
             </div>
         </section>
     </div>
