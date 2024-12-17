@@ -124,7 +124,7 @@ class AuthController extends Controller
             'mobile_number' => $request->mobile_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'status' => 0,
+            'status' => 1,
             'iso2' => $request->iso2,
             'dialCode'=> $request->dialCode,
         ]);
