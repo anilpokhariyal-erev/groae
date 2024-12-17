@@ -53,10 +53,11 @@
 
                 </div>
 
-                <div class="ba_flex align_items_center">
+                
+            </form>
+                <div class="ba_flex align_items_center" style="margin:1%">
                     <button class="mt-1 btn btn-primary">Save</button>
                 </div>
-            </form>
 
         </div>
     </div>
