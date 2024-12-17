@@ -96,7 +96,7 @@ class AuthController extends Controller
             'state_id' => ['nullable', 'integer', Rule::exists('states', 'id')],
             'country_id' => ['nullable', 'integer', Rule::exists('countries', 'id')],
             'address' => ['nullable', 'string', 'max:255'],
-            'mobile_number' => ['required', 'string', 'max:15', 'min:7', 'unique:' . Customer::class],
+            'mobile_number' => [ 'string', 'max:15', 'min:7', 'unique:' . Customer::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . Customer::class],
             'password' => ['required', 'confirmed', RulesPassword::min(6)->mixedCase()->letters()->numbers()],
             'captcha' => [
@@ -152,7 +152,7 @@ class AuthController extends Controller
         $formInput = Session::pull('form_input');
         session()->forget(['captcha_question', 'captcha_answer']);
 
-        return redirect()->intended($previousUrl)->withInput($formInput)->with('success', ResponseMessage::ACCOUNT_CREATED);
+        return redirect()->route('customer.profile.view');
 
     }
 

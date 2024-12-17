@@ -3,7 +3,14 @@
     @section('js-imports')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     @endsection
-    <div class="signupItems">
+        <style>
+
+            .loginBtn:disabled {
+                background-color: #aaa;
+            }
+        </style>
+
+        <div class="signupItems">
         <div>
             <h1 class="loginTxt">Get Started</h1>
             <p class="detailTxt">Create account to start your business with us</p>
@@ -40,13 +47,13 @@
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('first_name')" />
                     </div>
 
-                    <div class="form-group input_wrap w-100">
-                        <input class="inputField2" id="middle_name" value="{{ old('middle_name') }}" name="middle_name"
-                            type="text" placeholder=" ">
-                        <label for="middle_name">Middle Name</label>
-                        <p id="middle_name_error" class="errorMessage"></p>
-                        <x-input-error class="mt-2 text-red" :messages="$errors->get('middle_name')" />
-                    </div>
+{{--                    <div class="form-group input_wrap w-100">--}}
+{{--                        <input class="inputField2" id="middle_name" value="{{ old('middle_name') }}" name="middle_name"--}}
+{{--                            type="text" placeholder=" ">--}}
+{{--                        <label for="middle_name">Middle Name</label>--}}
+{{--                        <p id="middle_name_error" class="errorMessage"></p>--}}
+{{--                        <x-input-error class="mt-2 text-red" :messages="$errors->get('middle_name')" />--}}
+{{--                    </div>--}}
 
                     <div class="form-group input_wrap w-100">
                         <input class="inputField2" id="last_name" value="{{ old('last_name') }}" name="last_name"
@@ -62,7 +69,7 @@
                         <select name="country_id" id="country" class="inputField2 cursor arrowPlace">
                             <option value="">Choose an Option</option>
                             @foreach ($countries as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                <option value="{{ $item->id }}" {{ old('country_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                             @endforeach
                         </select>
                         <label for="country">Country</label>
@@ -79,23 +86,23 @@
                     </div>
                 </div>
 
-                <div class="secondColumn">
-                    <div class="form-group input_wrap w-100">
-                        <input class="inputField2" id="city" value="{{ old('city') }}" name="city"
-                            type="text">
-                        <label for="city">City</label>
-                        <p id="city_error" class="errorMessage"></p>
-                        <x-input-error class="mt-2 text-red" :messages="$errors->get('city')" />
-                    </div>
+{{--                <div class="secondColumn">--}}
+{{--                    <div class="form-group input_wrap w-100">--}}
+{{--                        <input class="inputField2" id="city" value="{{ old('city') }}" name="city"--}}
+{{--                            type="text">--}}
+{{--                        <label for="city">City</label>--}}
+{{--                        <p id="city_error" class="errorMessage"></p>--}}
+{{--                        <x-input-error class="mt-2 text-red" :messages="$errors->get('city')" />--}}
+{{--                    </div>--}}
 
-                    <div class="form-group input_wrap w-100">
-                        <input class="inputField2" id="pincode" value="{{ old('pincode') }}" name="pincode"
-                            type="text">
-                        <label for="pincode">Pincode</label>
-                        <p id="pincode_error" class="errorMessage"></p>
-                        <x-input-error class="mt-2 text-red" :messages="$errors->get('pincode')" />
-                    </div>
-                </div>
+{{--                    <div class="form-group input_wrap w-100">--}}
+{{--                        <input class="inputField2" id="pincode" value="{{ old('pincode') }}" name="pincode"--}}
+{{--                            type="text">--}}
+{{--                        <label for="pincode">Pincode</label>--}}
+{{--                        <p id="pincode_error" class="errorMessage"></p>--}}
+{{--                        <x-input-error class="mt-2 text-red" :messages="$errors->get('pincode')" />--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="secondColumn">
                     <div class="form-group input_wrap w-100">
@@ -109,11 +116,11 @@
 
                 <div class="secondColumn">
                     <div class="input_wrap w-100">
-                        <div id="isodata" data-value=""></div>
-                        <input type="hidden" id="iso2" name="iso2" />
-                        <input type="hidden" id="dialCode" name="dialCode" />
-                        <input class="inputField2" id="mobile_number" placeholder="Mobile number*" type="tel"
-                            value="{{ old('mobile_number') }}" name="mobile_number" required />
+                        <div id="isodata" data-value="{{ old('iso2') ?? '' }}"></div>
+                        <input type="hidden" id="iso2" name="iso2" value="{{ old('iso2') ?? '' }}" />
+                        <input type="hidden" id="dialCode" name="dialCode" value="{{ old('dialCode') ?? '' }}" />
+                        <input class="inputField2" id="mobile_number" placeholder="Mobile number" type="tel"
+                               value="{{ old('mobile_number') }}" name="mobile_number" />
                         <p id="mobile_number_error" class="errorMessage"></p>
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('mobile_number')" />
                     </div>
@@ -172,3 +179,42 @@
         </div>
     </div>
 </x-customer-auth>
+
+<script>
+    $(document).ready(function() {
+        // When the country changes, fetch states
+        $('#country').on('change', function() {
+            const countryId = $(this).val();
+            const selectedState = '{{ old('state_id') }}'; // Get the old selected state
+            getStates(countryId, selectedState); // Pass the old selected state
+        });
+
+        // If the country is already selected when the page loads, load states
+        const initialCountryId = $('#country').val();
+        if (initialCountryId) {
+            const selectedState = '{{ old('state_id') }}'; // Get the old selected state
+            getStates(initialCountryId, selectedState); // Pass the old selected state
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the button and spinner elements
+        const submitButton = document.getElementById('validate');
+        const spinner = document.getElementById('loading-spinner');
+        const buttonText = submitButton.querySelector('.buttonText');
+
+        submitButton.addEventListener('click', function(e) {
+            e.preventDefault();  // Prevent the form from submitting immediately
+
+            // Disable the submit button and show the spinner
+            submitButton.disabled = true;
+            buttonText.textContent = 'Processing...'; // Change button text
+            // Delay the form submission to allow UI updates
+            setTimeout(function() {
+                // Submit the form after a brief delay
+                submitButton.closest('form').submit();
+            }, 200); // Delay of 500ms (you can adjust this if needed)
+        });
+    });
+</script>
+
