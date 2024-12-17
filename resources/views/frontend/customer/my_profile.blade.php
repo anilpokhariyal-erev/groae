@@ -198,7 +198,7 @@
                                 </div>
                             </div>
                             <div class="profileBtns">
-                                <button disabled class="closeAccBtn">Close Account</button>
+                                <!-- <button disabled class="closeAccBtn">Close Account</button> -->
                                 <button type="submit" class="updateProfileBtn">Update Profile</button>
                             </div>
                         </form>

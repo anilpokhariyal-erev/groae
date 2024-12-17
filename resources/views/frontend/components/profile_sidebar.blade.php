@@ -19,13 +19,13 @@
                 <img src="{{ secure_asset('images/license-icon.png') }}" alt="">My Booking Requests
             </a>
         </li>
-        <li class="sidebarInnrTxt {{ Request::is('my_details') ? 'activeBar2' : '' }}" id="details">
+        <!-- <li class="sidebarInnrTxt {{ Request::is('my_details') ? 'activeBar2' : '' }}" id="details">
             {!! $pending_detail_count > 0 ? '<p class="messageCountTxt">' . $pending_detail_count . '</p>' : '' !!}
             <a href="{{ route('customer.detail.view') }}">
                 <img src="{{ secure_asset('images/Personal-Info.svg') }}" class="personalImage" alt="">Personal
                 Informations
             </a>
-        </li>
+        </li> -->
         <li class="sidebarInnrTxt {{ Request::is('my_uploads') ? 'activeBar2' : '' }}" id="uploads">
             {!! $pending_document_count > 0 ? '<p class="messageCountTxt">' . $pending_document_count . '</p>' : '' !!}
             <a href="{{ route('customer.upload.view') }}">
