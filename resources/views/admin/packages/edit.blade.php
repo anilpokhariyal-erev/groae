@@ -469,10 +469,19 @@
                 const allow_multiple = $(this).find(':selected').data('allow-multiple');
                 if (allow_multiple == '0') {
                     $(this).closest('.package-line-item').find('.multiple_off').show();
+                    $(this).closest('.package-line-item').find('.multiple_off input').attr('required', 'required');
+                    $(this).closest('.package-line-item').find('.multiple_off select').attr('required', 'required');
                     $(this).closest('.package-line-item').find('.multiple_on').hide();
+                    $(this).closest('.package-line-item').find('.multiple_on input').removeAttr('required');
+                    $(this).closest('.package-line-item').find('.multiple_on select').removeAttr('required');
                 } else {
                     $(this).closest('.package-line-item').find('.multiple_on').show();
+                    $(this).closest('.package-line-item').find('.multiple_on input').attr('required', 'required');
+                    $(this).closest('.package-line-item').find('.multiple_on select').attr('required', 'required');
                     $(this).closest('.package-line-item').find('.multiple_off').hide();
+                    $(this).closest('.package-line-item').find('.multiple_off input').removeAttr('required');
+                    $(this).closest('.package-line-item').find('.multiple_off select').removeAttr('required');
+
                 }
             } else {
                 // Clear the options if no attribute is selected
