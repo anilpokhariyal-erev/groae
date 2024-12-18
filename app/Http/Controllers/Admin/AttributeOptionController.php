@@ -127,7 +127,7 @@ class AttributeOptionController extends Controller
 
      public function getAttributeOptions($attributeId)
      {
-         $options = AttributeOption::where('attribute_id', $attributeId)->get();
+         $options = AttributeOption::where('attribute_id', $attributeId)->where('status',1)->get();
  
          return response()->json(['options' => $options]);
      }
