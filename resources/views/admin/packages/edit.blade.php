@@ -106,7 +106,7 @@
                             <label for="freezone">Freezone <span class="text-danger">*</span></label>
                             <select name="freezone_id" class="custom-select" required>
                                 <option value="{{ $package->freezone_id }}" selected>
-                                    {{ $package->freezone->name }}
+                                    {{ $package?->freezone?->name }}
                                 </option>
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('freezone_id')" />

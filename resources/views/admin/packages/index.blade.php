@@ -76,7 +76,7 @@
                                 <th scope="row">{{ $i++ }}</th>
                                 <td>{{ $package->package_code }}</td>
                                 <td>{{ $package->title }}</td>
-                                <td>{{ $package->freezone->name }}</td>
+                                <td>{{ $package?->freezone?->name }}</td>
                                 <td>{{ $package->price }}</td>
                                 <td>
                                     <span class="badge {{ $package->status == 1 ? 'badge-success' : 'badge-danger' }}">
