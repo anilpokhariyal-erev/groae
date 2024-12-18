@@ -1,6 +1,11 @@
 <x-website-layout>
+    @section('js-imports')
+        <script src="{{ secure_asset('js/website/explore.js') }}" crossorigin="anonymous"></script>
+    @endsection
     <div class="center-section">
         <section style="padding-top: 4%;">
+            <span style="display:hidden;" id="selected_freezone">
+            </span>
             <div class="exploreItemsContainer">
                 <div class="AIHeader">
                     <div class="hTxt">
@@ -77,6 +82,15 @@
                             @endforeach
                         @endif
                     </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="compareBox" id="dvPassport" style="display: none">
+                <div class="compareSelctorContnt" id="txtPassportNumber"></div>
+                <div class="compareNow">
+                    <button type="submit" value="compare" class="comBtn"><a id="compareNowBtn">Compare Now</a></button>
+                    <img class="cursor" style="border-radius: 15px; background: #FFF;" id="compareNowClear" src="{{ asset('images/cross-icon.png') }}" alt="">
                 </div>
             </div>
         </section>
