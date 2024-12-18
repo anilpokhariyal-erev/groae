@@ -15,6 +15,7 @@ use App\Models\PackageAttributesCost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class PackageController extends Controller
 {
@@ -43,7 +44,7 @@ class PackageController extends Controller
     {
         $request->validate([
             'freezone_id' => 'required|exists:freezones,id',
-            'package_code' => 'required|string|max:100',
+            'package_code' => 'required|string|max:100|unique:package_headers,package_code',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'currency' => 'required|string|max:255',
@@ -153,10 +154,14 @@ class PackageController extends Controller
     public function update(Request $request, PackageHeader $package)
     {
         // Attempt to validate input
-        try {
             $request->validate([
                 'freezone_id' => 'required|exists:freezones,id',
-                'package_code' => 'required|string|max:100',
+                'package_code' => [
+                    'required',
+                    'string',
+                    'max:100',
+                    Rule::unique('package_headers', 'package_code')->ignore($package->id), // Exclude the current record
+                ],
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'currency' => 'required|string',
@@ -167,7 +172,8 @@ class PackageController extends Controller
                 'show_on_calculator' => 'nullable|string',
                 'show_in_summary' => 'nullable|string',
             ]);
-
+            
+            try{
 
             // If validation passes, update the package
             $package->update([
