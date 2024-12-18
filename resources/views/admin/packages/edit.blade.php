@@ -481,7 +481,6 @@
                     $(this).closest('.package-line-item').find('.multiple_off').hide();
                     $(this).closest('.package-line-item').find('.multiple_off input').removeAttr('required');
                     $(this).closest('.package-line-item').find('.multiple_off select').removeAttr('required');
-
                 }
             } else {
                 // Clear the options if no attribute is selected
