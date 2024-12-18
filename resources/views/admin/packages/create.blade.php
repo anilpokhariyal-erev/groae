@@ -236,7 +236,7 @@
                 <div class="col-lg-3">
                     <div class="position-relative form-group">
                         <label for="attribute_id">Attribute <span class="text-danger">*</span></label>
-                        <select name="package_lines[${lineIndex}][attribute_id]" class="custom-select attribute-select" data-line="${lineIndex}">
+                        <select name="package_lines[${lineIndex}][attribute_id]" class="custom-select attribute-select" data-line="${lineIndex}" required>
                             <option value="">Select Attribute</option>
                             @foreach($attributes as $attribute)
             <option value="{{$attribute->id}}" data-show-on-calculator="{{$attribute->show_in_calculator}}" data-allow-multiple="{{$attribute->allow_multiple}}">{{$attribute->label}}</option>
@@ -248,7 +248,7 @@
                 <div class="col-md-4 multiple_on">
                     <div class="position-relative form-group">
                         <label for="attribute_option_id">Option <span class="text-danger">*</span></label>
-                        <select name="package_lines[${lineIndex}][attribute_option_id]" class="custom-select option-select" id="option-select-${lineIndex}">
+                        <select name="package_lines[${lineIndex}][attribute_option_id]" class="custom-select option-select" id="option-select-${lineIndex}" required>
                             <option value="">Select Option</option>
                         </select>
                         <x-input-error class="mt-2 text-red" :messages="$errors->get('package_lines.${lineIndex}.attribute_option_id')" />
@@ -326,10 +326,18 @@
 
                 if(allow_multiple =='0'){
                     $(this).closest('.package-line-item').find('.multiple_off').show();
+                    $(this).closest('.package-line-item').find('.multiple_off input').attr('required', 'required');
+                    $(this).closest('.package-line-item').find('.multiple_off select').attr('required', 'required');
                     $(this).closest('.package-line-item').find('.multiple_on').hide();
+                    $(this).closest('.package-line-item').find('.multiple_on input').removeAttr('required');
+                    $(this).closest('.package-line-item').find('.multiple_on select').removeAttr('required');
                 }else{
                     $(this).closest('.package-line-item').find('.multiple_on').show();
+                    $(this).closest('.package-line-item').find('.multiple_on input').attr('required', 'required');
+                    $(this).closest('.package-line-item').find('.multiple_on select').attr('required', 'required');
                     $(this).closest('.package-line-item').find('.multiple_off').hide();
+                    $(this).closest('.package-line-item').find('.multiple_off input').removeAttr('required');
+                    $(this).closest('.package-line-item').find('.multiple_off select').removeAttr('required');
 
                     if (attributeId) {
                         $.ajax({
