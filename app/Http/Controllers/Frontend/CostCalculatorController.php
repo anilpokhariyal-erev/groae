@@ -431,7 +431,6 @@ class CostCalculatorController extends Controller
         // Generate the PDF
         $pdf = PDF::loadView('frontend.email.invoice', [
             'booking' => $booking,
-            'fixedFees' => $fixedFees,
             'company_info' => $company_info,
             'adjustments' => $adjustments,
         ]);
@@ -513,6 +512,7 @@ class CostCalculatorController extends Controller
             'licenses' => 'nullable|array',
             'activities' => 'nullable|array',
             'visaDetails' => 'nullable|array',
+            'fixedFee'=> 'nullable|array',
         ]);
 
         try {
@@ -609,6 +609,21 @@ class CostCalculatorController extends Controller
                         $packageBookingDetail->status = 1;
                         $packageBookingDetail->save();
                     }
+                }
+            }
+
+            if (!empty($validatedData['fixedFee'])) {
+                foreach ($validatedData['fixedFee'] as $fixedFees) {
+                    $totalCost = (float) str_replace(',', '',$fixedFees['price']);;
+                        $packageBookingDetail = new PackageBookingDetail();
+                        $packageBookingDetail->package_booking_id = $packageBooking->id;
+                        $packageBookingDetail->attribute_name = "FixedFee";
+                        $packageBookingDetail->attribute_value = $fixedFees['name'];
+                        $packageBookingDetail->quantity = 1;
+                        $packageBookingDetail->price_per_unit = $totalCost;
+                        $packageBookingDetail->total_cost = $totalCost;
+                        $packageBookingDetail->status = 1;
+                        $packageBookingDetail->save();
                 }
             }
 

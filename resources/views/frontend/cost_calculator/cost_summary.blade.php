@@ -69,7 +69,7 @@
                                 @endif
                             </td>
                         </tr>
-                        @php $total_price = $package_detail->discounted_price>0 ? $package_detail->discounted_price : $package_detail->price; $total_attribute_cost = 0; @endphp
+                        @php $temp= 0; $total_price = $package_detail->discounted_price>0 ? $package_detail->discounted_price : $package_detail->price; $total_attribute_cost = 0; @endphp
                         @foreach ($filtered_package_lines_multiple as $attribute_cost)
                             @php
                                 $total_visa_package = $request->input($attribute_cost->attribute->name) ?? $attribute_cost->allowed_free_qty;
@@ -216,6 +216,7 @@
                         <tr>
                             <td class="totalTitleTxt">Net Cost</td>
                             <td></td>
+                            <?php $temp = $total_price ?>
                             <td class="amntTxt">{{ $package_detail->currency }} {{ number_format($total_price, 2) }}</td>
                         </tr>
                         
@@ -223,17 +224,18 @@
                         <tr>
                             <td class="totalTitleTxt">
                                 {{$fee->label}} 
-                                @if($fee->type!='fixed')({{$fee->value}}%)@endif
+                                @if($fee->type!='flat')({{$fee->value}}%)@endif
                             </td>
                             <td></td>
                             <td class="amntTxt">
                             @php
                                 $fixedCost = 0;
-                                if($fee->type=='fixed'){
+                                if($fee->type=='flat'){
                                     $fixedCost = $fee->value;
                                 }else{
                                     $fixedCost = $total_price*($fee->value/100);
                                 }
+
                                 $total_price += $fixedCost;
                             @endphp
                             {{ $package_detail->currency }} {{number_format($fixedCost, 2)}}
@@ -282,7 +284,7 @@
                     currency: "{{ $package_detail->currency }}"
                 },
                 attributes: [
-                    @foreach ($filtered_package_lines_multiple as $attribute_cost)
+                        @foreach ($filtered_package_lines_multiple as $attribute_cost)
                     {
                         label: "{{ $attribute_cost->attribute->label }}",
                         selectedQty: "{{ $package_lines[$attribute_cost->attribute->name] }}",
@@ -293,7 +295,7 @@
                     @endforeach
                 ],
                 inclusions: [
-                    @foreach ($filtered_package_lines as $item)
+                        @foreach ($filtered_package_lines as $item)
                     {
                         label: "{{ $item->attribute->label }}",
                         option: "{{ $item->attributeOption->value }}",
@@ -302,7 +304,7 @@
                     @endforeach
                 ],
                 licenses: [
-                    @foreach ($licenses as $item)
+                        @foreach ($licenses as $item)
                     {
                         name: "{{ $item->name }}",
                         price: "{{ $item->price }}"
@@ -310,7 +312,7 @@
                     @endforeach
                 ],
                 activities: [
-                    @foreach ($package_activities as $item)
+                        @foreach ($package_activities as $item)
                     {
                         name: "{{ $item->activity->name }}",
                         group: "{{ $item->activity->activity_group->name }}",
@@ -320,10 +322,10 @@
                     @endforeach
                 ],
                 visaDetails: [
-                    @foreach ($packages_arr['visa_package_attributes'] as $items)
+                        @foreach ($packages_arr['visa_package_attributes'] as $items)
                     {
                         items: [
-                            @foreach ($items as $item)
+                                @foreach ($items as $item)
                             {
                                 attribute: "{{ $item->attribute_header->title }}",
                                 value: "{{ $item->value }}",
@@ -334,8 +336,28 @@
                     },
                     @endforeach
                 ],
+                fixedFee: [
+                        @foreach ($fixedFee as $fee)
+                    {
+                        @php
+                            $text = '';
+                             // Calculate the fixed cost before embedding it in JavaScript
+                             if ($fee->type == 'flat') {
+                                 $fixedCost = $fee->value;
+                             } else {
+                                    $text = '%';
+                                 $fixedCost = $temp * ($fee->value / 100);
+                             }
+                        @endphp
+                        name: name="{{ $fee->label }} ({{ $fee->value . $text }})",
+                        type: "{{ $fee->type }}",
+                        price: "{{ number_format($fixedCost, 2) }}" // Ensure it's a formatted string
+                    },
+                    @endforeach
+                ],
                 totalCost: "{{ $total_price }}"
             };
+
 
             $(document).ready(function() {
                 var requestInProgress = false;  // Flag to prevent multiple requests

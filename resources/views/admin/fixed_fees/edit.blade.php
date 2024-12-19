@@ -45,8 +45,8 @@
                             <label for="type">Type <span class="text-danger">*</span></label>
                             <select name="type" class="custom-select" id="type">
                                 <option value="">Select Type</option>
-                                <option value="fixed" {{ old('type', $fixedFee->type) == 'fixed' ? 'selected' : '' }}>Fixed</option>
-                                <option value="variable" {{ old('type', $fixedFee->type) == 'variable' ? 'selected' : '' }}>Variable</option>
+                                <option value="flat" {{ old('type', $fixedFee->type) == 'flat' ? 'selected' : '' }}>Flat</option>
+                                <option value="percent" {{ old('type', $fixedFee->type) == 'percent' ? 'selected' : '' }}>Percent</option>
                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('type')" />
                         </div>

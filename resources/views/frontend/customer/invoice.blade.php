@@ -126,6 +126,7 @@
           <tbody>
           @php($sr=1)
           @foreach ($booking->bookingDetails as $detail)
+            @if($detail->attribute_name !="FixedFee")
             <tr>
               <td class="border-b py-3 pl-3">{{$sr++}}</td>
               <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} ) 
@@ -141,6 +142,7 @@
               <td class="border-b py-3 pl-2 text-center">{{ $detail->quantity }}</td>
               <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
             </tr>
+            @endif
           @endforeach
             <tr>
               <td colspan="7">
@@ -175,35 +177,25 @@
                             @endif
 
                             @php($fixedCost = 0)
-                            @foreach($fixedFees as $fixedFee)
+                            @foreach($booking->bookingDetails as $detail)
+                              @if($detail->attribute_name =="FixedFee")
                             <tr>
                               <td class="p-3">
-                                <div class="whitespace-nowrap text-slate-400" title="{{$fixedFee->description}}">
-                                  {{$fixedFee->label}} 
-                                  @if($fixedFee->type!='fixed')
-                                  ({{$fixedFee->value}}%)
-                                  @endif
+                                <div class="whitespace-nowrap text-slate-400" title="{{$detail->attribute_name}}">
+                                  {{$detail->attribute_value}}
                                   :</div>
                               </td>
                               <td class="p-3 text-right">
                                 <div class="whitespace-nowrap font-bold text-main">
                                 {{$booking->package->currency}}
-                                  @if($fixedFee->type=='fixed')
-                                   {{$fixedFee->value}}
-                                  @else
-                                  {{$booking->original_cost*($fixedFee->value/100)}}
-                                  @endif
+                                 <?php  $fixedCost += $detail->price_per_unit ?>
+                                  {{number_format($detail->price_per_unit, 2)}}
                                 </div>
                               </td>
                             </tr>
-                            <?php
-                            if($fixedFee->type=='fixed'){
-                              $fixedCost += $fixedFee->value;
-                            }else{
-                              $fixedCost = $booking->original_cost*($fixedFee->value/100);
-                            }
-                            ?>
+                              @endif
                             @endforeach
+
                             @if($booking->status == 2)
                               @php($fixedCost = 0)
                             @endif
