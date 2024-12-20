@@ -72,6 +72,11 @@
       <div class="px-14 text-sm">
         <table class="w-full border-collapse border-spacing-0"  style="width: 100% !important;">
           <tbody>
+          <tr>
+              <div class="text-neutral-600">
+            <p class="font-bold text-center" style="background-color: #f1f5f9">Quotation</p>
+              </div>
+          </tr>
             <tr>
               <td class="w-1/2 align-top">
                 <div class="text-sm text-neutral-600">

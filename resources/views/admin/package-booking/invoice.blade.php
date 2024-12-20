@@ -132,6 +132,9 @@
                 </div>
               </td>
             </tr>
+          <tr>
+            <p class="font-bold text-center">Quotation</p>
+          </tr>
           </tbody>
         </table>
       </div>
