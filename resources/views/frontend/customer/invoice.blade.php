@@ -99,19 +99,16 @@
             <tr>
               <td class="w-1/2 align-top">
               <div class="col-md-12 font-bold">Freezone: {{$booking?->package?->freezone?->name}}</div>
-                <div class="col-md-9 px-2 font-bold">
-                  Package: {{$booking->package->title}}
-                </div>
               </td>
               <td></td>
             </tr>
             <tr>
               <td class="w-1/2 align-top">
                 <div class="col-md-9 px-2 font-bold">
-                {{$booking->package->currency}} {{$booking->package->price}}
+                  Package: {{$booking->package->title}}
                 </div>
               </td>
-              <td></td>
+              <td class="text-right font-bold">{{$booking->package->currency}} {{$booking->package->price}}</td>
             </tr>
           </tbody>
         </table>
