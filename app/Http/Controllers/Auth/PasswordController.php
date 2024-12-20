@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\Password;
-use App\Rules\NewPasswordNotMatchPrevious;
 
 class PasswordController extends Controller
 {
@@ -18,7 +17,7 @@ class PasswordController extends Controller
     {
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'confirmed', Password::min(6)->mixedCase()->letters()->numbers(), new NewPasswordNotMatchPrevious],
+            'password' => ['required', 'confirmed', Password::min(6)->mixedCase()->letters()->numbers()],
         ]);
 
         $request->user()->update([
