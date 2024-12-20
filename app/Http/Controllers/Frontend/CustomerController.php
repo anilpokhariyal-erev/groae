@@ -253,7 +253,7 @@ class CustomerController extends Controller
         $download = CustomerDownload::findOrFail($id);
 
         // Construct the file path based on your storage structure
-        $filePath = 'customer_downloads/' . $download->customer->uuid . '/' . $download->value;
+        $filePath =  $filePath = str_replace('|', '/', $download->value);
         
         // Use Laravel's Storage facade to locate the file
         if (Storage::exists($filePath)) {
