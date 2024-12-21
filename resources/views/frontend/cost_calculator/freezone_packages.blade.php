@@ -1,4 +1,26 @@
 <x-website-layout>
+    <style>
+        .recommended-banner {
+            background-color: #ffcc00;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 10px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            transform: translateY(40%);
+            float: right;
+        }
+
+        /* Optional: Add a subtle hover effect for the recommended label */
+        .recommended-banner:hover {
+            background-color: #ffb800; /* Slightly darker shade on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+            transform: translateY(38%); /* Slightly lift up on hover */
+        }
+
+    </style>
     @section('js-imports')
         <script src="{{ secure_asset('js/website/explore.js') }}" crossorigin="anonymous"></script>
     @endsection
@@ -77,6 +99,9 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        @if($item->trending)
+                                            <span class="recommended-banner" >Recommended</span> <!-- "Recommended" banner if trending -->
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

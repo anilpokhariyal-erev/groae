@@ -39,6 +39,9 @@ class CostCalculatorController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('customer.login')->with('info', ResponseMessage::LOGIN_FIRST_COST_CALCULATOR);
+        }
         $package_id = null;
         $customer = Auth::guard('customer')->user();
         $formInput = $request->input('form_input', session('form_input', null));

@@ -72,6 +72,11 @@
       <div class="px-14 text-sm">
         <table class="w-full border-collapse border-spacing-0"  style="width: 100% !important;">
           <tbody>
+          <tr>
+              <div class="text-neutral-600">
+            <p class="font-bold text-center" style="background-color: #f1f5f9">Quotation</p>
+              </div>
+          </tr>
             <tr>
               <td class="w-1/2 align-top">
                 <div class="text-sm text-neutral-600">
@@ -94,19 +99,16 @@
             <tr>
               <td class="w-1/2 align-top">
               <div class="col-md-12 font-bold">Freezone: {{$booking?->package?->freezone?->name}}</div>
-                <div class="col-md-9 px-2 font-bold">
-                  Package: {{$booking->package->title}}
-                </div>
               </td>
               <td></td>
             </tr>
             <tr>
               <td class="w-1/2 align-top">
                 <div class="col-md-9 px-2 font-bold">
-                {{$booking->package->currency}} {{$booking->package->price}}
+                  Package: {{$booking->package->title}}
                 </div>
               </td>
-              <td></td>
+              <td class="text-right font-bold">{{$booking->package->currency}} {{$booking->package->price}}</td>
             </tr>
           </tbody>
         </table>
@@ -153,12 +155,18 @@
                       <td>
                         <table class="w-full border-collapse border-spacing-0">
                           <tbody>
+                          @php($fixedCost = 0)
+                          @foreach($booking->bookingDetails as $detail)
+                            @if($detail->attribute_name =="FixedFee")
+                                      <?php  $fixedCost += $detail->price_per_unit ?>
+                            @endif
+                          @endforeach
                             <tr>
                               <td class="border-b p-3">
                                 <div class="whitespace-nowrap text-slate-400">Net total:</div>
                               </td>
                               <td class="border-b p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->original_cost,2)}}</div>
+                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->original_cost-$fixedCost,2)}}</div>
                               </td>
                             </tr>
                             @if($adjustments && $adjustments->total_cost<>0)
@@ -206,7 +214,7 @@
                               <td class="bg-main p-3 text-right">
                                 <div class="whitespace-nowrap font-bold text-white">
                                   {{$booking->package->currency}}
-                                  {{number_format($booking->final_cost+$fixedCost,2)}}
+                                  {{number_format($booking->final_cost,2)}}
                                 </div>
                               </td>
                             </tr>

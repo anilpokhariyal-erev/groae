@@ -61,10 +61,7 @@ class AuthController extends Controller
         $previousUrl = Session::pull('previous_url', '/');
         $formInput = Session::pull('form_input');
         Session::put('form_input', $formInput);
-        if ($formInput) {
-            return redirect()->route('calculate-licensecosts.index');
-        }
-        return redirect()->intended($previousUrl)->withInput($formInput);
+        return redirect()->intended($previousUrl);
     }
 
     public function signup()

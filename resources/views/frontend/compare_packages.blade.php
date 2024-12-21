@@ -47,7 +47,10 @@
                                             alt="">
                                 </div>
                                 <div class="freezone_name">{{ $package->freezone->name }}</div>
-                                <p class="rupeesTxt">Starting from <br>{{ $package->currency }}  {{ $package->price }}* </p>
+                                <p class="rupeesTxt" >Starting from <br>{{ $package->currency }}  {{ $package->price }}* <br>
+                                    <a style="color: #fff" href="{{ url('calculate-licensecosts?package_id=' . encrypt($package->id)) }}" class="viewInnrTxt">Customize
+                                        <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
+                                    </a></p>
                                 </td>
                             @endforeach
                             </tr>

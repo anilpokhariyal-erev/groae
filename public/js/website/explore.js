@@ -2,10 +2,11 @@ let selectedExploreCompareItems = [];
 
 const addItemToFvPassport = item => {
   const items = item.split('|');
+
   const html = `
                 <div class="compareItemWrapper" id="txtPassportNumber_${items[0]}">
                   <div class="compareItem">
-                      <img class="itemImg-1" src="${items[2]}" alt="">
+                      <img class="itemImg-1" src="${items[items.length -1]}" alt="">
                       <h3>${items[1]}</h3>
                   </div>
                   <div><img class="cutImg" onclick="clearSelection('txtPassportNumber_${items[0]}')" src="/images/cut-icon.png" alt=""></div>

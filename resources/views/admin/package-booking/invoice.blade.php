@@ -132,6 +132,9 @@
                 </div>
               </td>
             </tr>
+          <tr>
+            <p class="font-bold text-center">Quotation</p>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -184,12 +187,18 @@
                       <td>
                         <table class="w-full border-collapse border-spacing-0">
                           <tbody>
+                          @php($fixedCost = 0)
+                          @foreach($booking->bookingDetails as $detail)
+                            @if($detail->attribute_name =="FixedFee")
+                                <?php  $fixedCost += $detail->price_per_unit ?>
+                            @endif
+                          @endforeach
                             <tr>
                               <td class="border-b p-3">
                                 <div class="whitespace-nowrap text-slate-400">Net total:</div>
                               </td>
                               <td class="border-b p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->original_cost,2)}}</div>
+                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->original_cost-$fixedCost,2)}}</div>
                               </td>
                             </tr>
                             @if($adjustments && $adjustments->total_cost<>0)
@@ -236,7 +245,7 @@
                               <td class="bg-main p-3 text-right">
                                 <div class="whitespace-nowrap font-bold text-white">
                                   {{$booking->package->currency}}
-                                  {{number_format($booking->final_cost+$fixedCost,2)}}
+                                  {{number_format($booking->final_cost,2)}}
                                 </div>
                               </td>
                             </tr>
