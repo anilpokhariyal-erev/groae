@@ -17,16 +17,6 @@
                         <div class="position-relative form-group">
                             <label for="page_type">Page Name</label>
                             <input type="text" name="page_name" value="{{old('page_name')}}" class="form-control">
-                           <!-- <select name="page_type" class="custom-select">
-                                <option value="">Select Page type</option>
-                                <option value="about_us">About us</option>
-                                <option value="registration_process">Registration Process</option>
-                                <option value="powered_by_ai">Powered by AI</option>
-                                <option value="contact_us">Contact us </option>
-                                <option value="terms_of_use">Terms of use</option>
-                                <option value="privacy_policy">Privacy policy</option>
-                                <option value="social_link">Social Link</option>
-                            </select> -->
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('page_name')" />
                         </div>
 
@@ -52,12 +42,12 @@
                     </div>
 
                 </div>
-
-                
-            </form>
                 <div class="ba_flex align_items_center" style="margin:1%">
                     <button class="mt-1 btn btn-primary">Save</button>
                 </div>
+                
+            </form>
+                
 
         </div>
     </div>
