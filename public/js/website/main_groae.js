@@ -25,6 +25,10 @@ $(document).ready(function () {
     $('#myPopup').toggleClass('show');
   });
 
+  $('#nav-accounting-btn').on('click', function () {
+    $('#accountPopup').toggleClass('show');
+  });
+
   $('.preImg').on('click', function () {
     $('#scrollbar').animate({ scrollLeft: '-=150' }, 'fast');
   });

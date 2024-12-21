@@ -74,13 +74,28 @@
                         <li class="nav-item">
                             <a href="{{ route('article-blogs') }}" class="nav-link">Article & Blogs</a>
                         </li>
+                        @php
+                            $pages = \App\Models\StaticPage::where('visible_in_header',1)->with('parent')->get();
+                        @endphp
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link" id="nav-accounting-btn">Accounting Services <img
+                                    src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <div class="subLinks">
+                                <ul class="subUlLinksWrapper" id="accountPopup">
+                                    @foreach($pages as $account_page)
+                                        @if($account_page?->parent?->page_name=="Accounting Services")
+                                            <li class="subInnrLinks">
+                                                <a href="{{ route('page.content', $account_page->slug) }}">{{$account_page->page_name}}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
 
                         <li class="nav-item">
                             <a href="javascript:void(0)" class="nav-link" id="nav-more-btn">More <img
                                     src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
-                            @php
-                                $pages = \App\Models\StaticPage::where('visible_in_header',1)->get();
-                            @endphp
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     @foreach($pages as $page)
@@ -95,9 +110,9 @@
                     </div>
 
                     <div class="rightHeader">
-                        <button type="button" class="navItems sigBtn">
+                        <!-- <button type="button" class="navItems sigBtn">
                             <a class="signupBtn" href="{{ route('contact-us.index') }}">Contact Us</a>
-                        </button>
+                        </button> -->
                         @if (Auth::guard('customer')->check())
                             <a id="showProfileDropDown" class="signupBtn"
                                 style="border-radius: 27.5px;padding: 13px;">{{ strtoupper(implode('', array_map(fn($word) => $word[0], explode(' ', auth('customer')->user()->name)))) }}</a>
