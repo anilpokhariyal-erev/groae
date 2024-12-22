@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Assets\Utils;
+use App\Models\Customer;
+use App\Models\PackageBooking;
 
 class TransactionController extends Controller
 {
@@ -23,8 +25,14 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        $packageBookings = PackageBooking::select('id', 'customer_id', 'package_id', 'final_cost')
+            ->with(['customer:id,name', 'package:id,title']) // Assuming `title` is the package name field
+            ->get();
+    
+        return view('admin.transaction.create', compact('packageBookings'));
     }
+    
+
 
     /**
      * Store a newly created resource in storage.
@@ -35,20 +43,23 @@ class TransactionController extends Controller
         $validatedData = $request->validate([
             'transaction_id' => 'required|string|max:255',
             'amount' => 'required|numeric',
-            'customer_id' => 'required|exists:customers,id',
             'payment_status' => 'required|string|max:255',
             'message' => 'nullable|string',
-            'freezone_booking_id' => 'required|exists:freezone_bookings,id', // Ensure this is included
+            'freezone_booking_id' => 'required|exists:package_bookings,id', // Ensure this is included,
+            'response_obj' => 'string',
         ]);
 
+        $booking = PackageBooking::where('id', $validatedData['freezone_booking_id'])->first();
         // Create a new transaction and link it to a FreezoneBooking
         Transaction::create([
             'transaction_id' => $validatedData['transaction_id'],
             'amount' => $validatedData['amount'],
-            'customer_id' => $validatedData['customer_id'],
+            'customer_id' => $booking->customer_id,
             'payment_status' => $validatedData['payment_status'],
             'message' => $validatedData['message'] ?? null,
+            'reference_id' => $validatedData['reference_id'] ?? null,
             'freezone_booking_id' => $validatedData['freezone_booking_id'], // Make sure to associate it here
+            'response_obj' => $validatedData['response_obj'] ?? null,
         ]);
 
         return redirect()->route('transaction.index')->with('success', 'Transaction created successfully!');
