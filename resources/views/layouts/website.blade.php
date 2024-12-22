@@ -60,32 +60,40 @@
                         src="{{ asset('images/GroAE_Logo.png') }}" alt=""></a>
                 <ul class="nav-menu">
                     <div class="navContainer">
-                        <li class="nav-item">
+                        <li class="nav-item" style="padding-top:12px;">
                             <a href="{{ route('home') }}" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('explore-freezones') }}" class="nav-link">Explore Freezones </a>
+                            <a href="{{ route('explore-freezones') }}" class="nav-link">Explore <br>Freezones </a>
                         </li>
                        
                         <li class="nav-item">
-                            <a href="{{ route('freezone.packages.index') }}" class="nav-link">Freezone Packages</a>
+                            <a href="{{ route('freezone.packages.index') }}" class="nav-link">Freezone <br>Packages</a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('article-blogs') }}" class="nav-link">Article & Blogs</a>
+                            <a href="{{ route('article-blogs') }}" class="nav-link">Article <br>& Blogs</a>
                         </li>
                         @php
                             $pages = \App\Models\StaticPage::where('visible_in_header',1)->with('parent')->get();
+                            $excluded = [];
                         @endphp
                         <li class="nav-item">
-                            <a href="javascript:void(0)" class="nav-link" id="nav-accounting-btn">Accounting Services <img
+                            <a href="javascript:void(0)" class="nav-link" id="nav-accounting-btn">
+                                Accounting <br>Services <img
                                     src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="accountPopup">
                                     @foreach($pages as $account_page)
                                         @if($account_page?->parent?->page_name=="Accounting Services")
+                                        @php
+                                            $excluded[] = $account_page->parent_id;
+                                            $excluded[] = $account_page->id;
+                                        @endphp
                                             <li class="subInnrLinks">
-                                                <a href="{{ route('page.content', $account_page->slug) }}">{{$account_page->page_name}}</a>
+                                                <a href="{{ route('page.content', $account_page->slug) }}">
+                                                    {{$account_page->page_name}}
+                                                </a>
                                             </li>
                                         @endif
                                     @endforeach
@@ -94,14 +102,38 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link" id="nav-other-btn">Other <br>Services <img
+                                    src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
+                            <div class="subLinks">
+                                <ul class="subUlLinksWrapper" id="otherPopup">
+                                    @foreach($pages as $other_page)
+                                        @if($other_page?->parent?->page_name=="Other Services")
+                                        @php
+                                            $excluded[] = $account_page->parent_id;
+                                            $excluded[] = $account_page->id;
+                                        @endphp
+                                            <li class="subInnrLinks">
+                                                <a href="{{ route('page.content', $other_page->slug) }}">
+                                                    {{$other_page->page_name}}
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item"  style="padding-top:12px;">
                             <a href="javascript:void(0)" class="nav-link" id="nav-more-btn">More <img
                                     src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     @foreach($pages as $page)
+                                    @if(!in_array($account_page->id, $excluded ?? []))
                                         <li class="subInnrLinks">
                                             <a href="{{ route('page.content', $page->slug) }}">{{$page->page_name}}</a>
                                         </li>
+                                    @endif
                                     @endforeach
 
                                 </ul>
