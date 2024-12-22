@@ -238,6 +238,10 @@ $(document).ready(function () {
     $('#accountPopup').toggleClass('show');
   });
 
+  $('#nav-other-btn').on('click', function () {
+    $('#otherPopup').toggleClass('show');
+  });
+  
   $('.preImg').on('click', function () {
     $('#scrollbar').animate({ scrollLeft: '-=150' }, 'fast');
   });
