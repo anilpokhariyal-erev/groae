@@ -1,4 +1,13 @@
 <x-admin-layout>
+    <div class="main-card mb-3 card mt-2 p-4">
+        <div class="row p-4">
+            <h5 class="card-title col-md-9">Transactions</h5>
+            <span class="col-md-2">
+                <a href="{{ route('transactions.create') }}" class="btn btn-primary">Create</a>
+            </span>
+        </div>
+    </div>
+
     <div class="main-card mb-3 card mt-2">
         <div class="card-body">
             <center>
@@ -8,8 +17,8 @@
                 </div>
                 @endif
             </center>
-            <h5 class="card-title">Transactions</h5>
-            <div class="table-responsive">
+            
+            <div class="table-responsive mt-2">
                 <table class="mb-0 table">
                     <thead>
                         <tr>
