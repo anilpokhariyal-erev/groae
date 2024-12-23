@@ -49,6 +49,12 @@
         z-index: 1; /* Ensure content stays above the overlay */
     }
 
+    .select2-dropdown--below{
+        border-radius: 5% !important;
+    }
+    .select2-search__field{
+        border-radius: 10% !important;
+    }
 </style>
 </head>
 
