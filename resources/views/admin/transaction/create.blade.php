@@ -25,6 +25,7 @@
                 </div>
             </div>
             &nbsp;
+            
             <form method="post" action="{{ route('transaction.store') }}">
                 @csrf
                 <div class="row">
@@ -34,8 +35,11 @@
                             <select name="freezone_booking_id" id="package_booking_id" class="form-control" required>
                                 <option value="">Select a Package Booking</option>
                                 @foreach ($packageBookings as $booking)
+                                @php(
+                                        $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT)
+                                    )
                                     <option value="{{ $booking->id }}" {{ old('package_booking_id') == $booking->id ? 'selected' : '' }}>
-                                        {{ $booking->package->title }} - {{ $booking->customer->name }} - ₹{{ $booking->final_cost }}
+                                        {{ $ref_num }} - {{ $booking->created_at->format('d/m/Y') }} - {{ $booking->customer->name }} - ₹{{ $booking->final_cost }}
                                     </option>
                                 @endforeach
                             </select>
