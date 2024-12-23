@@ -50,6 +50,17 @@
         span.select2-selection__placeholder{
             color: #304a6f !important;
         }
+
+        @media (max-width: 1366px) {
+            #searchBtn {
+                margin-top: 25px;
+            }
+
+            #clearSearchBtn {
+                margin-top: 25px;
+            }
+        }
+
     </style>
 @endsection
 
@@ -72,10 +83,10 @@
                 </select>
             </div>
         @endforeach
-        <div class="formContainer" id="searchBtn" style="margin-top:25px">
+        <div class="formContainer" id="searchBtn">
             <a class="searchAnchor"> <input type="button" class="searchInput" value=""><img class="seatcIcon" src="{{ asset('images/seatc.png') }}" alt=""></a>
         </div>
-        <div class="formContainer" id="clearSearchBtn" style="margin-top:25px">
+        <div class="formContainer" id="clearSearchBtn">
             <img class="cursor" src="{{ asset('images/cross-icon.png') }}" alt="">
         </div>
     </form>
