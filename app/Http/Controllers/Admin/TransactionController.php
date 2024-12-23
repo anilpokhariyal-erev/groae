@@ -16,7 +16,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transaction = Transaction::with(['customer'])->get();
+        $transaction = Transaction::with(['customer'])->orderBy('id','desc')->get();
         return view('admin.transaction.transaction_list',compact('transaction'));
     }
 
@@ -27,6 +27,7 @@ class TransactionController extends Controller
     {
         $packageBookings = PackageBooking::select('id', 'customer_id', 'package_id', 'final_cost')
             ->with(['customer:id,name', 'package:id,title']) // Assuming `title` is the package name field
+            ->where('status', 2)
             ->get();
     
         return view('admin.transaction.create', compact('packageBookings'));
