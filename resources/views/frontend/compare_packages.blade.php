@@ -1,4 +1,36 @@
 <x-website-layout>
+    <style>
+        .compareTable {
+            width: 100%;
+            border-collapse: collapse; /* Removes borders between table cells */
+        }
+
+        .compareTable th, .compareTable td {
+            padding: 12px; /* Add padding for better spacing */
+            text-align: left; /* Align text to the left */
+        }
+
+        .compareTable th {
+            background-color: #304a6f; /* Optional: Add a background color for headers */
+            color: #fff;
+        }
+
+        .freezone_name {
+            text-align: center;
+            padding: 5px;
+        }
+
+        /* Optional styling for other classes */
+        .blackTxt {
+            color: #000;
+        }
+
+        .book_consultation {
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+    </style>
     @section('js-imports')
         <script src="{{ secure_asset('js/website/compare.js') }}" crossorigin="anonymous"></script>
     @endsection
@@ -23,7 +55,7 @@
                                         @foreach ($packages as $package)
                                             @php
                                                 // Find the matching package line for this attribute
-                                                $line = $package->packageLines->firstWhere('attribute_id', $attribute->id);
+                                                $line = $package->packageLines->where('status', 1)->firstWhere('attribute_id', $attribute->id);
                                             @endphp
                                             <td class="userList {{ $line ? 'blackTxt' : '' }}">
                                                 <!-- Display the attribute option value or 'None' if not available -->
@@ -63,37 +95,4 @@
             <a class="signupBtn book_consultation" href="{{ route('contact-us.index') }}">Book a Consultation</a>
         </div>
     </section>
-
-    <style>
-        .compareTable {
-            width: 100%;
-            border-collapse: collapse; /* Removes borders between table cells */
-        }
-
-        .compareTable th, .compareTable td {
-            padding: 12px; /* Add padding for better spacing */
-            text-align: left; /* Align text to the left */
-        }
-
-        .compareTable th {
-            background-color: #304a6f; /* Optional: Add a background color for headers */
-            color: #fff;
-        }
-
-        .freezone_name {
-            text-align: center;
-            padding: 5px;
-        }
-
-        /* Optional styling for other classes */
-        .blackTxt {
-            color: #000;
-        }
-
-        .book_consultation {
-            color: #fff;
-            font-weight: 700;
-            font-size: 18px;
-        }
-    </style>
 </x-website-layout>
