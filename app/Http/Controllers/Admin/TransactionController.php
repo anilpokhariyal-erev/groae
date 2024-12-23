@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Assets\Utils;
 use App\Models\Customer;
 use App\Models\PackageBooking;
+use App\Models\Setting;
 
 class TransactionController extends Controller
 {
@@ -25,12 +26,14 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        $packageBookings = PackageBooking::select('id', 'customer_id', 'package_id', 'final_cost')
+        $packageBookings = PackageBooking::select('id', 'customer_id', 'package_id', 'final_cost', 'created_at')
             ->with(['customer:id,name', 'package:id,title']) // Assuming `title` is the package name field
             ->where('status', 2)
             ->get();
-    
-        return view('admin.transaction.create', compact('packageBookings'));
+        $company_info = Setting::where('section_key', 'company_info')
+            ->pluck('value', 'title')
+            ->toArray();
+        return view('admin.transaction.create', compact('packageBookings', 'company_info'));
     }
     
 
