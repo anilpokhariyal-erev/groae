@@ -48,11 +48,11 @@
                     </tr>
                     <tr>
                         <th>Customer</th>
-                        <td>{{ ucwords(optional($transaction->customer)->name ?? 'N/A') }}</td>
+                        <td>{{ ucwords($transaction?->customer?->name ?? 'N/A') }}</td>
                     </tr>
                     <tr>
                         <th>Freezone</th>
-                        <td>{{ ucwords(optional($transaction->packageBooking->package->freezone)->name ?? 'N/A') }}</td>
+                        <td>{{ ucwords($transaction?->packageBooking?->package?->freezone?->name ?? 'N/A') }}</td>
                     </tr>
                     <tr>
                         <th>Amount</th>

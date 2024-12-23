@@ -191,7 +191,7 @@ class CustomerController extends Controller
         if ($request->search)
             $transactions->where('transaction_id', 'LIKE', "%{$request->search}%");
 
-        $transactions = $transactions->paginate(3);
+        $transactions = $transactions->orderBy('id','desc')->paginate(3);
 
         $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
         $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();

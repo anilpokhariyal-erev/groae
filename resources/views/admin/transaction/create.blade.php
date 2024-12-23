@@ -80,12 +80,8 @@
                         <div class="position-relative form-group">
                             <label for="payment_status">Payment Status <span class="text-danger">*</span></label>
                             <select name="payment_status" id="payment_status" class="form-control">
-                                <option value="pending" @if(old('payment_status') == 'pending') selected @endif>Pending</option>
                                 <option value="successful" @if(old('payment_status') == 'successful') selected @endif>Successful</option>
-                                <option value="failed" @if(old('payment_status') == 'failed') selected @endif>Failed</option>
-                                <option value="cancelled" @if(old('payment_status') == 'cancelled') selected @endif>Cancelled</option>
-                                <option value="refunded" @if(old('payment_status') == 'refunded') selected @endif>Refunded</option>
-                            </select>
+                             </select>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('payment_status')" />
                         </div>
                     </div>
