@@ -18,6 +18,7 @@ class Transaction extends Model
         'message',
         'package_booking_id',
         'response_obj',
+        'reference_id',
     ];
 
     /**
