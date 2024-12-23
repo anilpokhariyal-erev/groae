@@ -80,7 +80,7 @@
                         @endphp
                         <li class="nav-item">
                             <a href="javascript:void(0)" class="nav-link" id="nav-accounting-btn">
-                                Accounting <br>Services <img
+                                Accounting Services <img
                                     src="{{ asset('images/caret-downIcon.png') }}" alt=""></a>
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="accountPopup">
