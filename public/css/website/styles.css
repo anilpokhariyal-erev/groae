@@ -611,9 +611,10 @@ li {
   }
 
   .blogLayer {
-    position: relative;
-    background-size: cover;
-    background-position: center;
+    /* position: relative; */
+    /* background-size: cover; */
+    /* background-position: center; */
+    background: rgb(237, 245, 255, 0.7);
   }
   .new_layer::after {
     position: unset !important;
@@ -946,7 +947,6 @@ li {
 
 .blogLayer {
   border-radius: 25px;
-  background: rgba(0, 0, 0, 0.2);
   padding: 25px;
   display: flex;
   justify-content: space-between;
@@ -960,6 +960,7 @@ li {
 .topLayer img {
   border-radius: 25px;
   width: 278px;
+  height: 210px;
 }
 
 .blogDateTxt {
