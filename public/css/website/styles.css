@@ -621,7 +621,7 @@ li {
     content: unset !important;
   }
 
-  .blogLayer::after {
+  /* .blogLayer::after {
     content: '';
     position: absolute;
     top: 0;
@@ -631,7 +631,7 @@ li {
     background: rgba(0, 0, 0, 0.2); /* Black with opacity for overlay */
     z-index: 1; /* Position overlay behind content */
     border-radius:25px;
-  }
+  } */
 
   .blogLayer .topLayer,
   .blogLayer .bottomLayer {
