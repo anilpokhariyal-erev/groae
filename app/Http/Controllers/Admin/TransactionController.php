@@ -48,6 +48,7 @@ class TransactionController extends Controller
             'message' => 'nullable|string',
             'freezone_booking_id' => 'required|exists:package_bookings,id', // Ensure this is included,
             'response_obj' => 'string',
+            'reference_id' => 'string',
         ]);
 
         $booking = PackageBooking::where('id', $validatedData['freezone_booking_id'])->first();
@@ -59,7 +60,7 @@ class TransactionController extends Controller
             'payment_status' => $validatedData['payment_status'],
             'message' => $validatedData['message'] ?? null,
             'reference_id' => $validatedData['reference_id'] ?? null,
-            'freezone_booking_id' => $validatedData['freezone_booking_id'], // Make sure to associate it here
+            'package_booking_id' => $booking->id, // Make sure to associate it here
             'response_obj' => $validatedData['response_obj'] ?? null,
         ]);
 
