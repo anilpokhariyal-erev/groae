@@ -89,7 +89,7 @@
                             <a href="{{ route('article-blogs') }}" class="nav-link">Article & Blogs</a>
                         </li>
                         @php
-                            $pages = \App\Models\StaticPage::where('visible_in_header',1)->with('parent')->get();
+                            $pages = \App\Models\StaticPage::where('visible_in_header',1)->get();
                             $excluded = [];
                         @endphp
                         <li class="nav-item">
@@ -143,7 +143,7 @@
                             <div class="subLinks">
                                 <ul class="subUlLinksWrapper" id="myPopup">
                                     @foreach($pages as $page)
-                                    @if(!in_array($account_page->id, $excluded ?? []))
+                                    @if(!in_array($page->id, $excluded ?? []))
                                         <li class="subInnrLinks">
                                             <a href="{{ route('page.content', $page->slug) }}">
                                                 {{$page->page_name}}

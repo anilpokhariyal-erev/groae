@@ -43,7 +43,7 @@
                             <tr>
                                 <th>Features</th>
                                 @foreach ($packages as $package)
-                                    <th>{{ $package->freezone->name }}</th>
+                                    <th>{{ $package->title }}</th>
                                 @endforeach
                             </tr>
                         </thead>
