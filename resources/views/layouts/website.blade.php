@@ -54,6 +54,14 @@
     }
     .select2-search__field{
         border-radius: 10% !important;
+        color: #304a6f !important;
+    }
+    .select2-dropdown--above{
+        border-radius: 4% !important;
+        color: #304a6f !important;
+    }
+    .select2-results__option--highlighted{
+        background-color: #304a6f !important;
     }
 </style>
 </head>
