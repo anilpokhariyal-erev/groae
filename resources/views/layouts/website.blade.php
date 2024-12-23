@@ -176,7 +176,7 @@
                             </div>
                         @else
                             <button type="button" class="navItems createBtn">
-                                <a href="{{ route('customer.signup') }}" class="signupBtn">Create Account </a>
+                                <a href="{{ route('customer.signup') }}" class="signupBtn">SignUp</a>
                             </button>
                             <button type="button" class="navItems sigBtn">
                                 <a class="signInBtn" href="{{ route('customer.login') }}">Login</a>
