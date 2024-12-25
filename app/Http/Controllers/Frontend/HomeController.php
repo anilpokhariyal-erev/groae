@@ -168,9 +168,16 @@ class HomeController extends Controller
 
     public function freezone_detail(Request $request, $freezone_slug, $page_slug = null)
     {
-        $freezone_detail = Freezone::with('freezone_pages')->whereHas('freezone_pages', function ($query) {
-            return $query->where('status', 1);
-        })->select('id', 'uuid', 'name', 'logo', 'about', 'slug', 'created_at','background_image')->where('status', 1)->where('slug', $freezone_slug)->with('offers')->first();
+        $freezone_detail = Freezone::with('freezone_pages')
+                            ->whereHas('freezone_pages', function ($query) {
+                                return $query->where('status', 1);
+                            })
+                            ->select('id', 'uuid', 'name', 'logo', 'about', 'slug', 'created_at','background_image')
+                            ->where('status', 1)
+                            ->where('slug', $freezone_slug)
+                            ->with('offers')
+                            ->first();
+
         if (!$freezone_detail) {
             return abort(404);
         }

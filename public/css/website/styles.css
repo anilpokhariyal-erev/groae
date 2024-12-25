@@ -2052,7 +2052,7 @@ input[type='search']::-webkit-search-results-decoration {
 .compareIconWrapper a {
   border-radius: 8px 0px 0px 8px;
   background: #638cc0;
-  width: 156px;
+  /* width: 156px; */
   position: fixed;
   top: 245px;
   right: 0px;

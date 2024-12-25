@@ -50,13 +50,9 @@
 
                     <div class="bookBtns">
                         <button class="consultationBtn">
-                            <a href="{{ route('contact-us.index') }}">Book Consultation</a>
-                        </button>
-                        <button class="calculateCostBtn">
-                            <a
-                                href="{{ route('calculate-licensecosts.index', ['freezone' => $freezone_detail->uuid]) }}">
-                                <img src="{{ secure_asset('images/calculator-minimalistic-svgrepo-com.png') }}"
-                                    alt="" />Calculate Cost</a>
+                            <a href="{{ route('freezone.packages.index', ['uuid' => $freezone_detail->uuid]) }}">
+                                Calculate Cost
+                            </a>
                         </button>
                     </div>
                 </div>

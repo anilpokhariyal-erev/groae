@@ -19,7 +19,8 @@
                     </div>
                 </div>
             @endif
-            <div class="settingList listScroll">
+            <!-- below code provide sub menu for freezone related pages -->
+            <!-- <div class="settingList listScroll">
                 <img class="preImg" src="{{asset('images/previous-arrow.png')}}" alt="">
                 <ul class="settingListInnr scrollbar" id="scrollbar">
                     @if (count($freezone_detail->freezone_pages) > 0)
@@ -38,7 +39,7 @@
                     @endif
                 </ul>
                 <img class="nxtImg" src="{{asset('images/next-arrow.png')}}" alt="">
-            </div>
+            </div> -->
             <div class="detailContent">
                 @if ($freezone_page)
                     <div class="detailHeading">
@@ -65,9 +66,8 @@
             </div>
         @endif
         <div class="compareIconWrapper">
-            <a href="{{ route('explore-freezone', ['ref' => $freezone_detail->id]) }}">
-                <img src="{{ secure_asset('images/compare-icon.png') }}" alt="">
-                <h3>Compare</h3>
+            <a href="{{ route('contact-us.index') }}">
+                <h3>Book Consultation</h3>
             </a>
         </div>
     </div>
