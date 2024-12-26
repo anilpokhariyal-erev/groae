@@ -29,8 +29,13 @@
         background-repeat: no-repeat;
         background-size: 100% 110%; /* Slight stretch: width 100%, height 110% */
         max-width: 100%;  /* Ensures it doesn't exceed container's width */
-        max-height: 400px; /* Set a max height to keep the image small */
         height: auto; /* Optional: ensures the image height adjusts proportionally */
+    }
+
+    @media screen and (min-width: 768px) {
+        .mainFooter {
+            max-height: 400px; /* Apply only for mobile screens */
+        }
     }
 
     .mainFooter::after {
