@@ -4291,8 +4291,13 @@ tr:nth-child(even) {
 /*  */
 /* ================================== footer style ================ */
 .mainFooter {
-  background: #304a6f;
-  margin-top: 60px;
+  background: #304a6f;  
+}
+
+@media screen and (min-width: 768px) {
+  .mainFooter {
+    margin-top: 60px;
+  }
 }
 
 .footerTop {
