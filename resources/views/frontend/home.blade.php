@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="topLayer">
                                     <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                    <img style="max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
+                                    <img style="width:100% !important;max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
                                     </a>
                                 </div>
                                 <div class="bottomLayer">
@@ -74,7 +74,7 @@
             <div class="video-banner">
                 <!-- Thumbnail image -->
                 <div class="video-thumbnail" onclick="playVideo()" >
-                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="100%" height="395px" style="border-radius:35px" >
+                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="100%"  style="border-radius:35px" >
                     <div class="play-icon">▶</div> <!-- Play button -->
                 </div>
 

@@ -27,7 +27,7 @@
         position: relative;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: 100% 110%; /* Slight stretch: width 100%, height 110% */
+        background-size: 100% 80%; /* Slight stretch: width 100%, height 110% */
         max-width: 100%;  /* Ensures it doesn't exceed container's width */
         height: auto; /* Optional: ensures the image height adjusts proportionally */
     }
@@ -45,7 +45,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5); /* Optional overlay */
+        /* background-color: rgba(0, 0, 0, 0.5); */
         z-index: 0; /* Ensure it's below the content */
     }
 
@@ -56,6 +56,7 @@
 
     .select2-dropdown--below{
         border-radius: 5% !important;
+        color: #304a6f !important;
     }
     .select2-search__field{
         border-radius: 10% !important;
@@ -224,11 +225,10 @@
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="#"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ secure_asset('images/twitter.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
-                            <a href="#"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
+                            <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="https://www.instagram.com/gro.ae" target="_blank"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
+                            <a href="https://www.youtube.com/@GroAE" target="_blank"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
+                            <a href="https://www.linkedin.com/company/groae/" target="_blank"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
 
                         </div>
                     </div>
@@ -249,7 +249,7 @@
             </div>
             <div class="footerBottom">
                 <p>A Unit of Falcon International Consulting & Auditing L.L.C</p>
-                <p>Copyright© Falcon International Consulting & Auditing L.L.C {{ date('Y') }}. All rights reserved.</p>
+                <p>Copyright © Falcon International Consulting & Auditing L.L.C {{ date('Y') }}. All rights reserved.</p>
             </div>
         </footer>
     @endif
