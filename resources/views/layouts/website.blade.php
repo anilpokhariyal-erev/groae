@@ -129,8 +129,8 @@
                                     @foreach($pages as $other_page)
                                         @if($other_page?->parent?->page_name=="Other Services")
                                         @php
-                                            $excluded[] = $account_page->parent_id;
-                                            $excluded[] = $account_page->id;
+                                            $excluded[] = $other_page->parent_id;
+                                            $excluded[] = $other_page->id;
                                         @endphp
                                             <li class="subInnrLinks">
                                                 <a href="{{ route('page.content', $other_page->slug) }}">
