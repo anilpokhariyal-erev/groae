@@ -4334,10 +4334,10 @@ p.footerTitle {
   background-color: #333;
   opacity: 0.8;
   color: #fff;
-  padding: 20px;
+  padding: 5px;
   text-align: center;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1;
 }
 
 .footerBottom p {
