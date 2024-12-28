@@ -562,6 +562,7 @@ li {
     overflow: hidden;
     width: 100%;
     height: 100vh; /* Adjust height as needed */
+    object-fit : none;
   }
 
   .background-video {
@@ -688,6 +689,7 @@ li {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  color : #304a6f
 }
 
 .subInnrLinks a {
@@ -2060,8 +2062,7 @@ input[type='search']::-webkit-search-results-decoration {
 
 .compareIconWrapper a {
   border-radius: 8px 0px 0px 8px;
-  background: #638cc0;
-  /* width: 156px; */
+  background : #304a6f;
   position: fixed;
   top: 245px;
   right: 0px;
