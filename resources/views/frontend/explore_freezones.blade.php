@@ -74,7 +74,7 @@
                     </div>
 
                 </div>
-                <div class="container" style="position: relative; z-index:0">
+                <div class="container">
                     <div id="homePageSlider" class="owl-carousel owl-theme">
                         <div class="item">
                             <img class="sliderImg" src="{{ asset('images/slider-1.png') }}" />
