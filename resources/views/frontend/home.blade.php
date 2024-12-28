@@ -32,34 +32,35 @@
             <div class="container">
                 <div class="trendingBlog">
                     @foreach ($freezones as $item)
-                        @if($item->trending)
-                            <div class="blogLayer">
-                                <div class="topLayer">
-                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                    <img src='{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/placeholder.png') }}' alt="">
-                                    </a>
+                        <div>
+                           <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}">
+                                <div class="blogLayer articleBlog">
+                                    <div class="topLayer firstImgLayer">
+                                        <img src='{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/placeholder.png') }}'
+                                            alt="">
+                                    </div>
+                                    <div class="bottomLayer">
+                                        <h2 class="blogDateTxt">
+                                            <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
+                                                <img style="width:100% !important;max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
+                                            </a>
+                                        </h2>
+                                        <h3 class="blogHeading">{{ ucwords($item->name) }} </h3>
+                                        <p class="blogDetail">{!! $item->about !!}</p>
+                                        <button class="viewDetailBtn"><a
+                                                href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
+                                                class="viewInnrTxt">View Details
+                                                <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
+                                            </a>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="topLayer">
-                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                    <img style="width:100% !important;max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
-                                    </a>
-                                </div>
-                                <div class="bottomLayer">
-                                    <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                        <h3 class="blogHeading">{{ $item->name }}</h3>
-                                    </a>
-                                    <p class="blogDetail">{{ $item->about }}</p>
-                                    <button class="viewDetailBtn">
-                                        <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                            View Details
-                                            <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
-                                        </a>
-                                    </button>
-                                </div>
-                            </div>
-                        @endif
+                            </a>
+                        </div>
                     @endforeach
                 </div>
+                    
+                
             </div>
         </div>
     </section>
@@ -141,7 +142,8 @@
     @endif
 
     <!-- GROAE In Numbers -->
-    <section style="margin-bottom:-3.8%">
+    <section>
+        <div class="container">
             <div class="groaeNumbers">
                 <img class="countImg" src="{{ asset('images/groaenumber.png') }}" alt="">
                 <div class="numberLayer">
@@ -158,6 +160,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
     <script>
         $(document).ready(function() {
