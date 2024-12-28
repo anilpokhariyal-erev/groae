@@ -23,7 +23,7 @@
 
         .select2-container--default .select2-selection--single {
             border-radius: 15px !important;
-            width: auto !important;
+            width: 250px !important;
             height: 55px !important;
             padding: 0 16px !important;
             border: 1px solid #ccc !important; /* Optional: Add border if needed */
