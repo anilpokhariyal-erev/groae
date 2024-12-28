@@ -64,24 +64,6 @@
                                     <h3 class="blogHeading text-left">{{ $item->title }}</h3>
                                     <p class="blogDetail text-left">{{ $item->description }}</p>
                                     <h4 class="rateTxt">Starting @AED {{ $item->price }}</h4>
-
-                                    <!-- Display package attributes -->
-                                    <!-- <div class="packageAttributes">
-                                        @if($item->packageLines && count($item->packageLines) > 0)
-                                            <div style="margin-top: 5px">
-                                                @foreach ($item->packageLines as $key => $package_line)
-                                                    @if($package_line->addon_cost == 0 and $package_line->status==1)
-                                                        <div class="attrHead">{{ $package_line->attribute->label}}</div>
-                                                        <div> - {{ $package_line->attributeOption->value }}</div>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-
-                                        @else
-                                            <p>No attributes available.</p>
-                                        @endif
-                                    </div> -->
-
                                     <div class="compareSearchOption">
                                         <button class="viewDetailBtn" style="width: auto;">
                                             <a href="{{ url('calculate-licensecosts?package_id=' . encrypt($item->id)) }}" class="viewInnrTxt">Customize
