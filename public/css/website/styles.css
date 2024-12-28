@@ -546,6 +546,12 @@ li {
   font-weight: 600;
 }
 
+@media screen and (max-width: 1367px) {
+  .nav-link {
+    font-size: 14px;
+  }
+}
+
 .nav-link:hover {
   color: #e5a600;
 }
