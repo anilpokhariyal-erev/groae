@@ -32,27 +32,27 @@
                             <section style="margin-top: -1%">
                                 <div class="trendingContainer">
                                     <div class="container">
-                                        <div class="trendingBlog">
-                                            @foreach ($freezones as $item)
-                                                    <div class="blogLayer">
-                                                        <div class="topLayer">
-                                                            <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                                            <img src='{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/placeholder.png') }}' alt="">
-                                                            </a>
-                                                        </div>
-                                                        <div class="topLayer">
-                                                            <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                                            <img style="max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
-                                                            </a>
+                                    <div class="trendingBlog">
+                                        @foreach ($freezones as $item)
+                                            <div>
+                                            <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}">
+                                                    <div class="blogLayer articleBlog">
+                                                        <div class="topLayer firstImgLayer">
+                                                            <img src='{{ $item->background_image_logo ? Storage::url($item->background_image_logo) : asset('images/placeholder.png') }}'
+                                                                alt="">
                                                         </div>
                                                         <div class="bottomLayer">
-                                                            <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                                                <h3 class="blogHeading">{{ $item->name }}</h3>
-                                                            </a>
-                                                            <p class="blogDetail">{{ $item->about }}</p>
-                                                            <button class="viewDetailBtn">
+                                                            <h2 class="blogDateTxt">
                                                                 <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                                                    View Details
+                                                                    <img style="max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
+                                                                </a>
+                                                            </h2>
+                                                            <h3 class="blogHeading">{{ ucwords($item->name) }} </h3>
+                                                            <p class="blogDetail">{!! $item->about !!}</p>
+                                                            <button class="viewDetailBtn">
+                                                                <a 
+                                                                    href="{{ route('freezone-detail', ['slug' => $item->slug]) }}"
+                                                                    class="viewInnrTxt">View Details
                                                                     <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
                                                                 </a>
                                                                 <a target="_blank" href="{{ route('freezone.packages.index', ['uuid' => $item->uuid]) }}" class="viewInnrTxt">
@@ -62,8 +62,11 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                            @endforeach
-                                        </div>
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                        
                                     </div>
                                 </div>
                             </section>
