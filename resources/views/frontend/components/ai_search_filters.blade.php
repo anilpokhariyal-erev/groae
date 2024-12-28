@@ -23,7 +23,7 @@
 
         .select2-container--default .select2-selection--single {
             border-radius: 15px !important;
-            width: 203px !important;
+            width: auto !important;
             height: 55px !important;
             padding: 0 16px !important;
             border: 1px solid #ccc !important; /* Optional: Add border if needed */
@@ -117,5 +117,15 @@
                 $('.ai_filter_options').val(null).trigger('change'); // Clear the value and trigger change
             });
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                const elements = document.querySelectorAll('.select2-container--default');
+                elements.forEach(element => {
+                    element.style.removeProperty('width');
+                });
+            }, 200); // 200ms delay
+        });
+
     </script>
 @endsection
