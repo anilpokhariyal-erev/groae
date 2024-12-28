@@ -42,7 +42,7 @@
                                     <div class="bottomLayer">
                                         <h2 class="blogDateTxt">
                                             <a target="_blank" href="{{ route('freezone-detail', ['slug' => $item->slug]) }}" class="viewInnrTxt">
-                                                <img style="width:100% !important;max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
+                                                <img style="max-height: 100px !important;" src='{{ $item->logo ? Storage::url($item->logo) : asset('images/placeholder.png') }}' alt="">
                                             </a>
                                         </h2>
                                         <h3 class="blogHeading">{{ ucwords($item->name) }} </h3>
