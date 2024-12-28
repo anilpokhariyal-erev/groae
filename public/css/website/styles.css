@@ -1085,9 +1085,7 @@ img.bannrImg {
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 0 100px;
   justify-content: center;
-  /* margin-top: 25px; */
 }
 
 .formContainer select {
