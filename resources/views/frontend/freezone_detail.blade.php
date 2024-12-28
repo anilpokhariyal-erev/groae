@@ -12,11 +12,9 @@
 
         .bannrTxt .logo {
             display: inline-block; /* Ensure logo is an inline block element */
-            margin-left: 10px; /* Optional: Space between text and logo */
         }
 
         .bannrTxt .logo img {
-            max-height: 40px; /* Adjust the size of the logo */
             max-width: 100%; /* Ensure logo scales responsively */
         }
         .settingList.listScroll{
@@ -40,13 +38,16 @@
                         <h2 class="backTxt">Back</h2>
                         </a>
                     </div>
-                    <h3 class="bannrTxt"> {{ ucwords($freezone_detail->name) }}
+                    <h3 class="bannrTxt">
                         <div class="logo">
                         @if($freezone_detail->logo)
                             <img class=""
                                  src='{{ Storage::url($freezone_detail->logo) }}'
                                  alt="">
-                        @endif  </div></h3>
+                        @endif  
+                    </div>
+                    {{ ucwords($freezone_detail->name) }}
+                    </h3>
 
                     <div class="bookBtns">
                         <button class="consultationBtn">
