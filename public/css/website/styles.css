@@ -916,6 +916,11 @@ li {
   padding-bottom: 80px;
 }
 
+.articleContainer {
+  margin-top: 50px;
+  padding-bottom: 20px;
+}
+
 .trendTxt {
   color: #304a6f;
   text-align: center;
