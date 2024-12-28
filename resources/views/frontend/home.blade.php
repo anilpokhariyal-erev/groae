@@ -106,7 +106,7 @@
     <!-- Article & Blogs  -->
     @if ($blogs)
         <section>
-            <div class="trendingContainer">
+            <div class="articleContainer">
                 <div class="topHeading">
                     <h2 class="trendTxt">Article & Blogs</h2>
                     <p class="trendDetails">Exploring trends and insights with our articles & blogs </p>
