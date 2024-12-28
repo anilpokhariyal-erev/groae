@@ -23,15 +23,22 @@ $(document).ready(function () {
 
   $('#nav-more-btn').on('click', function () {
     $('#myPopup').toggleClass('show');
+    $('#accountPopup').removeClass('show');
+    $('#otherPopup').removeClass('show');
   });
-
+  
   $('#nav-accounting-btn').on('click', function () {
     $('#accountPopup').toggleClass('show');
+    $('#otherPopup').removeClass('show');
+    $('#myPopup').removeClass('show');
   });
-
+  
   $('#nav-other-btn').on('click', function () {
     $('#otherPopup').toggleClass('show');
+    $('#accountPopup').removeClass('show');
+    $('#myPopup').removeClass('show');
   });
+  
 
   $('.preImg').on('click', function () {
     $('#scrollbar').animate({ scrollLeft: '-=150' }, 'fast');
