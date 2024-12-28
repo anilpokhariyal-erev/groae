@@ -507,7 +507,7 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 28px 80px;
+  padding: 28px 40px;
 }
 
 .navContainer {
@@ -535,7 +535,7 @@ li {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-left: 50px;
+  margin-left: 25px;
 }
 
 .nav-link {
@@ -1087,7 +1087,7 @@ img.bannrImg {
   gap: 15px;
   padding: 0 100px;
   justify-content: center;
-  margin-top: 25px;
+  /* margin-top: 25px; */
 }
 
 .formContainer select {
