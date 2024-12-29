@@ -29,16 +29,16 @@
                         @endforeach
 
                         @foreach ($package_bookings as $package_booking)
+                                <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                             <div class="addPersonalDoc">
                                 <h3>
-                                    <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 3%;">
+                                    <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
                                         {{$package_booking?->package?->freezone?->name}}
                                     </span><br><br>
                                     {{$package_booking->package->title}}<br>
                                     {{$package_booking->created_at->format('d/m/Y')}}
                                 </h3>
 
-                                <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                                     <span class="p-r-4">
                                         @if($package_booking->original_cost != $package_booking->final_cost && $package_booking->payment_status != 1)
                                             <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>
@@ -60,8 +60,8 @@
                                         @endif
                                     </span>
                                     <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
-                                </a>
                             </div>
+                                </a>
                         @endforeach
                             <!-- Pagination Links -->
                             <div class="pagination">
