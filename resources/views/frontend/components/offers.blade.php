@@ -19,27 +19,6 @@
                     </div>
                 </div>
             @endif
-            <!-- below code provide sub menu for freezone related pages -->
-            <!-- <div class="settingList listScroll">
-                <img class="preImg" src="{{asset('images/previous-arrow.png')}}" alt="">
-                <ul class="settingListInnr scrollbar" id="scrollbar">
-                    @if (count($freezone_detail->freezone_pages) > 0)
-                        @foreach ($freezone_detail->freezone_pages as $page)
-                            <li class="listTerms scrollbar-item" data-item-id="{{ $page->slug }}">
-                                <a class="listItemsHeading"
-                                   href="{{ route('freezone-detail', ['name' => $page->slug, 'slug' => $freezone_detail->slug]) }}">{{ $page->title }}</a>
-                            </li>
-                        @endforeach
-                    @else
-                        <li class="listTerms">
-                            <a class="listItemsHeading"
-                               href="{{ route('freezone-detail', ['slug' => $freezone_detail->slug]) }}">About
-                                Freezone</a>
-                        </li>
-                    @endif
-                </ul>
-                <img class="nxtImg" src="{{asset('images/next-arrow.png')}}" alt="">
-            </div> -->
             <div class="detailContent">
                 @if ($freezone_page)
                     <div class="detailHeading">
@@ -51,9 +30,6 @@
                     </div>
                 @endif
             </div>
-            <!--<div class="imageContainer">
-                        <img src="{{ secure_asset('images/about-image.png') }}" alt="">
-                    </div> -->
 
         </div>
 
