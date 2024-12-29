@@ -584,6 +584,8 @@ li {
     justify-content: center;
     align-items: center;
     margin: 50px 0;
+    border-radius: 35px;
+    overflow: hidden;
   }
 
   .numberCount {
