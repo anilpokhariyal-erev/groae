@@ -1399,7 +1399,7 @@ img.corporateImg {
   background: yellow;
 }
 
-.sliderContent {
+.sliderContentFreezoneDetails {
   padding: 50px;
   margin-top: 21px;
   right: 47%;
@@ -1409,6 +1409,18 @@ img.corporateImg {
   gap: 13px;
   z-index: 1;
   position: absolute;
+}
+
+.sliderContent {
+  background: gainsboro;
+  padding: 50px;
+  margin-top: 21px;
+  right: 47%;
+  top: 75px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  z-index: 1;
 }
 
 .sliderInnrHeading {

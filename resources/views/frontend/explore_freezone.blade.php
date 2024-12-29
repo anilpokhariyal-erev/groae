@@ -94,7 +94,7 @@
                     <div id="homePageSlider" class="owl-carousel owl-theme">
                         <div class="item">
                             <img class="sliderImg" src="{{ asset('images/slider-1.png') }}" />
-                            <div class="sliderContent">
+                            <div class="sliderContentFreezoneDetails">
                                 <h2 class="sliderInnrHeading">Get the Package of your choice to setup your Business</h2>
                                 <div class="cutoutDiv">
                                     <img class="cutoutTxt" src="{{ asset('images/cutout.png') }}" alt="">
