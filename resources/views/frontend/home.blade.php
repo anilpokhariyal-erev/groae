@@ -3,22 +3,43 @@
     <style>
         .overlayText {
             position: absolute;
+            width: 100%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
             color: #fff;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
         }
 
+        /* Apply margin-left only for non-mobile views */
+        @media (min-width: 768px) {
+            .overlayText {
+                margin-left: 25%;
+            }
+        }
+
+    
         .overlay-text {
             font-size: 2rem; /* Adjust font size */
             font-weight: bold;
             margin: 10px 0;
+            opacity: 0;
+            position: absolute;
+            transition: opacity 1s ease-in-out;
         }
-
-
+    
+        .line1, .line2, .line3 {
+            animation: fadeInOut 9s infinite ease-in-out;
+        }
+    
+        .line1 { animation-delay: 0s; }
+        .line2 { animation-delay: 1s; }
+        .line3 { animation-delay: 2s; }
+    
+        @keyframes fadeInOut {
+            0%, 33% { opacity: 0; }
+            11%, 22% { opacity: 1; }
+        }
     </style>
     @section('js-imports')
         <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
@@ -28,12 +49,12 @@
     @endsection
     <section class="video-section">
         <div class="overlayText">
-            <h3 class="overlay-text">Want to Start your own business in UAE?</h3>
-            <h3 class="overlay-text">Enjoy FREE consultations and zero service fees!</h3>
-            <h3 class="overlay-text">We handle everything -- So you <br> can focus on your business.</h3>
+            <h3 class="overlay-text line line1">Want to Start your own business in UAE?</h3>
+            <h3 class="overlay-text line line2">Enjoy FREE consultations and zero service fees!</h3>
+            <h3 class="overlay-text line line3">We handle everything -- So you <br> can focus on your business.</h3>
         </div>
         <video autoplay muted loop class="background-video">
-            <source src="{{ secure_asset('images/HeroVideo.mp4') }}" type="video/mp4">
+            <source src="{{ secure_asset('images/groae_banner.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
 
