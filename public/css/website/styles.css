@@ -1925,6 +1925,7 @@ input[type='search']::-webkit-search-results-decoration {
   align-items: center;
   gap: 10px;
   justify-content: center;
+  margin-top: 25px;
 }
 
 .hTxt h3 {
@@ -1936,11 +1937,11 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .pTxt p {
-  color: #61616b;
+  color: #304a6f;
   text-align: center;
   font-family: Poppins;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   margin-top: 15px;
 }
 
