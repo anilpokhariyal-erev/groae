@@ -31,6 +31,10 @@
                 {{ $selected }}
             </span>
             <div class="filterItemContainer">
+                    <div class="hTxt">
+                        <img src="{{ secure_asset('images/bot-2.png') }}" alt="">
+                        <h3>AI search to help you find the best Freezone.</h3>
+                    </div>
                 @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
             </div>
         </section>
@@ -38,10 +42,6 @@
         <section>
             <div class="exploreItemsContainer">
                 <div class="AIHeader">
-                    <div class="hTxt">
-                        <img src="{{ secure_asset('images/bot-2.png') }}" alt="">
-                        <h3>AI search to help you find the best Freezone.</h3>
-                    </div>
                     <div class="pTxt">
                         <p>Find the Freezones that suit your requirements.</p>
                     </div>
