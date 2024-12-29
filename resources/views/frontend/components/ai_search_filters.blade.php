@@ -23,7 +23,7 @@
 
         .select2-container--default .select2-selection--single {
             border-radius: 15px !important;
-            width: 250px !important;
+            width: 225px !important;
             height: 55px !important;
             padding: 0 16px !important;
             border: 1px solid #ccc !important; /* Optional: Add border if needed */
@@ -74,7 +74,7 @@
         @foreach ($attributes as $attribute)
             <div class="formContainer">
                 <select class="ai_filter_options" name="attribute_value[{{$attribute->id }}]"
-                        data-placeholder="Choose {{ $attribute->label }}" >
+                        data-placeholder="Choose {{ $attribute->label }}" title="Choose {{ $attribute->label }}">
                     <option value="" selected disabled>Choose {{ $attribute->label }}</option>
                     @if($attribute->allow_any)
                         <option value="any" {{ isset($selectedAttributes[$attribute->id]) && $selectedAttributes[$attribute->id] == 'any' ? 'selected' : '' }}>Any</option>
