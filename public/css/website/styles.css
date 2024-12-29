@@ -1907,7 +1907,7 @@ input[type='search']::-webkit-search-results-decoration {
 
 @media (min-width: 1440px) {
   .filterItemContainer {
-      max-width: 60%; /* Max-width for large desktop screens */
+      max-width: 70%; /* Max-width for large desktop screens */
   }
 }
 
@@ -3155,7 +3155,7 @@ ul.settingListInnr {
 .addPersonalDoc h3 {
   color: #304a6f;
   font-family: Poppins;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
 }
 

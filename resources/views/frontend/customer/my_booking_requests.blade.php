@@ -1,4 +1,13 @@
 <x-website-layout>
+    <style>
+        .status-row {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+    </style>
     <section class="center-section">
         <div class="container">
             <div class="myProfileContainer">
@@ -27,42 +36,55 @@
                                 <h3>License Status: <span>{{ ucfirst($item->client_status) }}</span></h3>
                             </div>
                         @endforeach
+                            @if (count($package_bookings) == 0)
+                                <span class="noRecordFound">
+                                    <h3 class="transactionIdTxt">
+                                        Nothing to show here
+                                    </h3>
+                                </span>
+                            @endif
 
                         @foreach ($package_bookings as $package_booking)
-                            <div class="addPersonalDoc">
-                                <h3>
-                                    <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 3%;">
-                                        {{$package_booking?->package?->freezone?->name}}
-                                    </span><br><br>
-                                    {{$package_booking->package->title}}<br>
-                                    {{$package_booking->created_at->format('d/m/Y')}}
-                                </h3>
-
                                 <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
-                                    <span class="p-r-4">
-                                        @if($package_booking->original_cost != $package_booking->final_cost && $package_booking->payment_status != 1)
-                                            <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>
-                                        @endif
-                                        {{$package_booking->package->currency}} {{$package_booking->final_cost}}
-                                        <br>
-                                        @if($package_booking->payment_status == 1)
-                                            <em style="color:green">Invoice Paid</em>
-                                        @else
-                                            @if($package_booking->status == 0)
-                                                <em style="color:gray">Cancelled/Rejected</em>
-                                            @elseif($package_booking->status == 1)
-                                                <em style="color:purple">Waiting for Invoice</em>
-                                            @elseif($package_booking->status == 2)
-                                                <em style="color:orange">Invoice Generated</em>
-                                            @elseif($package_booking->status == 3)
-                                                <em style="color:green">Refunded</em>
+                                    <div class="addPersonalDoc">
+                                        <h3 style="min-width: 35%;max-width: 35%;">
+            <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
+                {{$package_booking?->package?->freezone?->name}}
+            </span><br><br>
+                                            {{$package_booking->package->title}}<br>
+                                            {{$package_booking->created_at->format('d/m/Y')}}
+                                        </h3>
+
+                                        <span class="p-r-4">
+            @if($package_booking->original_cost != $package_booking->final_cost && $package_booking->payment_status != 1)
+                                                <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>
                                             @endif
-                                        @endif
-                                    </span>
-                                    <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
+                                            {{$package_booking->package->currency}} {{$package_booking->final_cost}}
+            <br>
+        </span>
+
+                                        <!-- Add status below h3 -->
+                                        <div class="status-row">
+                                            @if($package_booking->payment_status == 1)
+                                                <em style="color:green">Invoice Paid</em>
+                                            @else
+                                                @if($package_booking->status == 0)
+                                                    <em style="color:gray">Cancelled/Rejected</em>
+                                                @elseif($package_booking->status == 1)
+                                                    <em style="color:purple">Waiting for Invoice</em>
+                                                @elseif($package_booking->status == 2)
+                                                    <em style="color:orange">Invoice Generated</em>
+                                                @elseif($package_booking->status == 3)
+                                                    <em style="color:green">Refunded</em>
+                                                @endif
+                                            @endif
+                                        </div>
+
+                                        <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
+                                    </div>
                                 </a>
-                            </div>
-                        @endforeach
+
+                            @endforeach
                             <!-- Pagination Links -->
                             <div class="pagination">
                                 <!-- Pagination Links -->

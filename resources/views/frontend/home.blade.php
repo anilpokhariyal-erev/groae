@@ -1,5 +1,25 @@
 <x-website-layout>
     <!-- banner -->
+    <style>
+        .overlayText {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .overlay-text {
+            font-size: 2rem; /* Adjust font size */
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+
+    </style>
     @section('js-imports')
         <script src="{{ secure_asset('js/website/home.js') }}" crossorigin="anonymous"></script>
     @endsection
@@ -7,8 +27,13 @@
         <script src="{{ secure_asset('js/website/owl.carousel.min.js') }}" crossorigin="anonymous"></script>
     @endsection
     <section class="video-section">
+        <div class="overlayText">
+            <h3 class="overlay-text">Want to Start your own business in UAE?</h3>
+            <h3 class="overlay-text">Enjoy FREE consultations and zero service fees!</h3>
+            <h3 class="overlay-text">We handle everything -- So you <br> can focus on your business.</h3>
+        </div>
         <video autoplay muted loop class="background-video">
-            <source src="{{ secure_asset('images/groae_banner.mp4') }}" type="video/mp4">
+            <source src="{{ secure_asset('images/HeroVideo.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
 
@@ -19,6 +44,7 @@
             </div>
             @include('frontend.components.ai_search_filters', ['attributes' => $attributes])
         </div>
+
     </section>
 
 
@@ -59,7 +85,7 @@
                         </div>
                     @endforeach
                 </div>
-                
+
             </div>
         </div>
     </section>
@@ -80,14 +106,14 @@
 
                 <!-- The iframe will be inserted here on click -->
                 <div id="video-container" style="display:none;">
-                    <iframe 
-                        id="youtube-video" 
-                        width="1138px" 
-                        height="395px" 
-                        src="" 
-                        frameborder="0" 
-                        allow="autoplay; encrypted-media" 
-                        allowfullscreen 
+                    <iframe
+                        id="youtube-video"
+                        width="1138px"
+                        height="395px"
+                        src=""
+                        frameborder="0"
+                        allow="autoplay; encrypted-media"
+                        allowfullscreen
                         style="border-radius:35px;">
                     </iframe>
                 </div>
@@ -233,6 +259,55 @@
             document.querySelector('.video-thumbnail').style.display = 'none';
         }
 
+
     </script>
+    <script>
+        $(document).ready(function() {
+            // Delay the display of the overlay text
+                // Show the overlay text with fade-in effect
+                $('.overlayText').css('opacity', 1);// Delay of 2 seconds (2000 milliseconds)
+        });
+        $(document).ready(function() {
+            var $overlayText = $('.overlay-text'); // Select all the h3 elements
+            var index = 0; // Initialize index to start showing the first element
+
+            // Hide all h3 elements initially
+            $overlayText.hide(); // Use hide to ensure they are all hidden at first
+
+            // Function to show each h3 one by one
+            function showText() {
+                // Hide the previous text (if any)
+                if (index > 0) {
+                    $($overlayText[index - 1]).fadeOut(1000); // Fade out the previous text
+                }
+
+                // Fade in the current text
+                $($overlayText[index]).fadeIn(1000); // Fade in current text over 2 seconds
+
+                // Increment the index for the next text
+                index++;
+
+                // If we've reached the end of the list, reset index and fade out the last element
+                if (index >= $overlayText.length) {
+                    index = 0; // Reset index to loop back to the first element
+
+                    // Fade out the last text before the loop starts over
+                    setTimeout(function() {
+                        $($overlayText[$overlayText.length - 1]).fadeOut(1000);
+                        setTimeout(function() {
+                            showText(); // Restart the text animation after the last one fades out
+                        }, 1000); // Delay for the fadeOut duration
+                    }, 3000); // Wait for the current text to finish its duration (3 seconds)
+                }
+            }
+
+            // Call showText every 5 seconds (5000ms) initially
+            setInterval(showText, 5000);
+
+            // Optionally, show the first text immediately
+            showText();
+        });
+    </script>
+
 
 </x-website-layout>
