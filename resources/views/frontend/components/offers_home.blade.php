@@ -4,7 +4,7 @@
             @if ($offer)
                 @foreach ($offer as $offer_val)
                     <div class="item" style="margin-top: -20px !important;">
-                        <div class="@if(count($offer)) sliderContent @else sliderContentFreezoneDetails @endif" style="background-image:url('{{ $offer_val->image ? Storage::url($offer_val->image) : asset('images/placeholder.png') }}')">
+                        <div class="sliderContent" style="background-image:url('{{ $offer_val->image ? Storage::url($offer_val->image) : asset('images/placeholder.png') }}')">
                             <h2 class="sliderInnrHeading">{{ $offer_val->title }}</h2>
                             <div class="cutoutDiv">
                                 <img class="cutoutTxt" src="{{ asset('images/cutout.png') }}" alt="Offer Badge">

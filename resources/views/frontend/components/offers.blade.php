@@ -7,7 +7,7 @@
                         <img src="{{ $freezone_detail->offers[0]->image ? Storage::url($freezone_detail->offers[0]->image) : asset('images/placeholder.png') }}"
                              class="aboutImageBannr" alt="">
                     </div>
-                    <div class="sliderContent">
+                    <div class="sliderContentFreezoneDetails">
                         <h2 class="sliderInnrHeading">{{ $freezone_detail->offers[0]->title }}</h2>
                         <div class="cutoutDiv">
                             <img class="cutoutTxt" src="{{ asset('images/cutout.png') }}" alt="">
