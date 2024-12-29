@@ -73,14 +73,23 @@
         <div class="container">
             <div class="video-banner">
                 <!-- Thumbnail image -->
-                <div class="video-thumbnail" onclick="playVideo()" >
-                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="100%"  style="border-radius:35px" >
+                <div class="video-thumbnail" onclick="playVideo()">
+                    <img src="https://img.youtube.com/vi/{{$background_video}}/maxresdefault.jpg" alt="Video Thumbnail" class="thumbnail-image" width="100%" style="border-radius:35px;">
                     <div class="play-icon">▶</div> <!-- Play button -->
                 </div>
 
                 <!-- The iframe will be inserted here on click -->
                 <div id="video-container" style="display:none;">
-                    <iframe width="1138px" height="395px" src="https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&controls=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:35px"></iframe>
+                    <iframe 
+                        id="youtube-video" 
+                        width="1138px" 
+                        height="395px" 
+                        src="" 
+                        frameborder="0" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen 
+                        style="border-radius:35px;">
+                    </iframe>
                 </div>
             </div>
         </div>
@@ -212,9 +221,16 @@
 
 
         function playVideo() {
-            // Hide the thumbnail and show the iframe
+            // Show the video container
+            const videoContainer = document.getElementById('video-container');
+            videoContainer.style.display = 'block';
+
+            // Set the iframe source with autoplay, mute, and restricted suggestions
+            const iframe = document.getElementById('youtube-video');
+            iframe.src = `https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&fs=1`;
+
+            // Hide the thumbnail and play icon
             document.querySelector('.video-thumbnail').style.display = 'none';
-            document.getElementById('video-container').style.display = 'block';
         }
 
     </script>
