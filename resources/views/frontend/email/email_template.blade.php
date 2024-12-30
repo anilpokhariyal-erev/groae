@@ -89,7 +89,7 @@
 
 <div class="container">
     <div class="invoice-header">
-        <img src="{{ asset('images/GroAE_Logo.png') }}" alt="GroAE Logo">
+        <img src="https://groae.com/GroAE_Logo.png" alt="GroAE Logo">
         <p>{{ $headerText }}</p>
     </div>
 
@@ -102,16 +102,16 @@
         <div class="social-icons">
             <!-- Replace 'url-to-icon' with the path to your icon images or URLs -->
             <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+                <img src="https://groae.com/facebook.svg" alt="Facebook">
             </a>
             <a href="https://www.instagram.com/gro.ae" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram">
+                <img src="https://groae.com/instagram.svg" alt="Instagram">
             </a>
             <a href="https://www.linkedin.com/company/groae/" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg" alt="LinkedIn">
+                <img src="https://groae.com/linkedin.svg" alt="LinkedIn">
             </a>
             <a href="https://www.youtube.com/@GroAE" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013%29.svg" alt="YouTube">
+                <img src="https://groae.com/youtube.svg" alt="YouTube">
             </a>
         </div>
         <p>A Unit of Falcon International Consulting & Auditing L.L.C</p>
