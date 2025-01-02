@@ -36,6 +36,7 @@
             top: -10px;
             left: 10px;
             background-color: #fff;
+            color: #304a6f;
             font-size: 14px;
             padding: 0 5px;
         }
