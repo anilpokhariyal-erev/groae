@@ -3496,6 +3496,7 @@ h3.transactionIdTxt {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 /* my transaction css end ===================================== */
