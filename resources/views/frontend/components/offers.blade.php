@@ -14,7 +14,7 @@
                             <h3 class="offTxt">{{ $freezone_detail->offers[0]->discount }}% Off</h3>
                         </div>
                         <h4 class="amountTitle">Starting From <span>AED
-                                    {{ $freezone_detail->offers[0]->freezone->min_price }}</span></h4>
+                                    {{ $freezone_detail->offers[0]->freezone->getMinPriceFromPackages() }}</span></h4>
                         {{-- <button class="KnowMoreBtn"> <a href="#">Know More</a></button> --}}
                     </div>
                 </div>
