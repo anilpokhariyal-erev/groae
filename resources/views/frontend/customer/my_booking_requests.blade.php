@@ -42,11 +42,6 @@
 
                 <div class="profileWrapper">
                     @include('frontend.components.profile_sidebar')
-                    @if ($customer->package_bookings->count() == 0)
-                        <span class="noRecordFound">
-                            <h3 class="transactionIdTxt">No Bookings found</h3>
-                        </span>
-                    @endif
                     <div class="profileDetailWrapper">
                         @foreach ($freezones as $item)
                             <div class="requestDocBox">

@@ -28,9 +28,17 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: 100% 80%; /* Slight stretch: width 100%, height 110% */
-        max-width: 100%;  /* Ensures it doesn't exceed container's width */
+        max-width: 100%; /* Ensures it doesn't exceed container's width */
         height: auto; /* Optional: ensures the image height adjusts proportionally */
     }
+
+    /* Change background-position to bottom for mobile screens */
+    @media (max-width: 768px) {
+        .mainFooter {
+            background-position: bottom;
+        }
+    }
+
 
     @media screen and (min-width: 768px) {
         .mainFooter {
