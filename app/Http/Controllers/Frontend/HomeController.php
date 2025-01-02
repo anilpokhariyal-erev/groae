@@ -36,7 +36,7 @@ class HomeController extends Controller
                             ->skip(0)
                             ->take(4)
                             ->get();
-        $offer = Offer::select('id', 'title', 'discount', 'image', 'freezone_id')->with('freezone')->take(3)->get();
+        $offer = Offer::select('id', 'title', 'discount', 'image', 'freezone_id')->with('freezone')->get();
         $blogs = Blog::select('id', 'title', 'short_description', 'image', 'slug', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(3)->get();
         $groae_number = Setting::where('section_key', 'groae_number')->get();
         $attributes = $this->ai_filter_options();
