@@ -10,7 +10,7 @@
                                 <img class="cutoutTxt" src="{{ asset('images/cutout.png') }}" alt="Offer Badge">
                                 <h3 class="offTxt">{{ $offer_val->discount }}% Off</h3>
                             </div>
-                            <h4 class="amountTitle">Starting From <span>AED {{ $offer_val->freezone->min_price }}</span></h4>
+                            <h4 class="amountTitle">Starting From <span>AED {{ $offer_val->freezone->getMinPriceFromPackages() }}</span></h4>
                             <button class="KnowMoreBtn">
                                 <a href="{{ route('freezone-detail', $offer_val->freezone->slug) }}" class="btn-link">Know More</a>
                             </button>

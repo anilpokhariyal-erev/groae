@@ -87,4 +87,12 @@ class Freezone extends Model
     {
         return $this->hasMany(FreezoneDefaultAttribute::class);
     }
+
+    /**
+     * Get the minimum price from the associated PackageHeader table.
+     */
+    public function getMinPriceFromPackages()
+    {
+        return $this->packageheader()->min('price') ?? '0.00';
+    }
 }
