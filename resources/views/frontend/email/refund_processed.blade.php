@@ -20,8 +20,10 @@
     <table width="100%" style="max-width:600px; margin:20px auto; padding:20px; background-color:#ffffff; border-spacing:0; border:0; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
         <tr>
             <td style="font-size:16px; color:#304A6F; line-height:1.8; padding:20px;">
-                Hi <strong>[Customer Name]</strong>,<br><br>
-                We’ve successfully processed your refund of <strong>[Amount]</strong> for <strong>[Product/Service Name]</strong>. The amount should reflect in your account within 3-5 business days.<br><br>
+                Hi <strong>{{$customer->name}}</strong>,<br><br>
+                We’ve successfully processed your refund of
+                <strong>{{$packageBooking->package->currency}} {{$packageBooking->final_cost}}</strong>
+                for <strong>{{$package->name}}</strong>. The amount should reflect in your account within 3-5 business days.<br><br>
                 If you have any questions, feel free to contact us.
             </td>
         </tr>
