@@ -127,108 +127,81 @@ class PackageBookingController extends Controller
             'remarks' => 'required_if:status,0|string', // Required if status is 0
         ]);
 
-
         try {
             // Retrieve the package booking record
             $packageBooking = PackageBooking::findOrFail($validatedData['package_booking_id']);
             $toEmail = $packageBooking->customer->email; // Recipient's email address
             $subject = 'Groae Package Quotation';
-            $headerText ='';
-            $bodyText = '';
-    
+
             // Update the status
-            if($validatedData['status']==4){
+            if ($validatedData['status'] == 4) {
                 $packageBooking->status = 2;
                 $packageBooking->payment_status = 1;
-            }else{
+            } else {
                 $packageBooking->status = $validatedData['status'];
             }
-            
+
             if (isset($validatedData['remarks'])) {
                 $packageBooking->remarks = $validatedData['remarks'];
             }
+
             $fixedCostTotal = 0;
-            if($validatedData['status'] == 2){
-                $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status',1)->get();
+            if ($validatedData['status'] == 2) {
+                $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status', 1)->get();
                 foreach ($fixedFees as $fixedFee) {
-                    $fixedCost = $fixedFee->value;
-                    if($fixedFee->type!="fixed"){
-                        $fixedCost = ($packageBooking->final_cost * $fixedFee->value/100);
-                    }
+                    $fixedCost = $fixedFee->type != "fixed" ?
+                                 ($packageBooking->final_cost * $fixedFee->value / 100) :
+                                 $fixedFee->value;
+
                     $packageBookingDetail = new PackageBookingDetail();
                     $packageBookingDetail->package_booking_id = $packageBooking->id;
-                    $packageBookingDetail->attribute_name = $fixedFee->label." ".$fixedFee->type;
+                    $packageBookingDetail->attribute_name = $fixedFee->label . " " . $fixedFee->type;
                     $packageBookingDetail->attribute_value = $fixedFee->value;
                     $packageBookingDetail->quantity = 1;
                     $packageBookingDetail->price_per_unit = number_format($fixedCost, 2, '.', '');
-                    $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');                    
+                    $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');
                     $packageBookingDetail->status = 1;
                     $packageBookingDetail->save();
                     $fixedCostTotal += $fixedCost;
                 }
             }
+
             $packageBooking->final_cost = $packageBooking->original_cost + $fixedCostTotal;
             $packageBooking->save();
 
-            if($validatedData['status'] == 0) {
-                $headerText = "Your Request Has Been Cancelled";
-                $bodyText = "Hi <b>{$packageBooking->customer->first_name} {$packageBooking->customer->last_name}</b>,<br><br>";
-                $bodyText .= "We are writing to let you know that your request<br>";
-                $bodyText .= "for {$packageBooking->package->title} has been cancelled. if<br>";
-                $bodyText .= "You have any question or need assistance, please <br>";
-                $bodyText .= "don't hesitate to reach out to us.<br>";
-                $bodyText .= "We look forward to serving you in the future!<br>";
-                $bodyText .= "<b>Regards</b>,<br>";
-                $bodyText .= "<b>Team GroAE</b>";
-            }elseif ($validatedData['status'] == 2){
-                $headerText = "Your Invoice is Ready";
-                $bodyText = "Hi <b>{$packageBooking->customer->first_name} {$packageBooking->customer->last_name}</b>,<br><br>";
-                $bodyText .= "Your invoice for {$packageBooking->package->title} has been<br>";
-                $bodyText .= "generated successfully. please find the invoice details below: <br><br>";
-                $bodyText .= "<b>Invoice Number: </b><br>";
-                $bodyText .= "<b>Total Amount: {$packageBooking->package->currency} {$packageBooking->final_cost}</b><br><br>";
-                $bodyText .= "You can download your invoice by clicking the button<br>";
-                $bodyText .= "below:<br><br>";
-                $bodyText .= "<div style='display: flex; justify-content: center;'><a><button style=\"background-color: #304a6f; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;\">Download Invoice</button></a></div><br><br>";
-                $bodyText .= "<b>Regards</b>,<br>";
-                $bodyText .= "<b>Team GroAE</b>";
-            }elseif ($validatedData['status'] == 3){
-                $headerText = "Refund Processed";
-                $bodyText = "Hi <b>{$packageBooking->customer->first_name} {$packageBooking->customer->last_name}</b>,<br><br>";
-                $bodyText .= "we have successfully processed your refund of<br>";
-                $bodyText .= "{$packageBooking->package->currency} {$packageBooking->final_cost} for {$packageBooking->package->title}. The amount<br>";
-                $bodyText .= "should reflect in your account within 3-5 business<br>";
-                $bodyText .= "days.<br>";
-                $bodyText .= "If you have any questions, feel free to contact us.<br>";
-                $bodyText .= "<b>Regards</b>,<br>";
-                $bodyText .= "<b>Team GroAE</b>";
-
-            }elseif ($validatedData['status'] == 4){
-                $headerText = "Payment Successful!";
-                $bodyText = "Hi <b>{$packageBooking->customer->first_name} {$packageBooking->customer->last_name}</b>,<br><br>";
-                $bodyText .= "We are happy to inform you that your payment of <br>";
-                $bodyText .= "{$packageBooking->package->currency} {$packageBooking->final_cost} for {$packageBooking->package->title} was<br>";
-                $bodyText .= "successful.<br>";
-                $bodyText .= "Thank you for choosing GroAE. You can find your<br>";
-                $bodyText .= "payment details attached to this email.<br><br>";
-                $bodyText .= "<div style='display: flex; justify-content: center;'><a><button style=\"background-color: #304a6f; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;\">Download Receipt</button></a></div><br><br>";
-                $bodyText .= "<b>Regards</b>,<br>";
-                $bodyText .= "<b>Team GroAE</b>";
-            }
-
+            // Set up email data
+            $view = '';
             $data = [
-                'message' => 'Please find your PDF quote attached.',
-                'headerText' => $headerText,
-                'bodyText' => $bodyText,
+                'customer' => $packageBooking->customer,
+                'package' => $packageBooking->package,
+                'final_cost' => $packageBooking->final_cost,
             ];
 
-            // Send email with attachment
-            Mail::send('frontend.email.email_template', $data, function ($message) use ($toEmail, $subject) {
+            switch ($validatedData['status']) {
+                case 0:
+                    $view = 'emails.cancel_request';
+                    $subject = 'Your Request Has Been Cancelled';
+                    break;
+                case 2:
+                    $view = 'emails.generate_invoice';
+                    $subject = 'Your Invoice is Ready';
+                    break;
+                case 3:
+                    $view = 'emails.refund_processed';
+                    $subject = 'Refund Processed';
+                    break;
+                case 4:
+                    $view = 'emails.payment_success';
+                    $subject = 'Payment Successful!';
+                    break;
+            }
+
+            // Send email
+            Mail::send($view, $data, function ($message) use ($toEmail, $subject) {
                 $message->to($toEmail)
                     ->subject($subject);
-//                    ->attach($filePath); // Attach the generated PDF
             });
-    
+
             // Return a success response
             return response()->json([
                 'message' => 'Package booking status updated successfully.',
@@ -241,7 +214,7 @@ class PackageBookingController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-    }  
+    }
     
     public function get_requested_quote_count(){
         return PackageBooking::where('status',1)->count();
