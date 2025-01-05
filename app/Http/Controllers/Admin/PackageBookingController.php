@@ -180,6 +180,7 @@ class PackageBookingController extends Controller
                 'package' => $packageBooking->package,
                 'final_cost' => $packageBooking->final_cost,
                 'ref_num' => $ref_num,
+                'packageBooking' => $packageBooking,
             ];
 
             switch ($validatedData['status']) {
