@@ -171,10 +171,15 @@ class PackageBookingController extends Controller
 
             // Set up email data
             $view = '';
+            $company_info = Setting::where('section_key', 'company_info')
+                        ->pluck('value', 'title')
+                        ->toArray();
+            $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT)
             $data = [
                 'customer' => $packageBooking->customer,
                 'package' => $packageBooking->package,
                 'final_cost' => $packageBooking->final_cost,
+                'ref_num' => $ref_num,
             ];
 
             switch ($validatedData['status']) {

@@ -20,10 +20,10 @@
     <table width="100%" style="max-width:600px; margin:20px auto; padding:20px; background-color:#ffffff; border-spacing:0; border:0; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
         <tr>
             <td style="font-size:16px; color:#304A6F; line-height:1.8; padding:20px;">
-                Hi <strong>[Customer Name]</strong>,<br><br>
-                Your invoice for <strong>[Product/Service Name]</strong> has been generated successfully. Please find the invoice details below:<br><br>
-                <strong>Invoice Number:</strong> [Invoice Number]<br>
-                <strong>Total Amount:</strong> [Amount]<br><br>
+                Hi <strong>{{$customer->name}}</strong>,<br><br>
+                Your invoice for <strong>{{$package->name}}</strong> has been generated successfully. Please find the invoice details below:<br><br>
+                <strong>Invoice Number:</strong> {{$ref_num}}<br>
+                <strong>Total Amount:</strong> {{$packageBooking->package->currency}} {{$packageBooking->final_cost}}<br><br>
                 You can download your invoice by clicking the button below:
             </td>
         </tr>
