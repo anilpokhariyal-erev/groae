@@ -179,19 +179,19 @@ class PackageBookingController extends Controller
 
             switch ($validatedData['status']) {
                 case 0:
-                    $view = 'emails.cancel_request';
+                    $view = 'frontend.emails.cancel_request';
                     $subject = 'Your Request Has Been Cancelled';
                     break;
                 case 2:
-                    $view = 'emails.generate_invoice';
+                    $view = 'frontend.emails.generate_invoice';
                     $subject = 'Your Invoice is Ready';
                     break;
                 case 3:
-                    $view = 'emails.refund_processed';
+                    $view = 'frontend.emails.refund_processed';
                     $subject = 'Refund Processed';
                     break;
                 case 4:
-                    $view = 'emails.payment_success';
+                    $view = 'frontend.emails.payment_success';
                     $subject = 'Payment Successful!';
                     break;
             }
