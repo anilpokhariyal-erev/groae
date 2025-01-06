@@ -102,13 +102,13 @@
         <div class="social-icons">
             <!-- Replace 'url-to-icon' with the path to your icon images or URLs -->
             <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank">
-                <img src="https://groae.com/facebook.svg" alt="Facebook">
+                <img src="https://groae.com/fb.svg" alt="Facebook">
             </a>
             <a href="https://www.instagram.com/gro.ae" target="_blank">
                 <img src="https://groae.com/instagram.svg" alt="Instagram">
             </a>
             <a href="https://www.linkedin.com/company/groae/" target="_blank">
-                <img src="https://groae.com/linkedin.svg" alt="LinkedIn">
+                <img src="https://groae.com/linkedin.png" alt="LinkedIn">
             </a>
             <a href="https://www.youtube.com/@GroAE" target="_blank">
                 <img src="https://groae.com/youtube.svg" alt="YouTube">
