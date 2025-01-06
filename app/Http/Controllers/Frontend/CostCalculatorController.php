@@ -474,6 +474,7 @@ class CostCalculatorController extends Controller
             'fixedFees' => $fixedFees,
             'company_info' => $company_info,
             'adjustments' => $adjustments,
+            'app_url' => rtrim(config('app.url'), '/'),
         ];
 
         // Send email with attachment
