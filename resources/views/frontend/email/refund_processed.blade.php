@@ -23,7 +23,7 @@
                 Hi <strong>{{$customer->name}}</strong>,<br><br>
                 We’ve successfully processed your refund of
                 <strong>{{$packageBooking->package->currency}} {{$packageBooking->final_cost}}</strong>
-                for <strong>{{$package->name}}</strong>. The amount should reflect in your account within 3-5 business days.<br><br>
+                for <strong>{{$package->title}}</strong>. The amount should reflect in your account within 3-5 business days.<br><br>
                 If you have any questions, feel free to contact us.
             </td>
         </tr>

@@ -23,7 +23,7 @@
                 Hi <strong>{{$customer->name}}</strong>,<br><br>
                 We’re happy to inform you that your payment of
                 <strong>{{$packageBooking->package->currency}} {{$packageBooking->final_cost}}</strong>
-                for <strong>{{$package->name}}</strong> was successful.<br><br>
+                for <strong>{{$package->title}}</strong> was successful.<br><br>
                 Thank you for choosing GroAE. You can find your payment details attached to this email.
             </td>
         </tr>

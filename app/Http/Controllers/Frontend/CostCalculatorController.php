@@ -463,41 +463,30 @@ class CostCalculatorController extends Controller
         }
     }
 
-
-
     public function sendEmailWithAttachment($filePath, $booking, $fixedFees, $company_info, $adjustments)
     {
         $toEmail = $booking->customer->email; // Recipient's email address
         $subject = 'Groae Package Quotation';
 
-        // Create header and body text content with <br> for line breaks
-        $headerText = "Quotation Request Received";
-        $bodyText = "Hi {$booking->customer->name},<br><br>";
-        $bodyText .= "Thank you for reaching out to us. We have received your request for a Quotation for {$booking->package->title}.<br>";
-        $bodyText .= "Our team is reviewing your request and will get back to you shortly.<br><br>";
-        $bodyText .= "If you have any additional information or documents to share, feel free to reply to this email.<br><br>";
-        $bodyText .= "<b>Regards</b>,<br>";
-        $bodyText .= "<b>Team GroAE</b>";
-
+        // Prepare data for the email view
         $data = [
-            'message' => 'Please find your PDF quote attached.',
-            'headerText' => $headerText,
-            'bodyText' => $bodyText,
             'booking' => $booking,
             'fixedFees' => $fixedFees,
             'company_info' => $company_info,
-            'adjustments' => $adjustments
+            'adjustments' => $adjustments,
         ];
 
+        // Render the email body using the blade template
+        $emailBody = view('frontend.email.quotation_request', $data)->render();
+
         // Send email with attachment
-        Mail::send('frontend.email.email_template', $data, function ($message) use ($toEmail, $subject, $filePath) {
+        Mail::send([], [], function ($message) use ($toEmail, $subject, $filePath, $emailBody) {
             $message->to($toEmail)
                 ->subject($subject)
+                ->setBody($emailBody, 'text/html') // Set the email body and specify it's HTML
                 ->attach($filePath); // Attach the generated PDF
         });
     }
-
-
 
 
 
