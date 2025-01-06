@@ -21,7 +21,7 @@
         <tr>
             <td style="font-size:16px; color:#304A6F; line-height:1.8; padding:20px;">
                 Hi <strong>{{$customer->name}}</strong>,<br><br>
-                We’re writing to let you know that your request for <strong>{{$package->name}}</strong> has been cancelled. If you have any questions or need assistance, please don’t hesitate to reach out to us.<br><br>
+                We’re writing to let you know that your request for <strong>{{$package->title}}</strong> has been cancelled. If you have any questions or need assistance, please don’t hesitate to reach out to us.<br><br>
                 We look forward to serving you in the future!
             </td>
         </tr>

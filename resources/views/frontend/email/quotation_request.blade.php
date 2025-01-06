@@ -4,14 +4,14 @@
     <table width="100%" style="background-color:#ffffff; padding:20px 0; text-align:center; border-spacing:0; border:0;">
         <tr>
             <td>
-                <a href="https://groae.com" target="_blank">
+                <a href="{{ config('app.url') }}" target="_blank">
                     <img src="{{ asset('images/GroAE_Logo.png') }}" alt="GroAE Logo" width="250" style="margin-bottom:10px;">
                 </a>
             </td>
         </tr>
         <tr>
             <td style="font-size:24px; color:#304A6F; font-weight:bold; padding-bottom:10px;">
-                Your Invoice is Ready
+                Quotation Request Received
             </td>
         </tr>
     </table>
@@ -20,16 +20,10 @@
     <table width="100%" style="max-width:600px; margin:20px auto; padding:20px; background-color:#ffffff; border-spacing:0; border:0; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
         <tr>
             <td style="font-size:16px; color:#304A6F; line-height:1.8; padding:20px;">
-                Hi <strong>{{$customer->name}}</strong>,<br><br>
-                Your invoice for <strong>{{$package->title}}</strong> has been generated successfully. Please find the invoice details below:<br><br>
-                <strong>Invoice Number:</strong> {{$ref_num}}<br>
-                <strong>Total Amount:</strong> {{$packageBooking->package->currency}} {{$packageBooking->final_cost}}<br><br>
-                You can download your invoice by clicking the button below:
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align:center; padding:20px;">
-                <a href="{{$app_url}}/view_invoice/{{$packageBooking->id}}" style="background-color:#304A6F; color:#ffffff; padding:15px 30px; font-size:16px; font-weight:bold; text-decoration:none; border-radius:5px; display:inline-block;">Download Invoice</a>
+                Hi <strong>{{ $booking->customer->name }}</strong>,<br><br>
+                Thank you for reaching out to us. We have received your request for a quotation for
+                <strong>{{ $booking->package->title }}</strong>. Our team is reviewing your request and will get back to you shortly.<br><br>
+                If you have any additional information or documents to share, feel free to reply to this email.
             </td>
         </tr>
         <tr>
@@ -45,10 +39,18 @@
         <tr>
             <td style="font-size:14px; padding:10px;">
                 <strong>Follow us:</strong><br>
-                <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
-                <a href="https://www.instagram.com/gro.ae" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
-                <a href="https://www.youtube.com/@GroAE" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
-                <a href="https://www.linkedin.com/company/groae/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
+                <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ secure_asset('images/facebook.svg') }}" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/gro.ae" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ secure_asset('images/instagram.svg') }}" alt="Instagram">
+                </a>
+                <a href="https://www.youtube.com/@GroAE" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ secure_asset('images/youtube.svg') }}" alt="YouTube">
+                </a>
+                <a href="https://www.linkedin.com/company/groae/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ secure_asset('images/linkedin.svg') }}" alt="LinkedIn">
+                </a>
             </td>
         </tr>
         <tr>
