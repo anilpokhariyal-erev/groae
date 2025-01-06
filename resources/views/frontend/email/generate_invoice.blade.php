@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <td style="text-align:center; padding:20px;">
-                <a href="[Invoice Link]" style="background-color:#304A6F; color:#ffffff; padding:15px 30px; font-size:16px; font-weight:bold; text-decoration:none; border-radius:5px; display:inline-block;">Download Invoice</a>
+                <a href="{{$app_url}}/view_invoice/{{$packageBooking->id}}" style="background-color:#304A6F; color:#ffffff; padding:15px 30px; font-size:16px; font-weight:bold; text-decoration:none; border-radius:5px; display:inline-block;">Download Invoice</a>
             </td>
         </tr>
         <tr>
