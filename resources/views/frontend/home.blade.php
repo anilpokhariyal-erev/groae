@@ -217,6 +217,33 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function playVideo() {
+            // Show the video container
+            const videoContainer = document.getElementById('video-container');
+            videoContainer.style.display = 'block';
+
+            // Get the container dimensions to adjust the iframe size
+            const container = document.querySelector('.video-banner');
+            const containerWidth = container.offsetWidth;
+
+            // Calculate the height for 16:9 aspect ratio
+            const containerHeight = containerWidth * 9 / 16;
+
+            // Set the iframe size to match the container's width and calculated height
+            const iframe = document.getElementById('youtube-video');
+            iframe.width = containerWidth;
+            iframe.height = containerHeight;
+
+            // Set the iframe source with autoplay, mute, and restricted suggestions
+            iframe.src = `https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&fs=1`;
+
+            // Hide the thumbnail and play icon
+            document.querySelector('.video-thumbnail').style.display = 'none';
+        }
+
+    </script>
     <script>
         $(document).ready(function() {
             var hasAnimated = false; // Prevent multiple animations
@@ -265,20 +292,6 @@
                 animateNumbers();
             }
         });
-
-
-        function playVideo() {
-            // Show the video container
-            const videoContainer = document.getElementById('video-container');
-            videoContainer.style.display = 'block';
-
-            // Set the iframe source with autoplay, mute, and restricted suggestions
-            const iframe = document.getElementById('youtube-video');
-            iframe.src = `https://www.youtube.com/embed/{{$background_video}}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&fs=1`;
-
-            // Hide the thumbnail and play icon
-            document.querySelector('.video-thumbnail').style.display = 'none';
-        }
 
 
     </script>

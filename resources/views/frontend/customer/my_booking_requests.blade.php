@@ -5,9 +5,28 @@
             font-size: 14px;
             font-weight: bold;
         }
-
-
+        .price-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            align-items: flex-end; /* Align both price and status to the right */
+        }
+        .price-section .price {
+            margin-top: 10px;
+            font-size: 16px; /* Optional: Adjust font size for price */
+        }
+        .price-section .status-row {
+            margin-bottom: 5px; /* Optional: Adjust spacing between status and price */
+        }
+        .addPersonalDoc {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* Optional: Adjust margin between packages */
+        }
     </style>
+
     <section class="center-section">
         <div class="container">
             <div class="myProfileContainer">
@@ -31,13 +50,11 @@
                                 <h3>License Status: <span>{{ ucfirst($item->client_status) }}</span></h3>
                             </div>
                         @endforeach
-                            @if (count($package_bookings) == 0)
-                                <span class="noRecordFound">
-                                    <h3 class="transactionIdTxt">
-                                        Nothing to show here
-                                    </h3>
-                                </span>
-                            @endif
+                        @if (count($package_bookings) == 0)
+                            <span class="noRecordFound">
+                                <h3 class="transactionIdTxt">Nothing to show here</h3>
+                            </span>
+                        @endif
 
                         @foreach ($package_bookings as $package_booking)
                                 <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
@@ -50,15 +67,9 @@
                                             {{$package_booking->created_at->format('d/m/Y')}}
                                         </h3>
 
-                                        <span class="p-r-4">
-            @if($package_booking->original_cost != $package_booking->final_cost && $package_booking->payment_status != 1)
-                                                <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>
-                                            @endif
-                                            {{$package_booking->package->currency}} {{$package_booking->final_cost}}
-            <br>
-        </span>
-
-                                        <!-- Add status below h3 -->
+                                    <!-- Price and Status Section aligned to the right -->
+                                    <div class="price-section">
+                                        <!-- Status Row: Displayed above the price -->
                                         <div class="status-row">
                                             @if($package_booking->payment_status == 1)
                                                 <em style="color:green">Invoice Paid</em>
@@ -75,36 +86,42 @@
                                             @endif
                                         </div>
 
-                                        <img src="{{ secure_asset('images/cheveron-left.png') }}" alt="">
+                                        <!-- Price Section: Displayed below status -->
+                                        <span class="price">
+                                            @if($package_booking->original_cost != $package_booking->final_cost && $package_booking->payment_status != 1)
+                                                <del>{{$package_booking->package->currency}} {{$package_booking->original_cost}}</del><br>
+                                            @endif
+                                            {{$package_booking->package->currency}} {{$package_booking->final_cost}}
+                                            <br>
+                                        </span>
                                     </div>
-                                </a>
+                                </div>
+                            </a>
+                        @endforeach
 
-                            @endforeach
-                            <!-- Pagination Links -->
-                            <div class="pagination">
-                                <!-- Pagination Links -->
-                                @if (count($package_bookings))
-                                    <div class="commonViewMoreBtn">
-                                        <ul class="pager">
-                                            <!-- "Previous" button -->
-                                            <li>
-                                                <a class="{{ $package_bookings->currentPage() > 1 ? 'neTxt' : 'preTxt' }}"
-                                                   href="{{ $package_bookings->currentPage() > 1 ? $package_bookings->previousPageUrl() : 'javascript:void(0);' }}">
-                                                    Previous
-                                                </a>
-                                            </li>
-                                            <!-- "Next" button -->
-                                            <li>
-                                                <a class="{{ $package_bookings->hasMorePages() ? 'neTxt' : 'preTxt' }}"
-                                                   href="{{ $package_bookings->hasMorePages() ? $package_bookings->nextPageUrl() : 'javascript:void(0);' }}">
-                                                    Next
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                @endif
-
-                            </div>
+                        <!-- Pagination Links -->
+                        <div class="pagination">
+                            @if (count($package_bookings))
+                                <div class="commonViewMoreBtn">
+                                    <ul class="pager">
+                                        <!-- "Previous" button -->
+                                        <li>
+                                            <a class="{{ $package_bookings->currentPage() > 1 ? 'neTxt' : 'preTxt' }}"
+                                               href="{{ $package_bookings->currentPage() > 1 ? $package_bookings->previousPageUrl() : 'javascript:void(0);' }}">
+                                                Previous
+                                            </a>
+                                        </li>
+                                        <!-- "Next" button -->
+                                        <li>
+                                            <a class="{{ $package_bookings->hasMorePages() ? 'neTxt' : 'preTxt' }}"
+                                               href="{{ $package_bookings->hasMorePages() ? $package_bookings->nextPageUrl() : 'javascript:void(0);' }}">
+                                                Next
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>
 
                     </div>
                 </div>
