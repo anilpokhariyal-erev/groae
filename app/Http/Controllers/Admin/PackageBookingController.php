@@ -181,6 +181,7 @@ class PackageBookingController extends Controller
                 'final_cost' => $packageBooking->final_cost,
                 'ref_num' => $ref_num,
                 'packageBooking' => $packageBooking,
+                'app_url' => rtrim(config('app.url'), '/'),
             ];
 
             switch ($validatedData['status']) {
