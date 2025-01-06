@@ -42,17 +42,17 @@
 
     <!-- Footer Section -->
     <table width="100%" style="max-width:600px; margin:0 auto; padding:20px 0; background-color:#304A6F; color:#ffffff; text-align:center; border-spacing:0; border:0; border-radius:0 0 8px 8px;">
-         <tr>
+          <tr>
             <td style="font-size:14px; padding:10px;">
                 <strong>Follow us:</strong><br>
                 <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
-                    <img src="{{ $app_url }}/images/fb.svg" alt="Facebook" width="24" height="24" style="vertical-align:middle;">
+                    <img src="{{ $app_url }}/images/facebook.png" alt="Facebook" width="24" height="24" style="vertical-align:middle;">
                 </a>
                 <a href="https://www.instagram.com/gro.ae" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
-                    <img src="{{ $app_url }}/images/instagram.svg" alt="Instagram" width="24" height="24" style="vertical-align:middle;">
+                    <img src="{{ $app_url }}/images/instagram.png" alt="Instagram" width="24" height="24" style="vertical-align:middle;">
                 </a>
                 <a href="https://www.youtube.com/@GroAE" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
-                    <img src="{{ $app_url }}/images/youtube.svg" alt="YouTube" width="24" height="24" style="vertical-align:middle;">
+                    <img src="{{ $app_url }}/images/youtube.png" alt="YouTube" width="24" height="24" style="vertical-align:middle;">
                 </a>
                 <a href="https://www.linkedin.com/company/groae/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
                     <img src="{{ $app_url }}/images/linkedin.png" alt="LinkedIn" width="24" height="24" style="vertical-align:middle;">
