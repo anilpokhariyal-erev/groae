@@ -5,7 +5,7 @@
         <tr>
             <td>
                 <a href="https://groae.com" target="_blank">
-                    <img src="{{ asset('images/GroAE_Logo.png') }}" alt="GroAE Logo" width="250" style="margin-bottom:10px;">
+                    <img src="{{ $app_url }}/images/GroAE_Logo.png" alt="GroAE Logo" width="250" style="margin-bottom:10px;">
                 </a>
             </td>
         </tr>
@@ -42,13 +42,21 @@
 
     <!-- Footer Section -->
     <table width="100%" style="max-width:600px; margin:0 auto; padding:20px 0; background-color:#304A6F; color:#ffffff; text-align:center; border-spacing:0; border:0; border-radius:0 0 8px 8px;">
-        <tr>
+         <tr>
             <td style="font-size:14px; padding:10px;">
                 <strong>Follow us:</strong><br>
-                <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
-                <a href="https://www.instagram.com/gro.ae" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
-                <a href="https://www.youtube.com/@GroAE" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
-                <a href="https://www.linkedin.com/company/groae/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
+                <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ $app_url }}/images/facebook.svg" alt="Facebook" width="24" height="24" style="vertical-align:middle;">
+                </a>
+                <a href="https://www.instagram.com/gro.ae" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ $app_url }}/images/instagram.svg" alt="Instagram" width="24" height="24" style="vertical-align:middle;">
+                </a>
+                <a href="https://www.youtube.com/@GroAE" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ $app_url }}/images/youtube.svg" alt="YouTube" width="24" height="24" style="vertical-align:middle;">
+                </a>
+                <a href="https://www.linkedin.com/company/groae/" target="_blank" style="color:#ffffff; margin:0 10px; text-decoration:none;">
+                    <img src="{{ $app_url }}/images/linkedin.svg" alt="LinkedIn" width="24" height="24" style="vertical-align:middle;">
+                </a>
             </td>
         </tr>
         <tr>
