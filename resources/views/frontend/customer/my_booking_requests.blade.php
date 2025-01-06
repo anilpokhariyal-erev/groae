@@ -57,15 +57,15 @@
                         @endif
 
                         @foreach ($package_bookings as $package_booking)
-                            <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
-                                <div class="addPersonalDoc">
-                                    <h3 style="min-width: 35%; max-width: 35%;">
-                                        <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
-                                            {{$package_booking?->package?->freezone?->name}}
-                                        </span><br><br>
-                                        {{$package_booking->package->title}}<br>
-                                        {{$package_booking->created_at->format('d/m/Y')}}
-                                    </h3>
+                                <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
+                                    <div class="addPersonalDoc">
+                                        <h3 style="min-width: 35%;max-width: 45%;">
+            <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
+                {{$package_booking?->package?->freezone?->name}}
+            </span><br><br>
+                                            {{$package_booking->package->title}}<br>
+                                            {{$package_booking->created_at->format('d/m/Y')}}
+                                        </h3>
 
                                     <!-- Price and Status Section aligned to the right -->
                                     <div class="price-section">
