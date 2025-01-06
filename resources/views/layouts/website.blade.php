@@ -233,7 +233,7 @@
                         <p class="footerTitle">Liwa Tower P.O. Box 901,
                             Abu Dhabi, UAE - 3430909</p>
                         <div class="socialLinks">
-                            <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank"><img src="{{ secure_asset('images/facebook.svg') }}" alt=""></a>
+                            <a href="https://www.facebook.com/GroAEbusinesssetup/" target="_blank"><img src="{{ secure_asset('images/fb.svg') }}" alt=""></a>
                             <a href="https://www.instagram.com/gro.ae" target="_blank"><img src="{{ secure_asset('images/instagram.svg') }}" alt=""></a>
                             <a href="https://www.youtube.com/@GroAE" target="_blank"><img src="{{ secure_asset('images/youtube.svg') }}" alt=""></a>
                             <a href="https://www.linkedin.com/company/groae/" target="_blank"><img src="{{ secure_asset('images/linkedin.svg') }}" alt=""></a>
