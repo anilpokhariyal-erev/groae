@@ -133,30 +133,23 @@ class TransactionController extends Controller
             // Save the transaction
             $transaction->save();
 
-            $headerText = "Payment Successful!";
-            $bodyText = "Hi <b>{$transaction->packageBooking->customer->first_name} {$transaction->packageBooking->customer->last_name}</b>,<br><br>";
-            $bodyText .= "We are happy to inform you that your payment of <br>";
-            $bodyText .= "{$transaction->packageBooking->package->currency} {$transaction->packageBooking->final_cost} for {$transaction->packageBooking->package->title} was<br>";
-            $bodyText .= "successful.<br>";
-            $bodyText .= "Thank you for choosing GroAE. You can find your<br>";
-            $bodyText .= "payment details attached to this email.<br><br>";
-            $bodyText .= "<div style='display: flex; justify-content: center;'><a><button style=\"background-color: #304a6f; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;\">Download Receipt</button></a></div><br><br>";
-            $bodyText .= "<b>Regards</b>,<br>";
-            $bodyText .= "<b>Team GroAE</b>";
-
-            $data = [
-                'message' => 'Please find your PDF quote attached.',
-                'headerText' => $headerText,
-                'bodyText' => $bodyText,
-            ];
             $toEmail = $transaction->packageBooking->customer->email; // Recipient's email address
             $subject = 'Groae Package Booking Success';
-
-            // Send email with attachment
-            Mail::send('frontend.email.email_template', $data, function ($message) use ($toEmail, $subject) {
+            $company_info = Setting::where('section_key', 'company_info')
+                        ->pluck('value', 'title')
+                        ->toArray();
+            $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($transaction->packageBooking->id, 5, '0', STR_PAD_LEFT);
+            $data = [
+                'customer' => $transaction->packageBooking->customer,
+                'package' => $transaction->packageBooking->package,
+                'final_cost' => $transaction->packageBooking->final_cost,
+                'ref_num' => $ref_num,
+                'packageBooking' => $transaction->packageBooking,
+                'app_url' => rtrim(config('app.url'), '/'),
+            ];
+             Mail::send('frontend.email.payment_success', $data, function ($message) use ($toEmail, $subject) {
                 $message->to($toEmail)
                     ->subject($subject);
-//                    ->attach($filePath); // Attach the generated PDF
             });
     
             return redirect()->back()->with('success', 'Transaction status updated to Paid.');
@@ -190,29 +183,24 @@ class TransactionController extends Controller
             'payment_status' => 2,
             'remarks' => $newRemark,
         ]);
-
-        $headerText = "Refund Processed";
-        $bodyText = "Hi <b>{$transaction->packageBooking->customer->first_name} {$transaction->packageBooking->customer->last_name}</b>,<br><br>";
-        $bodyText .= "we have successfully processed your refund of<br>";
-        $bodyText .= "{$transaction->packageBooking->package->currency} {$transaction->packageBooking->final_cost} for {$transaction->packageBooking->package->title}. The amount<br>";
-        $bodyText .= "should reflect in your account within 3-5 business<br>";
-        $bodyText .= "days.<br>";
-        $bodyText .= "If you have any questions, feel free to contact us.<br>";
-        $bodyText .= "<b>Regards</b>,<br>";
-        $bodyText .= "<b>Team GroAE</b>";
-
-        $data = [
-            'message' => 'Please find your PDF quote attached.',
-            'headerText' => $headerText,
-            'bodyText' => $bodyText,
-        ];
         $toEmail = $transaction->packageBooking->customer->email; // Recipient's email address
         $subject = 'Groae Package Booking Refund Processed';
+        $company_info = Setting::where('section_key', 'company_info')
+                        ->pluck('value', 'title')
+                        ->toArray();
+        $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($transaction->packageBooking->id, 5, '0', STR_PAD_LEFT);
+        $data = [
+            'customer' => $transaction->packageBooking->customer,
+            'package' => $transaction->packageBooking->package,
+            'final_cost' => $transaction->packageBooking->final_cost,
+            'ref_num' => $ref_num,
+            'packageBooking' => $transaction->packageBooking,
+            'app_url' => rtrim(config('app.url'), '/'),
+        ];
         // Send email with attachment
-        Mail::send('frontend.email.email_template', $data, function ($message) use ($toEmail, $subject) {
+        Mail::send('frontend.email.refund_processed', $data, function ($message) use ($toEmail, $subject) {
             $message->to($toEmail)
                 ->subject($subject);
-//                    ->attach($filePath); // Attach the generated PDF
         });
 
 
