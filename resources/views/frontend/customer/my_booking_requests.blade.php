@@ -42,7 +42,7 @@
                         @foreach ($package_bookings as $package_booking)
                                 <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                                     <div class="addPersonalDoc">
-                                        <h3 style="min-width: 35%;max-width: 35%;">
+                                        <h3 style="min-width: 35%;max-width: 45%;">
             <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
                 {{$package_booking?->package?->freezone?->name}}
             </span><br><br>
