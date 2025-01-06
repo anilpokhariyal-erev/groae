@@ -476,19 +476,13 @@ class CostCalculatorController extends Controller
             'adjustments' => $adjustments,
         ];
 
-        // Render the email body using the blade template
-        $emailBody = view('frontend.email.quotation_request', $data)->render();
-
         // Send email with attachment
-        Mail::send([], [], function ($message) use ($toEmail, $subject, $filePath, $emailBody) {
+        Mail::send('frontend.email.quotation_request', $data, function ($message) use ($toEmail, $subject, $filePath) {
             $message->to($toEmail)
                 ->subject($subject)
-                ->setBody($emailBody, 'text/html') // Set the email body and specify it's HTML
                 ->attach($filePath); // Attach the generated PDF
         });
     }
-
-
 
     public function raisePackageInvoice(Request $request)
     {
