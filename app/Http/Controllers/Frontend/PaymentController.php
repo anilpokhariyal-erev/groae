@@ -89,31 +89,28 @@ class PaymentController extends Controller
             $package_booking->payment_method = "card";
             $package_booking->save();
 
-            $headerText = "Payment Successful!";
-            $bodyText = "Hi <b>{$package_booking->customer->first_name} {$package_booking->customer->last_name}</b>,<br><br>";
-            $bodyText .= "We are happy to inform you that your payment of <br>";
-            $bodyText .= "{$package_booking->package->currency} {$package_booking->final_cost} for {$package_booking->package->title} was<br>";
-            $bodyText .= "successful.<br>";
-            $bodyText .= "Thank you for choosing GroAE. You can find your<br>";
-            $bodyText .= "payment details attached to this email.<br><br>";
-            $bodyText .= "<div style='display: flex; justify-content: center;'><a><button style=\"background-color: #304a6f; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;\">Download Receipt</button></a></div><br><br>";
-            $bodyText .= "<b>Regards</b>,<br>";
-            $bodyText .= "<b>Team GroAE</b>";
-
+            $company_info = Setting::where('section_key', 'company_info')
+                        ->pluck('value', 'title')
+                        ->toArray();
+            $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($packageBooking->id, 5, '0', STR_PAD_LEFT);
             $data = [
-                'message' => 'Please find your PDF quote attached.',
-                'headerText' => $headerText,
-                'bodyText' => $bodyText,
+                'customer' => $package_booking->customer,
+                'package' => $package_booking->package,
+                'final_cost' => $package_booking->final_cost,
+                'ref_num' => $ref_num,
+                'packageBooking' => $package_booking,
+                'app_url' => rtrim(config('app.url'), '/'),
             ];
             $toEmail = $package_booking->customer->email; // Recipient's email address
-            $subject = 'Groae Package Booking Success';
+            $subject = 'Payment Successful!';
+            $view = 'frontend.email.payment_success';
 
-            // Send email with attachment
-            Mail::send('frontend.email.email_template', $data, function ($message) use ($toEmail, $subject) {
+            // Send email
+            Mail::send($view, $data, function ($message) use ($toEmail, $subject) {
                 $message->to($toEmail)
                     ->subject($subject);
-//                    ->attach($filePath); // Attach the generated PDF
             });
+
             // Return the session data to the view
             return view('frontend.customer.checkout-success', [
                 'session' => $session,
