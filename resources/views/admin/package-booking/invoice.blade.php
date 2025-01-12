@@ -198,23 +198,17 @@
                                 <div class="whitespace-nowrap text-slate-400">Net total:</div>
                               </td>
                               <td class="border-b p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}} {{number_format($booking->original_cost-$fixedCost,2)}}</div>
+
+                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}}
+{{--                                  {{dd($booking->original_cost +$adjustments->total_cost -$fixedCost)}}--}}
+                                  @if($adjustments && $adjustments->total_cost <> 0)
+                                    {{ number_format($booking->original_cost + $adjustments->total_cost, 2) }}
+                                  @else
+                                    {{ number_format($booking->original_cost, 2) }}
+                                  @endif
+                                 </div>
                               </td>
                             </tr>
-                            @if($adjustments && $adjustments->total_cost<>0)
-                            <tr>
-                              <td class="bg-main p-3">
-                                <div class="whitespace-nowrap font-bold text-white">Adjustments:</div>
-                              </td>
-                              <td class="bg-main p-3 text-right">
-                                <div class="whitespace-nowrap font-bold text-white">
-                                  {{$booking->package->currency}}
-                                  {{number_format($adjustments?->total_cost,2)}}
-                                  @php($booking->final_cost += $adjustments?->total_cost)
-                                </div>
-                              </td>
-                            </tr>
-                            @endif
 
                             @php($fixedCost = 0)
                             @foreach($booking->bookingDetails as $detail)
