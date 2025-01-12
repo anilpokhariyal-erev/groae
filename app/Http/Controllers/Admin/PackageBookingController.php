@@ -100,6 +100,12 @@ class PackageBookingController extends Controller
             ->where('attribute_name', 'Adjustments')
             ->first();
 
+        PackageBookingDetail::where('package_booking_id', $validatedData['package_booking_id'])
+            ->where('attribute_name', 'FixedFee')
+            ->delete();
+
+
+        $booking  = PackageBooking::where('id', $validatedData['package_booking_id'])->first();
         // If no existing adjustment, create a new one
         if (!$packageDetail) {
             $packageDetail = new PackageBookingDetail();
@@ -113,6 +119,32 @@ class PackageBookingController extends Controller
         $packageDetail->total_cost = $validatedData['adjustments'];
         $packageDetail->description = $validatedData['description'] ?? null;
         $packageDetail->save();
+        $fixed = 0;
+        $fixedFees = FixedFee::whereIn('freezone_id', [$booking->package->freezone_id, null])->where('status', 1)->get();
+                 foreach ($fixedFees as $fixedFee) {
+                     $fixedCost = $fixedFee->type != "flat"
+                         ? (($booking->original_cost + $validatedData['adjustments']) * $fixedFee->value / 100)
+                         : $fixedFee->value;
+
+                     $var = $fixedFee->type != "flat" ? "%" : '';
+
+                     $packageBookingDetail = new PackageBookingDetail();
+                     $packageBookingDetail->package_booking_id = $booking->id;
+                     $packageBookingDetail->attribute_name = "FixedFee";
+                     $packageBookingDetail->attribute_value = $fixedFee->label.''.'('.$fixedFee->value.''.$var.')';
+                     $packageBookingDetail->quantity = 1;
+                     $packageBookingDetail->price_per_unit = number_format($fixedCost, 2, '.', '');
+                     $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');
+                     $packageBookingDetail->status = 1;
+                     $packageBookingDetail->save();
+                     $fixed += $fixedCost;
+                 }
+
+        if ($booking){
+            $booking->discount_amount = $validatedData['adjustments'];
+            $booking->final_cost = $booking->original_cost+$validatedData['adjustments']+$fixed;
+            $booking->save();
+        }
 
         // Return a response with success message
         return redirect()->back()->with('success', 'Adjustments successfully updated!');
@@ -144,29 +176,49 @@ class PackageBookingController extends Controller
             if (isset($validatedData['remarks'])) {
                 $packageBooking->remarks = $validatedData['remarks'];
             }
+            $packageDetail = PackageBookingDetail::where('package_booking_id', $validatedData['package_booking_id'])
+                ->where('attribute_name', 'Adjustments')
+                ->first();
+
+            PackageBookingDetail::where('package_booking_id', $validatedData['package_booking_id'])
+                ->where('attribute_name', 'FixedFee')
+                ->delete();
 
             $fixedCostTotal = 0;
-//             if ($validatedData['status'] == 2) {
-//                 $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status', 1)->get();
-//                 foreach ($fixedFees as $fixedFee) {
-//                     $fixedCost = $fixedFee->type != "fixed" ?
-//                                  ($packageBooking->final_cost * $fixedFee->value / 100) :
-//                                  $fixedFee->value;
-//
-//                     $packageBookingDetail = new PackageBookingDetail();
-//                     $packageBookingDetail->package_booking_id = $packageBooking->id;
-//                     $packageBookingDetail->attribute_name = $fixedFee->label . " " . $fixedFee->type;
-//                     $packageBookingDetail->attribute_value = $fixedFee->value;
-//                     $packageBookingDetail->quantity = 1;
-//                     $packageBookingDetail->price_per_unit = number_format($fixedCost, 2, '.', '');
-//                     $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');
-//                     $packageBookingDetail->status = 1;
-//                     $packageBookingDetail->save();
-//                     $fixedCostTotal += $fixedCost;
-//                 }
-//             }
+             if ($validatedData['status'] == 2) {
+                 $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status', 1)->get();
+                 foreach ($fixedFees as $fixedFee) {
+                     if ($packageDetail && $packageDetail->total_cost!=0) {
+                         $fixedCost = $fixedFee->type != "flat"
+                             ? (($packageBooking->original_cost + $packageDetail->total_cost) * $fixedFee->value / 100)
+                             : $fixedFee->value;
+                     }else{
+                         $fixedCost = $fixedFee->type != "flat"
+                             ? ($packageBooking->original_cost * $fixedFee->value / 100)
+                             : $fixedFee->value;
+                     }
 
-            $packageBooking->final_cost = $packageBooking->original_cost + $fixedCostTotal;
+                     $var = $fixedFee->type != "flat" ? "%" : '';
+
+                     $packageBookingDetail = new PackageBookingDetail();
+                     $packageBookingDetail->package_booking_id = $packageBooking->id;
+                     $packageBookingDetail->attribute_name = "FixedFee";
+                     $packageBookingDetail->attribute_value = $fixedFee->label.''.'('.$fixedFee->value.''.$var.')';
+                     $packageBookingDetail->quantity = 1;
+                     $packageBookingDetail->price_per_unit = number_format($fixedCost, 2, '.', '');
+                     $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');
+                     $packageBookingDetail->status = 1;
+                     $packageBookingDetail->save();
+                     $fixedCostTotal += $fixedCost;
+                 }
+             }
+             if ($packageDetail && $packageDetail->total_cost!=0) {
+                 $cost = $packageBooking->original_cost + $fixedCostTotal + $packageDetail->total_cost;
+             }else{
+                 $cost = $packageBooking->original_cost + $fixedCostTotal;
+             }
+
+            $packageBooking->final_cost = $cost;
             $packageBooking->save();
 
             // Set up email data
