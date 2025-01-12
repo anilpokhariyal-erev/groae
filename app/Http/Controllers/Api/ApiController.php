@@ -13,10 +13,7 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
     public function getPackageActivities(Request $request) {
-        $activity_groups = explode("___", $request->activityIds);
-        $activityGroupIds = array_filter(array_map(function($activity_group) {
-            return explode('|', $activity_group)[1] ?? null;
-        }, $activity_groups));
+        $activityGroupIds = explode(",", $request->activityIds);
         $package_id = $request->package_id;
         
         $activities = PackageActivity::join('activities','activities.id','=','package_activities.activity_id')
@@ -24,7 +21,6 @@ class ApiController extends Controller
                                     ->where('package_activities.package_id', $package_id)
                                     ->whereIn('activities.activity_group_id', $activityGroupIds)
                                     ->where('activities.status', 1)
-                                    // ->groupBy('package_activities.activity_id')
                                     ->select(
                                         'package_activities.id as id', 
                                         'licenses.name as license', 
