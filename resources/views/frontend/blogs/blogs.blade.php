@@ -86,27 +86,25 @@
                     <div class="trendingBlog">
                         @foreach ($blogs as $blog_val)
                             <div>
-                                <a href="#">
-                                    <div class="blogLayer articleBlog">
-                                        <div class="topLayer firstImgLayer">
-                                            <img src='{{ $blog_val->image ? Storage::url($blog_val->image) : asset('images/placeholder.png') }}'
-                                                alt="">
-                                        </div>
-                                        <div class="bottomLayer">
-                                            <h2 class="blogDateTxt">
-                                                {{ date('d F Y', strtotime($blog_val->created_at)) }}
-                                            </h2>
-                                            <h3 class="blogHeading">{{ ucwords($blog_val->title) }} </h3>
-                                            <p class="blogDetail">{!! Str::limit($blog_val->short_description, 130, ' ...') !!}</p>
-                                            <button class="viewDetailBtn"><a
-                                                    href="{{ route('blog-detail', $blog_val->slug) }}"
-                                                    class="viewInnrTxt">Read More
-                                                    <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
-                                                </a>
-                                            </button>
-                                        </div>
+                                <div class="blogLayer articleBlog">
+                                    <div class="topLayer firstImgLayer">
+                                        <img src='{{ $blog_val->image ? Storage::url($blog_val->image) : asset('images/placeholder.png') }}'
+                                            alt="">
                                     </div>
-                                </a>
+                                    <div class="bottomLayer">
+                                        <h2 class="blogDateTxt">
+                                            {{ date('d F Y', strtotime($blog_val->created_at)) }}
+                                        </h2>
+                                        <h3 class="blogHeading">{{ ucwords($blog_val->title) }} </h3>
+                                        <p class="blogDetail">{!! Str::limit($blog_val->short_description, 130, ' ...') !!}</p>
+                                        <button class="viewDetailBtn"><a
+                                                href="{{ route('blog-detail', $blog_val->slug) }}"
+                                                class="viewInnrTxt">Read More
+                                                <img src="{{ secure_asset('images/leftarrow.png') }}" alt="">
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         @endforeach
                     </div>

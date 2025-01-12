@@ -131,7 +131,7 @@ class CustomerController extends Controller
         // Filter documents based on 'show_pending'
         $query = $customer->customer_documents()->where('request_type', 'document');
         if ($show_pending == 1) {
-            $query->whereIn('status', ['requested']);
+            $query->whereIn('status', ['requested', 'rejected']);
         }
         $customer_documents = $query->paginate(3); // Adjust pagination count as needed
 
