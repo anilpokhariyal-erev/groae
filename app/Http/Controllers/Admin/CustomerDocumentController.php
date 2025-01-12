@@ -58,7 +58,7 @@ class CustomerDocumentController extends Controller
             $customerDocument->customer_id = $booking_detail->customer_id;
             $customerDocument->save();
 
-            return redirect()->route('package-bookings.show', $request->booking_id)->with('success', 'Document submitted successfully');
+            return redirect()->route('package-bookings.index')->with('success', 'Document submitted successfully');
         } catch (\Exception $e) {
             return back()->with('error', ResponseMessage::WrongMsg);
         }
