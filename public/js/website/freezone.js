@@ -145,7 +145,9 @@ const updateActivitiesList = value => {
   dom_element.append(new Option('Loading...', '', true, true)).trigger('change');
   const package_id = $('#package_id').val();
   if (value && package_id) {
-    fetch(`${url}/api/package/get-activities?package_id=${package_id}&activityIds=${value}`, {
+    const values = value.split('__');
+    const ids = values.map(value => value.split('|')[1]);
+    fetch(`${url}/api/package/get-activities?package_id=${package_id}&activityIds=${ids}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`, // Ensure token is correct
