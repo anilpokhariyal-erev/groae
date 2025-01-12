@@ -12,7 +12,7 @@
                 <div class="blogDetailWrapper">
                     <div class="detailContainer1">
                         <div class="blogImage">
-                            <img style="max-width: 750px; max-height: 500px"
+                            <img style="width:100%"
                                 src='{{ $blog_detail->image ? Storage::url($blog_detail->image) : asset('images/placeholder.png') }}'
                                 alt="">
                         </div>
