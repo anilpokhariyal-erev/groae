@@ -2106,10 +2106,18 @@ input[type='search']::-webkit-search-results-decoration {
 .compareIconWrapper h3 {
   color: #fff;
   text-align: center;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 18px;
   font-weight: 500;
 }
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+  .compareIconWrapper h3 {
+    font-size: 10px;
+  }
+}
+
 
 .selectBoxContrller {
   display: flex;
@@ -2684,10 +2692,18 @@ ul.settingListInnr {
 .consultationBtn a {
   color: #fff;
   text-align: center;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 18px;
   font-weight: 500;
 }
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+  .consultationBtn a {
+    font-size: 10px;
+  }
+}
+
 
 .calculateCostBtn {
   background: none;
