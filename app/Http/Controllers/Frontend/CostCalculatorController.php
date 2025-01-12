@@ -601,7 +601,7 @@ class CostCalculatorController extends Controller
 
             if (!empty($validatedData['fixedFee'])) {
                 foreach ($validatedData['fixedFee'] as $fixedFees) {
-                    $totalCost = (float) str_replace(',', '',$fixedFees['price']);;
+                    $totalCost = (float) str_replace(',', '',$fixedFees['price']);
                         $packageBookingDetail = new PackageBookingDetail();
                         $packageBookingDetail->package_booking_id = $packageBooking->id;
                         $packageBookingDetail->attribute_name = "FixedFee";
