@@ -146,25 +146,25 @@ class PackageBookingController extends Controller
             }
 
             $fixedCostTotal = 0;
-            if ($validatedData['status'] == 2) {
-                $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status', 1)->get();
-                foreach ($fixedFees as $fixedFee) {
-                    $fixedCost = $fixedFee->type != "fixed" ?
-                                 ($packageBooking->final_cost * $fixedFee->value / 100) :
-                                 $fixedFee->value;
-
-                    $packageBookingDetail = new PackageBookingDetail();
-                    $packageBookingDetail->package_booking_id = $packageBooking->id;
-                    $packageBookingDetail->attribute_name = $fixedFee->label . " " . $fixedFee->type;
-                    $packageBookingDetail->attribute_value = $fixedFee->value;
-                    $packageBookingDetail->quantity = 1;
-                    $packageBookingDetail->price_per_unit = number_format($fixedCost, 2, '.', '');
-                    $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');
-                    $packageBookingDetail->status = 1;
-                    $packageBookingDetail->save();
-                    $fixedCostTotal += $fixedCost;
-                }
-            }
+//             if ($validatedData['status'] == 2) {
+//                 $fixedFees = FixedFee::whereIn('freezone_id', [$packageBooking->package->freezone_id, null])->where('status', 1)->get();
+//                 foreach ($fixedFees as $fixedFee) {
+//                     $fixedCost = $fixedFee->type != "fixed" ?
+//                                  ($packageBooking->final_cost * $fixedFee->value / 100) :
+//                                  $fixedFee->value;
+//
+//                     $packageBookingDetail = new PackageBookingDetail();
+//                     $packageBookingDetail->package_booking_id = $packageBooking->id;
+//                     $packageBookingDetail->attribute_name = $fixedFee->label . " " . $fixedFee->type;
+//                     $packageBookingDetail->attribute_value = $fixedFee->value;
+//                     $packageBookingDetail->quantity = 1;
+//                     $packageBookingDetail->price_per_unit = number_format($fixedCost, 2, '.', '');
+//                     $packageBookingDetail->total_cost = number_format($fixedCost, 2, '.', '');
+//                     $packageBookingDetail->status = 1;
+//                     $packageBookingDetail->save();
+//                     $fixedCostTotal += $fixedCost;
+//                 }
+//             }
 
             $packageBooking->final_cost = $packageBooking->original_cost + $fixedCostTotal;
             $packageBooking->save();
