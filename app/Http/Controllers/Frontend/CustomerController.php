@@ -109,26 +109,47 @@ class CustomerController extends Controller
         return back()->with('success', 'Requested details has been submitted.');
     }
 
-    function view_uploads()
+    function view_uploads(Request $request)
     {
         // Get the authenticated user
         $customer = Auth::guard('customer')->user()->load('customer_documents');
 
         // Count pending details and document requests
-        $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
-        $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
+        $pending_detail_count = $customer->customer_documents()
+            ->where('request_type', 'detail')
+            ->whereIn('status', ['requested', 'rejected'])
+            ->count();
 
-        // Paginate documents (3 per page as an example)
-        $customer_documents = $customer->customer_documents()
+        $pending_document_count = $customer->customer_documents()
             ->where('request_type', 'document')
-            ->paginate(3); // You can adjust the pagination count here
+            ->whereIn('status', ['requested', 'rejected'])
+            ->count();
 
-        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
+        // Retrieve 'show_pending' parameter from the request, default to 1
+        $show_pending = $request->query('show_pending', 1);
+
+        // Filter documents based on 'show_pending'
+        $query = $customer->customer_documents()->where('request_type', 'document');
+        if ($show_pending == 1) {
+            $query->whereIn('status', ['requested']);
+        }
+        $customer_documents = $query->paginate(3); // Adjust pagination count as needed
+
+        $package_bookings_count = $customer->package_bookings()
+            ->where('status', 2)
+            ->where('payment_status', '!=', '1')
+            ->count();
 
         // Return the customer uploads page with paginated data
-        return view('frontend.customer.my_uploads')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'customer_documents', 'package_bookings_count'));
+        return view('frontend.customer.my_uploads')->with(compact(
+            'customer',
+            'pending_detail_count',
+            'pending_document_count',
+            'customer_documents',
+            'package_bookings_count',
+            'show_pending' // Pass 'show_pending' to the view
+        ));
     }
-
 
     function update_uploads(UploadUpdateRequest $request)
     {

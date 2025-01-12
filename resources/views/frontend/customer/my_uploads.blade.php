@@ -37,6 +37,16 @@
         .custom-red-alert .close-alert:hover {
             color: #f5c6cb;
         }
+
+        .pending-toggle {
+            margin-left: 0; /* Default margin for mobile view */
+        }
+
+        @media (min-width: 768px) { /* Adjust the breakpoint as needed */
+            .pending-toggle {
+                margin-left: 80%;
+            }
+        }
     </style>
 
     <section>
@@ -54,6 +64,7 @@
 
                 <div class="profileWrapper">
                     @include('frontend.components.profile_sidebar')
+
                     <div class="profileDetailWrapper">
                         <form method="POST" action="{{ route('customer.upload.update') }}" id="uploadForm" enctype="multipart/form-data">
                             @csrf
@@ -80,6 +91,9 @@
                                     <h3 class="transactionIdTxt">Nothing to show here</h3>
                                 </span>
                             @endif
+                            <span class="pending-toggle">
+                                Show Pending <input type="checkbox" name="show_pending" {{ $show_pending == 1 ? 'checked' : '' }}>
+                            </span>
 
                             <!-- Loop through the paginated documents -->
                             @foreach ($customer_documents as $item)
@@ -141,5 +155,18 @@
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkbox = document.querySelector('input[name="show_pending"]');
+
+            checkbox.addEventListener("change", function () {
+                const url = new URL(window.location.href);
+                // Update the 'show_pending' parameter based on checkbox state
+                url.searchParams.set("show_pending", checkbox.checked ? "1" : "0");
+                // Reload the page with the updated URL
+                window.location.href = url.toString();
+            });
+        });
+    </script>
 
 </x-website-layout>
