@@ -73,14 +73,49 @@
     </tr>
     </thead>
     <tbody>
+    @php($visaDetails=[])
     @foreach ($booking->bookingDetails as $detail)
-        <tr>
-            <td>{{ $detail->attribute_name }} ({{ $detail->attribute_value }})</td>
-            <td>{{ $detail->quantity }}</td>
-            <td>{{ number_format($detail->price_per_unit, 2) }}</td>
-            <td>{{ number_format($detail->price_per_unit * $detail->quantity, 2) }}</td>
-        </tr>
+        @if(strpos($detail->attribute_name, 'Visa Detail') === 0)
+                        <?php
+                            $pattern = '/^(Visa Detail)\s(\d+)\s:\s(.+)$/';
+                            preg_match($pattern, $detail->attribute_name, $matches);
+                            if (count($matches) > 2) {
+                                $key = (int)$matches[2];
+                                if (!isset($visaDetails[$key])) {
+                                    $visaDetails[$key] = []; // Initialize the array if it doesn't exist
+                                }
+                                $visaDetails[$key][] = [
+                                    "attribute_name" => $matches[3]."(".$detail->attribute_value.")",
+                                    "qty" => 1,
+                                    "price" => $detail->price_per_unit
+                                ];
+                            }
+                        ?>
+        @else
+            <tr>
+                <td>{{ $detail->attribute_name }} ({{ $detail->attribute_value }})</td>
+                <td>{{ $detail->quantity }}</td>
+                <td>{{ number_format($detail->price_per_unit, 2) }}</td>
+                <td>{{ number_format($detail->price_per_unit * $detail->quantity, 2) }}</td>
+            </tr>
+        @endif
     @endforeach
+    @foreach ($visaDetails as $visaDetail)
+        <tr>
+            <td>
+                @php($visaCost = 0)
+                @php($visaQty=1)
+                @foreach($visaDetail as $vd)
+                    {{$vd['attribute_name']}},
+                    @php($visaCost += $vd["price"])
+                    @php($visaQty = $vd["qty"])
+                @endforeach
+            </td>
+            <td>{{$visaQty}}</td>
+            <td>{{number_format($visaCost,2)}}</td>
+            <td>{{number_format($visaQty*$visaCost,2)}}</td>
+        </tr>
+      @endforeach
 
     <!-- Add any additional rows for adjustments or other charges -->
     @if ($adjustments && $adjustments->total_cost != 0)

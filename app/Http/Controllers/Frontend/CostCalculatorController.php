@@ -584,11 +584,20 @@ class CostCalculatorController extends Controller
 
             // Save visa details as package booking details
             if (!empty($validatedData['visaDetails'])) {
+                $visaAttrStart = "";
+                $sr = 0;
                 foreach ($validatedData['visaDetails'] as $visaDetail) {
                     foreach ($visaDetail['items'] as $item) {
+                        if($visaAttrStart == $item['attribute']){
+                            $sr += 1;
+                        }
+                        if($visaAttrStart==""){
+                           $visaAttrStart = $item['attribute'];
+                        }
+
                         $packageBookingDetail = new PackageBookingDetail();
                         $packageBookingDetail->package_booking_id = $packageBooking->id;
-                        $packageBookingDetail->attribute_name = "Visa Detail: " . $item['attribute'];
+                        $packageBookingDetail->attribute_name = "Visa Detail ".$sr." : " . $item['attribute'];
                         $packageBookingDetail->attribute_value = $item['value'];
                         $packageBookingDetail->quantity = 1;
                         $packageBookingDetail->price_per_unit = $item['price'];
