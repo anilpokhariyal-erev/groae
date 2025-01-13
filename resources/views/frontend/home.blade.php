@@ -11,31 +11,24 @@
             color: #fff;
         }
 
-        /* Apply margin-left only for non-mobile views */
-        @media (min-width: 768px) {
-            .overlayText {
-                margin-left: 25%;
-            }
-        }
 
-    
         .overlay-text {
-            font-size: 2rem; /* Adjust font size */
+            font-size: 3rem; /* Adjust font size */
             font-weight: bold;
             margin: 10px 0;
             opacity: 0;
-            position: absolute;
+            position: relative;
             transition: opacity 1s ease-in-out;
         }
-    
+
         .line1, .line2, .line3 {
             animation: fadeInOut 9s infinite ease-in-out;
         }
-    
+
         .line1 { animation-delay: 0s; }
         .line2 { animation-delay: 1s; }
         .line3 { animation-delay: 2s; }
-    
+
         @keyframes fadeInOut {
             0%, 33% { opacity: 0; }
             11%, 22% { opacity: 1; }

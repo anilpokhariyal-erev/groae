@@ -133,7 +133,7 @@
                                     @endforeach
                                 @endif
                             </select>
-                            <label for="activity_group">Activity Group</label>
+                            <label for="activity_group">Activity Group [Max: {{$freezone_data->max_activity_group_allowed}}]</label>
                             <p id="activity_group_error" class="errorMessage"></p>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_group')" />
                         </div>
@@ -149,7 +149,7 @@
                                     data-dependent-selection="activities_selection" class="inputField2 cursor arrowPlace">
                                 <option value="">Choose an Option</option>
                             </select>
-                            <label for="activities">Activity</label>
+                            <label for="activities">Activity [Max: {{$freezone_data->max_activity_allowed}}]</label>
                             <p id="activities_error" class="errorMessage"></p>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activities')" />
                         </div>
@@ -186,6 +186,27 @@
                     return false;
                @endif
             @endif
+
+            // Validate max allowed activity groups selection
+            let maxActivityGroups = "{{$freezone_data->max_activity_group_allowed}}"; // Example max value for activity groups
+            let selectedActivityGroups = $('#activity_group').val();
+
+            if (selectedActivityGroups && selectedActivityGroups.length > maxActivityGroups) {
+                alert(`You can select a maximum of ${maxActivityGroups} activity groups.`);
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+
+            // Validate max allowed activities selection
+            let maxActivities = "{{$freezone_data->max_activity_allowed}}"; // Example max value for activities
+            let selectedActivities = $('#activities').val();
+
+            if (selectedActivities && selectedActivities.length > maxActivities) {
+                alert(`You can select a maximum of ${maxActivities} activities.`);
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+
             // Select all inputs of type number within the parent class (or any specific container)
             let inputs = document.querySelectorAll('.signupFormItems input[type="number"]');
 
