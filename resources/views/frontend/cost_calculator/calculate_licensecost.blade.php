@@ -189,7 +189,7 @@
 
             // Validate max allowed activity groups selection
             let maxActivityGroups = "{{$freezone_data->max_activity_group_allowed}}"; // Example max value for activity groups
-            let selectedActivityGroups = $('#activity_group').val();
+            let selectedActivityGroups = $('#activity_group_selection').val().split('__');
 
             if (selectedActivityGroups && selectedActivityGroups.length > maxActivityGroups) {
                 alert(`You can select a maximum of ${maxActivityGroups} activity groups.`);
@@ -199,7 +199,7 @@
 
             // Validate max allowed activities selection
             let maxActivities = "{{$freezone_data->max_activity_allowed}}"; // Example max value for activities
-            let selectedActivities = $('#activities').val();
+            let selectedActivities = $('#activities_selection').val().split('__');
 
             if (selectedActivities && selectedActivities.length > maxActivities) {
                 alert(`You can select a maximum of ${maxActivities} activities.`);
