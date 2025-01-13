@@ -159,24 +159,58 @@
           </thead>
           <tbody>
           @php($sr=1)
+          @php($visaDetails=[])
           @foreach ($booking->bookingDetails as $detail)
-            @if($detail->attribute_name !="FixedFee")
-              <tr>
-                <td class="border-b py-3 pl-3">{{$sr++}}</td>
-                <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} )
-                  @if($detail->description)
-                    <span class="infomation" title="{{$detail->description}}"
-                          style="background-color: black; color: white; border-radius: 50%; padding: 0px 5px; display: inline-block; text-align: center; cursor: pointer;">
-                  i
-                </span>
+               @if(strpos($detail->attribute_name, 'Visa Detail') === 0)
+                    <?php
+                        $pattern = '/^(Visa Detail)\s(\d+)\s:\s(.+)$/';
+                        preg_match($pattern, $detail->attribute_name, $matches);
+                        if (count($matches) > 2) {
+                            $key = (int)$matches[2];
+                            if (!isset($visaDetails[$key])) {
+                                $visaDetails[$key] = []; // Initialize the array if it doesn't exist
+                            }
+                            $visaDetails[$key][] = [
+                                "attribute_name" => $matches[3]."(".$detail->attribute_value.")",
+                                "qty" => 1,
+                                "price" => $detail->price_per_unit
+                            ];
+                        }
+                    ?>
+                @elseif($detail->attribute_name !="FixedFee")
+                  <tr>
+                    <td class="border-b py-3 pl-3">{{$sr++}}</td>
+                    <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} )
+                      @if($detail->description)
+                        <span class="infomation" title="{{$detail->description}}"
+                              style="background-color: black; color: white; border-radius: 50%; padding: 0px 5px; display: inline-block; text-align: center; cursor: pointer;">
+                      i
+                    </span>
 
-                  @endif
+                      @endif
+                    </td>
+                    <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit, 2) }}</td>
+                    <td class="border-b py-3 pl-2 text-center">{{ $detail->quantity }}</td>
+                    <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
+                  </tr>
+                @endif
+          @endforeach
+          @foreach ($visaDetails as $visaDetail)
+            <tr>
+                <td class="border-b py-3 pl-3">{{$sr++}}</td>
+                <td class="border-b py-3 pl-2">
+                    @php($visaCost = 0)
+                    @php($visaQty=1)
+                    @foreach($visaDetail as $vd)
+                        {{$vd['attribute_name']}},
+                        @php($visaCost += $vd["price"])
+                        @php($visaQty = $vd["qty"])
+                    @endforeach
                 </td>
-                <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit, 2) }}</td>
-                <td class="border-b py-3 pl-2 text-center">{{ $detail->quantity }}</td>
-                <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
-              </tr>
-            @endif
+                <td class="border-b py-3 pl-2 text-right">{{number_format($visaCost,2)}}</td>
+                <td class="border-b py-3 pl-2 text-center">{{$visaQty}}</td>
+                <td class="border-b py-3 pl-2 text-right">{{number_format($visaQty*$visaCost,2)}}</td>
+            </tr>
           @endforeach
             <tr>
               <td colspan="7">
@@ -189,7 +223,7 @@
                           <tbody>
                           @php($fixedCost = 0)
                           @foreach($booking->bookingDetails as $detail)
-                            @if($detail->attribute_name =="FixedFee")
+                            @if($detail->attribute_name == "FixedFee")
                                 <?php  $fixedCost += $detail->price_per_unit ?>
                             @endif
                           @endforeach
@@ -199,35 +233,35 @@
                               </td>
                               <td class="border-b p-3 text-right">
 
-                                <div class="whitespace-nowrap font-bold text-main">{{$booking->package->currency}}
-{{--                                  {{dd($booking->original_cost +$adjustments->total_cost -$fixedCost)}}--}}
-                                  @if($adjustments && $adjustments->total_cost <> 0)
-                                    {{ number_format($booking->original_cost + $adjustments->total_cost, 2) }}
-                                  @else
-                                    {{ number_format($booking->original_cost, 2) }}
-                                  @endif
+                                <div class="whitespace-nowrap font-bold text-main">
+                                    {{$booking->package->currency}}
+                                      @if($adjustments && $adjustments->total_cost <> 0)
+                                        {{ number_format($booking->original_cost + $adjustments->total_cost, 2) }}
+                                      @else
+                                        {{ number_format($booking->original_cost, 2) }}
+                                      @endif
                                  </div>
                               </td>
                             </tr>
 
                             @php($fixedCost = 0)
                             @foreach($booking->bookingDetails as $detail)
-                              @if($detail->attribute_name =="FixedFee")
-                                <tr>
-                                  <td class="p-3">
-                                    <div class="whitespace-nowrap text-slate-400" title="{{$detail->attribute_name}}">
-                                      {{$detail->attribute_value}}
-                                      :</div>
-                                  </td>
-                                  <td class="p-3 text-right">
-                                    <div class="whitespace-nowrap font-bold text-main">
-                                      {{$booking->package->currency}}
-                                        <?php  $fixedCost += $detail->price_per_unit ?>
-                                      {{number_format($detail->price_per_unit, 2)}}
-                                    </div>
-                                  </td>
-                                </tr>
-                              @endif
+                                @if($detail->attribute_name == "FixedFee")
+                                    <tr>
+                                      <td class="p-3">
+                                        <div class="whitespace-nowrap text-slate-400" title="{{$detail->attribute_name}}">
+                                          {{$detail->attribute_value}}
+                                          :</div>
+                                      </td>
+                                      <td class="p-3 text-right">
+                                        <div class="whitespace-nowrap font-bold text-main">
+                                          {{$booking->package->currency}}
+                                            <?php  $fixedCost += $detail->price_per_unit ?>
+                                          {{number_format($detail->price_per_unit, 2)}}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                @endif
                             @endforeach
                             @if($booking->status == 2)
                               @php($fixedCost = 0)
@@ -285,6 +319,7 @@
             // Get the selected status and package booking ID
             const status = $('#invoice_status').val();
             const packageBookingId = $('input[name="package_booking_id"]').val();
+            const button = $(this);
             data = {
               _token: "{{ csrf_token() }}", // CSRF token for security
               status: status,
@@ -294,6 +329,8 @@
             reason = $('#remarks').val();
             data['remarks'] = reason;
           }
+            // Change button text and disable it
+            button.text("Updating").prop("disabled", true);
             // Make an AJAX POST request
             $.ajax({
                 url: "{{ route('package-bookings.update_status') }}", // Route for the AJAX call
@@ -307,6 +344,7 @@
                 error: function (xhr) {
                     // Handle error response
                     alert(xhr.responseJSON.message || 'An error occurred while updating the Quote status.');
+                    button.text("Update Invoice").prop("disabled", false);
                 },
             });
         });
