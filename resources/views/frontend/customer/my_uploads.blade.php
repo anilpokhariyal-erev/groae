@@ -91,8 +91,11 @@
                                     <h3 class="transactionIdTxt">Nothing to show here</h3>
                                 </span>
                             @endif
-                            <span class="pending-toggle">
-                                Show Pending <input type="checkbox" name="show_pending" {{ $show_pending == 1 ? 'checked' : '' }}>
+                            <span class="pending-toggle form-group">
+                                <div class="switch">
+                                    <input type="checkbox" id="showPendingSwitch" name="show_pending" {{ $show_pending ? 'checked' : '' }}>
+                                    <label class="slider" for="showPendingSwitch"></label>
+                                </div>
                             </span>
 
                             <!-- Loop through the paginated documents -->

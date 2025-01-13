@@ -46,7 +46,69 @@ li {
     max-width: 1170px;
   }
 }
+/*======================= switch =======================*/
+/* Container for the switch */
+.form-group .switch {
+  position: relative;
+  display: inline-block;
+  width: 90px; /* Width of the switch */
+  height: 35px; /* Height of the switch */
+}
 
+/* Hide the checkbox input */
+.form-group .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.form-group .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 35px; /* Fully rounded corners */
+}
+
+/* Circle inside the slider */
+.form-group .slider:before {
+  position: absolute;
+  content: "";
+  height: 27px; /* Slightly smaller than the slider height */
+  width: 27px; /* Same height for a perfect circle */
+  left: 4px; /* Start from the leftmost */
+  bottom: 4px; /* Center vertically */
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%; /* Circular shape */
+}
+
+/* When the switch is checked */
+.form-group input:checked + .slider {
+  background-color: #007bff; /* Color when checked */
+}
+
+/* Move the circle to the right when checked */
+.form-group input:checked + .slider:before {
+  transform: translateX(55px); /* Move distance = switch width - (circle width + padding) */
+}
+
+.form-group .slider::after {
+  content: "Pending"; /* Text to display when off */
+  position: absolute;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  top: 50%;
+  left: 10px; /* Center text inside the slider */
+  transform: translateY(-50%);
+  pointer-events: none;
+}
 /* ====================== onboarding ================== */
 .onboardingContainer {
   display: flex;

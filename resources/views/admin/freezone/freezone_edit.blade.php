@@ -170,7 +170,24 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-md-12">
+                        <div class="row">
+                        <div class="col-md-4">
+                            <div class="position-relative form-group">
+                                <label for="max_activity_group_allowed">Max Activity Group Allowed<span class="text-danger">*</span></label>
+                                <input name="max_activity_group_allowed" id="max_activity_group_allowed" value="{{ old('max_activity_group_allowed', $freezone->max_activity_group_allowed) }}" type="number" class="form-control" min="0" required>
+                                <x-input-error class="mt-2 text-red" :messages="$errors->get('max_activity_group_allowed')" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="position-relative form-group">
+                                <label for="max_activity_allowed">Max Activity Allowed<span class="text-danger">*</span></label>
+                                <input name="max_activity_allowed" id="max_activity_allowed" value="{{ old('max_activity_allowed', $freezone->max_activity_allowed) }}" type="number" class="form-control" min="0" required>
+                                <x-input-error class="mt-2 text-red" :messages="$errors->get('max_activity_allowed')" />
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <div class="position-relative form-group mt-4 p-2">
                             <label for="freezone_default_attributes"><b>Freezone Default Attributes <span class="bg-dark attribute-count">0</span></b></label>
@@ -318,8 +335,6 @@
         </div>
     @endif
 
-</x-admin-layout>
-
 <script>
     const attributeOptions = @json($attributeOptions);
     // Call the function on document ready
@@ -412,7 +427,7 @@
 
         // Attach change event listener to the newly added attribute dropdown
         const newAttributeDropdown = $('#freezone-attributes-container').find(`select[name^="freezone_default_attributes"][name$="[attribute_id]"]`).last();
-        
+
         newAttributeDropdown.on('change', function() {
             const optionsDropdown = $(this).closest('.freezone-attribute-item').find('select[name^="freezone_default_attributes"][name$="[attribute_option_id]"]');
 
@@ -448,7 +463,7 @@
             // Hide Allowed Free Qty and Unit Price fields if allow_multiple is true
             attributeItem.find('select[name^="freezone_default_attributes"][name$="[attribute_option_id]"]').closest('.col-md-4').show();
             attributeItem.find('input[name^="freezone_default_attributes"][name$="[attribute_value]"]').closest('.col-md-4').show();
-            
+
             // Hide Allowed Free Qty and Unit Price fields
             attributeItem.find('input[name^="freezone_default_attributes"][name$="[attribute_free_qty]"]').closest('.col-md-4').hide();
             attributeItem.find('input[name^="freezone_default_attributes"][name$="[unit_price]"]').closest('.col-md-4').hide();
@@ -468,19 +483,19 @@
         $('.freezone-attribute-item').each(function() {
             // Get the current item context
             const attributeItem = $(this);
-            
+
             // Find the dropdown for attribute_id
             const attributeDropdown = attributeItem.find('select[name^="freezone_default_attributes"][name$="[attribute_id]"]');
 
             // Get the current selected attribute option
             const selectedAttribute = attributeDropdown.find('option:selected');
             const allowMultiple = selectedAttribute.data('allow_multiple');
-            
+
             if (allowMultiple=="1") {
                 // Show Option and Value fields if allow_multiple is true
                 attributeItem.find('select[name^="freezone_default_attributes"][name$="[attribute_option_id]"]').closest('.col-md-4').show();
                 attributeItem.find('input[name^="freezone_default_attributes"][name$="[attribute_value]"]').closest('.col-md-4').show();
-                
+
                 // Hide Allowed Free Qty and Unit Price fields
                 attributeItem.find('input[name^="freezone_default_attributes"][name$="[attribute_free_qty]"]').closest('.col-md-4').hide();
                 attributeItem.find('input[name^="freezone_default_attributes"][name$="[unit_price]"]').closest('.col-md-4').hide();
@@ -514,3 +529,5 @@
         }
     });
 </script>
+</x-admin-layout>
+
