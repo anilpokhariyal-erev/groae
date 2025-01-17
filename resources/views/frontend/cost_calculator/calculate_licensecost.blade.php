@@ -134,6 +134,7 @@
                                 @endif
                             </select>
                             <label for="activity_group">Activity Group [Max: {{$freezone_data->max_activity_group_allowed}}]</label>
+                            <input type="hidden" name="max_activity_group_allowed" id="max_activity_group_allowed" value="{{$freezone_data->max_activity_group_allowed}}">
                             <p id="activity_group_error" class="errorMessage"></p>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activity_group')" />
                         </div>
@@ -150,6 +151,7 @@
                                 <option value="">Choose an Option</option>
                             </select>
                             <label for="activities">Activity [Max: {{$freezone_data->max_activity_allowed}}]</label>
+                            <input type="hidden" name="max_activity_allowed" id="max_activity_allowed" value="{{$freezone_data->max_activity_allowed}}">
                             <p id="activities_error" class="errorMessage"></p>
                             <x-input-error class="mt-2 text-red" :messages="$errors->get('activities')" />
                         </div>
@@ -188,7 +190,7 @@
             @endif
 
             // Validate max allowed activity groups selection
-            let maxActivityGroups = "{{$freezone_data->max_activity_group_allowed}}"; // Example max value for activity groups
+            let maxActivityGroups = $("#max_activity_group_allowed").val();// Example max value for activity groups
             let selectedActivityGroups = $('#activity_group_selection').val().split('__');
 
             if (selectedActivityGroups && selectedActivityGroups.length > maxActivityGroups) {
@@ -198,7 +200,7 @@
             }
 
             // Validate max allowed activities selection
-            let maxActivities = "{{$freezone_data->max_activity_allowed}}"; // Example max value for activities
+            let maxActivities = $("#max_activity_allowed").val(); // Example max value for activities
             let selectedActivities = $('#activities_selection').val().split('__');
 
             if (selectedActivities && selectedActivities.length > maxActivities) {
