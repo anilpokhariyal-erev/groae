@@ -270,35 +270,72 @@ const refreshcheckboxes = e => {
 };
 
 $(document).ready(function () {
-  $(document).on('change', 'select', function () {
-    const current = $(this);
-    let is_changed = true;
-    if (current.attr('data-dependent-selection')) {
-      const dependent = $(`#${current.attr('data-dependent-selection')}`);
-      if (current.val() == '') {
-        dependent.val('');
-      } else {
-        const oldval = dependent.val();
-        const exists = oldval.split('___').find(item => item == current.val());
-        if (exists) {
-          is_changed = false;
-        } else {
-          const separator = oldval ? '___' : '';
-          dependent.val(oldval + separator + current.val());
-        }
-      }
 
-      if (is_changed) dependent.trigger('change');
-    }
-    const description = $(this).find(':selected').attr('description');
-    $(this).closest('div').find('p').remove();
-    if (description) {
-        $(this).closest('div').append('<p style="font-size:14px;">' + description + '</p>');
-    }
-  });
+     $(document).on('change', 'select', function (event) {
+        const current = $(this);
+        let is_changed = true;
+
+        // Handle dependent selection
+        if (current.attr('data-dependent-selection')) {
+            const dependent = $(`#${current.attr('data-dependent-selection')}`);
+            if (current.val() == '') {
+                dependent.val('');
+            } else {
+                const oldval = dependent.val();
+                const exists = oldval.split('___').find(item => item == current.val());
+                if (exists) {
+                    is_changed = false;
+                } else {
+                    const separator = oldval ? '___' : '';
+                    dependent.val(oldval + separator + current.val());
+                }
+            }
+
+            if (is_changed) dependent.trigger('change');
+        }
+
+        // Display description
+        const description = $(this).find(':selected').attr('description');
+        $(this).closest('div').find('p').remove();
+        if (description) {
+            $(this).closest('div').append('<p style="font-size:14px;">' + description + '</p>');
+        }
+
+        // Validate max allowed activity groups selection
+        const maxActivityGroups = $("#max_activity_group_allowed").val(); // Example max value for activity groups
+        let selectedActivityGroups = $('#activity_group_selection').val().split('___');
+
+        if (selectedActivityGroups && selectedActivityGroups.length > maxActivityGroups) {
+            // Remove the last selected activity group
+            selectedActivityGroups.pop();
+            $('#activity_group_selection').val(selectedActivityGroups.join('___'));
+            // Remove the corresponding activity group display element
+            $(`#activity_group_selection_display .activitySelct:last`).remove();
+            // Show alert after updating the value
+            alert(`You can select a maximum of ${maxActivityGroups} activity groups.`);
+            return false;
+        }
+
+        // Validate max allowed activities selection
+        const maxActivities = $("#max_activity_allowed").val(); // Example max value for activities
+        let selectedActivities = $('#activities_selection').val().split('___');
+
+        if (selectedActivities && selectedActivities.length > maxActivities) {
+            // Remove the last selected activity
+            selectedActivities.pop();
+            $('#activities_selection').val(selectedActivities.join('___'));
+            // Remove the corresponding activity display element
+            $(`#activities_selection_display .activitySelct:last`).remove();
+            // Show alert after updating the value
+            alert(`You can select a maximum of ${maxActivities} activities.`);
+            return false;
+        }
+    });
+
 
   function checkMultipleActivityGroups() {
-    const selectedActivityGroups = $('#activity_group_selection_display .activitySelct').length
+    const selectedActivityGroups = $('#activity_group_selection_display .activitySelct').length;
+
     if (selectedActivityGroups > 1) {
       $('#activityGroupNote').show(); // Show the note if multiple groups are selected
     } else {
@@ -306,7 +343,7 @@ $(document).ready(function () {
     }
   }
   function checkMultipleActivity() {
-    const selectedActivity = $('#activities_selection_display .activitySelct').length
+    const selectedActivity = $('#activities_selection_display .activitySelct').length;
     if (selectedActivity > 3) {
       $('#activityNote').show(); // Show the note if multiple groups are selected
     } else {
