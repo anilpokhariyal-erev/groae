@@ -129,7 +129,8 @@
                                 @if (!empty($freezone_data))
                                     @foreach ($freezone_data['activity_groups'] as $item)
                                         <option value="{{ 'activity_group|' . $item->id . '|' . $item->name }}">
-                                            {{ $item->name }}</option>
+                                            {{ $item->name }} [{{$item->license->name}}]
+                                         </option>
                                     @endforeach
                                 @endif
                             </select>
