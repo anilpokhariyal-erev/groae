@@ -335,6 +335,7 @@
         </div>
     @endif
 
+</x-admin-layout>
 <script>
     const attributeOptions = @json($attributeOptions);
     // Call the function on document ready
@@ -529,5 +530,4 @@
         }
     });
 </script>
-</x-admin-layout>
 
