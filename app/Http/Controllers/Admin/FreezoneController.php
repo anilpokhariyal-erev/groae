@@ -263,38 +263,36 @@ class FreezoneController extends Controller
         $freezone->max_activity_allowed = $request->input('max_activity_allowed', 1);
         $freezone->status = $request->status;
 
-        // Use a transaction to ensure the consistency of the update
-        DB::transaction(function () use ($freezone, $request) {
-            // Save the updated freezone data
-            $freezone->save();
+        // Save the updated freezone data
+        $freezone->save();
 
-            // Get the freezone_default_attributes data from the request
-            $attributesData = $request->input('freezone_default_attributes', []);
+        // Get the freezone_default_attributes data from the request
+        $attributesData = $request->input('freezone_default_attributes', []);
 
-            // delete all existing attributes from the database for this freezone
-            $freezone->defaultAttributes()->delete();
+        // delete all existing attributes from the database for this freezone
+        $freezone->defaultAttributes()->forceDelete();
 
-            // Collect IDs of the attributes coming from the request
-            $attributeKeysFromRequest = [];
+        // Collect IDs of the attributes coming from the request
+        $attributeKeysFromRequest = [];
 
-            foreach ($attributesData as $attribute) {
-                $attributeKey = $attribute['attribute_id'] . ':' . ($attribute['attribute_option_id'] ?? 'null');
-                $attributeKeysFromRequest[] = $attributeKey;
+        foreach ($attributesData as $attribute) {
+            $attributeKey = $attribute['attribute_id'] . ':' . ($attribute['attribute_option_id'] ?? 'null');
+            $attributeKeysFromRequest[] = $attributeKey;
 
-                // Set unit_price if not provided but attribute_value is present
-                if ($attribute['attribute_value'] && !$attribute['unit_price']) {
-                    $attribute['unit_price'] = $attribute['attribute_value'];
-                }
-
-                // If the record does not exist, create a new one
-                $freezone->defaultAttributes()->create([
-                    'attribute_id' => $attribute['attribute_id'],
-                    'attribute_option_id' => $attribute['attribute_option_id'] ?? null,
-                    'allowed_free_qty' => $attribute['attribute_free_qty'] ?? 0,
-                    'unit_price' => $attribute['unit_price'] ?? 0,
-                ]);
+            // Set unit_price if not provided but attribute_value is present
+            if ($attribute['attribute_value'] && !$attribute['unit_price']) {
+                $attribute['unit_price'] = $attribute['attribute_value'];
             }
-        });
+
+            // If the record does not exist, create a new one
+            $freezone->defaultAttributes()->create([
+                'attribute_id' => $attribute['attribute_id'],
+                'attribute_option_id' => $attribute['attribute_option_id'] ?? null,
+                'allowed_free_qty' => $attribute['attribute_free_qty'] ?? 0,
+                'unit_price' => $attribute['unit_price'] ?? 0,
+            ]);
+        }
+     $freezone->save();
 
         // Redirect back with success message
         return back()->with('success', 'Freezone updated successfully');
