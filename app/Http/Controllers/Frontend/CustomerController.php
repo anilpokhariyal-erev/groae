@@ -265,7 +265,7 @@ class CustomerController extends Controller
         if($customer->id != $booking->customer_id) {
             return abort(401);
         }
-        return view('frontend.customer.invoice', compact('booking', 'fixedFees','company_info', 'adjustments'));
+        return view('frontend.customer.invoice-groae', compact('booking', 'fixedFees','company_info', 'adjustments'));
     }
 
 
