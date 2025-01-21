@@ -432,7 +432,7 @@ class CostCalculatorController extends Controller
         $originalName = 'invoices/' . time() . '_' . 'invoice_' . $booking->id . '.pdf'; // Customize this as needed
 
         // Generate the PDF
-        $pdf = PDF::loadView('frontend.email.invoice', [
+        $pdf = PDF::loadView('frontend.email.invoice-groae', [
             'booking' => $booking,
             'company_info' => $company_info,
             'adjustments' => $adjustments,
