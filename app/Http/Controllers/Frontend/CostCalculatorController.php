@@ -436,6 +436,7 @@ class CostCalculatorController extends Controller
             'booking' => $booking,
             'company_info' => $company_info,
             'adjustments' => $adjustments,
+            'app_url' => rtrim(config('app.url'), '/'),
         ]);
         $pdf->setOption('isHtml5ParserEnabled', true); // Enable HTML5 parsing
         $pdf->setOption('isPhpEnabled', true);         // Allow PHP inside HTML (not recommended for security)
