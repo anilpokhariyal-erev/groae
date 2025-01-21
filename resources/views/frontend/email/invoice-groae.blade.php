@@ -1,8 +1,7 @@
-<x-website-layout>
-@php(
-    $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT)
-)
-    <style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <style>
         .text-right{
           text-align: right !important;
         }
@@ -113,177 +112,183 @@
         font-size: 14px; /* Adjust font size */
       }
     </style>
-    <section class="center-section" style="padding: 10% 10% 0%">
-        <table class="header-invoice">
-            <tr>
-            <td width="70%"><img src="{{ secure_asset('images/GroAE_Logo.png') }}" width="250px"></td>
-            <td>
-             <p style="font-weight: 800;">{{$company_info['Company Name'] ?? null;}}</p>
-              <p>Number: {{$company_info['Company Phone'] ?? null;}}</p>
-              <p>TIN: {{$company_info['Company TIN No'] ?? null;}}</p>
-              <p>{{$company_info['Company Address'] ?? null;}}</p>
-            </td>
-            </tr>
-        </table>
-        <div class="proforma-invoice">
-          ESTIMATE / QUOTE
-        </div>
-        <div class="invoice-section">
-          <!-- Left Section -->
-          <div class="invoice-left">
-            <p>Invoice To</p>
-            <p><strong>{{$booking->customer->name}} {{$booking->customer->mobile_number}}</strong></p>
-            <p>{{$booking->customer->address}}, {{$booking->customer->state?->name}}, {{$booking->customer->country?->name}}</p>
-          </div>
-
-          <!-- Right Section -->
-          <div class="invoice-right">
-            <p>
-              <span class="detail-label">Estimate#:</span>
-              <span class="detail-value"> {{$ref_num}}</span>
-            </p>
-            <p>
-              <span class="detail-label">Estimate Date:</span>
-              <span class="detail-value">{{ $booking->created_at->format('d M Y') }}</span>
-            </p>
-          </div>
-        </div>
-        <!-- main calculation table -->
-        <table class="invoice-calculation">
-          <thead>
-            <tr>
-              <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">#</td>
-              <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Description</td>
-              <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Price</td>
-              <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Qty.</td>
-              <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Amount</td>
-            </tr>
-          </thead>
-          <tbody>
-          @php($sr=1)
-          @php($visaDetails=[])
-          @foreach ($booking->bookingDetails as $detail)
-           @if(strpos($detail->attribute_name, 'Visa Detail') === 0)
-                    <?php
-                        $pattern = '/^(Visa Detail)\s(\d+)\s:\s(.+)$/';
-                        preg_match($pattern, $detail->attribute_name, $matches);
-                        if (count($matches) > 2) {
-                            $key = (int)$matches[2];
-                            if (!isset($visaDetails[$key])) {
-                                $visaDetails[$key] = []; // Initialize the array if it doesn't exist
-                            }
-                            $visaDetails[$key][] = [
-                                "attribute_name" => $matches[3]."(".$detail->attribute_value.")",
-                                "qty" => 1,
-                                "price" => $detail->price_per_unit
-                            ];
-                        }
-                    ?>
-            @elseif($detail->attribute_name !="FixedFee")
-            <tr>
-              <td class="border-b py-3 pl-3">{{$sr++}}</td>
-              <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} ) 
-                @if($detail->description)
-                <span class="infomation" title="{{$detail->description}}" 
-                      style="background-color: black; color: white; border-radius: 50%; padding: 0px 5px; display: inline-block; text-align: center; cursor: pointer;">
-                  i
-                </span>
-
-                @endif
-              </td>
-              <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit, 2) }}</td>
-              <td class="border-b py-3 pl-2 text-center">{{ $detail->quantity }}</td>
-              <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
-            </tr>
-            @endif
-          @endforeach
-           @foreach ($visaDetails as $visaDetail)
-            <tr>
-                <td class="border-b py-3 pl-3">{{$sr++}}</td>
-                <td class="border-b py-3 pl-2">
-                    @php($visaCost = 0)
-                    @php($visaQty=1)
-                    @foreach($visaDetail as $vd)
-                        {{$vd['attribute_name']}},
-                        @php($visaCost += $vd["price"])
-                        @php($visaQty = $vd["qty"])
-                    @endforeach
-                </td>
-                <td class="border-b py-3 pl-2 text-right">{{number_format($visaCost,2)}}</td>
-                <td class="border-b py-3 pl-2 text-center">{{$visaQty}}</td>
-                <td class="border-b py-3 pl-2 text-right">{{number_format($visaQty*$visaCost,2)}}</td>
-            </tr>
-          @endforeach
-
-          <!-- Sub total -->
+  </head>
+  <body>
+@php(
+    $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT)
+)
+  <section class="center-section" style="padding: 1% 10% 0%">
+      <table class="header-invoice">
           <tr>
-            <td colspan="4" style="padding-right:20px;font-weight:bold;"  class="text-right bg-light-gray">Sub Total</td>
-            <td style="font-weight: bold;" class="text-right bg-light-gray">
-            {{$booking->package->currency}}
-              @if($adjustments && $adjustments->total_cost <> 0)
-                {{ number_format($booking->original_cost + $adjustments->total_cost, 2) }}
-              @else
-                {{ number_format($booking->original_cost, 2) }}
+          <td width="70%"><img src="{{ $app_url }}/images/GroAE_Logo.png" alt="GroAE" width="250px"></td>
+          <td>
+            <p style="font-weight: 800;">{{$company_info['Company Name'] ?? null;}}</p>
+            <p>Number: {{$company_info['Company Phone'] ?? null;}}</p>
+            <p>TIN: {{$company_info['Company TIN No'] ?? null;}}</p>
+            <p>{{$company_info['Company Address'] ?? null;}}</p>
+          </td>
+          </tr>
+      </table>
+      <div class="proforma-invoice">
+        ESTIMATE / QUOTE
+      </div>
+      <div class="invoice-section">
+        <!-- Left Section -->
+        <div class="invoice-left">
+          <p>Invoice To</p>
+          <p><strong>{{$booking->customer->name}} {{$booking->customer->mobile_number}}</strong></p>
+          <p>{{$booking->customer->address}}, {{$booking->customer->state?->name}}, {{$booking->customer->country?->name}}</p>
+        </div>
+
+        <!-- Right Section -->
+        <div class="invoice-right">
+          <p>
+            <span class="detail-label">Estimate#:</span>
+            <span class="detail-value"> {{$ref_num}}</span>
+          </p>
+          <p>
+            <span class="detail-label">Estimate Date:</span>
+            <span class="detail-value">{{ $booking->created_at->format('d M Y') }}</span>
+          </p>
+        </div>
+      </div>
+      <!-- main calculation table -->
+      <table class="invoice-calculation">
+        <thead>
+          <tr>
+            <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">#</td>
+            <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Description</td>
+            <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Price</td>
+            <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Qty.</td>
+            <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Amount</td>
+          </tr>
+        </thead>
+        <tbody>
+        @php($sr=1)
+        @php($visaDetails=[])
+        @foreach ($booking->bookingDetails as $detail)
+          @if(strpos($detail->attribute_name, 'Visa Detail') === 0)
+                  <?php
+                      $pattern = '/^(Visa Detail)\s(\d+)\s:\s(.+)$/';
+                      preg_match($pattern, $detail->attribute_name, $matches);
+                      if (count($matches) > 2) {
+                          $key = (int)$matches[2];
+                          if (!isset($visaDetails[$key])) {
+                              $visaDetails[$key] = []; // Initialize the array if it doesn't exist
+                          }
+                          $visaDetails[$key][] = [
+                              "attribute_name" => $matches[3]."(".$detail->attribute_value.")",
+                              "qty" => 1,
+                              "price" => $detail->price_per_unit
+                          ];
+                      }
+                  ?>
+          @elseif($detail->attribute_name !="FixedFee")
+          <tr>
+            <td class="border-b py-3 pl-3">{{$sr++}}</td>
+            <td class="border-b py-3 pl-2">{{$detail->attribute_name}} ( {{$detail->attribute_value}} ) 
+              @if($detail->description)
+              <span class="infomation" title="{{$detail->description}}" 
+                    style="background-color: black; color: white; border-radius: 50%; padding: 0px 5px; display: inline-block; text-align: center; cursor: pointer;">
+                i
+              </span>
+
               @endif
             </td>
+            <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit, 2) }}</td>
+            <td class="border-b py-3 pl-2 text-center">{{ $detail->quantity }}</td>
+            <td class="border-b py-3 pl-2 text-right">{{ number_format($detail->price_per_unit*$detail->quantity, 2) }}</td>
           </tr>
-
-          <!-- Fixed Fee -->
-          @php($fixedCost = 0)
-          @foreach($booking->bookingDetails as $detail)
-            @if($detail->attribute_name =="FixedFee")
-            <tr>
-              <td colspan="4" style="padding-right:20px;font-weight:bold;"  class="text-right">{{$detail->attribute_value}}</td>
-              <td class="text-right">
-                {{$booking->package->currency}}
-                <?php  $fixedCost += $detail->price_per_unit ?>
-                {{number_format($detail->price_per_unit, 2)}}
+          @endif
+        @endforeach
+          @foreach ($visaDetails as $visaDetail)
+          <tr>
+              <td class="border-b py-3 pl-3">{{$sr++}}</td>
+              <td class="border-b py-3 pl-2">
+                  @php($visaCost = 0)
+                  @php($visaQty=1)
+                  @foreach($visaDetail as $vd)
+                      {{$vd['attribute_name']}},
+                      @php($visaCost += $vd["price"])
+                      @php($visaQty = $vd["qty"])
+                  @endforeach
               </td>
-            </tr>
+              <td class="border-b py-3 pl-2 text-right">{{number_format($visaCost,2)}}</td>
+              <td class="border-b py-3 pl-2 text-center">{{$visaQty}}</td>
+              <td class="border-b py-3 pl-2 text-right">{{number_format($visaQty*$visaCost,2)}}</td>
+          </tr>
+        @endforeach
+
+        <!-- Sub total -->
+        <tr>
+          <td colspan="4" style="padding-right:20px;font-weight:bold;"  class="text-right bg-light-gray">Sub Total</td>
+          <td style="font-weight: bold;" class="text-right bg-light-gray">
+          {{$booking->package->currency}}
+            @if($adjustments && $adjustments->total_cost <> 0)
+              {{ number_format($booking->original_cost + $adjustments->total_cost, 2) }}
+            @else
+              {{ number_format($booking->original_cost, 2) }}
             @endif
-          @endforeach
+          </td>
+        </tr>
 
-           <!-- total -->
-           <tr>
-              <td colspan="3" style="border: none;">
-                  Looking forward for your business.
-              </td>
-              <td style="padding-right: 20px; font-weight: bold; border-left: none; border-right: none; border-bottom: 1px solid #000;" class="text-right">
-                  Total
-              </td>
-              <td style="font-weight: bold; border-left: none; border-right: none; border-bottom: 1px solid #000;" class="text-right">
-                  {{$booking->package->currency}}
-                  {{number_format($booking->final_cost, 2)}}
-              </td>
+        <!-- Fixed Fee -->
+        @php($fixedCost = 0)
+        @foreach($booking->bookingDetails as $detail)
+          @if($detail->attribute_name =="FixedFee")
+          <tr>
+            <td colspan="4" style="padding-right:20px;font-weight:bold;"  class="text-right">{{$detail->attribute_value}}</td>
+            <td class="text-right">
+              {{$booking->package->currency}}
+              <?php  $fixedCost += $detail->price_per_unit ?>
+              {{number_format($detail->price_per_unit, 2)}}
+            </td>
           </tr>
+          @endif
+        @endforeach
 
-          </tbody>
-        </table>
+          <!-- total -->
+          <tr>
+            <td colspan="3" style="border: none;">
+                Looking forward for your business.
+            </td>
+            <td style="padding-right: 20px; font-weight: bold; border-left: none; border-right: none; border-bottom: 1px solid #000;" class="text-right">
+                Total
+            </td>
+            <td style="font-weight: bold; border-left: none; border-right: none; border-bottom: 1px solid #000;" class="text-right">
+                {{$booking->package->currency}}
+                {{number_format($booking->final_cost, 2)}}
+            </td>
+        </tr>
 
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; margin-top: 40px;">
-            <h2 style="text-align: left; font-size: 18px; font-weight: bold;">Payment Details</h2>
-            <p>Please note the bank charges are to be borne by the remitter. 
-              Also, include the above mentioned estimate number in the reference/description field when making payment. 
-              Failure to do so will result in a delay in us identifying the payment and hence a subsequent delay in the 
-              processing of any application.</p>
-            
-            <table class="bank-details">
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Account Name : </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{{$company_info['Company Name'] ?? null;}}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Bank/Sort Code :</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"> {{ $company_info['Bank Code'] ?? 'N/A' }}</td>
-                  </tr>
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Bank Name : </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{{ $company_info['Bank Name'] ?? 'N/A' }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Account Number :</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"> {{ $company_info['Account Number'] ?? 'N/A' }}</td>
-                    
+        </tbody>
+      </table>
+
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; margin-top: 40px;">
+          <h2 style="text-align: left; font-size: 18px; font-weight: bold;">Payment Details</h2>
+          <p>Please note the bank charges are to be borne by the remitter. 
+            Also, include the above mentioned estimate number in the reference/description field when making payment. 
+            Failure to do so will result in a delay in us identifying the payment and hence a subsequent delay in the 
+            processing of any application.</p>
+          
+          <table class="bank-details">
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Account Name : </td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">{{$company_info['Company Name'] ?? null;}}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Bank/Sort Code :</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;"> {{ $company_info['Bank Code'] ?? 'N/A' }}</td>
                 </tr>
-            </table>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Bank Name : </td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">{{ $company_info['Bank Name'] ?? 'N/A' }}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;" class="bg-light-gray">Account Number :</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;"> {{ $company_info['Account Number'] ?? 'N/A' }}</td>
+                  
+              </tr>
+          </table>
 
-            <p><strong>NB:</strong> This is a computer generated document and does not need a signature.</p>
-        </div>
-    </section>
-</x-website-layout>
+          <p><strong>NB:</strong> This is a computer generated document and does not need a signature.</p>
+      </div>
+  </section>
+  </body>
+</html>
