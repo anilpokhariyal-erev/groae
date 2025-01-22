@@ -80,12 +80,16 @@
   <section class="center-section" style="padding: 1% 10% 0%">
       <table class="header-invoice">
           <tr>
-          <td width="70%"><img src="{{ secure_asset('images/GroAE_Logo.png') }}" alt="GroAE" width="250px"></td>
+          <td width="70%">
+            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/GroAE_Logo.png'))) }}" alt="GroAE Logo" width="250px">
+          </td>
           <td>
-            <p style="font-weight: 800;">{{$company_info['Company Name'] ?? null;}}</p>
-            <p>Number: {{$company_info['Company Phone'] ?? null;}}</p>
-            <p>TIN: {{$company_info['Company TIN No'] ?? null;}}</p>
-            <p>{{$company_info['Company Address'] ?? null;}}</p>
+            <p>
+              <strong>{{$company_info['Company Name'] ?? null;}}</strong><br>
+              Number: {{$company_info['Company Phone'] ?? null;}}<br>
+              TIN: {{$company_info['Company TIN No'] ?? null;}}<br>
+              {{$company_info['Company Address'] ?? null;}}
+            </p>
           </td>
           </tr>
       </table>
