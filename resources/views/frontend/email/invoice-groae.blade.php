@@ -80,7 +80,7 @@
   <section class="center-section" style="padding: 1% 10% 0%">
       <table class="header-invoice">
           <tr>
-          <td width="70%"><img src="{{ $app_url }}/images/GroAE_Logo.png" alt="GroAE" width="250px"></td>
+          <td width="70%"><img src="{{ secure_asset('images/GroAE_Logo.png') }}" alt="GroAE" width="250px"></td>
           <td>
             <p style="font-weight: 800;">{{$company_info['Company Name'] ?? null;}}</p>
             <p>Number: {{$company_info['Company Phone'] ?? null;}}</p>
