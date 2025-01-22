@@ -11,51 +11,11 @@
         .header-invoice tr{
             background-color: #fff !important;
         }
-        .proforma-invoice {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 22px; /* Adjust font size */
-        text-transform: uppercase; /* Make text uppercase */
-        margin: 20px 0; /* Add spacing above and below */
-        color: #000; /* Text color */
-      }
-
-      .proforma-invoice::before,
-      .proforma-invoice::after {
-        content: '';
-        height: 1px;
-        background-color: lightgray; /* Line color */
-      }
-
-      .proforma-invoice::before {
-        flex: 6; /* Adjust length of the left line (60%) */
-        margin-right: 10px; /* Spacing between text and line */
-      }
-
-      .proforma-invoice::after {
-        flex: 4; /* Adjust length of the right line (40%) */
-        margin-left: 10px; /* Spacing between text and line */
-      }
-      .invoice-section {
-        display: flex;
-        justify-content: space-between;
-        margin: 20px 0; /* Add spacing above and below */
-      }
-
-      .invoice-left {
-        width: 70%; /* Left section width */
-      }
-
-      .invoice-right {
-        width: 30%; /* Right section width */
-        text-align: right; /* Align text to the right */
-      }
-
-      .invoice-right p {
-        margin: 0; /* Remove default paragraph margin */
-        display: flex;
-        justify-content: space-between; /* Space between label and value */
+      /* Scope styles to .invoice-section */
+      table.invoice-section {
+        width: 100%;
+        border-collapse: collapse; /* Remove gaps between cells */
+        border-spacing: 0; /* Ensure no additional space */
       }
 
       .detail-label {
@@ -129,29 +89,41 @@
           </td>
           </tr>
       </table>
-      <div class="proforma-invoice">
-        ESTIMATE / QUOTE
-      </div>
-      <div class="invoice-section">
-        <!-- Left Section -->
-        <div class="invoice-left">
-          <p>Invoice To</p>
-          <p><strong>{{$booking->customer->name}} {{$booking->customer->mobile_number}}</strong></p>
-          <p>{{$booking->customer->address}}, {{$booking->customer->state?->name}}, {{$booking->customer->country?->name}}</p>
-        </div>
+      <div style="display: flex; align-items: center; font-size: 22px; text-transform: uppercase; color: #000; margin: 20px 0;">
+        <!-- Line before the text -->
+        <div style="flex: 3; height: 1px; background-color: lightgray;"></div>
 
-        <!-- Right Section -->
-        <div class="invoice-right">
-          <p>
-            <span class="detail-label">Estimate#:</span>
-            <span class="detail-value"> {{$ref_num}}</span>
-          </p>
-          <p>
-            <span class="detail-label">Estimate Date:</span>
-            <span class="detail-value">{{ $booking->created_at->format('d M Y') }}</span>
-          </p>
-        </div>
+        <!-- Text -->
+        <div style="flex: 4; text-align: right;">Estimate / Quote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+        <!-- Line after the text -->
+        <div style="flex: 3; height: 1px; background-color: lightgray; "></div>
       </div>
+
+
+      <table class="invoice-section">
+        <tbody>
+          <tr>
+            <td>
+              <p>Invoice To</p>
+              <p><strong>{{$booking->customer->name}} {{$booking->customer->mobile_number}}</strong></p>
+              <p>{{$booking->customer->address}}, {{$booking->customer->state?->name}}, {{$booking->customer->country?->name}}</p>
+            </td>
+            <td>
+              <p>
+                <span class="detail-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Estimate# : &nbsp;&nbsp;&nbsp;</span>
+                <span class="detail-value"> {{$ref_num}}</span>
+              </p>
+              <p>
+                <span class="detail-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Estimate Date : &nbsp;&nbsp;&nbsp;</span>
+                <span class="detail-value">{{ $booking->created_at->format('d M Y') }}</span>
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
       <!-- main calculation table -->
       <table class="invoice-calculation">
         <thead>
