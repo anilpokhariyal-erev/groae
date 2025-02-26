@@ -67,6 +67,10 @@ class TransactionController extends Controller
             'package_booking_id' => $booking->id, // Make sure to associate it here
             'response_obj' => $validatedData['response_obj'] ?? null,
         ]);
+        $booking->update([
+            'payment_status' => 1,
+            'status' => 3,
+        ]);
 
         return redirect()->route('transaction.index')->with('success', 'Transaction created successfully!');
     }
