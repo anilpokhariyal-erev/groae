@@ -90,14 +90,14 @@
                                 <span class="noRecordFound">
                                     <h3 class="transactionIdTxt">Nothing to show here</h3>
                                 </span>
-                            @endif
+                            @else
                             <span class="pending-toggle form-group">
                                 <div class="switch">
                                     <input type="checkbox" id="showPendingSwitch" name="show_pending" {{ $show_pending ? 'checked' : '' }}>
                                     <label class="slider" for="showPendingSwitch"></label>
                                 </div>
                             </span>
-
+                            @endif
                             <!-- Loop through the paginated documents -->
                             @foreach ($customer_documents as $item)
                                 <input type="file" name="uploads[docuploadBtn_{{ $item->id }}_{{ Crypt::encryptString(implode(',', $item->format)) }}]"
