@@ -58,7 +58,7 @@ class TransactionController extends Controller
         $booking = PackageBooking::where('id', $validatedData['freezone_booking_id'])->first();
         // Create a new transaction and link it to a FreezoneBooking
         Transaction::create([
-            'transaction_id' => $validatedData['transaction_id'],
+            'transaction_id' => $validatedData['transaction_id']."_".substr(bin2hex(random_bytes(6)), 0, 6),
             'amount' => $validatedData['amount'],
             'customer_id' => $booking->customer_id,
             'payment_status' => $validatedData['payment_status'],
@@ -79,7 +79,10 @@ class TransactionController extends Controller
     {
         // Ensure you are eager loading the related models
         $transaction->load('customer', 'packageBooking.package.freezone');
-        return view('admin.transaction.transaction_detail', compact('transaction'));
+        $company_info = Setting::where('section_key', 'company_info')
+            ->pluck('value', 'title')
+            ->toArray();
+        return view('admin.transaction.transaction_detail', compact('transaction','company_info'));
     }
     
 

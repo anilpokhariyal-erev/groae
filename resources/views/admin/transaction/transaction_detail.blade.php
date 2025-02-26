@@ -55,6 +55,12 @@
                         <td>{{ ucwords($transaction?->packageBooking?->package?->freezone?->name ?? 'N/A') }}</td>
                     </tr>
                     <tr>
+                        <th>Package Booking Request Id</th>
+                        <td>
+                        {{$company_info['Company Invoice Prefix'] ?? null}}{{ str_pad($transaction?->packageBooking?->id, 5, '0', STR_PAD_LEFT) }}    
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Amount</th>
                         <td>{{ number_format($transaction->amount, 2) }}</td>
                     </tr>
