@@ -90,7 +90,7 @@ li {
 
 /* When the switch is checked */
 .form-group input:checked + .slider {
-  background-color: #007bff; /* Color when checked */
+  background-color: #304a6f; /* Color when checked */
 }
 
 /* Move the circle to the right when checked */
