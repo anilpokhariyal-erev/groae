@@ -69,7 +69,7 @@ class TransactionController extends Controller
         ]);
         $booking->update([
             'payment_status' => 1,
-            'status' => 3,
+            'status' => 2,
         ]);
 
         return redirect()->route('transaction.index')->with('success', 'Transaction created successfully!');
