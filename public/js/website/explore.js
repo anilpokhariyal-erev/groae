@@ -23,19 +23,25 @@ const removeItemFromFvPassport = item => {
 
 const clearSelection = id => {
   if (id) {
-    const item = $(`input:checkbox[id=freezone_${id.split('_')[1]}]`);
+    const item = $(`input:checkbox[id=package_${id.split('_')[1]}]`);
     item.prop('checked', false);
+    console.log(item);
     const data = item.attr('data-checkbox');
-    selectedExploreCompareItems = selectedExploreCompareItems.filter(
-      item => item != data
-    );
-    removeItemFromFvPassport(data);
+    console.log(data);
+    
+    if (data) {  // Ensure data is not undefined before proceeding
+      selectedExploreCompareItems = selectedExploreCompareItems.filter(
+        item => item != data
+      );
+      removeItemFromFvPassport(data);
+    }
+    
     if (selectedExploreCompareItems.length == 0) {
       $('#dvPassport').hide();
     }
   } else {
     for (const data of selectedExploreCompareItems) {
-      $(`#freezone_${data.split('|')[0]}`).attr('checked', false);
+      $(`#package_${data.split('|')[0]}`).prop('checked', false);
     }
     selectedExploreCompareItems.length = 0;
     $('#dvPassport > .compareSelctorContnt').empty();
