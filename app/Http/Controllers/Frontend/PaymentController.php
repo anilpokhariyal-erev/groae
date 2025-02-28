@@ -5,6 +5,7 @@
 use App\Http\Controllers\Controller;
 use App\Models\PackageBooking;
 use App\Models\Transaction;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Stripe\Stripe;
