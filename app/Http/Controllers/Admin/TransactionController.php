@@ -30,6 +30,9 @@ class TransactionController extends Controller
         $packageBookings = PackageBooking::select('id', 'customer_id', 'package_id', 'final_cost', 'created_at')
             ->with(['customer:id,name', 'package:id,title']) // Assuming `title` is the package name field
             ->where('status', 2)
+            ->where('payment_status', 0)
+            ->whereNull('transaction_id')
+            ->orderBy('id', 'desc')
             ->get();
         $company_info = Setting::where('section_key', 'company_info')
             ->pluck('value', 'title')
