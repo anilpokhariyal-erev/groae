@@ -182,24 +182,20 @@ class AuthController extends Controller
                 ['email' => $request->email, 'token' => $token]
             );
 
-            // Email content
-            $headerText = "Password Reset Request";
-            $bodyText = "Hi {$customer->first_name} {$customer->last_name},<br><br>";
-            $bodyText .= "We received a request to reset your password. You<br>";
-            $bodyText .= "can reset it by clicking the button below.<br><br>";
-            $bodyText .= "<a href=\"" . route('customer.password.reset', $token) . "\"><button style=\"background-color: #304a6f; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;\">Reset My Password</button></a><br><br>";
-            $bodyText .= "If you did not request this, you can safely ignore this<br>";
-            $bodyText .= "email. Your password will remain unchanged.<br><br>";
-            $bodyText .= "<b>Regards</b>,<br>";
-            $bodyText .= "<b>Team GroAE</b>";
+            $data = [
+                'name' => $customer->first_name." ".$customer->last_name,
+                'token' => $token,
+                'app_url' => rtrim(config('app.url'), '/'),
+            ];
 
-            // Send the email
-            Mail::send('frontend.email.email_template', [
-                'headerText' => $headerText,
-                'bodyText' => $bodyText,
-            ], function ($message) use ($request) {
-                $message->to($request->email);
-                $message->subject('Reset Password');
+            $toEmail = $request->email; // Recipient's email address
+            $subject = 'Password Reset Request';
+            $view = 'frontend.email.reset_password';
+
+            // Send email
+            Mail::send($view, $data, function ($message) use ($toEmail, $subject) {
+                $message->to($toEmail)
+                    ->subject($subject);
             });
 
             return back()->with('success', ResponseMessage::CUSTOMER_PASSWORD_RESET_MESSAGE);
