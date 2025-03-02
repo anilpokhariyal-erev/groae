@@ -9,6 +9,7 @@
             transform: translate(-50%, -50%);
             text-align: center;
             color: #fff;
+            height: 200px !important;
         }
 
 
