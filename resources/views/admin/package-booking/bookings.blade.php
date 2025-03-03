@@ -87,7 +87,9 @@
                                     @endif
                                 </td>
                                 <td>{{ ucfirst($booking->payment_method) ?? 'N/A' }}</td>
-                                <td>{{ $booking->transaction_id ?? 'N/A' }}</td>
+                                <td>
+                                    {{ Str::wordwrap($booking?->transaction?->transaction_id ?? 'N/A', 30, "\n", true) }}
+                                </td>
                                 <td>{{ $booking->created_at ? $booking->created_at->format('Y-m-d') : '' }}</td>
                                 <td>
                                     <a class="btn btn-primary btn-sm" href="{{ route('package-bookings.show', $booking->id) }}">View</a>
