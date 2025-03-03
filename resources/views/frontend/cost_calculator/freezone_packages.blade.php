@@ -50,8 +50,10 @@
                 </div>
                 <div class="container">
                     <div class="searchInnrWrapper">
-                        @if ($packages->isEmpty())
-                            <p>No packages available for the selected Freezone.</p>
+                        @if ($packages->isEmpty() && !isset($selectedFreezone))
+                            <p style="margin-left: 7%;">Select a freezone to view packages.</p>
+                        @elseif($packages->isEmpty())
+                            <p style="margin-left: 7%;">No packages available for the selected Freezone.</p>
                         @else
                             @foreach ($packages as $item)
                                 <div class="searchBlogLayer">

@@ -112,6 +112,10 @@
     <!-- Business Cost?  -->
     <section>
         <div class="container">
+            <div class="topHeading">
+                <h2 class="trendTxt" style="margin:20px 0;">One Video, Zero Tax Hassles – Watch Now!</h2>
+                <p class="trendDetails"> </p>
+            </div>
             <div class="video-banner">
                 <!-- Thumbnail image -->
                 <div class="video-thumbnail" onclick="playVideo()">
