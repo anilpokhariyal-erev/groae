@@ -49,19 +49,20 @@ class TransactionController extends Controller
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
-            'transaction_id' => 'required|string|max:255',
+            'transaction_id' => 'required|string|max:255|unique:transactions,transaction_id',
             'amount' => 'required|numeric',
             'payment_status' => 'required|string|max:255',
             'message' => 'nullable|string',
-            'freezone_booking_id' => 'required|exists:package_bookings,id', // Ensure this is included,
-            'response_obj' => 'string',
-            'reference_id' => 'string',
+            'freezone_booking_id' => 'required|exists:package_bookings,id',
+            'response_obj' => 'nullable|string',
+            'reference_id' => 'nullable|string',
         ]);
+        
 
         $booking = PackageBooking::where('id', $validatedData['freezone_booking_id'])->first();
         // Create a new transaction and link it to a FreezoneBooking
         Transaction::create([
-            'transaction_id' => $validatedData['transaction_id']."_".substr(bin2hex(random_bytes(6)), 0, 6),
+            'transaction_id' => $validatedData['transaction_id'],
             'amount' => $validatedData['amount'],
             'customer_id' => $booking->customer_id,
             'payment_status' => $validatedData['payment_status'],
