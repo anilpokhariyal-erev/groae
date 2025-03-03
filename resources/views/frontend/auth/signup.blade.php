@@ -9,7 +9,11 @@
                 background-color: #aaa;
             }
         </style>
-
+        <!-- Logo for Mobile -->
+        <div class="mobile-logo">
+            <img src="{{ secure_asset('images/GroAE_Logo.png') }}" width="100" class="mainLogoImg">
+            <h3 class="">Grow with us</h3>
+        </div>
         <div class="signupItems">
         <div>
             <h1 class="loginTxt">Get Started</h1>

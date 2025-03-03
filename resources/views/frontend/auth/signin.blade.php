@@ -1,6 +1,11 @@
 @props(['errors' => collect()])
 <x-customer-auth>
     <div class="signupItems">
+        <!-- Logo for Mobile -->
+        <div class="mobile-logo">
+            <img src="{{ secure_asset('images/GroAE_Logo.png') }}" width="100" class="mainLogoImg">
+            <h3 class="">Grow with us</h3>
+        </div>
         <div>
             <h1 class="loginTxt">Login</h1>
             <p class="detailTxt">Enter details to access your account</p>
