@@ -178,10 +178,9 @@ li {
 @media (max-width: 768px) {
   .mobile-logo {
       display: block;
-      margin-top: 30px;
+      margin-top: 40px;
   }
 }
-
 
 .grTxt {
   color: #fff;
@@ -2222,6 +2221,29 @@ input[type='search']::-webkit-search-results-decoration {
   gap: 15px;
   justify-content: space-between;
   align-items: center;
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 768px) {
+  .compareBox {
+    padding: 20px; /* Adjust padding */
+    height: 200px; /* Auto height */
+    display: block; /* Change from flex to block */
+    overflow-x: scroll; /* Allow horizontal scrolling */
+    white-space: nowrap; /* Prevent wrapping */
+  }
+  .itemImg-1{
+    display: none;
+  }
+  .compareSelctorContnt{
+    display: block !important;
+  }
+  .compareItemWrapper{
+    margin-top: 5px;
+  }
+  .compareNow{
+    margin-top: 5px;
+  }
 }
 
 .compareItem {
