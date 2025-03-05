@@ -65,6 +65,24 @@
             }
         }
 
+        @media (max-width: 768px) {
+            #searchBtn, #clearSearchBtn {
+                display: flex;
+                justify-content: center;
+                margin-top: 15px !important; /* Ensure spacing */
+            }
+            #searchBtn {
+                width: 35%;
+            }
+
+            #clearSearchBtn {
+                width: 20%;
+            }
+            .seatcIcon{
+                bottom: 15px;
+            }
+        }
+
     </style>
 @endsection
 
