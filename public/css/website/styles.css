@@ -178,7 +178,8 @@ li {
 @media (max-width: 768px) {
   .mobile-logo {
       display: block;
-      margin-top: 40px;
+      margin-top: 60px;
+      margin-bottom: 40px;
   }
 }
 
