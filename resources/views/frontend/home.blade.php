@@ -47,7 +47,7 @@
             <h3 class="overlay-text line line2">Enjoy FREE consultations and zero service fees!</h3>
             <h3 class="overlay-text line line3">We handle everything -- So you <br> can focus on your business.</h3>
         </div>
-        <video autoplay muted loop class="background-video">
+        <video autoplay muted loop playsinline class="background-video">
             <source src="{{ secure_asset('images/groae_banner.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -294,6 +294,13 @@
 
     </script>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var video = document.querySelector(".background-video");
+            if (video) {
+                video.play().catch(error => console.log("Autoplay prevented:", error));
+            }
+        });
+
         $(document).ready(function() {
             // Delay the display of the overlay text
                 // Show the overlay text with fade-in effect
