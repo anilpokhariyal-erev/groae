@@ -30,6 +30,12 @@
             font-weight: 700;
             font-size: 18px;
         }
+
+        @media screen and (max-width: 768px) {
+            .mainFooter {
+                margin-top: 25px;
+            }
+        }
     </style>
     @section('js-imports')
         <script src="{{ secure_asset('js/website/compare.js') }}" crossorigin="anonymous"></script>
