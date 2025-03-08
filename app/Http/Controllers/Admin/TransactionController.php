@@ -76,6 +76,25 @@ class TransactionController extends Controller
             'status' => 2,
         ]);
 
+        $toEmail = $booking->customer->email; // Recipient's email address
+        $subject = 'Groae Package Booking Success';
+        $company_info = Setting::where('section_key', 'company_info')
+                    ->pluck('value', 'title')
+                    ->toArray();
+        $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($booking->id, 5, '0', STR_PAD_LEFT);
+        $data = [
+            'customer' => $booking->customer,
+            'package' => $booking->package,
+            'final_cost' => $booking->final_cost,
+            'ref_num' => $ref_num,
+            'packageBooking' => $booking,
+            'app_url' => rtrim(config('app.url'), '/'),
+        ];
+         Mail::send('frontend.email.payment_success', $data, function ($message) use ($toEmail, $subject) {
+            $message->to($toEmail)
+                ->subject($subject);
+        });
+
         return redirect()->route('transaction.index')->with('success', 'Transaction created successfully!');
     }
 
