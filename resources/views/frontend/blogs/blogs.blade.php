@@ -139,6 +139,11 @@
                         </li>
                     </ul>
                 </div>
+                <div class="compareIconWrapper">
+                    <a href="{{ route('contact-us.index') }}">
+                        <h3>Book Consultation</h3>
+                    </a>
+                </div>
             </div>
         </section>
     </div>
