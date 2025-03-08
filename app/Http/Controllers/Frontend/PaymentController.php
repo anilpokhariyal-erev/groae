@@ -93,7 +93,7 @@ class PaymentController extends Controller
             $company_info = Setting::where('section_key', 'company_info')
                         ->pluck('value', 'title')
                         ->toArray();
-            $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($packageBooking->id, 5, '0', STR_PAD_LEFT);
+            $ref_num = ($company_info['Company Invoice Prefix'] ?? "").str_pad($package_booking->id, 5, '0', STR_PAD_LEFT);
             $data = [
                 'customer' => $package_booking->customer,
                 'package' => $package_booking->package,
