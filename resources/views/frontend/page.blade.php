@@ -9,5 +9,10 @@
                 </div>
             </div>
         </div>
+        <div class="compareIconWrapper">
+            <a href="{{ route('contact-us.index') }}">
+                <h3>Book Consultation</h3>
+            </a>
+        </div>
     </section>
 </x-website-layout>
