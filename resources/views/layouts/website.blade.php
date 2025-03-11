@@ -77,6 +77,11 @@
     .select2-results__option--highlighted{
         background-color: #304a6f !important;
     }
+    @media (min-width: 768px) {
+        .mainFooter{
+            background-image: url("{{ asset('images/footer_bg.png') }}");
+        }
+    }
 </style>
 </head>
 
@@ -225,7 +230,7 @@
     {{ $slot }}
 
     @if (!request()->routeIs(['customer.login', 'customer.forgotpassword', 'customer.signup', 'customer.password.reset']))
-        <footer class="mainFooter" style="background-image: url('{{ asset('images/footer_bg.png') }}');">
+        <footer class="mainFooter">
             <div class="footerTop" >
                 <div class="footerLeft">
                     <div>
