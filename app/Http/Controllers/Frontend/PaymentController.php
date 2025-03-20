@@ -116,6 +116,7 @@ class PaymentController extends Controller
             // Return the session data to the view
             return view('frontend.customer.checkout-success', [
                 'session' => $session,
+                'currency' => $package_booking->package->currency,
                 'receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
             ]);
         } catch (\Exception $e) {

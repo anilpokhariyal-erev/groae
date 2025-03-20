@@ -70,7 +70,7 @@
                     <ul class="detailList">
                         <li><strong>Session ID:</strong> {{ $session->id }}</li>
                         <li><strong>Customer Email:</strong> {{ $session->customer_details->email }}</li>
-                        <li><strong>Amount Paid:</strong> ₹{{ number_format($session->amount_total / 100, 2) }}</li>
+                        <li><strong>Amount Paid:</strong> {{$currency}} {{ number_format($session->amount_total / 100, 2) }}</li>
                         <li><strong>Status:</strong> <span class="statusBadge">{{ ucfirst($session->payment_status) }}</span></li>
                     </ul>
                 </div>
