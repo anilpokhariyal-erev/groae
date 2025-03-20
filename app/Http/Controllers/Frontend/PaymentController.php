@@ -12,6 +12,7 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -23,7 +24,7 @@ class PaymentController extends Controller
         if($booking){        
             // Create the Transaction entry
             $transaction = Transaction::create([
-                'transaction_id' => "Pending",
+                'transaction_id' => Str::uuid(),
                 'amount' => $booking->final_cost,
                 'reference_id' => $request->order_id,
                 'customer_id' => $booking->customer_id,
