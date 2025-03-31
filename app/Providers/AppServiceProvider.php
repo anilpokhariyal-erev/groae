@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Menu;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
@@ -41,6 +42,9 @@ class AppServiceProvider extends ServiceProvider
 
             // Share the footer links data with all views
             view()->share('footerParents', $footerParents);
+
+            $menus = Menu::where('parent_id', null)->with('children')->get();
+            view()->share('menus', $menus);
         }catch (\Exception $exception){
             print('error in provider');
         }
