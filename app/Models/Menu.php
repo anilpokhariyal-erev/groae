@@ -15,4 +15,10 @@ class Menu extends Model
     {
         return $this->hasMany(Menu::class, 'parent_id', 'id')->where('is_active', true);
     }
+
+    public function permissions()
+    {
+        return $this->hasMany(Permission::class, 'menu_id', 'id');
+    }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assets\ResponseMessage;
 use App\Assets\Utils;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\Permission;
@@ -22,7 +23,8 @@ class RoleController extends Controller
 
     public function create(){
         $permissions = Permission::where('type', 'subadmin')->get();
-        return view('role.role_create', compact('permissions'));
+        $menus = Menu::where('is_active', 1)->get();
+        return view('role.role_create', compact('permissions', 'menus'));
     }
 
 
@@ -57,10 +59,9 @@ class RoleController extends Controller
     public function edit($uuid)
     {
         $role = Role::where('uuid', $uuid)->first();
-
+        $menus = Menu::where('is_active', 1)->get();
         if($role){
-            $permissions = Permission::where('type', 'subadmin')->get();
-            return view('role.role_edit', compact('role', 'permissions'));
+            return view('role.role_edit', compact('role', 'menus'));
         }
         return abort(404);
     }
