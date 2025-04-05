@@ -301,9 +301,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('pacakage/bookings', [PackageBookingController::class, 'index'])->name('package-bookings.index')->middleware('role_or_permission:view-booking');
     Route::get('pacakage/bookings/{id}', [PackageBookingController::class, 'show'])->name('package-bookings.show')->middleware('role_or_permission:view-booking');
-    Route::post('pacakage/bookings/adjustments', [PackageBookingController::class, 'adjustments'])->name('package-bookings.adjustments')->middleware('role_or_permission:view-booking');
-    Route::post('pacakage/bookings/update_status', [PackageBookingController::class, 'update_status'])->name('package-bookings.update_status')->middleware('role_or_permission:view-booking');
-    Route::get('package/bookings/{id}/documents', [PackageBookingController::class, 'documents'])->name('package-bookings.documents')->middleware('role_or_permission:view-booking');
+    Route::post('pacakage/bookings/adjustments', [PackageBookingController::class, 'adjustments'])->name('package-bookings.adjustments')->middleware('role_or_permission:update-booking-adjustments');
+    Route::post('pacakage/bookings/update_status', [PackageBookingController::class, 'update_status'])->name('package-bookings.update_status')->middleware('role_or_permission:update-booking-status');
+    Route::get('package/bookings/{id}/documents', [PackageBookingController::class, 'documents'])->name('package-bookings.documents')->middleware('role_or_permission:upload-booking-documents');
 
 
     // currency Manager
