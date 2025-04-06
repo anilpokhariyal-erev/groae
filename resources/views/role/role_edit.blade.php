@@ -11,7 +11,7 @@
             </div>
             &nbsp;
 
-            <form method="post" action="{{ route('roles.update', $role->id) }}">
+            <form method="post" action="{{ route('roles.update', $role->uuid) }}">
                 @csrf
                 @method('PUT')
 
@@ -34,7 +34,7 @@
 
                             @if($menu->parent_id > 0)
                                 @foreach($menu->permissions as $permission)
-                                    <div class="ba_flex align_items_center">
+                                    <div class="ba_flex align_items_left" style="width: 160px;">
                                         <input type="checkbox"
                                                name="permissions[]"
                                                value="{{ $permission->name }}"

@@ -61,7 +61,8 @@ class RoleController extends Controller
         $role = Role::where('uuid', $uuid)->first();
         $menus = Menu::where('is_active', 1)->get();
         if($role){
-            return view('role.role_edit', compact('role', 'menus'));
+            $rolePermissions = $role->permissions->pluck('name')->toArray();
+            return view('role.role_edit', compact('role', 'menus', 'rolePermissions'));
         }
         return abort(404);
     }
