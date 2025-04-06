@@ -30,7 +30,7 @@
                         <div style="width:250px; @if(!$menu->parent_id) font-weight: 900;; @endif">{{$menu->title}}</div>
                         @if($menu->parent_id > 0)
                             @foreach($menu->permissions as $permission)
-                                <div class="ba_flex align_items_center">
+                                <div class="ba_flex align_items_left" style="width: 160px;">
                                     <input type="checkbox" name="permissions[]" value="{{$permission->name}}">
                                     <div class="pl-1 pr-1" >
                                         {{ ucwords(str_replace('-', ' ', $permission->name)) }}
