@@ -220,9 +220,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('freezone-page/delete/{id}', [FreezonePageController::class, 'destroy'])->name('freezone-page.delete')->middleware('role_or_permission:delete-freezone-page');
 
     Route::get('setting', [SettingController::class, 'setting'])->name('setting.view')->middleware('role_or_permission:view-setting');
-    Route::get('numbers', [SettingController::class, 'numbers'])->name('numbers.view')->middleware('role_or_permission:view-setting');
+    Route::get('numbers', [SettingController::class, 'numbers'])->name('numbers.view')->middleware('role_or_permission:view-numbers');
     Route::post('setting', [SettingController::class, 'setting_store'])->name('setting.store')->middleware('role_or_permission:create-setting');
-    Route::post('numbers', [SettingController::class, 'numbers_store'])->name('numbers.store')->middleware('role_or_permission:create-setting');
+    Route::post('numbers', [SettingController::class, 'numbers_store'])->name('numbers.store')->middleware('role_or_permission:create-numbers');
 
 
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index')->middleware('role_or_permission:view-transaction');
