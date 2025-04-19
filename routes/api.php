@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\FreezoneController;
-use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\VisaPackageAttributeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -62,5 +61,5 @@ Route::post('upload-file', function (Request $request) {
     }
 });
 
-
+Route::post('freezone/filter-packages', [ApiController::class, 'filter_freezone_packages'])->middleware(['app.api_token']);
 Route::get('{key}/{id}', [ApiController::class, 'getData']);

@@ -8,6 +8,7 @@ use App\Models\Activity;
 use App\Models\Freezone;
 use App\Http\Controllers\Controller;
 use App\Models\PackageActivity;
+use App\Models\PackageHeader;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -74,4 +75,47 @@ class ApiController extends Controller
         }
         return response()->json($key);
     }
+
+
+    public function filter_freezone_packages(Request $request)
+    {
+        $attributeValues = $request->input('attribute_value', []);
+
+        if (empty($attributeValues)) {
+            return response()->json(['urls' => [], 'message' => 'No attribute values provided.']);
+        }
+
+        $packagesQuery = PackageHeader::where('status', 1)
+            ->whereHas('freezone', function ($query) {
+                $query->where('status', 1);
+            });
+
+        foreach ($attributeValues as $attributeName => $optionValue) {
+            if ($optionValue === 'any') continue;
+        
+            $packagesQuery->whereHas('packageLines', function ($query) use ($attributeName, $optionValue) {
+                $query->whereHas('attribute', function ($attrQuery) use ($attributeName) {
+                    $attrQuery->where('attributes.name', $attributeName);
+                })
+                ->whereHas('attributeOption', function ($optQuery) use ($optionValue) {
+                    $optQuery->where('attribute_options.value', $optionValue);
+                })
+                ->where('package_lines.status', 1);
+            });
+        }
+            
+        $packages = $packagesQuery->get();
+
+        // Generate URLs only
+        $urls = $packages->map(function ($package) {
+            return url('calculate-licensecosts?package_id=' . encrypt($package->id));
+        });
+        
+        if($urls->isEmpty()) {
+            return response()->json(['urls' => [], 'message' => 'No packages found.']);
+        }
+        // Return the URLs as a JSON response
+        return response()->json(['urls' => $urls]);
+    }
+
 }
