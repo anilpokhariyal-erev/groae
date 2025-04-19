@@ -104,7 +104,9 @@ class ApiController extends Controller
             });
         }
             
-        $packages = $packagesQuery->get();
+        // Fetch only the required number of results
+        $limit = env('FREEZONE_RESULT_LIMIT', 5);
+        $packages = $packagesQuery->take($limit)->get();
 
         // Generate URLs only
         $urls = $packages->map(function ($package) {
