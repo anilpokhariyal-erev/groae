@@ -9,6 +9,7 @@ use App\Models\Freezone;
 use App\Http\Controllers\Controller;
 use App\Models\PackageActivity;
 use App\Models\PackageHeader;
+use App\Models\WhatsappEnquiry;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -80,44 +81,25 @@ class ApiController extends Controller
     public function filter_freezone_packages(Request $request)
     {
         $attributeValues = $request->input('attribute_value', []);
-
+        $userName = $request->input('user_name');
+        $userPhone = $request->input('user_phone');
+    
         if (empty($attributeValues)) {
             return response()->json(['urls' => [], 'message' => 'No attribute values provided.']);
         }
-
-        $packagesQuery = PackageHeader::where('status', 1)
-            ->whereHas('freezone', function ($query) {
-                $query->where('status', 1);
-            });
-
-        foreach ($attributeValues as $attributeName => $optionValue) {
-            if ($optionValue === 'any') continue;
-        
-            $packagesQuery->whereHas('packageLines', function ($query) use ($attributeName, $optionValue) {
-                $query->whereHas('attribute', function ($attrQuery) use ($attributeName) {
-                    $attrQuery->where('attributes.name', $attributeName);
-                })
-                ->whereHas('attributeOption', function ($optQuery) use ($optionValue) {
-                    $optQuery->where('attribute_options.value', $optionValue);
-                })
-                ->where('package_lines.status', 1);
-            });
-        }
-            
-        // Fetch only the required number of results
-        $limit = env('FREEZONE_RESULT_LIMIT', 5);
-        $packages = $packagesQuery->take($limit)->get();
-
-        // Generate URLs only
-        $urls = $packages->map(function ($package) {
-            return url('calculate-licensecosts?package_id=' . encrypt($package->id));
-        });
-        
-        if($urls->isEmpty()) {
-            return response()->json(['urls' => [], 'message' => 'No packages found.']);
-        }
-        // Return the URLs as a JSON response
-        return response()->json(['urls' => $urls]);
+    
+        // Save to database
+        $entry = WhatsappEnquiry::create([
+            'request_data' => $attributeValues,
+            'user_name' => $userName,
+            'user_phone' => $userPhone,
+        ]);
+    
+        $exploreUrl = url('/explore-freezones?t=' . $entry->id);
+    
+        return response()->json([
+            'url' => $exploreUrl,
+        ]);
     }
-
+    
 }

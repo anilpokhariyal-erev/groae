@@ -9,8 +9,9 @@ use App\Models\Setting;
 use App\Models\Freezone;
 use App\Models\StaticPage;
 use App\Models\Attribute;
+use App\Models\AttributeOption;
 use App\Models\PackageHeader;
-use App\Models\PackageLine;
+use App\Models\WhatsappEnquiry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -56,7 +57,6 @@ class HomeController extends Controller
 
     public function explore_freezone(Request $request, $id = null)
     {
-
         $selected = null;
 
         // Check if ID is provided and retrieve data from cache
@@ -81,20 +81,38 @@ class HomeController extends Controller
             return redirect()->route('explore-freezone');
         }
 
-        $selectedAttributes = $attributeValues ?? [];
+        // If token exists in query string, fetch the enquiry and set selected attributes
+        $token = $request->input('t');
+        if ($token) {
+            $whatsappEnquiry = WhatsappEnquiry::where('id', $token)->first();
+
+            if ($whatsappEnquiry) {
+                $selected = $token;
+                $selectedAttributes = is_array($whatsappEnquiry->request_data)
+                    ? $whatsappEnquiry->request_data
+                    : json_decode($whatsappEnquiry->request_data, true);
+
+                // Convert attribute names to attribute ids and option values to option ids
+                $convertedAttributes = $this->convertAttributesToIds($selectedAttributes);
+                $selectedAttributes = $convertedAttributes;
+            } else {
+                return redirect()->route('explore-freezone'); // Invalid token
+            }
+        } else {
+            // Default to POSTed attribute values if no token exists
+            $selectedAttributes = $attributeValues ?? [];
+        }
 
         // Apply attribute filters if they exist
-        if (!empty($attributeValues)) {
-            foreach ($attributeValues as $attributeId => $optionId) {
-                // Check if the optionId is 'any' and skip adding a condition if true
-                if ($optionId === 'any') {
-                    continue; // Skip this iteration if 'any'
-                }
-                $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
+        if (!empty($selectedAttributes)) {
+            foreach ($selectedAttributes as $attributeId => $optionId) {
+                // Skip if 'any' is selected
+                if ($optionId === 'any') continue;
 
+                $packagesQuery->whereHas('packageLines', function ($query) use ($optionId, $attributeId) {
                     $query->where('package_lines.attribute_id', $attributeId)
                         ->where('package_lines.attribute_option_id', $optionId)
-                    ->where('package_lines.status', 1);
+                        ->where('package_lines.status', 1);
                 });
             }
         }
@@ -108,6 +126,45 @@ class HomeController extends Controller
         // Pass data to the view
         return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
     }
+
+    /**
+     * Convert attribute names and values to attribute_id and option_id
+     *
+     * @param array $selectedAttributes
+     * @return array
+     */
+    private function convertAttributesToIds(array $selectedAttributes)
+    {
+        $convertedAttributes = [];
+
+        foreach ($selectedAttributes as $attributeName => $optionValue) {
+            if ($optionValue === 'any') continue;
+
+            // Get the attribute_id based on the attribute name
+            $attribute = Attribute::where('name', $attributeName)->first();
+            if ($attribute) {
+                // Get the option_id based on the attribute_id and option value
+                $attributeOption = AttributeOption::where('attribute_id', $attribute->id)
+                    ->where('value', $optionValue)
+                    ->first();
+
+                if ($attributeOption) {
+                    // Add to the convertedAttributes array: attribute_id => option_id
+                    $convertedAttributes[$attribute->id] = $attributeOption->id;
+                }
+            }
+        }
+
+        return $convertedAttributes;
+    }
+    
+    /**
+     * Explore freezones with filters
+     *
+     * @param Request $request
+     * @param string|null $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
 
     public function explore_freezones(Request $request, $id = null)
     {
