@@ -95,7 +95,7 @@ class ApiController extends Controller
             'user_phone' => $userPhone,
         ]);
     
-        $exploreUrl = url('/explore-freezones?t=' . $entry->id);
+        $exploreUrl = url('/explore-freezone?t=' . $entry->id);
     
         return response()->json([
             'url' => $exploreUrl,
