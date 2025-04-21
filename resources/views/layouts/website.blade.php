@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'GroAE') }}</title>
+    <!-- Open Graph Meta Tags for Link Previews -->
+    <meta property="og:title" content="Groae" />
+    <meta property="og:description" content="Want to start your own business in UAE, enjoy free consultations and zero service fees!" />
+    <meta property="og:image" content="https://groae.com/favicon.jpg" />
+    <meta property="og:url" content="https://groae.com/" />
+    <meta property="og:type" content="website" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link href="{{ secure_asset('css/website/owl.carousel.min.css') }}" rel="stylesheet" />

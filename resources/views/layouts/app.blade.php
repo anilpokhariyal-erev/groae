@@ -4,7 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        <meta property="og:title" content="Groae" />
+        <meta property="og:description" content="Want to start your own business in UAE, enjoy free consultations and zero service fees!" />
+        <meta property="og:image" content="https://groae.com/favicon.jpg" />
+        <meta property="og:url" content="https://groae.com/" />
+        <meta property="og:type" content="website" />
         <title>{{ config('app.name', 'Groae') }}</title>
 
         <!-- Fonts -->
