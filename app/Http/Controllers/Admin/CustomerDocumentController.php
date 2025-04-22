@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 use App\Models\CustomerDocument;
 use App\Models\CustomerDownload;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UploadUpdateRequest;
+use Illuminate\Support\Facades\Log;
 
 class CustomerDocumentController extends Controller
 {
@@ -69,25 +69,28 @@ class CustomerDocumentController extends Controller
     public function reject_document(Request $request)
     {
         $request->validate([
-            'document_id' => 'required',
-            //'reason' => 'required|string|max:255',
+            'document_id' => 'required|exists:customer_documents,id',
+            'additional_comment' => 'nullable|string|max:1000',
         ]);
 
         try {
-            $document = CustomerDocument::where('id', $request->document_id)->first();
+            $document = CustomerDocument::find($request->document_id);
 
-            if(!$document) {
+            if (!$document) {
                 return back()->with('error', ResponseMessage::InvalidDocumentId);
             }
 
             $document->status = 'rejected';
-            //$document->reject_reason = $request->reason;
+            $document->additional_comment = $request->additional_comment;
             $document->save();
+
             return back()->with('success', 'Document rejected successfully');
         } catch (\Exception $e) {
+            Log::error('Document Rejection Error: ' . $e->getMessage());
             return back()->with('error', ResponseMessage::WrongMsg);
         }
     }
+
 
     public function approve_document(Request $request)
     {
