@@ -109,6 +109,9 @@
                                             @if ($item->status == 'approved')
                                                 <img class="verifyImg" src="{{ asset('images/verify-image.png') }}" alt="">
                                             @endif
+                                            @if($item->status == 'rejected' && $item->additional_comment!="")
+                                                <span class="rejectedComment text-red">({{ $item->additional_comment }})</span> 
+                                            @endif
                                         </div>
                                         <h3>{{ $item->type }}</h3>
                                         <h4>Supported format: .{{ implode(', .', $item->format) }}</h4>
