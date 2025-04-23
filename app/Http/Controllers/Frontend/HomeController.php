@@ -20,15 +20,6 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
-    public function ai_filter_options(){
-        // Fetch attributes where is_ai_search_enabled is 1 and order by ai_filter_display_order
-        return Attribute::where('is_ai_search_enabled', 1)
-        ->where('status',1)
-        ->orderBy('ai_filter_display_order', 'ASC')
-        ->with('options') // Assuming you have a relationship called 'options' to fetch the attribute options
-        ->get();
-    }
-
     public function home()
     {
         $freezones = Freezone::where('status',1)
@@ -40,7 +31,7 @@ class HomeController extends Controller
         $offer = Offer::select('id', 'title', 'discount', 'image', 'freezone_id')->with('freezone')->get();
         $blogs = Blog::select('id', 'title', 'short_description', 'image', 'slug', 'created_at')->orderBy('id', 'DESC')->skip(0)->take(3)->get();
         $groae_number = Setting::where('section_key', 'groae_number')->get();
-        $attributes = $this->ai_filter_options();
+        $attributes = Attribute::ai_filter_options();
         $background_video = config('view.home_video_id');
         return view('frontend.home', compact('blogs', 'freezones',  'offer', 'groae_number', 'attributes', 'background_video'));
     }
@@ -121,7 +112,7 @@ class HomeController extends Controller
         $packages = $packagesQuery->with(['packageLines', 'freezone'])->orderBy('price')->get();
 
         // Retrieve attributes for filter options
-        $attributes = $this->ai_filter_options();
+        $attributes = Attribute::ai_filter_options();
 
         // Pass data to the view
         return view('frontend.explore_freezone', compact('packages', 'selected', 'attributes', 'selectedAttributes'));
@@ -216,7 +207,7 @@ class HomeController extends Controller
         $freezones = Freezone::where('status',1)->get();
 
         // Retrieve attributes for filter options
-        $attributes = $this->ai_filter_options();
+        $attributes = Attribute::ai_filter_options();
 
         // Pass data to the view
         return view('frontend.explore_freezones', compact('packages', 'selected', 'attributes', 'selectedAttributes','freezones'));
