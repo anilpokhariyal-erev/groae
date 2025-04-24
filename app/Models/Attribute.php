@@ -40,4 +40,14 @@ class Attribute extends Model
         return $this->hasMany(PackageAttributesCost::class, 'attribute_id')->where('status',1);
     }
 
+    public static function ai_filter_options()
+    {
+        return self::where('is_ai_search_enabled', 1)
+            ->where('status', 1)
+            ->orderBy('ai_filter_display_order', 'ASC')
+            ->with(['options']) // Fetch active options for each attribute
+            ->get();
+    }
+
+
 }
