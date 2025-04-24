@@ -187,19 +187,46 @@ class CustomerController extends Controller
         return back()->with('success', 'Document deleted successfully.');
     }
 
-    function view_booking_requests()
+    function view_booking_requests(Request $request)
     {
         $customer = Auth::guard('customer')->user();
         $freezones = $customer->freezone_bookings->load('freezone', 'license');
-
-        $pending_detail_count = $customer->customer_documents()->where('request_type', 'detail')->whereIn('status', ['requested', 'rejected'])->count();
-        $pending_document_count = $customer->customer_documents()->where('request_type', 'document')->whereIn('status', ['requested', 'rejected'])->count();
-
-        // Paginate the package bookings (e.g., 10 per page)
-        $package_bookings = $customer->package_bookings()->orderBy('id', 'desc')->paginate(4);
-        $package_bookings_count = $customer->package_bookings()->where('status',2)->where('payment_status','!=','1')->count();
-
-        return view('frontend.customer.my_booking_requests')->with(compact('customer', 'pending_detail_count', 'pending_document_count', 'freezones', 'package_bookings','package_bookings_count'));
+    
+        $pending_detail_count = $customer->customer_documents()
+            ->where('request_type', 'detail')
+            ->whereIn('status', ['requested', 'rejected'])
+            ->count();
+    
+        $pending_document_count = $customer->customer_documents()
+            ->where('request_type', 'document')
+            ->whereIn('status', ['requested', 'rejected'])
+            ->count();
+    
+        // Handle status filter from the request
+        $status = $request->get('status', 'all');
+        $query = $customer->package_bookings()->orderBy('id', 'desc');
+    
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+    
+        $package_bookings = $query->paginate(4);
+    
+        // Count for Invoice Generated but not paid
+        $package_bookings_count = $customer->package_bookings()
+            ->where('status', 2)
+            ->where('payment_status', '!=', '1')
+            ->count();
+    
+        return view('frontend.customer.my_booking_requests')->with(compact(
+            'status',
+            'customer',
+            'pending_detail_count',
+            'pending_document_count',
+            'freezones',
+            'package_bookings',
+            'package_bookings_count'
+        ));
     }
 
 

@@ -43,6 +43,18 @@
                 <div class="profileWrapper">
                     @include('frontend.components.profile_sidebar')
                     <div class="profileDetailWrapper">
+                        <div style="padding-top: 0px !important; padding-bottom: 5px !important;">
+                            <form method="GET" action="{{ route('customer.my_booking_requests.view') }}">
+                                <select class="inputField2" id="filter-select" name="status" onchange="this.form.submit()">
+                                    <option value="all" {{ $status == "all" ? 'selected' : '' }}>All</option>
+                                    <option value="2" {{ $status == 2 ? 'selected' : '' }}>Invoice Generated</option>
+                                    <option value="1" {{ $status == 1 ? 'selected' : '' }}>Waiting for Invoice</option>
+                                    <option value="0" {{ $status == 0 ? 'selected' : '' }}>Cancelled/Rejected</option>
+                                    <option value="3" {{ $status == 3 ? 'selected' : '' }}>Refunded</option>
+                                </select>
+                            </form>
+                        </div>
+
                         @foreach ($freezones as $item)
                             <div class="requestDocBox">
                                 <h2>{{ $item->freezone->name }}</h2>
@@ -60,9 +72,9 @@
                                 <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                                     <div class="addPersonalDoc">
                                         <h3 style="min-width: 60%;max-width: 65%;">
-            <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
-                {{$package_booking?->package?->freezone?->name}}
-            </span><br><br>
+                                            <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
+                                                {{$package_booking?->package?->freezone?->name}}
+                                            </span><br><br>
                                             {{$package_booking->package->title}}<br>
                                             {{$package_booking->created_at->format('d/m/Y')}}
                                         </h3>
@@ -107,14 +119,14 @@
                                         <!-- "Previous" button -->
                                         <li>
                                             <a class="{{ $package_bookings->currentPage() > 1 ? 'neTxt' : 'preTxt' }}"
-                                               href="{{ $package_bookings->currentPage() > 1 ? $package_bookings->previousPageUrl() : 'javascript:void(0);' }}">
+                                            href="{{ $package_bookings->currentPage() > 1 ? $package_bookings->appends(request()->except('page'))->previousPageUrl() : 'javascript:void(0);' }}">
                                                 Previous
                                             </a>
                                         </li>
                                         <!-- "Next" button -->
                                         <li>
                                             <a class="{{ $package_bookings->hasMorePages() ? 'neTxt' : 'preTxt' }}"
-                                               href="{{ $package_bookings->hasMorePages() ? $package_bookings->nextPageUrl() : 'javascript:void(0);' }}">
+                                            href="{{ $package_bookings->hasMorePages() ? $package_bookings->appends(request()->except('page'))->nextPageUrl() : 'javascript:void(0);' }}">
                                                 Next
                                             </a>
                                         </li>
