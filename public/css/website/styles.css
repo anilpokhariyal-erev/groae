@@ -3406,6 +3406,15 @@ ul.settingListInnr {
   align-items: center;
   gap: 10px;
 }
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .uploadBlock-2 a {
+    padding: 9px 10px;
+    font-size: 10px;
+  }
+}
+
 .closeeIcon {
   position: absolute;
   top: 36px;
