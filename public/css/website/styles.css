@@ -3776,6 +3776,7 @@ h3.transactionIdTxt {
 /* cost calculator css=============================== */
 .costCalculateContainer {
   padding-top: 150px;
+  overflow: auto;
 }
 
 .summaryTableContainer {
