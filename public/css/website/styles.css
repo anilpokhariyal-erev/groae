@@ -1262,6 +1262,25 @@ select {
   position: relative;
 }
 
+/* Mobile styles */
+@media (max-width: 768px) {
+  .illustrationImg {
+    width: 150px;
+  }
+  .costAnalysisRight .bHeading{
+    font-size: 18px;
+  }
+  .costAnalysisRight .bTitle{
+    font-size: 12px;
+  }
+  .businessCost{
+    margin-top: 30px;
+  }
+  .CostBtn a{
+    font-size: 12px !important;
+  }
+}
+
 .costAnalysisLeft {
   width: 50%;
   display: flex;
@@ -2290,6 +2309,33 @@ input[type='search']::-webkit-search-results-decoration {
   /* max-width: 305px; */
   gap: 15px;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .compareItem {
+   padding: 8px;
+  }
+  .comBtn a{
+    font-size: 12px !important;
+  }
+  .comBtn {
+    padding: 16px 20px;
+  }
+  .compareBox{
+    padding: 10px;
+  }
+  .compareItemWrapper{
+    max-width: 380px !important;
+  }
+  .bannrTxt .logo{
+    display: block !important;
+    width: 150px !important;
+  }
+  .bannrTxt{
+    width: 250px !important;
+    display: block;
+    font-size: 18px !important;
+  }
 }
 
 .itemImg-1 {
