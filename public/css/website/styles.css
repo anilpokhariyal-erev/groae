@@ -2333,7 +2333,7 @@ input[type='search']::-webkit-search-results-decoration {
   }
   .bannrTxt{
     width: 250px !important;
-    display: block;
+    display: block !important;
     font-size: 18px !important;
   }
 }
