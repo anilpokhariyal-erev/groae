@@ -2831,6 +2831,14 @@ ul.settingListInnr {
   list-style: disc;
   margin-left: 24px;
 }
+@media (max-width: 768px) {
+  .detailContntInnr ul li {
+    font-size: 14px !important;
+  }
+  .mainFooter {
+    margin-top: 20px !important;
+  }
+}
 .detailContntInnr img {
   width: 100%;
   object-fit: cover;
