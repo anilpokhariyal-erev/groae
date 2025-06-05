@@ -112,7 +112,7 @@
                         @endforeach
 
                         <!-- Pagination Links -->
-                        <div class="pagination">
+                        <div class="pagination mb-30-mobile">
                             @if (count($package_bookings))
                                 <div class="commonViewMoreBtn">
                                     <ul class="pager">

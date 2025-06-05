@@ -322,7 +322,7 @@
 
                 <div class="paginationContainer">
                     <div class="center">
-                        <ul class="pagination">
+                        <ul class="pagination mb-30-mobile">
                             <li class="prBtn">
                                 <a id="prev"><img src="{{ secure_asset('images/page-left.png') }}" alt=""></a>
                             </li>
