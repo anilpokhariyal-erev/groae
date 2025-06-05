@@ -446,6 +446,11 @@ li {
   font-weight: 500;
 }
 
+@media (max-width: 768px) {
+.mb-10-mobile{
+  margin-bottom: 10px !important;
+}
+}
 /* ======================== signup ================= */
 .radioForm {
   display: flex;

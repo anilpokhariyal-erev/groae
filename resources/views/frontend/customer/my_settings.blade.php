@@ -106,7 +106,7 @@
                                 </ul>
                             </div>
                             <div class="btns" style="justify-content: flex-end;">
-                                <button type="submit" style="max-width: 183px;" id='validate' class="loginBtn">
+                                <button type="submit" style="max-width: 183px;" id='validate' class="loginBtn mb-10-mobile">
                                     <span class="buttonText">Submit</span>
                                 </button>
 
