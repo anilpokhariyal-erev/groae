@@ -72,9 +72,10 @@
                                 <a href="{{ route('customer.view_invoice.view', ['id' => $package_booking->id]) }}">
                                     <div class="addPersonalDoc">
                                         <h3 style="min-width: 60%;max-width: 65%;">
-                                            <span style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
-                                                {{$package_booking?->package?->freezone?->name}}
-                                            </span><br><br>
+                                            <div style="background:#304a6f;color:#fff;padding: 8px;border-radius: 8px;">
+                                                    {{$package_booking?->package?->freezone?->name}}
+                                             </div>
+                                             <br>
                                             {{$package_booking->package->title}}<br>
                                             {{$package_booking->created_at->format('d/m/Y')}}
                                         </h3>
