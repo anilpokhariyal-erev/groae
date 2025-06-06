@@ -237,7 +237,7 @@
     {{ $slot }}
 
     @if (!request()->routeIs(['customer.login', 'customer.forgotpassword', 'customer.signup', 'customer.password.reset']))
-        <footer class="mainFooter">
+        <footer class="mainFooter mt-20-mobile">
             <div class="footerTop" >
                 <div class="footerLeft">
                     <div>
@@ -282,6 +282,14 @@
  gtag('js', new Date());   
  gtag('config', '{{ config("google_analytics.gtag") }}'); 
  </script>
+ <!--- this is for Enquire button on mobile screen--->
+ <script type="text/javascript">
+    $(document).ready(function () {
+        if ($(window).width() <= 768) {
+            $('.compareIconWrapper a h3').text('Enquire');
+        }
+    });
+</script>
 </body>
 
 </html>
