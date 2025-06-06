@@ -641,7 +641,19 @@ li {
   font-size: 18px;
   font-weight: 600;
 }
+@media (max-width: 768px) {
+  .nav-menu{
+    padding-bottom: 20px !important;
+  }
+  .nav-menu.active{
+    width: 65%;
+  }
+  .subLinks .subUlLinksWrapper{
+    top: 10px !important;
+    width: 235px !important;
+  }
 
+}
 @media screen and (max-width: 1367px) {
   .nav-link {
     font-size: 14px;
@@ -2254,7 +2266,11 @@ input[type='search']::-webkit-search-results-decoration {
     font-size: 10px;
   }
   .compareIconWrapper a {
-    display: none !important;
+    z-index: 9999 !important;
+    top: 30px !important;
+    right: 70px !important;
+    padding: 10px 10px !important;
+    border-radius: 8px 8px 8px 8px !important;
   }
 }
 
@@ -3155,7 +3171,11 @@ ul.settingListInnr {
 .myProfileContainer {
   padding-top: 150px;
 }
-
+@media (max-width: 768px) {
+  .myProfileContainer {
+    padding-top: 60px !important;
+  }
+}
 .personalImage {
   height: 24px;
   width: 24px;
