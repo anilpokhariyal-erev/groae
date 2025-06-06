@@ -960,6 +960,13 @@ li {
   gap: 15px;
 }
 
+@media (min-width: 769px) {
+  .viewProfilePopup .viewProWrapper{
+    top: 0px !important;
+    right: 0px !important;
+  }
+}
+
 /* Toggle this class - hide and show the popup */
 .viewProfilePopup .showTxt {
   visibility: visible;
