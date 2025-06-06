@@ -18,13 +18,26 @@
       font-size: 17px; text-align: center;"> Payment Refunded </p> 
     @endif
     @if($booking->downloads->isNotEmpty())
-          <div class="px-14 py-10 text-sm text-neutral-700">
+          <div class="px-14 py-10 text-sm text-neutral-700" style="padding-bottom: 0px !important;">
               <p class="font-bold">Related Downloads:</p>
+              <table class="w-full border-collapse border-spacing-0">
+                <thead>
+                  <tr>
+                    <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">File</td>
+                    <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Download</td>
+                  </tr>
+                </thead>
+                <tbody>
               @foreach($booking->downloads as $download)
-                  <button class="btn btn-primary download-btn mt-2" onclick="window.location.href='{{ route('downloads.show', $download->id) }}'">
-                      Download {{ $download->name }}
-                  </button>
+                <tr>
+                <td class="border-b py-3 pl-3">{{ $download->name }}</td>
+                <td class="border-b py-3 pl-2">
+                  <i onclick="window.location.href='{{ route('downloads.show', $download->id) }}'" class="fa fa-download" style="cursor: pointer;"></i> 
+                </td>
+              </tr>
               @endforeach
+                </tbody>
+              </table>
           </div>
       @endif
     <div class="py-4 @if($booking->payment_status == 1) watermarked @endif" id="contentToPrint" style="--watermark-text:' Invoice Paid'">
