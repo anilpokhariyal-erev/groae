@@ -960,7 +960,7 @@ li {
   gap: 15px;
 }
 
-@media (min-width: 769px) {
+@media (max-width: 768px) {
   .viewProfilePopup .viewProWrapper{
     top: 0px !important;
     right: 0px !important;
