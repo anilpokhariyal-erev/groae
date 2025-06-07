@@ -6,7 +6,7 @@
                     <a class="backAnchor" href="{{ url()->previous() }}"><img src="{{ secure_asset('images/cheveron-right.png') }}" alt=""></a>
                     <h2 class="backTxt">Back</h2>
                 </div>
-                <div class="topHeading">
+                <div class="topHeading p-t-20">
                     <h2 class="trendTxt">My Account</h2>
                 </div>
 
