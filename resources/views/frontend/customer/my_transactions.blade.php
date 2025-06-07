@@ -9,7 +9,7 @@
                     <h2 class="backTxt">Back</h2>
                     </a>
                 </div>
-                <div class="topHeading">
+                <div class="topHeading p-t-20">
                     <h2 class="trendTxt">My Account</h2>
                 </div>
 
